@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  budgetmetal_admin:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    image: budgetmetaladmin
+    build:
+      context: .
+      dockerfile: BudgetMetal_Admin/Dockerfile
+    ports:
+      - 9908:80
+
+  com.budgetmetal.services.gallery:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    image: combudgetmetalservicesgallery
+    build:
+      context: .
+      dockerfile: Com.BudgetMetal.Services.Gallery/Dockerfile
+    ports:
+    - 9909:80
+
+networks:
+    dockernet:
+        external: true
+
