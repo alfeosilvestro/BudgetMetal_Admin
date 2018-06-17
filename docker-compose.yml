@@ -5,7 +5,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
     image: budgetmetaladmin
-    network_mode: bridge
+    #network_mode: bridge
     #networks:
             #- dockernet
     build:
@@ -18,7 +18,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
     image: combudgetmetalservicesgallery
-    network_mode: bridge
+    #network_mode: bridge
     #networks:
             #- dockernet
     build:
