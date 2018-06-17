@@ -5,10 +5,10 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
     image: budgetmetaladmin
+    network_mode: bridge
     build:
       context: .
       dockerfile: BudgetMetal_Admin/Dockerfile
-      network_mode: bridge
     ports:
       - 9908:80
 
@@ -16,10 +16,10 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
     image: combudgetmetalservicesgallery
+    network_mode: bridge
     build:
       context: .
       dockerfile: Com.BudgetMetal.Services.Gallery/Dockerfile
-      network_mode: bridge
     ports:
     - 9909:80
 
