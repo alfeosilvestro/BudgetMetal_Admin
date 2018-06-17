@@ -74,6 +74,24 @@ namespace BudgetMetal_Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Description")] bm_gallery bm_gallery)
         {
+            var tempPath = Path.GetTempPath();
+            Console.WriteLine(tempPath);
+            
+            /*
+            var files = HttpContext.Request.Form.Files;
+            
+            foreach (var file in files)
+            {
+                if (file.Length > 0)
+                {
+                        //Getting FileName
+                        var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                        Console.WriteLine(fileName);
+                }
+            }
+            */
+            //////////////////////////////////////////////////////////////////////////////////////////////
+            
             var files_ThumbnailImage = Request.Form["ThumbnailImage"];
             var files_DetailImage = Request.Form["DetailImage"];
             var files_DownloadableImage = Request.Form["DownloadableImage"];
