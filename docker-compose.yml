@@ -8,7 +8,7 @@ services:
     build:
       context: .
       dockerfile: BudgetMetal_Admin/Dockerfile
-      network-mode: bridge
+      network_mode: bridge
     ports:
       - 9908:80
 
@@ -19,7 +19,7 @@ services:
     build:
       context: .
       dockerfile: Com.BudgetMetal.Services.Gallery/Dockerfile
-      network-mode: bridge
+      network_mode: bridge
     ports:
     - 9909:80
 
