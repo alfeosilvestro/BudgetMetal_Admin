@@ -12,7 +12,7 @@ services:
       context: .
       dockerfile: BudgetMetal_Admin/Dockerfile
     ports:
-      - 9908:80
+      - "127.0.0.1:9908:80"
 
   com.budgetmetal.services.gallery:
     environment:
@@ -25,7 +25,7 @@ services:
       context: .
       dockerfile: Com.BudgetMetal.Services.Gallery/Dockerfile
     ports:
-    - 9909:80
+      - "127.0.0.1:9909:80"
 
 networks:
     dockernet:
