@@ -1,2 +1,1 @@
 D:\Projects\BudgetMetal\BudgetMetal_Admin\obj\Debug\docker-compose.dcproj.CoreCompileInputs.cache
-D:\Projects\BudgetMetal_Admin\obj\Debug\docker-compose.dcproj.CoreCompileInputs.cache
