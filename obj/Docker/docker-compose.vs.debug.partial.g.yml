@@ -1,19 +1,21 @@
-version: '3'
+version: '2'
 
 services:
   budgetmetal_admin:
     image: budgetmetaladmin:dev
     environment:
       - DOTNET_USE_POLLING_FILE_WATCHER=1
-      #- NUGET_FALLBACK_PACKAGES=$container_paths_to_fallback_packages_budgetmetal_admin$
+      - NUGET_FALLBACK_PACKAGES=/root/.nuget/fallbackpackages;/root/.nuget/fallbackpackages2
     volumes:
       - D:\Projects\BudgetMetal_Admin\BudgetMetal_Admin:/app
       - C:\Users\galle\vsdbg\vs2017u5:/remote_debugger:ro
-#$nuget_volume_mapping_budgetmetal_admin$
+      - C:\Users\galle\.nuget\packages\:/root/.nuget/packages:ro
+      - C:\Program Files (x86)\Microsoft SDKs\NuGetPackagesFallback\:/root/.nuget/fallbackpackages:ro
+      - C:\Program Files\dotnet\sdk\NuGetFallbackFolder:/root/.nuget/fallbackpackages2:ro
     entrypoint: tail -f /dev/null
     labels:
       com.microsoft.visualstudio.debuggee.program: "dotnet"
-      #com.microsoft.visualstudio.debuggee.arguments: " $debuggee_arguments_probing_paths_budgetmetal_admin$ bin/Debug/netcoreapp2.0/BudgetMetal_Admin.dll"
+      com.microsoft.visualstudio.debuggee.arguments: " --additionalProbingPath /root/.nuget/packages --additionalProbingPath /root/.nuget/fallbackpackages --additionalProbingPath /root/.nuget/fallbackpackages2  bin/Debug/netcoreapp2.0/BudgetMetal_Admin.dll"
       com.microsoft.visualstudio.debuggee.workingdirectory: "/app"
       com.microsoft.visualstudio.debuggee.killprogram: "/bin/bash -c \"if PID=$$(pidof -x dotnet); then kill $$PID; fi\""
 
@@ -21,15 +23,17 @@ services:
     image: combudgetmetalservicesgallery:dev
     environment:
       - DOTNET_USE_POLLING_FILE_WATCHER=1
-      #- NUGET_FALLBACK_PACKAGES=$container_paths_to_fallback_packages_com.budgetmetal.services.gallery$
+      - NUGET_FALLBACK_PACKAGES=/root/.nuget/fallbackpackages;/root/.nuget/fallbackpackages2
     volumes:
       - D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.Services.Gallery:/app
       - C:\Users\galle\vsdbg\vs2017u5:/remote_debugger:ro
-#$nuget_volume_mapping_com.budgetmetal.services.gallery$
+      - C:\Users\galle\.nuget\packages\:/root/.nuget/packages:ro
+      - C:\Program Files (x86)\Microsoft SDKs\NuGetPackagesFallback\:/root/.nuget/fallbackpackages:ro
+      - C:\Program Files\dotnet\sdk\NuGetFallbackFolder:/root/.nuget/fallbackpackages2:ro
     entrypoint: tail -f /dev/null
     labels:
       com.microsoft.visualstudio.debuggee.program: "dotnet"
-      #com.microsoft.visualstudio.debuggee.arguments: " $debuggee_arguments_probing_paths_com.budgetmetal.services.gallery$ bin/Debug/netcoreapp2.0/Com.BudgetMetal.Services.Gallery.dll"
+      com.microsoft.visualstudio.debuggee.arguments: " --additionalProbingPath /root/.nuget/packages --additionalProbingPath /root/.nuget/fallbackpackages --additionalProbingPath /root/.nuget/fallbackpackages2  bin/Debug/netcoreapp2.0/Com.BudgetMetal.Services.Gallery.dll"
       com.microsoft.visualstudio.debuggee.workingdirectory: "/app"
       com.microsoft.visualstudio.debuggee.killprogram: "/bin/bash -c \"if PID=$$(pidof -x dotnet); then kill $$PID; fi\""
 

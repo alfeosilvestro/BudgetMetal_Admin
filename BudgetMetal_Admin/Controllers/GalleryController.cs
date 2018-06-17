@@ -9,6 +9,7 @@ using BudgetMetal_Admin.DB;
 using BudgetMetal_Admin.Models;
 using System.IO;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.Http;
 
 namespace BudgetMetal_Admin.Controllers
 {
@@ -55,7 +56,7 @@ namespace BudgetMetal_Admin.Controllers
             }
 
             var fileByeArray = bm_gallery.DownloadableImage;
-            string fileName = (bm_gallery.Name).Replace(" ","_").Trim() + ".zip";
+            string fileName = (bm_gallery.Name).Replace(" ", "_").Trim() + ".zip";
             var readStream = new MemoryStream(Convert.FromBase64String(fileByeArray));
             var mimeType = "application/zip";
             return File(readStream, mimeType, fileName);
@@ -72,25 +73,28 @@ namespace BudgetMetal_Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description")] bm_gallery bm_gallery)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description")] bm_gallery bm_gallery, IFormFile ThumbnailImage, IFormFile DetailImage, IFormFile DownloadableImage)
         {
-            var files_ThumbnailImage = Request.Form["ThumbnailImage"];
-            var files_DetailImage = Request.Form["DetailImage"];
-            var files_DownloadableImage = Request.Form["DownloadableImage"];
-            if (files_ThumbnailImage == "" || files_DetailImage == "" || files_DownloadableImage == "")
+
+            Byte[] bytes = null;
+            if (ThumbnailImage == null || DetailImage == null || DownloadableImage == null)
             {
-               
+
                 return RedirectToAction(nameof(Index));
             }
             else
             {
-                Byte[] bytes = System.IO.File.ReadAllBytes(files_ThumbnailImage);
+
+                //Byte[] bytes = System.IO.File.ReadAllBytes(files_ThumbnailImage);
+                bytes = ConvertFiletoBytes(ThumbnailImage);
                 String ThumbnailImage_64 = Convert.ToBase64String(bytes);
 
-                bytes = System.IO.File.ReadAllBytes(files_DetailImage);
+                //bytes = System.IO.File.ReadAllBytes(files_DetailImage);
+                bytes = ConvertFiletoBytes(DetailImage);
                 String DetailImage_64 = Convert.ToBase64String(bytes);
 
-                bytes = System.IO.File.ReadAllBytes(files_DownloadableImage);
+                //bytes = System.IO.File.ReadAllBytes(files_DownloadableImage);
+                bytes = ConvertFiletoBytes(DownloadableImage);
                 String DownloadableImage_64 = Convert.ToBase64String(bytes);
 
 
@@ -107,9 +111,28 @@ namespace BudgetMetal_Admin.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            
-            
-           
+
+
+
+        }
+
+        private byte[] ConvertFiletoBytes(IFormFile file)
+        {
+            byte[] p1 = null;
+            if (file != null)
+            {
+                if (file.Length > 0)
+                //Convert Image to byte and save to database
+                {
+                    using (var fs1 = file.OpenReadStream())
+                    using (var ms1 = new MemoryStream())
+                    {
+                        fs1.CopyTo(ms1);
+                        p1 = ms1.ToArray();
+                    }
+                }
+            }
+            return p1;
         }
 
         // GET: Gallery/Edit/5
@@ -133,7 +156,7 @@ namespace BudgetMetal_Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,ThumbnailImage,DetailImage,DownloadableImage,CreatedDate,CreatedBy,IsActive,Version")] bm_gallery bm_gallery)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,ThumbnailImage,DetailImage,DownloadableImage,CreatedDate,CreatedBy,IsActive,Version")] bm_gallery bm_gallery, IFormFile ThumbnailImage_file, IFormFile DetailImage_file, IFormFile DownloadableImage_file)
         {
             if (id != bm_gallery.Id)
             {
@@ -144,46 +167,43 @@ namespace BudgetMetal_Admin.Controllers
             {
                 try
                 {
-                    var files_ThumbnailImage = Request.Form["ThumbnailImage_file"];
-                    var files_DetailImage = Request.Form["DetailImage_file"];
-                    var files_DownloadableImage = Request.Form["DownloadableImage_file"];
-                    if (files_ThumbnailImage == "")
+                    if (ThumbnailImage_file == null)
                     {
 
                         //return RedirectToAction(nameof(Index));
                     }
                     else
                     {
-                        Byte[] bytes = System.IO.File.ReadAllBytes(files_ThumbnailImage);
+                        Byte[] bytes = ConvertFiletoBytes(ThumbnailImage_file);
                         String ThumbnailImage_64 = Convert.ToBase64String(bytes);
-                        
+
                         bm_gallery.ThumbnailImage = ThumbnailImage_64;
-                       
+
                     }
-                    if (files_DetailImage == "" )
+                    if (DetailImage_file == null)
                     {
 
                         //return RedirectToAction(nameof(Index));
                     }
                     else
                     {
-                        Byte[] bytes = System.IO.File.ReadAllBytes(files_DetailImage);
+                        Byte[] bytes = ConvertFiletoBytes(DetailImage_file);
                         String DetailImage_64 = Convert.ToBase64String(bytes);
 
-                        
+
                         bm_gallery.DetailImage = DetailImage_64;
-                        
+
                     }
-                    if (files_DownloadableImage == "")
+                    if (DownloadableImage_file == null)
                     {
 
                         //return RedirectToAction(nameof(Index));
                     }
                     else
                     {
-                        Byte[] bytes = System.IO.File.ReadAllBytes(files_DownloadableImage);
+                        Byte[] bytes = ConvertFiletoBytes(DownloadableImage_file);
                         String DownloadableImage_64 = Convert.ToBase64String(bytes);
-                        
+
                         bm_gallery.DownloadableImage = DownloadableImage_64;
                     }
                     bm_gallery.UpdatedBy = "system";
