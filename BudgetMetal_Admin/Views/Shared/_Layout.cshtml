@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -53,7 +54,32 @@
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Gallery" asp-action="Index">Gallery</a></li>
+                    @{
+                        if (@Context.Session.GetString("LogOnUser") != null)
+                        {
+                            if (@Context.Session.GetString("LogOnUser").ToString() != "")
+                            {
+                                <li><a asp-area="" asp-controller="Gallery" asp-action="Index">Gallery</a></li>
+                                if (@Context.Session.GetString("SiteAdmin").ToString() == "True")
+                                {
+                                    <li><a asp-area="" asp-controller="User" asp-action="Index">User</a></li>
+                                }
+                                <li><a asp-area="" asp-controller="Home" asp-action="Logout">Logout</a></li>
+                            }
+                            else
+                            {
+                                <li><a asp-area="" asp-controller="Home" asp-action="Login">Login</a></li>
+
+                            }
+                        }
+                        else
+                        {
+                            <li><a asp-area="" asp-controller="Home" asp-action="Login">Login</a></li>
+
+                        }
+
+                    }
+
                 </ul>
             </div>
         </div>
@@ -66,7 +92,7 @@
         </footer>
     </div>
 
-    
+
 
     @RenderSection("Scripts", required: false)
 </body>

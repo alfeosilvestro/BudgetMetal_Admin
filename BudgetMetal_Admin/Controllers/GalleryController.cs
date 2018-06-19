@@ -10,16 +10,19 @@ using BudgetMetal_Admin.Models;
 using System.IO;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 
 namespace BudgetMetal_Admin.Controllers
 {
     public class GalleryController : Controller
     {
         private readonly AppDbContext _context;
+       
 
         public GalleryController(AppDbContext context)
         {
             _context = context;
+           
         }
 
         // GET: Gallery
