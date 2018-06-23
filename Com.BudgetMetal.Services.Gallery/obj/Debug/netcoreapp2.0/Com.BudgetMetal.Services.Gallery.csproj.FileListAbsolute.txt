@@ -13,7 +13,6 @@ D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.Services.Gallery\bin\Debug\netcore
 D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.Services.Gallery\bin\Debug\netcoreapp2.0\Com.BudgetMetal.Services.Gallery.runtimeconfig.dev.json
 D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.Services.Gallery\bin\Debug\netcoreapp2.0\Com.BudgetMetal.Services.Gallery.dll
 D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.Services.Gallery\bin\Debug\netcoreapp2.0\Com.BudgetMetal.Services.Gallery.pdb
-D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.Services.Gallery\obj\Debug\netcoreapp2.0\Com.BudgetMetal.Services.Gallery.csprojResolveAssemblyReference.cache
 D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.Services.Gallery\obj\Debug\netcoreapp2.0\Com.BudgetMetal.Services.Gallery.csproj.CoreCompileInputs.cache
 D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.Services.Gallery\obj\Debug\netcoreapp2.0\Com.BudgetMetal.Services.Gallery.AssemblyInfoInputs.cache
 D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.Services.Gallery\obj\Debug\netcoreapp2.0\Com.BudgetMetal.Services.Gallery.AssemblyInfo.cs

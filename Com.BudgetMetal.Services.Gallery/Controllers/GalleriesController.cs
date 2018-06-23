@@ -22,9 +22,9 @@ namespace Com.BudgetMetal.Services.Gallery.Controllers
         }
         // GET api/values
         [HttpGet]
-        public async Task<JsonResult> Get(string keyword = "", int page = 1)
+        public async Task<JsonResult> Get(string keyword = "", int page = 1, int totalRecords = 10, bool getDetailImage = false)
         {
-            var result = await GetGalleriesByPage(keyword, page);
+            var result = await GetGalleriesByPage(keyword, page, totalRecords, getDetailImage);
 
             return new JsonResult(result, new JsonSerializerSettings()
             {
@@ -32,21 +32,33 @@ namespace Com.BudgetMetal.Services.Gallery.Controllers
             });
         }
 
-        private async Task<object> GetGalleriesByPage(string keyword, int page, int totalRecords = 10)
+        private async Task<object> GetGalleriesByPage(string keyword, int page, int totalRecords, bool getDetailImage)
         {
             //return _context.bm_gallery.ToListAsync();
 
-            if (string.IsNullOrEmpty(keyword.Trim()))
+            if (string.IsNullOrEmpty(keyword))
             {
+                keyword = string.Empty;
                 //return await base.GetPage(keyword, page, totalRecords);
             }
 
             var records = _context.bm_gallery.Where(e =>
+                (keyword == string.Empty ||
                 e.Name.Contains(keyword) ||
-                e.Description.Contains(keyword)
+                e.Description.Contains(keyword))
             );
 
-            var recordList = records.OrderBy(e => e.Name)
+            var recordList = records
+            .Select(r => 
+                new bm_gallery(){
+                    Id = r.Id,
+                    Name = r.Name,
+                    ThumbnailImage = r.ThumbnailImage,
+                    DetailImage = (getDetailImage ? r.DetailImage : null),
+                    Description = r.Description,
+                    CreatedDate = r.CreatedDate
+                })
+            .OrderBy(e => e.Name)
             .OrderBy(e => e.CreatedDate)
             .Skip((totalRecords * page) - totalRecords)
             .Take(totalRecords)
