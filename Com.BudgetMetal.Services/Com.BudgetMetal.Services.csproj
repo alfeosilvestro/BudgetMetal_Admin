@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Com.BudgetMetal.Common\Com.BudgetMetal.Common.csproj" />
+    <ProjectReference Include="..\Com.BudgetMetal.DataRepository\Com.BudgetMetal.DataRepository.csproj" />
+    <ProjectReference Include="..\Com.BudgetMetal.DBContext\Com.BudgetMetal.DB.csproj" />
+    <ProjectReference Include="..\Com.BudgetMetal.ViewModels\Com.BudgetMetal.ViewModels.csproj" />
+  </ItemGroup>
+
+</Project>

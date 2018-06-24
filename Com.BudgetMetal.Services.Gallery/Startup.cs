@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Com.BudgetMetal.Services.Gallery.DB;
+using Com.BudgetMetal.DB;
+using Com.BudgetMetal.DataRepository.Gallery;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -34,14 +32,29 @@ namespace Com.BudgetMetal.Services.Gallery
             var sqlConnectionString = Configuration.GetConnectionString("DefaultConnection");
 
             // TODO: Update in each application
-            services.AddDbContext<AppDbContext>(options =>
+            services.AddDbContext<DataContext>(options =>
                     options.UseMySQL(
                     sqlConnectionString,
-                    b => b.MigrationsAssembly("BudgetMetal_Admin") // main project name = Application Specific
+                    b => b.MigrationsAssembly("Com.BudgetMetal.Services.Gallery") // main project name = Application Specific
                 )
             );
+            
 
             services.AddMvc();
+
+            //services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+
+            RegisterForDependencyInjection(services);
+        }
+
+        private void RegisterForDependencyInjection(IServiceCollection services)
+        {
+            //// Register for repository classes
+            services.AddScoped<IGalleryRepository, GalleryRepository>();
+
+            //// Register for logic classes
+            services.AddScoped<IGalleryService, GalleryService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

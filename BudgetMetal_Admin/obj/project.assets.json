@@ -5107,6 +5107,16 @@
         "runtime": {
           "lib/netstandard1.3/Microsoft.WindowsAzure.Storage.dll": {}
         }
+      },
+      "Com.BudgetMetal.Common/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.0",
+        "compile": {
+          "bin/placeholder/Com.BudgetMetal.Common.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Com.BudgetMetal.Common.dll": {}
+        }
       }
     }
   },
@@ -7013,7 +7023,7 @@
       ]
     },
     "Microsoft.Extensions.PlatformAbstractions/1.1.0": {
-      "sha512": "UMlN++q5qqzQ2HH+uOrKxN5fmBXMQDhrYkSaPJxhmyzfJaFPirrVr1raim/Ocq1psAZoB9+7JSAf0GDAX35wUg==",
+      "sha512": "H6ZsQzxYw/6k2DfEQRXdC+vQ6obd6Uba3uGJrnJ2vG4PRXjQZ7seB13JdCfE72abp8E6Fk3gGgDzfJiLZi5ZpQ==",
       "type": "package",
       "path": "microsoft.extensions.platformabstractions/1.1.0",
       "files": [
@@ -13320,10 +13330,16 @@
         "windowsazure.storage.8.1.4.nupkg.sha512",
         "windowsazure.storage.nuspec"
       ]
+    },
+    "Com.BudgetMetal.Common/1.0.0": {
+      "type": "project",
+      "path": "../Com.BudgetMetal.Common/Com.BudgetMetal.Common.csproj",
+      "msbuildProject": "../Com.BudgetMetal.Common/Com.BudgetMetal.Common.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
+      "Com.BudgetMetal.Common >= 1.0.0",
       "Microsoft.AspNetCore.All >= 2.0.6",
       "Microsoft.EntityFrameworkCore >= 2.0.3",
       "Microsoft.NETCore.App >= 2.0.0",
@@ -13333,7 +13349,6 @@
   },
   "packageFolders": {
     "C:\\Users\\galle\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
@@ -13346,13 +13361,11 @@
       "outputPath": "D:\\Projects\\BudgetMetal_Admin\\BudgetMetal_Admin\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\",
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
         "C:\\Users\\galle\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.Fallback.config"
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.0"
@@ -13363,7 +13376,11 @@
       },
       "frameworks": {
         "netcoreapp2.0": {
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\Projects\\BudgetMetal_Admin\\Com.BudgetMetal.Common\\Com.BudgetMetal.Common.csproj": {
+              "projectPath": "D:\\Projects\\BudgetMetal_Admin\\Com.BudgetMetal.Common\\Com.BudgetMetal.Common.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

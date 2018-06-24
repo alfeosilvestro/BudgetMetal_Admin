@@ -5,95 +5,49 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Com.BudgetMetal.Services.Gallery.DB;
-using Com.BudgetMetal.Services.Gallery.Models;
 using System.IO;
 using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json;
+using Com.BudgetMetal.Common;
+using Com.BudgetMetal.Services.Gallery;
 
 namespace Com.BudgetMetal.Services.Gallery.Controllers
 {
     public class GalleriesController : Controller
     {
-        private readonly AppDbContext _context;
-        public GalleriesController(AppDbContext context)
+        private readonly IGalleryService svs;
+
+        public GalleriesController(IGalleryService svs)
         {
-            _context = context;
+            this.svs = svs;
         }
+        
         // GET api/values
         [HttpGet]
-        public async Task<JsonResult> Get(string keyword = "", int page = 1, int totalRecords = 10, bool getDetailImage = false)
+        public async Task<JsonResult> Get(string keyword, int page, int totalRecords, bool getDetailImage = false)
         {
-            var result = await GetGalleriesByPage(keyword, page, totalRecords, getDetailImage);
-
+            var result = svs.GetGalleriesByPage(keyword, page, totalRecords, getDetailImage);
+                
             return new JsonResult(result, new JsonSerializerSettings()
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             });
         }
+        
+        //public async Task<FileResult> Download(int fileid)
+        //{
+        //    var bm_gallery = await _context.bm_gallery
+        //        .SingleOrDefaultAsync(m => m.Id == fileid);
+        //    if (bm_gallery == null)
+        //    {
+        //        return null;
+        //    }
 
-        private async Task<object> GetGalleriesByPage(string keyword, int page, int totalRecords, bool getDetailImage)
-        {
-            //return _context.bm_gallery.ToListAsync();
-
-            if (string.IsNullOrEmpty(keyword))
-            {
-                keyword = string.Empty;
-                //return await base.GetPage(keyword, page, totalRecords);
-            }
-
-            var records = _context.bm_gallery.Where(e =>
-                (keyword == string.Empty ||
-                e.Name.Contains(keyword) ||
-                e.Description.Contains(keyword))
-            );
-
-            var recordList = records
-            .Select(r => 
-                new bm_gallery(){
-                    Id = r.Id,
-                    Name = r.Name,
-                    ThumbnailImage = r.ThumbnailImage,
-                    DetailImage = (getDetailImage ? r.DetailImage : null),
-                    Description = r.Description,
-                    CreatedDate = r.CreatedDate
-                })
-            .OrderBy(e => e.Name)
-            .OrderBy(e => e.CreatedDate)
-            .Skip((totalRecords * page) - totalRecords)
-            .Take(totalRecords)
-            .ToList();
-
-            var count = records.Count();
-
-            var result = new PageResult()
-            {
-                Records = recordList,
-                TotalPage = (count + totalRecords - 1) / totalRecords,
-                CurrentPage = page,
-                TotalRecords = count
-            };
-
-            var resultObject = new ResponseBase();
-            resultObject.ResultObject = result;
-            
-            return resultObject;
-        }
-
-        public async Task<FileResult> Download(int fileid)
-        {
-            var bm_gallery = await _context.bm_gallery
-                .SingleOrDefaultAsync(m => m.Id == fileid);
-            if (bm_gallery == null)
-            {
-                return null;
-            }
-
-            var fileByeArray = bm_gallery.DownloadableImage;
-            string fileName = (bm_gallery.Name).Replace(" ", "_").Trim() + ".zip";
-            var readStream = new MemoryStream(Convert.FromBase64String(fileByeArray));
-            var mimeType = "application/zip";
-            return File(readStream, mimeType, fileName);
-        }
+        //    var fileByeArray = bm_gallery.DownloadableImage;
+        //    string fileName = (bm_gallery.Name).Replace(" ", "_").Trim() + ".zip";
+        //    var readStream = new MemoryStream(Convert.FromBase64String(fileByeArray));
+        //    var mimeType = "application/zip";
+        //    return File(readStream, mimeType, fileName);
+        //}
     }
 }
