@@ -19,7 +19,7 @@ namespace Com.BudgetMetal.Services
 
         public VmGalleryPage GetGalleriesByPage(string keyword, int page, int totalRecords, bool getDetailImage)
         {
-            var dbPageResult = repo.GetGalleriesByPage(keyword, 
+            var dbPageResult = repo.GetGalleriesByPage(keyword,
                 (page == 0 ? Constants.app_firstPage : page),
                 (totalRecords == 0 ? Constants.app_totalRecords : totalRecords),
                 getDetailImage);
@@ -46,5 +46,26 @@ namespace Com.BudgetMetal.Services
 
             return resultObj;
         }
+
+        public VmGalleryDetailPage GetGalleryById(int Id)
+        {
+            var dbPageResult = repo.GetGalleryById(Id);
+
+            if (dbPageResult == null)
+            {
+                return new VmGalleryDetailPage();
+            }
+
+            var resultObj = new VmGalleryDetailPage();
+
+            var resultItem = new VmGalleryDetail();
+
+            Copy<bm_gallery, VmGalleryDetail>(dbPageResult, resultItem);
+
+            resultObj.Result = resultItem;
+
+            return resultObj;
+        }
+
     }
 }

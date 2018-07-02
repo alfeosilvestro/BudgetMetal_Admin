@@ -33,7 +33,18 @@ namespace Com.BudgetMetal.Services.GalleryAPI.Controllers
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             });
         }
-        
+
+        [HttpGet]
+        public async Task<JsonResult> GetItem(int Id)
+        {
+            var result = svs.GetGalleryById(Id);
+
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
+
         //public async Task<FileResult> Download(int fileid)
         //{
         //    var bm_gallery = await _context.bm_gallery

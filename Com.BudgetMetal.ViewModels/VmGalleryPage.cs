@@ -7,4 +7,10 @@ namespace Com.BudgetMetal.ViewModels
     {
         public PageResult<VmGalleryItem> Result { get; set; }
     }
+
+
+    public class VmGalleryDetailPage: ViewModelBase
+    {
+        public VmGalleryDetail Result { get; set; }
+    }
 }

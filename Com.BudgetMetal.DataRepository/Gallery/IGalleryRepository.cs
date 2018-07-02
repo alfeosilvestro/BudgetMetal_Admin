@@ -11,5 +11,7 @@ namespace Com.BudgetMetal.DataRepository.Gallery
     public interface IGalleryRepository : IGenericRepository<bm_gallery>
     {
         PageResult<bm_gallery> GetGalleriesByPage(string keyword, int page, int totalRecords, bool getDetailImage);
+
+        bm_gallery GetGalleryById(int Id);
     }
 }

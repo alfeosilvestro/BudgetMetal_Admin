@@ -61,5 +61,25 @@ namespace Com.BudgetMetal.DataRepository.Gallery
 
             return result;
         }
+
+
+
+        public bm_gallery GetGalleryById(int Id)
+        {
+            var records = this.DbContext.bm_gallery.Select(r =>
+                new bm_gallery()
+                {
+                    Id = r.Id,
+                    Name = r.Name,
+                    DetailImage = r.DetailImage,
+                    Description = r.Description,
+                    CreatedDate = r.CreatedDate
+                })
+                .Single(e =>
+                e.Id == Id);
+            
+            return records;
+        }
+
     }
 }

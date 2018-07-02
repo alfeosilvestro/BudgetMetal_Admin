@@ -7,5 +7,7 @@ namespace Com.BudgetMetal.Services
     public interface IGalleryService
     {
         VmGalleryPage GetGalleriesByPage(string keyword, int page, int totalRecords, bool getDetailImage);
+
+        VmGalleryDetailPage GetGalleryById(int Id);
     }
 }
