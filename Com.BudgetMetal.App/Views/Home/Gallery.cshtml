@@ -1,121 +1,9 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Gallery";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    
 }
-<style>
-    #loader {
-    bottom: 0;
-    height: 175px;
-    left: 0;
-    margin: auto;
-    position: fixed;
-    right: 0;
-    top: 0;
-    width: 175px;
-    z-index: 100000;
-}
-#loader .dot {
-    bottom: 0;
-    height: 100%;
-    left: 0;
-    margin: auto;
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 87.5px;
-}
-#loader .dot::before {
-    border-radius: 100%;
-    content: "";
-    height: 87.5px;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-    transform: scale(0);
-    width: 87.5px;
-}
-#loader .dot:nth-child(7n+1) {
-    transform: rotate(45deg);
-}
-#loader .dot:nth-child(7n+1)::before {
-    animation: 0.8s linear 0.1s normal none infinite running load;
-    background: #00ff80 none repeat scroll 0 0;
-}
-#loader .dot:nth-child(7n+2) {
-    transform: rotate(90deg);
-}
-#loader .dot:nth-child(7n+2)::before {
-    animation: 0.8s linear 0.2s normal none infinite running load;
-    background: #00ffea none repeat scroll 0 0;
-}
-#loader .dot:nth-child(7n+3) {
-    transform: rotate(135deg);
-}
-#loader .dot:nth-child(7n+3)::before {
-    animation: 0.8s linear 0.3s normal none infinite running load;
-    background: #00aaff none repeat scroll 0 0;
-}
-#loader .dot:nth-child(7n+4) {
-    transform: rotate(180deg);
-}
-#loader .dot:nth-child(7n+4)::before {
-    animation: 0.8s linear 0.4s normal none infinite running load;
-    background: #0040ff none repeat scroll 0 0;
-}
-#loader .dot:nth-child(7n+5) {
-    transform: rotate(225deg);
-}
-#loader .dot:nth-child(7n+5)::before {
-    animation: 0.8s linear 0.5s normal none infinite running load;
-    background: #2a00ff none repeat scroll 0 0;
-}
-#loader .dot:nth-child(7n+6) {
-    transform: rotate(270deg);
-}
-#loader .dot:nth-child(7n+6)::before {
-    animation: 0.8s linear 0.6s normal none infinite running load;
-    background: #9500ff none repeat scroll 0 0;
-}
-#loader .dot:nth-child(7n+7) {
-    transform: rotate(315deg);
-}
-#loader .dot:nth-child(7n+7)::before {
-    animation: 0.8s linear 0.7s normal none infinite running load;
-    background: magenta none repeat scroll 0 0;
-}
-#loader .dot:nth-child(7n+8) {
-    transform: rotate(360deg);
-}
-#loader .dot:nth-child(7n+8)::before {
-    animation: 0.8s linear 0.8s normal none infinite running load;
-    background: #ff0095 none repeat scroll 0 0;
-}
-#loader .lading {
-    background-image: url("../images/loading.gif");
-    background-position: 50% 50%;
-    background-repeat: no-repeat;
-    bottom: -40px;
-    height: 20px;
-    left: 0;
-    position: absolute;
-    right: 0;
-    width: 180px;
-}
- /*load {
-100% {
-    opacity: 0;
-    transform: scale(1);
-}
-}
- load {
-100% {
-    opacity: 0;
-    transform: scale(1);
-}
-}*/
-</style>
+
 <div id="loader">
     <div class="dot"></div>
     <div class="dot"></div>
@@ -171,6 +59,7 @@
         </div>
     </div>
 </div>
+<input type="hidden" name="fid" id="fid" value='@ViewData["fileid"]' />
 <!-- Modal -->
 <div class="modal fade" id="DetailModal" role="dialog">
     <div class="modal-dialog modal-lg">
@@ -194,7 +83,7 @@
                 <br />
                 <div class="row">
                     <div class="col-sm-5 col-md-5 col-lg-5 text-center" >
-                        <a href="#">Created By</a>
+                        <a href="#" id="link_supplier"></a>
                     </div>
                     <div class="col-sm-6 col-md-6 col-lg-6 text-center">
                         <div class="row" id="divForDownloadButton">
@@ -220,14 +109,36 @@
     $(function () {
         $('#loader').hide();
         loaddata(1);
+        var fid = $('#fid').val();
+        if (fid != "") {
+            showDetail(fid);
+            downloadFile(fid);
+        }
     });
 
     function downloadFile(fileId) {
+        var ajaxurl = 'http://localhost:3721/galleries/CheckAuthentication?token=@ViewData["token"]';
 
-        // console.log(fileId);
-        var url = "http://localhost:3721/galleries/download?fileid=" + fileId;
-        $('#iframe_download_file').attr('src', url)
-        //alert('download - ' + $('#iframe_download_file').attr('src'));
+
+        $.ajax({
+            url: ajaxurl,
+            dataType: 'json',
+            success: function (response) {
+                //alert(response);
+                if (response) {
+                    var url = "http://localhost:3721/galleries/download?fileid=" + fileId + "&token=@ViewData["token"]";
+                    $('#iframe_download_file').attr('src', url);
+                } else {
+                    var mainsiteurl = "http://localhost:81/budgetmetal/www/index.php?url=gallery&fileid=" + fileId;
+                    window.location.href = mainsiteurl;
+                }
+
+            },
+            error: function (response) {
+                $("#result").html("<strong>100000" + response.status + "</strong>: " + response.message);
+            }
+
+        });
 
     }
 
@@ -251,7 +162,7 @@
             url: ajaxurl,
             dataType: 'json',
             success: function (response) {
-               
+
 
                 //console.log(response);
                 var obj = response.Result.Records;
@@ -260,13 +171,13 @@
                 $("#gallery-thumbnials").empty();
                 for (var k in obj) {
                     var item = obj[k];
-                    
+
                     var thumbnail = item.ThumbnailImage;
                     var desc = "";
                     if (item.Description != null) {
                         desc = item.Description;
                     }
-                    
+
                     var short_desc = "";
 
                     if (desc.length > 200) {
@@ -282,6 +193,10 @@
 
                 var totalpage = response.Result.TotalPage;
                 var currentpage = response.Result.CurrentPage;
+                if (response.Result.PreviousPage != 0) {
+
+                    $(".pagination").append(" <a class='btn btn-md btn-default' OnClick='loaddata(" + response.Result.PreviousPage + ")'> < </a> ");
+                }
                 var i;
                 for (i = 1; i <= totalpage; i++) {
                     if (i == currentpage) {
@@ -290,7 +205,10 @@
                         $(".pagination").append(" <a class='btn btn-md btn-default' OnClick='loaddata(" + i + ")'>" + i + "</a> ");
                     }
                 }
+                if (response.Result.NextPage != 0) {
+                    $(".pagination").append(" <a class='btn btn-md btn-default' OnClick='loaddata(" + response.Result.NextPage + ")'> > </a> ");
 
+                }
                 /// hide spiner
                 $('#loader').hide();
             },
@@ -299,6 +217,20 @@
             }
 
         });
+    }
+    
+    function RedirectCreateRFQ(name) {
+        var mainsiteurl = "http://localhost:81/budgetmetal/www/index.php?url=rfq&fileid=" + name;
+        window.location.href = mainsiteurl;
+    }
+
+    $("#link_supplier").click(function () {
+        var name = "";
+        RedirectSupplier(name)
+    });
+    function RedirectSupplier(name) {
+        var mainsiteurl = "http://localhost:81/budgetmetal/www/index.php?url=supplier&fileid=" + name;
+        window.location.href = mainsiteurl;
     }
 
     function showDetail(Id) {
@@ -310,7 +242,7 @@
             url: ajaxurl,
             dataType: 'json',
             success: function (response) {
-                
+
                 //console.log(response);
                 var obj = response.Result;
                 console.log(obj);
@@ -327,9 +259,13 @@
                 $("#divForDownloadButton").empty();
                 $("#divForDownloadButton").append("<button class='btn btn-primary' style='width:60%; margin-bottom:5px;'  onClick='downloadFile(" + obj.Id +")'>Download</button>");
 
-                $("#divForDownloadButton").empty();
-                $("#divForDownloadButton").append("<button class='btn btn-primary' style='width:60%; margin-bottom:5px;'>Contact Details</button>");
-                /// hide spiner
+                $("#divForContactButton").empty();
+                $("#divForContactButton").append("<button class='btn btn-primary' style='width:60%; margin-bottom:5px;' onClick='RedirectCreateRFQ(1)'>Contact Details</button>");
+
+                
+                $("#link_supplier").empty();
+                $("#link_supplier").append("Created by " + obj.CreatedBy);
+                
                 $("#DetailModal").modal();
             },
             error: function (response) {
@@ -338,6 +274,6 @@
 
         });
 
-       
+
     }
 </script>

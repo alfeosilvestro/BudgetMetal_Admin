@@ -20,6 +20,13 @@ namespace Com.BudgetMetal.ViewModels
         public string Description { get; set; }
 
         public string DetailImage { get; set; }
+        
+        public string DownloadableImage { get; set; }
     }
-
+    public class VmGalleryDownload : ViewModelItemBase
+    {
+        public string Name { get; set; }
+        
+        public string DownloadableImage { get; set; }
+    }
 }

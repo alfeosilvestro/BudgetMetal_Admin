@@ -13,4 +13,9 @@ namespace Com.BudgetMetal.ViewModels
     {
         public VmGalleryDetail Result { get; set; }
     }
+
+    public class VmGalleryDownloadPage : ViewModelBase
+    {
+        public VmGalleryDownload Result { get; set; }
+    }
 }

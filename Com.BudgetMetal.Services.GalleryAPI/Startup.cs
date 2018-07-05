@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Com.BudgetMetal.Services.Gallery;
+using Com.BudgetMetal.DataRepository.Single_Sign_On;
 
 namespace Com.BudgetMetal.Services.GalleryAPI
 {
@@ -30,7 +32,7 @@ namespace Com.BudgetMetal.Services.GalleryAPI
             //services.AddDbContext<AppDbContext>(options => options.UseMySql("Server=localhost;Database=mrthintan;UserID=mrthintan_user;Password=Qwer@123;"));
             // Use a PostgreSQL database
             var sqlConnectionString = Configuration.GetConnectionString("DefaultConnection");
-
+            var sqlConnectionStringBM = Configuration.GetConnectionString("BMConnection");
             // TODO: Update in each application
             services.AddDbContext<DataContext>(options =>
                     options.UseMySQL(
@@ -38,6 +40,15 @@ namespace Com.BudgetMetal.Services.GalleryAPI
                     b => b.MigrationsAssembly("Com.BudgetMetal.Services.Gallery") // main project name = Application Specific
                 )
             );
+
+            services.AddDbContext<DataContext_BM>(options =>
+                    options.UseMySQL(
+                    sqlConnectionStringBM,
+                    b => b.MigrationsAssembly("Com.BudgetMetal.Services.Gallery") // main project name = Application Specific
+                )
+            );
+
+            services.Configure<Configurations.AppSettings>(Configuration.GetSection("AppSettings"));
 
             services.AddMvc();
 
@@ -49,8 +60,13 @@ namespace Com.BudgetMetal.Services.GalleryAPI
             //// Register for repository classes
             services.AddScoped<IGalleryRepository, GalleryRepository>();
 
+            //// Register for repository classes
+            services.AddScoped<ISingle_Sign_OnRepository, Single_Sign_OnRepository>();
+
             //// Register for logic classes
             services.AddScoped<IGalleryService, GalleryService>();
+
+            
 
         }
 

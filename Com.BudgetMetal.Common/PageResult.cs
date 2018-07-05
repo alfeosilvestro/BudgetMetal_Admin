@@ -12,6 +12,10 @@ namespace Com.BudgetMetal.Common
 
         public int CurrentPage { get; set; }
 
+        public int PreviousPage { get; set; }
+
+        public int NextPage { get; set; }
+
         public List<T> Records { get; set; }
     }
 }

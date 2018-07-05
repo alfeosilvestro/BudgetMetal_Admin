@@ -18,7 +18,7 @@ namespace Com.BudgetMetal.DataRepository.Gallery
 
         }
 
-        public PageResult<bm_gallery> GetGalleriesByPage(string keyword, int page, int totalRecords, bool getDetailImage)
+        public PageResult<bm_gallery> GetGalleriesByPage(string keyword, int page, int totalRecords)
         {
             if (string.IsNullOrEmpty(keyword))
             {
@@ -39,7 +39,6 @@ namespace Com.BudgetMetal.DataRepository.Gallery
                     Id = r.Id,
                     Name = r.Name,
                     ThumbnailImage = r.ThumbnailImage,
-                    DetailImage = (getDetailImage ? r.DetailImage : null),
                     Description = r.Description,
                     CreatedDate = r.CreatedDate
                 })
@@ -48,14 +47,30 @@ namespace Com.BudgetMetal.DataRepository.Gallery
             .Skip((totalRecords * page) - totalRecords)
             .Take(totalRecords)
             .ToList();
+            //DetailImage = (getDetailImage ? r.DetailImage : null),
 
             var count = records.Count();
+
+            var nextPage = 0;
+            var prePage = 0;
+            if (page > 1)
+            {
+                prePage = page - 1;
+            }
+
+            var totalPage = (count + totalRecords - 1) / totalRecords;
+            if (page < totalPage)
+            {
+                nextPage = page + 1;
+            }
 
             var result = new PageResult<bm_gallery>()
             {
                 Records = recordList,
-                TotalPage = (count + totalRecords - 1) / totalRecords,
+                TotalPage = totalPage,
                 CurrentPage = page,
+                PreviousPage = prePage,
+                NextPage = nextPage,
                 TotalRecords = count
             };
 
@@ -73,11 +88,28 @@ namespace Com.BudgetMetal.DataRepository.Gallery
                     Name = r.Name,
                     DetailImage = r.DetailImage,
                     Description = r.Description,
+                    CreatedDate = r.CreatedDate,
+                    CreatedBy = r.CreatedBy
+                })
+                .Single(e =>
+                e.Id == Id);
+
+            return records;
+        }
+
+        public bm_gallery GetGalleryFileById(int Id)
+        {
+            var records = this.DbContext.bm_gallery.Select(r =>
+                new bm_gallery()
+                {
+                    Id = r.Id,
+                    Name = r.Name,
+                    DownloadableImage = r.DownloadableImage,
                     CreatedDate = r.CreatedDate
                 })
                 .Single(e =>
                 e.Id == Id);
-            
+
             return records;
         }
 

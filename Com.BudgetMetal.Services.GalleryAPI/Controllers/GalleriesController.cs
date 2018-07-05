@@ -10,24 +10,30 @@ using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json;
 using Com.BudgetMetal.Common;
 using Com.BudgetMetal.Services.GalleryAPI;
+using Com.BudgetMetal.Services.GalleryAPI.Configurations;
+using Microsoft.Extensions.Options;
+using Com.BudgetMetal.Services.Gallery;
 
 namespace Com.BudgetMetal.Services.GalleryAPI.Controllers
 {
     public class GalleriesController : Controller
     {
         private readonly IGalleryService svs;
+        private readonly AppSettings _appSettings;
 
-        public GalleriesController(IGalleryService svs)
+
+        public GalleriesController(IGalleryService svs, IOptions<AppSettings> appSettings)
         {
             this.svs = svs;
+            this._appSettings = appSettings.Value;
         }
-        
+
         // GET api/values
         [HttpGet]
-        public async Task<JsonResult> Get(string keyword, int page, int totalRecords, bool getDetailImage = false)
+        public async Task<JsonResult> Get(string keyword, int page, int totalRecords)
         {
-            var result = svs.GetGalleriesByPage(keyword, page, totalRecords, getDetailImage);
-                
+            var result = svs.GetGalleriesByPage(keyword, page, _appSettings.TotalRecordPerPage, _appSettings.App_Identity.Identity);
+
             return new JsonResult(result, new JsonSerializerSettings()
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
@@ -37,7 +43,7 @@ namespace Com.BudgetMetal.Services.GalleryAPI.Controllers
         [HttpGet]
         public async Task<JsonResult> GetItem(int Id)
         {
-            var result = svs.GetGalleryById(Id);
+            var result = svs.GetGalleryById(Id, _appSettings.App_Identity.Identity);
 
             return new JsonResult(result, new JsonSerializerSettings()
             {
@@ -45,20 +51,28 @@ namespace Com.BudgetMetal.Services.GalleryAPI.Controllers
             });
         }
 
-        //public async Task<FileResult> Download(int fileid)
-        //{
-        //    var bm_gallery = await _context.bm_gallery
-        //        .SingleOrDefaultAsync(m => m.Id == fileid);
-        //    if (bm_gallery == null)
-        //    {
-        //        return null;
-        //    }
+        public async Task<bool> CheckAuthentication(string token)
+        {
+            var result = svs.CheckAuthentication(token);
 
-        //    var fileByeArray = bm_gallery.DownloadableImage;
-        //    string fileName = (bm_gallery.Name).Replace(" ", "_").Trim() + ".zip";
-        //    var readStream = new MemoryStream(Convert.FromBase64String(fileByeArray));
-        //    var mimeType = "application/zip";
-        //    return File(readStream, mimeType, fileName);
-        //}
+            return result;
+        }
+
+        public async Task<FileResult> Download(int fileid, string token)
+        {
+
+            var result = svs.GetGalleryFileById(fileid, _appSettings.App_Identity.Identity, token);
+            if (result == null)
+            {
+                return null;
+            }
+
+            var fileByeArray = result.Result.DownloadableImage;
+            string fileName = (result.Result.Name).Replace(" ", "_").Trim() + ".zip";
+            var readStream = new MemoryStream(Convert.FromBase64String(fileByeArray));
+            var mimeType = "application/zip";
+            return File(readStream, mimeType, fileName);
+
+        }
     }
 }

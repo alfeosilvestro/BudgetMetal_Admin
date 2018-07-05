@@ -36,8 +36,25 @@ namespace Com.BudgetMetal.App.Controllers
 
         public IActionResult Gallery()
         {
-            ViewData["Message"] = "Your contact page.";
+            string token = HttpContext.Request.Query["token"].ToString();
+            if(token == null)
+            {
+                ViewData["token"] = "";
+            }
+            else
+            {
+                ViewData["token"] = token;
+            }
 
+            string fileid = HttpContext.Request.Query["fileid"].ToString();
+            if (fileid == null)
+            {
+                ViewData["fileid"] = "";
+            }
+            else
+            {
+                ViewData["fileid"] = fileid;
+            }
             return View();
         }
     }
