@@ -5107,6 +5107,16 @@
         "runtime": {
           "lib/netstandard1.3/Microsoft.WindowsAzure.Storage.dll": {}
         }
+      },
+      "Com.BudgetMetal.Common/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.0",
+        "compile": {
+          "bin/placeholder/Com.BudgetMetal.Common.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Com.BudgetMetal.Common.dll": {}
+        }
       }
     }
   },
@@ -13440,10 +13450,16 @@
         "windowsazure.storage.8.1.4.nupkg.sha512",
         "windowsazure.storage.nuspec"
       ]
+    },
+    "Com.BudgetMetal.Common/1.0.0": {
+      "type": "project",
+      "path": "../Com.BudgetMetal.Common/Com.BudgetMetal.Common.csproj",
+      "msbuildProject": "../Com.BudgetMetal.Common/Com.BudgetMetal.Common.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
+      "Com.BudgetMetal.Common >= 1.0.0",
       "Microsoft.AspNetCore.All >= 2.0.8",
       "Microsoft.EntityFrameworkCore >= 2.0.3",
       "Microsoft.NETCore.App >= 2.0.0",
@@ -13480,7 +13496,11 @@
       },
       "frameworks": {
         "netcoreapp2.0": {
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\Projects\\BudgetMetal_Admin\\Com.BudgetMetal.Common\\Com.BudgetMetal.Common.csproj": {
+              "projectPath": "D:\\Projects\\BudgetMetal_Admin\\Com.BudgetMetal.Common\\Com.BudgetMetal.Common.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

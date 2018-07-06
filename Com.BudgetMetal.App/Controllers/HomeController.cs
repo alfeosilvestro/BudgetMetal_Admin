@@ -5,11 +5,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Com.BudgetMetal.App.Models;
+using Com.BudgetMetal.App.Configurations;
+using Microsoft.Extensions.Options;
 
 namespace Com.BudgetMetal.App.Controllers
 {
     public class HomeController : Controller
     {
+
+        private readonly AppSettings _appSettings;
+        public HomeController(IOptions<AppSettings> appSettings)
+        {
+            this._appSettings = appSettings.Value;
+        }
+
+
         public IActionResult Index()
         {
             return View();
@@ -36,6 +46,9 @@ namespace Com.BudgetMetal.App.Controllers
 
         public IActionResult Gallery()
         {
+            ViewData["MainSiteURL"] = _appSettings.MainSiteURL;
+            ViewData["APIURL"] = _appSettings.APIURL;
+
             string token = HttpContext.Request.Query["token"].ToString();
             if(token == null)
             {

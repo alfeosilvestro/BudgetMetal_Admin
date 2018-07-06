@@ -117,7 +117,7 @@
     });
 
     function downloadFile(fileId) {
-        var ajaxurl = 'http://localhost:3721/galleries/CheckAuthentication?token=@ViewData["token"]';
+        var ajaxurl = '@ViewData["APIURL"]/CheckAuthentication?token=@ViewData["token"]';
 
 
         $.ajax({
@@ -126,10 +126,10 @@
             success: function (response) {
                 //alert(response);
                 if (response) {
-                    var url = "http://localhost:3721/galleries/download?fileid=" + fileId + "&token=@ViewData["token"]";
+                    var url = '@ViewData["APIURL"]/download?fileid=' + fileId + '&token=@ViewData["token"]';
                     $('#iframe_download_file').attr('src', url);
                 } else {
-                    var mainsiteurl = "http://localhost:81/budgetmetal/www/index.php?url=gallery&fileid=" + fileId;
+                    var mainsiteurl =  '@ViewData["MainSiteURL"]?url=gallery&fileid=' + fileId;
                     window.location.href = mainsiteurl;
                 }
 
@@ -148,9 +148,9 @@
 
     function loaddata(n) {
         var search_key = $('#search_key').val();
-        var ajaxurl = 'http://localhost:3721/galleries/get?page=' + n;
+        var ajaxurl = '@ViewData["APIURL"]/get?page=' + n;
         if (search_key != "") {
-            ajaxurl = 'http://localhost:3721/galleries/get?keyword=<search_key>&page=<page_request>';
+            ajaxurl = '@ViewData["APIURL"]/get?keyword=<search_key>&page=<page_request>';
             ajaxurl = ajaxurl.replace("<search_key>", search_key);
             ajaxurl = ajaxurl.replace("<page_request>", n);
         }
@@ -220,7 +220,7 @@
     }
     
     function RedirectCreateRFQ(name) {
-        var mainsiteurl = "http://localhost:81/budgetmetal/www/index.php?url=rfq&fileid=" + name;
+        var mainsiteurl = '@ViewData["MainSiteURL"]?url=rfq&fileid=' + name;
         window.location.href = mainsiteurl;
     }
 
@@ -229,12 +229,12 @@
         RedirectSupplier(name)
     });
     function RedirectSupplier(name) {
-        var mainsiteurl = "http://localhost:81/budgetmetal/www/index.php?url=supplier&fileid=" + name;
+        var mainsiteurl = '@ViewData["MainSiteURL"]?url=supplier&fileid=' + name;
         window.location.href = mainsiteurl;
     }
 
     function showDetail(Id) {
-        var ajaxurl = 'http://localhost:3721/galleries/getitem?Id=' + Id;
+        var ajaxurl = '@ViewData["APIURL"]/getitem?Id=' + Id;
         /// show spinner
         $('#loader').show();
 
