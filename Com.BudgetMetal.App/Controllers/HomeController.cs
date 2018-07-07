@@ -49,7 +49,7 @@ namespace Com.BudgetMetal.App.Controllers
             ViewData["MainSiteURL"] = _appSettings.MainSiteURL;
             ViewData["APIURL"] = _appSettings.APIURL;
             ViewData["DefaultUEN"] = _appSettings.DefaultUEN;
-
+            ViewData["DefaultCreator"] = _appSettings.DefaultCreator;
             string token = HttpContext.Request.Query["token"].ToString();
             if(token == null)
             {

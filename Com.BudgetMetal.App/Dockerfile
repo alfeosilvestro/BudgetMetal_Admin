@@ -7,7 +7,7 @@ EXPOSE 9908
 
 FROM microsoft/aspnetcore-build:2.0 AS build
 WORKDIR /src
-COPY Com.BudgetMetal.App.sln ./
+COPY BudgetMetal_Admin.sln ./
 COPY Com.BudgetMetal.App/Com.BudgetMetal.App.csproj Com.BudgetMetal.App/
 RUN dotnet restore -nowarn:msb3202,nu1503
 COPY . .

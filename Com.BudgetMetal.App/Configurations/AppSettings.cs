@@ -25,5 +25,11 @@ namespace Com.BudgetMetal.App.Configurations
             get;
             set;
         }
+        
+            public string DefaultCreator
+        {
+            get;
+            set;
+        }
     }
 }

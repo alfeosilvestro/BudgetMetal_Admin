@@ -2,13 +2,13 @@ D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.App\bin\Debug\netcoreapp2.0\Com.Bu
 D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.App\bin\Debug\netcoreapp2.0\Com.BudgetMetal.App.runtimeconfig.json
 D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.App\bin\Debug\netcoreapp2.0\Com.BudgetMetal.App.runtimeconfig.dev.json
 D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.App\bin\Debug\netcoreapp2.0\Com.BudgetMetal.App.dll
+D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.App\bin\Debug\netcoreapp2.0\Com.BudgetMetal.App.pdb
+D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.App\bin\Debug\netcoreapp2.0\Com.BudgetMetal.Common.dll
+D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.App\bin\Debug\netcoreapp2.0\Com.BudgetMetal.Common.pdb
 D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.App\obj\Debug\netcoreapp2.0\Com.BudgetMetal.App.csprojAssemblyReference.cache
 D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.App\obj\Debug\netcoreapp2.0\Com.BudgetMetal.App.csproj.CoreCompileInputs.cache
 D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.App\obj\Debug\netcoreapp2.0\Com.BudgetMetal.App.AssemblyInfoInputs.cache
 D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.App\obj\Debug\netcoreapp2.0\Com.BudgetMetal.App.AssemblyInfo.cs
-D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.App\bin\Debug\netcoreapp2.0\Com.BudgetMetal.App.pdb
+D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.App\obj\Debug\netcoreapp2.0\Com.BudgetMetal.App.csproj.CopyComplete
 D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.App\obj\Debug\netcoreapp2.0\Com.BudgetMetal.App.dll
 D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.App\obj\Debug\netcoreapp2.0\Com.BudgetMetal.App.pdb
-D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.App\bin\Debug\netcoreapp2.0\Com.BudgetMetal.Common.dll
-D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.App\bin\Debug\netcoreapp2.0\Com.BudgetMetal.Common.pdb
-D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.App\obj\Debug\netcoreapp2.0\Com.BudgetMetal.App.csproj.CopyComplete

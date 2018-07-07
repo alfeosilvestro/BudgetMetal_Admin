@@ -7,7 +7,7 @@ EXPOSE 9908
 
 FROM microsoft/aspnetcore-build:2.0 AS build
 WORKDIR /src
-COPY Com.BudgetMetal.Services.GalleryAPI.sln ./
+COPY BudgetMetal_Admin.sln ./
 COPY Com.BudgetMetal.Services.GalleryAPI/Com.BudgetMetal.Services.GalleryAPI.csproj Com.BudgetMetal.Services.GalleryAPI/
 RUN dotnet restore -nowarn:msb3202,nu1503
 COPY . .
