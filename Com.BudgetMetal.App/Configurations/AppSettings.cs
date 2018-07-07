@@ -20,6 +20,10 @@ namespace Com.BudgetMetal.App.Configurations
             set;
         }
 
-        
+        public string DefaultUEN
+        {
+            get;
+            set;
+        }
     }
 }

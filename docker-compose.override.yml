@@ -9,10 +9,18 @@ services:
       context: .
       dockerfile: BudgetMetal_Admin/Dockerfile
 
-  com.budgetmetal.services.gallery:
+  com.budgetmetal.services.galleryapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-    image: combudgetmetalservicesgallery
+    image: combudgetmetalservicesgalleryapi
     build:
       context: .
-      dockerfile: Com.BudgetMetal.Services.Gallery/Dockerfile
+      dockerfile: Com.BudgetMetal.Services.GalleryAPI/Dockerfile
+
+  com.budgetmetal.app:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    image: combudgetmetalapp
+    build:
+      context: .
+      dockerfile: Com.BudgetMetal.App/Dockerfile

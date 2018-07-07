@@ -220,17 +220,25 @@
     }
     
     function RedirectCreateRFQ(name) {
-        var mainsiteurl = '@ViewData["MainSiteURL"]?url=rfq&fileid=' + name;
-        window.location.href = mainsiteurl;
+        var mainsiteurl = '@ViewData["MainSiteURL"]?url=rfq&fileid=@ViewData["DefaultUEN"]&token=@ViewData["token"]';
+        //window.location.href = mainsiteurl;
+        window.open(
+            mainsiteurl,
+            '_blank' // <- This is what makes it open in a new window.
+        );
     }
 
     $("#link_supplier").click(function () {
         var name = "";
-        RedirectSupplier(name)
+        RedirectSupplier(name);
     });
     function RedirectSupplier(name) {
-        var mainsiteurl = '@ViewData["MainSiteURL"]?url=supplier&fileid=' + name;
-        window.location.href = mainsiteurl;
+        var mainsiteurl = '@ViewData["MainSiteURL"]?url=supplier&fileid=@ViewData["DefaultUEN"]&token=@ViewData["token"]';
+        //window.location.href = mainsiteurl;
+        window.open(
+            mainsiteurl,
+            '_blank' // <- This is what makes it open in a new window.
+        );
     }
 
     function showDetail(Id) {
