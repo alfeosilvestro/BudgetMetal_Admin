@@ -664,23 +664,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\galle\\.nuget\\packages\\": {},
+    "C:\\Users\\user\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Projects\\BudgetMetal_Admin\\Com.BudgetMetal.Common\\Com.BudgetMetal.Common.csproj",
+      "projectUniqueName": "D:\\Projects\\BudgetMetal_Admin-master\\Com.BudgetMetal.Common\\Com.BudgetMetal.Common.csproj",
       "projectName": "Com.BudgetMetal.Common",
-      "projectPath": "D:\\Projects\\BudgetMetal_Admin\\Com.BudgetMetal.Common\\Com.BudgetMetal.Common.csproj",
-      "packagesPath": "C:\\Users\\galle\\.nuget\\packages\\",
-      "outputPath": "D:\\Projects\\BudgetMetal_Admin\\Com.BudgetMetal.Common\\obj\\",
+      "projectPath": "D:\\Projects\\BudgetMetal_Admin-master\\Com.BudgetMetal.Common\\Com.BudgetMetal.Common.csproj",
+      "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
+      "outputPath": "D:\\Projects\\BudgetMetal_Admin-master\\Com.BudgetMetal.Common\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\galle\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

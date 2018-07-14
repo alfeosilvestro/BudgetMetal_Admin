@@ -23,3 +23,17 @@ D:\Projects\BudgetMetal_Admin\BudgetMetal_Admin\obj\Debug\netcoreapp2.0\BudgetMe
 D:\Projects\BudgetMetal_Admin\BudgetMetal_Admin\obj\Debug\netcoreapp2.0\BudgetMetal_Admin.csproj.CopyComplete
 D:\Projects\BudgetMetal_Admin\BudgetMetal_Admin\obj\Debug\netcoreapp2.0\BudgetMetal_Admin.dll
 D:\Projects\BudgetMetal_Admin\BudgetMetal_Admin\obj\Debug\netcoreapp2.0\BudgetMetal_Admin.pdb
+D:\Projects\BudgetMetal_Admin-master\BudgetMetal_Admin\bin\Debug\netcoreapp2.0\BudgetMetal_Admin.deps.json
+D:\Projects\BudgetMetal_Admin-master\BudgetMetal_Admin\bin\Debug\netcoreapp2.0\BudgetMetal_Admin.runtimeconfig.json
+D:\Projects\BudgetMetal_Admin-master\BudgetMetal_Admin\bin\Debug\netcoreapp2.0\BudgetMetal_Admin.runtimeconfig.dev.json
+D:\Projects\BudgetMetal_Admin-master\BudgetMetal_Admin\bin\Debug\netcoreapp2.0\BudgetMetal_Admin.dll
+D:\Projects\BudgetMetal_Admin-master\BudgetMetal_Admin\bin\Debug\netcoreapp2.0\BudgetMetal_Admin.pdb
+D:\Projects\BudgetMetal_Admin-master\BudgetMetal_Admin\bin\Debug\netcoreapp2.0\Com.BudgetMetal.Common.dll
+D:\Projects\BudgetMetal_Admin-master\BudgetMetal_Admin\bin\Debug\netcoreapp2.0\Com.BudgetMetal.Common.pdb
+D:\Projects\BudgetMetal_Admin-master\BudgetMetal_Admin\obj\Debug\netcoreapp2.0\BudgetMetal_Admin.csprojAssemblyReference.cache
+D:\Projects\BudgetMetal_Admin-master\BudgetMetal_Admin\obj\Debug\netcoreapp2.0\BudgetMetal_Admin.csproj.CoreCompileInputs.cache
+D:\Projects\BudgetMetal_Admin-master\BudgetMetal_Admin\obj\Debug\netcoreapp2.0\BudgetMetal_Admin.AssemblyInfoInputs.cache
+D:\Projects\BudgetMetal_Admin-master\BudgetMetal_Admin\obj\Debug\netcoreapp2.0\BudgetMetal_Admin.AssemblyInfo.cs
+D:\Projects\BudgetMetal_Admin-master\BudgetMetal_Admin\obj\Debug\netcoreapp2.0\BudgetMetal_Admin.csproj.CopyComplete
+D:\Projects\BudgetMetal_Admin-master\BudgetMetal_Admin\obj\Debug\netcoreapp2.0\BudgetMetal_Admin.dll
+D:\Projects\BudgetMetal_Admin-master\BudgetMetal_Admin\obj\Debug\netcoreapp2.0\BudgetMetal_Admin.pdb

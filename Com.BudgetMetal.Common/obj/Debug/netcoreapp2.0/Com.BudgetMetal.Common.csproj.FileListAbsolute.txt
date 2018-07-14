@@ -7,3 +7,11 @@ D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.Common\obj\Debug\netcoreapp2.0\Com
 D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.Common\obj\Debug\netcoreapp2.0\Com.BudgetMetal.Common.AssemblyInfo.cs
 D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.Common\obj\Debug\netcoreapp2.0\Com.BudgetMetal.Common.dll
 D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.Common\obj\Debug\netcoreapp2.0\Com.BudgetMetal.Common.pdb
+D:\Projects\BudgetMetal_Admin-master\Com.BudgetMetal.Common\bin\Debug\netcoreapp2.0\Com.BudgetMetal.Common.deps.json
+D:\Projects\BudgetMetal_Admin-master\Com.BudgetMetal.Common\bin\Debug\netcoreapp2.0\Com.BudgetMetal.Common.dll
+D:\Projects\BudgetMetal_Admin-master\Com.BudgetMetal.Common\bin\Debug\netcoreapp2.0\Com.BudgetMetal.Common.pdb
+D:\Projects\BudgetMetal_Admin-master\Com.BudgetMetal.Common\obj\Debug\netcoreapp2.0\Com.BudgetMetal.Common.csproj.CoreCompileInputs.cache
+D:\Projects\BudgetMetal_Admin-master\Com.BudgetMetal.Common\obj\Debug\netcoreapp2.0\Com.BudgetMetal.Common.AssemblyInfoInputs.cache
+D:\Projects\BudgetMetal_Admin-master\Com.BudgetMetal.Common\obj\Debug\netcoreapp2.0\Com.BudgetMetal.Common.AssemblyInfo.cs
+D:\Projects\BudgetMetal_Admin-master\Com.BudgetMetal.Common\obj\Debug\netcoreapp2.0\Com.BudgetMetal.Common.dll
+D:\Projects\BudgetMetal_Admin-master\Com.BudgetMetal.Common\obj\Debug\netcoreapp2.0\Com.BudgetMetal.Common.pdb

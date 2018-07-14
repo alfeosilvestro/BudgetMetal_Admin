@@ -13348,23 +13348,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\galle\\.nuget\\packages\\": {},
+    "C:\\Users\\user\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Projects\\BudgetMetal_Admin\\BudgetMetal_Admin\\BudgetMetal_Admin.csproj",
+      "projectUniqueName": "D:\\Projects\\BudgetMetal_Admin-master\\BudgetMetal_Admin\\BudgetMetal_Admin.csproj",
       "projectName": "BudgetMetal_Admin",
-      "projectPath": "D:\\Projects\\BudgetMetal_Admin\\BudgetMetal_Admin\\BudgetMetal_Admin.csproj",
-      "packagesPath": "C:\\Users\\galle\\.nuget\\packages\\",
-      "outputPath": "D:\\Projects\\BudgetMetal_Admin\\BudgetMetal_Admin\\obj\\",
+      "projectPath": "D:\\Projects\\BudgetMetal_Admin-master\\BudgetMetal_Admin\\BudgetMetal_Admin.csproj",
+      "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
+      "outputPath": "D:\\Projects\\BudgetMetal_Admin-master\\BudgetMetal_Admin\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\galle\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -13377,8 +13377,8 @@
       "frameworks": {
         "netcoreapp2.0": {
           "projectReferences": {
-            "D:\\Projects\\BudgetMetal_Admin\\Com.BudgetMetal.Common\\Com.BudgetMetal.Common.csproj": {
-              "projectPath": "D:\\Projects\\BudgetMetal_Admin\\Com.BudgetMetal.Common\\Com.BudgetMetal.Common.csproj"
+            "D:\\Projects\\BudgetMetal_Admin-master\\Com.BudgetMetal.Common\\Com.BudgetMetal.Common.csproj": {
+              "projectPath": "D:\\Projects\\BudgetMetal_Admin-master\\Com.BudgetMetal.Common\\Com.BudgetMetal.Common.csproj"
             }
           }
         }

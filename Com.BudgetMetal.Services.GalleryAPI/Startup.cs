@@ -66,8 +66,6 @@ namespace Com.BudgetMetal.Services.GalleryAPI
             //// Register for logic classes
             services.AddScoped<IGalleryService, GalleryService>();
 
-            
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
