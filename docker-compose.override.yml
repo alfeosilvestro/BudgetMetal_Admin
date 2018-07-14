@@ -3,7 +3,8 @@ version: '2'
 services:
   budgetmetal_admin:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      #- ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
     image: budgetmetaladmin
     build:
       context: .
@@ -11,7 +12,8 @@ services:
 
   com.budgetmetal.services.galleryapi:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      #- ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
     image: combudgetmetalservicesgalleryapi
     build:
       context: .
@@ -19,7 +21,8 @@ services:
 
   com.budgetmetal.app:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      #- ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
     image: combudgetmetalapp
     build:
       context: .
