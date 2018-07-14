@@ -1,0 +1,9 @@
+D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.DBContext\bin\Debug\netcoreapp2.1\Com.BudgetMetal.DB.deps.json
+D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.DBContext\bin\Debug\netcoreapp2.1\Com.BudgetMetal.DB.dll
+D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.DBContext\bin\Debug\netcoreapp2.1\Com.BudgetMetal.DB.pdb
+D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.DBContext\obj\Debug\netcoreapp2.1\Com.BudgetMetal.DB.csprojAssemblyReference.cache
+D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.DBContext\obj\Debug\netcoreapp2.1\Com.BudgetMetal.DB.csproj.CoreCompileInputs.cache
+D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.DBContext\obj\Debug\netcoreapp2.1\Com.BudgetMetal.DB.AssemblyInfoInputs.cache
+D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.DBContext\obj\Debug\netcoreapp2.1\Com.BudgetMetal.DB.AssemblyInfo.cs
+D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.DBContext\obj\Debug\netcoreapp2.1\Com.BudgetMetal.DB.dll
+D:\Projects\BudgetMetal_Admin\Com.BudgetMetal.DBContext\obj\Debug\netcoreapp2.1\Com.BudgetMetal.DB.pdb

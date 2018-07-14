@@ -27,7 +27,6 @@ namespace BudgetMetal_Admin
             //services.AddDbContext<AppDbContext>(options => options.UseMySql("Server=localhost;Database=mrthintan;UserID=mrthintan_user;Password=Qwer@123;"));
             // Use a PostgreSQL database
             var sqlConnectionString = Configuration.GetConnectionString("DefaultConnection");
-
             // TODO: Update in each application
             services.AddDbContext<AppDbContext>(options =>
                     options.UseMySQL(
@@ -35,8 +34,8 @@ namespace BudgetMetal_Admin
                     b => b.MigrationsAssembly("BudgetMetal_Admin") // main project name = Application Specific
                 )
             );
-
-            services.AddMvc();
+            services.AddMvc().AddSessionStateTempDataProvider();
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,7 +52,7 @@ namespace BudgetMetal_Admin
             }
 
             app.UseStaticFiles();
-
+            app.UseSession();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

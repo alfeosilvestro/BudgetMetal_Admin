@@ -31,3 +31,20 @@ networks:
     dockernet:
         external: true
 Networks are described in the network documentation 3.7k. They are quite useful and not very hard to understand.
+
+=================================================================================================================
+
+Run in different port
+
+The microsoft/aspnetcore-build container builds on top of the 
+microsoft/aspnetcore container. The dockerhub page for that says:
+
+#A note on ports
+
+#This image sets the ASPNETCORE_URLS environment variable to http://+:80 which means that if you have not explicity set a URL in your #application, via app.UseUrl in your Program.cs for example, then your application will be listening on port 80 inside the container.
+
+#So this is the container actively setting the port to 80. You can override it, if you want, by doing this in your Dockerfile:
+
+**** ENV ASPNETCORE_URLS=http://+:5000
+
+Also, it is worth noting that because of the docker command you are using, you will still be able to access the application at http://localhost:5000 whether you are running the application directly or in a container.

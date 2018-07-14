@@ -3,16 +3,24 @@ version: '2'
 services:
   budgetmetal_admin:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Development
     image: budgetmetaladmin
     build:
       context: .
       dockerfile: BudgetMetal_Admin/Dockerfile
 
-  com.budgetmetal.services.gallery:
+  com.budgetmetal.services.galleryapi:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-    image: combudgetmetalservicesgallery
+      - ASPNETCORE_ENVIRONMENT=Development
+    image: combudgetmetalservicesgalleryapi
     build:
       context: .
-      dockerfile: Com.BudgetMetal.Services.Gallery/Dockerfile
+      dockerfile: Com.BudgetMetal.Services.GalleryAPI/Dockerfile
+
+  com.budgetmetal.app:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    image: combudgetmetalapp
+    build:
+      context: .
+      dockerfile: Com.BudgetMetal.App/Dockerfile

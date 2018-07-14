@@ -1,6 +1,7 @@
 D:\Projects\BudgetMetal_Admin\Project_Documentations\bin\Debug\netcoreapp2.0\Project_Documentations.deps.json
 D:\Projects\BudgetMetal_Admin\Project_Documentations\bin\Debug\netcoreapp2.0\Project_Documentations.dll
 D:\Projects\BudgetMetal_Admin\Project_Documentations\bin\Debug\netcoreapp2.0\Project_Documentations.pdb
+D:\Projects\BudgetMetal_Admin\Project_Documentations\obj\Debug\netcoreapp2.0\Project_Documentations.csprojAssemblyReference.cache
 D:\Projects\BudgetMetal_Admin\Project_Documentations\obj\Debug\netcoreapp2.0\Project_Documentations.csproj.CoreCompileInputs.cache
 D:\Projects\BudgetMetal_Admin\Project_Documentations\obj\Debug\netcoreapp2.0\Project_Documentations.AssemblyInfoInputs.cache
 D:\Projects\BudgetMetal_Admin\Project_Documentations\obj\Debug\netcoreapp2.0\Project_Documentations.AssemblyInfo.cs

@@ -5107,6 +5107,16 @@
         "runtime": {
           "lib/netstandard1.3/Microsoft.WindowsAzure.Storage.dll": {}
         }
+      },
+      "Com.BudgetMetal.Common/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.0",
+        "compile": {
+          "bin/placeholder/Com.BudgetMetal.Common.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Com.BudgetMetal.Common.dll": {}
+        }
       }
     }
   },
@@ -6159,7 +6169,7 @@
       ]
     },
     "Microsoft.CodeAnalysis.Analyzers/1.1.0": {
-      "sha512": "wLSDLizKIeYZRh4dSdoToJqA9fLbBJJDmndSpRHsDVWL7jxLZZkgLb6f/ye+w4PK6wlJUL0ja1q25MVLbBBC0w==",
+      "sha512": "HS3iRWZKcUw/8eZ/08GXKY2Bn7xNzQPzf8gRPHGSowX7u7XXu9i9YEaBeBNKUXWfI7qjvT2zXtLUvbN0hds8vg==",
       "type": "package",
       "path": "microsoft.codeanalysis.analyzers/1.1.0",
       "files": [
@@ -8147,7 +8157,7 @@
       ]
     },
     "Remotion.Linq/2.1.1": {
-      "sha512": "SLfpKLmyIDlNFwwLKF9ohwtZ7+EZpfENCpZIBuU4zQPhWZkiw8JGZpTI/gm+w4xVYm5NZU54LPmqS1TJSS4owg==",
+      "sha512": "IJn0BqkvwEDpP+2qjvci7n4/a9f7DhKESLWb2/uG4xQh3rTkGTBUz69bI4IivCoKkTFAqjXxYDZw2K/npohjsw==",
       "type": "package",
       "path": "remotion.linq/2.1.1",
       "files": [
@@ -13320,10 +13330,16 @@
         "windowsazure.storage.8.1.4.nupkg.sha512",
         "windowsazure.storage.nuspec"
       ]
+    },
+    "Com.BudgetMetal.Common/1.0.0": {
+      "type": "project",
+      "path": "../Com.BudgetMetal.Common/Com.BudgetMetal.Common.csproj",
+      "msbuildProject": "../Com.BudgetMetal.Common/Com.BudgetMetal.Common.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
+      "Com.BudgetMetal.Common >= 1.0.0",
       "Microsoft.AspNetCore.All >= 2.0.6",
       "Microsoft.EntityFrameworkCore >= 2.0.3",
       "Microsoft.NETCore.App >= 2.0.0",
@@ -13333,7 +13349,6 @@
   },
   "packageFolders": {
     "C:\\Users\\galle\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
@@ -13346,13 +13361,11 @@
       "outputPath": "D:\\Projects\\BudgetMetal_Admin\\BudgetMetal_Admin\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\",
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
         "C:\\Users\\galle\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.Fallback.config"
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.0"
@@ -13363,7 +13376,11 @@
       },
       "frameworks": {
         "netcoreapp2.0": {
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\Projects\\BudgetMetal_Admin\\Com.BudgetMetal.Common\\Com.BudgetMetal.Common.csproj": {
+              "projectPath": "D:\\Projects\\BudgetMetal_Admin\\Com.BudgetMetal.Common\\Com.BudgetMetal.Common.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

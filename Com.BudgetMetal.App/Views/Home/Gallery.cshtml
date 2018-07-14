@@ -1,0 +1,290 @@
+﻿@{
+    ViewData["Title"] = "Gallery";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    
+}
+
+<div id="loader">
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="lading"></div>
+</div>
+
+
+<div class="container-fluid">
+    <!-- Image Gallery -->
+    <div class="block-header">
+        <h2>
+            IMAGE GALLERY
+        </h2>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <div class="row">
+                        <div class="col-sm-11">
+                            <input type="text" class="form-control" id="search_key" placeholder="Search">
+                        </div>
+                        <div class="col-sm-1">
+                            <button class="btn btn-info" id="btn_search">Search</button>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="body">
+                    <div class="row">
+                        <div class="pagination pull-right" style="padding:10px;">
+
+                        </div>
+                    </div>
+
+                    <div class="list-unstyled row clearfix" id="gallery-thumbnials">
+
+                    </div>
+                    <div class="row">
+                        <div class="pagination pull-right" style="padding:10px;">
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" name="fid" id="fid" value='@ViewData["fileid"]' />
+<!-- Modal -->
+<div class="modal fade" id="DetailModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" >Gallery Detail</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="min-height:300px;">
+                    <div class="col-sm-5 col-md-5 col-lg-5">
+                        <img src="#" alt="Alternate Text" id="imgDetailImage" width="80%" height="80%" />
+                    </div>
+                    <div class="col-sm-7 col-md-7 col-lg-7">
+                        <h3 id="headerName" class="text-primary">Name</h3>
+                        <p id="fieldDescription">Description</p>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-sm-5 col-md-5 col-lg-5">
+                        <b>
+                            CREATOR:</b>
+                                <br>
+                                <a href="#" id="link_supplier"></a>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-6 text-center">
+                        <div class="row" id="divForDownloadButton">
+                            <button class="btn btn-primary" style="width:200px; margin-bottom:5px;">Download</button>
+                        </div>
+                        <div class="row" id="divForContactButton">
+                            <button class="btn btn-primary" style="width:200px; margin-bottom:5px;">Contact Details</button>
+                        </div>
+                    </div>
+                    <div class="col-sm-1 col-md-1 col-lg-1">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Back</button>
+            </div>
+        </div>
+    </div>
+</div>
+<iframe id="iframe_download_file" style="display:none" src=""></iframe>
+<script>
+    $(function () {
+        $('#loader').hide();
+        loaddata(1);
+        var fid = $('#fid').val();
+        if (fid != "") {
+            showDetail(fid);
+            downloadFile(fid);
+        }
+    });
+
+    function downloadFile(fileId) {
+        var ajaxurl = '@ViewData["APIURL"]/CheckAuthentication?token=@ViewData["token"]';
+
+
+        $.ajax({
+            url: ajaxurl,
+            dataType: 'json',
+            success: function (response) {
+                //alert(response);
+                if (response) {
+                    var url = '@ViewData["APIURL"]/download?fileid=' + fileId + '&token=@ViewData["token"]';
+                    $('#iframe_download_file').attr('src', url);
+                } else {
+                    var mainsiteurl =  '@ViewData["MainSiteURL"]?url=gallery&fileid=' + fileId;
+                    window.location.href = mainsiteurl;
+                }
+
+            },
+            error: function (response) {
+                $("#result").html("<strong>100000" + response.status + "</strong>: " + response.message);
+            }
+
+        });
+
+    }
+
+    $("#btn_search").click(function () {
+        loaddata(1);
+    });
+
+    function loaddata(n) {
+        var search_key = $('#search_key').val();
+        var ajaxurl = '@ViewData["APIURL"]/get?page=' + n;
+        if (search_key != "") {
+            ajaxurl = '@ViewData["APIURL"]/get?keyword=<search_key>&page=<page_request>';
+            ajaxurl = ajaxurl.replace("<search_key>", search_key);
+            ajaxurl = ajaxurl.replace("<page_request>", n);
+        }
+
+        /// show spinner
+        $('#loader').show();
+
+        $.ajax({
+            url: ajaxurl,
+            dataType: 'json',
+            success: function (response) {
+
+
+                //console.log(response);
+                var obj = response.Result.Records;
+                console.log(obj);
+                $(".pagination").empty();
+                $("#gallery-thumbnials").empty();
+                for (var k in obj) {
+                    var item = obj[k];
+
+                    var thumbnail = item.ThumbnailImage;
+                    var desc = "";
+                    if (item.Description != null) {
+                        desc = item.Description;
+                    }
+
+                    var short_desc = "";
+
+                    if (desc.length > 200) {
+                        short_desc = desc.substring(0, 200) + "...";
+                    } else {
+                        short_desc = desc;
+                    }
+                    $("#gallery-thumbnials").append(
+                        "<div class='col-lg-3 col-md-4 col-sm-6 col-xs-12'>" +
+                        "<a OnClick='showDetail(" + item.Id + ")'><img src='data:image/png;base64," + thumbnail + "' alt='" + item.Name + "'  class='thumbnail' height='200px' width='250px'></a>" +
+                        "<h4><a OnClick='showDetail(" + item.Id + ")'>" + item.Name + "</a></h4><hr/></div>");
+                }
+
+                var totalpage = response.Result.TotalPage;
+                var currentpage = response.Result.CurrentPage;
+                if (response.Result.PreviousPage != 0) {
+
+                    $(".pagination").append(" <a class='btn btn-md btn-default' OnClick='loaddata(" + response.Result.PreviousPage + ")'> < </a> ");
+                }
+                var i;
+                for (i = 1; i <= totalpage; i++) {
+                    if (i == currentpage) {
+                        $(".pagination").append(" <a class='btn btn-md btn-warning'>" + i + "</a> ");
+                    } else {
+                        $(".pagination").append(" <a class='btn btn-md btn-default' OnClick='loaddata(" + i + ")'>" + i + "</a> ");
+                    }
+                }
+                if (response.Result.NextPage != 0) {
+                    $(".pagination").append(" <a class='btn btn-md btn-default' OnClick='loaddata(" + response.Result.NextPage + ")'> > </a> ");
+
+                }
+                /// hide spiner
+                $('#loader').hide();
+            },
+            error: function (response) {
+                $("#result").html("<strong>100000" + response.status + "</strong>: " + response.message);
+            }
+
+        });
+    }
+    
+    function RedirectCreateRFQ(name) {
+        var mainsiteurl = '@ViewData["MainSiteURL"]?url=rfq&fileid=@ViewData["DefaultUEN"]&token=@ViewData["token"]';
+        //window.location.href = mainsiteurl;
+        window.open(
+            mainsiteurl,
+            '_blank' // <- This is what makes it open in a new window.
+        );
+    }
+
+    $("#link_supplier").click(function () {
+        var name = "";
+        RedirectSupplier(name);
+    });
+    function RedirectSupplier(name) {
+        var mainsiteurl = '@ViewData["MainSiteURL"]?url=supplier&fileid=@ViewData["DefaultUEN"]&token=@ViewData["token"]';
+        //window.location.href = mainsiteurl;
+        window.open(
+            mainsiteurl,
+            '_blank' // <- This is what makes it open in a new window.
+        );
+    }
+
+    function showDetail(Id) {
+        var ajaxurl = '@ViewData["APIURL"]/getitem?Id=' + Id;
+        /// show spinner
+        $('#loader').show();
+
+        $.ajax({
+            url: ajaxurl,
+            dataType: 'json',
+            success: function (response) {
+
+                //console.log(response);
+                var obj = response.Result;
+                console.log(obj);
+
+                $("#headerName").empty();
+                $("#headerName").append(obj.Name);
+
+                $("#fieldDescription").empty();
+                $("#fieldDescription").append(obj.Description);
+
+
+                $('#imgDetailImage').attr('src', 'data:image/png;base64,' + obj.DetailImage);
+
+                $("#divForDownloadButton").empty();
+                $("#divForDownloadButton").append("<button class='btn btn-primary' style='width:60%; margin-bottom:5px;'  onClick='downloadFile(" + obj.Id +")'>Download</button>");
+
+                $("#divForContactButton").empty();
+                $("#divForContactButton").append("<button class='btn btn-primary' style='width:60%; margin-bottom:5px;' onClick='RedirectCreateRFQ(1)'>Contact Details</button>");
+
+                
+                $("#link_supplier").empty();
+                $("#link_supplier").append('@ViewData["DefaultCreator"]');
+                
+                $("#DetailModal").modal();
+            },
+            error: function (response) {
+                $("#result").html("<strong>100000" + response.status + "</strong>: " + response.message);
+            }
+
+        });
+
+
+    }
+</script>

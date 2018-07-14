@@ -17,7 +17,7 @@ namespace BudgetMetal_Admin.DB
         }
 
         public virtual DbSet<bm_gallery> bm_gallery { get; set; }
-
+        public virtual DbSet<bm_user> bm_user { get; set; }
 
 
 
