@@ -5,9 +5,9 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
     image: budgetmetaladmin
-    network_mode: host
-    #networks:
-      #- dockernet
+    #network_mode: host
+    networks:
+      - dockernet
     build:
       context: .
       dockerfile: BudgetMetal_Admin/Dockerfile
@@ -18,22 +18,22 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
     image: combudgetmetalservicesgalleryapi
-    network_mode: host
-    #networks:
-      #- dockernet
+    #network_mode: host
+    networks:
+      - dockernet
     build:
       context: .
       dockerfile: Com.BudgetMetal.Services.GalleryAPI/Dockerfile
     ports:
       - "9909:80"
 
-  com.budgetmetal.api:
+  com.budgetmetal.app:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
     image: combudgetmetalapp
-    network_mode: host
-    #networks:
-      #- dockernet
+    #network_mode: host
+    networks:
+      - dockernet
     build:
       context: .
       dockerfile: Com.BudgetMetal.App/Dockerfile
