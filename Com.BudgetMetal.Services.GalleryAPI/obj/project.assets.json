@@ -12961,23 +12961,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\user\\.nuget\\packages\\": {},
+    "C:\\Users\\galle\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Projects\\BudgetMetal_Admin-master\\Com.BudgetMetal.Services.GalleryAPI\\Com.BudgetMetal.Services.GalleryAPI.csproj",
+      "projectUniqueName": "D:\\Projects\\EzyTender\\Com.BudgetMetal.Services.GalleryAPI\\Com.BudgetMetal.Services.GalleryAPI.csproj",
       "projectName": "Com.BudgetMetal.Services.GalleryAPI",
-      "projectPath": "D:\\Projects\\BudgetMetal_Admin-master\\Com.BudgetMetal.Services.GalleryAPI\\Com.BudgetMetal.Services.GalleryAPI.csproj",
-      "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-      "outputPath": "D:\\Projects\\BudgetMetal_Admin-master\\Com.BudgetMetal.Services.GalleryAPI\\obj\\",
+      "projectPath": "D:\\Projects\\EzyTender\\Com.BudgetMetal.Services.GalleryAPI\\Com.BudgetMetal.Services.GalleryAPI.csproj",
+      "packagesPath": "C:\\Users\\galle\\.nuget\\packages\\",
+      "outputPath": "D:\\Projects\\EzyTender\\Com.BudgetMetal.Services.GalleryAPI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\galle\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -12990,20 +12990,20 @@
       "frameworks": {
         "netcoreapp2.0": {
           "projectReferences": {
-            "D:\\Projects\\BudgetMetal_Admin-master\\Com.BudgetMetal.Common\\Com.BudgetMetal.Common.csproj": {
-              "projectPath": "D:\\Projects\\BudgetMetal_Admin-master\\Com.BudgetMetal.Common\\Com.BudgetMetal.Common.csproj"
+            "D:\\Projects\\EzyTender\\Com.BudgetMetal.Common\\Com.BudgetMetal.Common.csproj": {
+              "projectPath": "D:\\Projects\\EzyTender\\Com.BudgetMetal.Common\\Com.BudgetMetal.Common.csproj"
             },
-            "D:\\Projects\\BudgetMetal_Admin-master\\Com.BudgetMetal.DataRepository\\Com.BudgetMetal.DataRepository.csproj": {
-              "projectPath": "D:\\Projects\\BudgetMetal_Admin-master\\Com.BudgetMetal.DataRepository\\Com.BudgetMetal.DataRepository.csproj"
+            "D:\\Projects\\EzyTender\\Com.BudgetMetal.DataRepository\\Com.BudgetMetal.DataRepository.csproj": {
+              "projectPath": "D:\\Projects\\EzyTender\\Com.BudgetMetal.DataRepository\\Com.BudgetMetal.DataRepository.csproj"
             },
-            "D:\\Projects\\BudgetMetal_Admin-master\\Com.BudgetMetal.DBContext\\Com.BudgetMetal.DB.csproj": {
-              "projectPath": "D:\\Projects\\BudgetMetal_Admin-master\\Com.BudgetMetal.DBContext\\Com.BudgetMetal.DB.csproj"
+            "D:\\Projects\\EzyTender\\Com.BudgetMetal.DBContext\\Com.BudgetMetal.DB.csproj": {
+              "projectPath": "D:\\Projects\\EzyTender\\Com.BudgetMetal.DBContext\\Com.BudgetMetal.DB.csproj"
             },
-            "D:\\Projects\\BudgetMetal_Admin-master\\Com.BudgetMetal.Services\\Com.BudgetMetal.Services.csproj": {
-              "projectPath": "D:\\Projects\\BudgetMetal_Admin-master\\Com.BudgetMetal.Services\\Com.BudgetMetal.Services.csproj"
+            "D:\\Projects\\EzyTender\\Com.BudgetMetal.Services\\Com.BudgetMetal.Services.csproj": {
+              "projectPath": "D:\\Projects\\EzyTender\\Com.BudgetMetal.Services\\Com.BudgetMetal.Services.csproj"
             },
-            "D:\\Projects\\BudgetMetal_Admin-master\\Com.BudgetMetal.ViewModels\\Com.BudgetMetal.ViewModels.csproj": {
-              "projectPath": "D:\\Projects\\BudgetMetal_Admin-master\\Com.BudgetMetal.ViewModels\\Com.BudgetMetal.ViewModels.csproj"
+            "D:\\Projects\\EzyTender\\Com.BudgetMetal.ViewModels\\Com.BudgetMetal.ViewModels.csproj": {
+              "projectPath": "D:\\Projects\\EzyTender\\Com.BudgetMetal.ViewModels\\Com.BudgetMetal.ViewModels.csproj"
             }
           }
         }
