@@ -26,3 +26,17 @@ D:\Projects\BudgetMetal_Admin-master\Com.BudgetMetal.DataRepository\obj\Debug\ne
 D:\Projects\BudgetMetal_Admin-master\Com.BudgetMetal.DataRepository\obj\Debug\netcoreapp2.0\Com.BudgetMetal.DataRepository.csproj.CopyComplete
 D:\Projects\BudgetMetal_Admin-master\Com.BudgetMetal.DataRepository\obj\Debug\netcoreapp2.0\Com.BudgetMetal.DataRepository.dll
 D:\Projects\BudgetMetal_Admin-master\Com.BudgetMetal.DataRepository\obj\Debug\netcoreapp2.0\Com.BudgetMetal.DataRepository.pdb
+D:\Projects\EzyTender\Com.BudgetMetal.DataRepository\bin\Debug\netcoreapp2.0\Com.BudgetMetal.DataRepository.deps.json
+D:\Projects\EzyTender\Com.BudgetMetal.DataRepository\bin\Debug\netcoreapp2.0\Com.BudgetMetal.DataRepository.dll
+D:\Projects\EzyTender\Com.BudgetMetal.DataRepository\bin\Debug\netcoreapp2.0\Com.BudgetMetal.DataRepository.pdb
+D:\Projects\EzyTender\Com.BudgetMetal.DataRepository\bin\Debug\netcoreapp2.0\Com.BudgetMetal.Common.dll
+D:\Projects\EzyTender\Com.BudgetMetal.DataRepository\bin\Debug\netcoreapp2.0\Com.BudgetMetal.DB.dll
+D:\Projects\EzyTender\Com.BudgetMetal.DataRepository\bin\Debug\netcoreapp2.0\Com.BudgetMetal.Common.pdb
+D:\Projects\EzyTender\Com.BudgetMetal.DataRepository\bin\Debug\netcoreapp2.0\Com.BudgetMetal.DB.pdb
+D:\Projects\EzyTender\Com.BudgetMetal.DataRepository\obj\Debug\netcoreapp2.0\Com.BudgetMetal.DataRepository.csprojAssemblyReference.cache
+D:\Projects\EzyTender\Com.BudgetMetal.DataRepository\obj\Debug\netcoreapp2.0\Com.BudgetMetal.DataRepository.csproj.CoreCompileInputs.cache
+D:\Projects\EzyTender\Com.BudgetMetal.DataRepository\obj\Debug\netcoreapp2.0\Com.BudgetMetal.DataRepository.AssemblyInfoInputs.cache
+D:\Projects\EzyTender\Com.BudgetMetal.DataRepository\obj\Debug\netcoreapp2.0\Com.BudgetMetal.DataRepository.AssemblyInfo.cs
+D:\Projects\EzyTender\Com.BudgetMetal.DataRepository\obj\Debug\netcoreapp2.0\Com.BudgetMetal.DataRepository.csproj.CopyComplete
+D:\Projects\EzyTender\Com.BudgetMetal.DataRepository\obj\Debug\netcoreapp2.0\Com.BudgetMetal.DataRepository.dll
+D:\Projects\EzyTender\Com.BudgetMetal.DataRepository\obj\Debug\netcoreapp2.0\Com.BudgetMetal.DataRepository.pdb

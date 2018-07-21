@@ -16,3 +16,12 @@ D:\Projects\BudgetMetal_Admin-master\Com.BudgetMetal.DBContext\obj\Debug\netcore
 D:\Projects\BudgetMetal_Admin-master\Com.BudgetMetal.DBContext\obj\Debug\netcoreapp2.0\Com.BudgetMetal.DB.dll
 D:\Projects\BudgetMetal_Admin-master\Com.BudgetMetal.DBContext\obj\Debug\netcoreapp2.0\Com.BudgetMetal.DB.pdb
 D:\Projects\BudgetMetal_Admin-master\Com.BudgetMetal.DBContext\obj\Debug\netcoreapp2.0\Com.BudgetMetal.DB.csprojAssemblyReference.cache
+D:\Projects\EzyTender\Com.BudgetMetal.DBContext\bin\Debug\netcoreapp2.0\Com.BudgetMetal.DB.deps.json
+D:\Projects\EzyTender\Com.BudgetMetal.DBContext\bin\Debug\netcoreapp2.0\Com.BudgetMetal.DB.dll
+D:\Projects\EzyTender\Com.BudgetMetal.DBContext\bin\Debug\netcoreapp2.0\Com.BudgetMetal.DB.pdb
+D:\Projects\EzyTender\Com.BudgetMetal.DBContext\obj\Debug\netcoreapp2.0\Com.BudgetMetal.DB.csprojAssemblyReference.cache
+D:\Projects\EzyTender\Com.BudgetMetal.DBContext\obj\Debug\netcoreapp2.0\Com.BudgetMetal.DB.csproj.CoreCompileInputs.cache
+D:\Projects\EzyTender\Com.BudgetMetal.DBContext\obj\Debug\netcoreapp2.0\Com.BudgetMetal.DB.AssemblyInfoInputs.cache
+D:\Projects\EzyTender\Com.BudgetMetal.DBContext\obj\Debug\netcoreapp2.0\Com.BudgetMetal.DB.AssemblyInfo.cs
+D:\Projects\EzyTender\Com.BudgetMetal.DBContext\obj\Debug\netcoreapp2.0\Com.BudgetMetal.DB.dll
+D:\Projects\EzyTender\Com.BudgetMetal.DBContext\obj\Debug\netcoreapp2.0\Com.BudgetMetal.DB.pdb
