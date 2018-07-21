@@ -664,23 +664,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\user\\.nuget\\packages\\": {},
+    "C:\\Users\\galle\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Projects\\BudgetMetal_Admin-master\\Project_Documentations\\Project_Documentations.csproj",
+      "projectUniqueName": "D:\\Projects\\EzyTender\\Project_Documentations\\Project_Documentations.csproj",
       "projectName": "Project_Documentations",
-      "projectPath": "D:\\Projects\\BudgetMetal_Admin-master\\Project_Documentations\\Project_Documentations.csproj",
-      "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-      "outputPath": "D:\\Projects\\BudgetMetal_Admin-master\\Project_Documentations\\obj\\",
+      "projectPath": "D:\\Projects\\EzyTender\\Project_Documentations\\Project_Documentations.csproj",
+      "packagesPath": "C:\\Users\\galle\\.nuget\\packages\\",
+      "outputPath": "D:\\Projects\\EzyTender\\Project_Documentations\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\galle\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

@@ -36,6 +36,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Com.BudgetMetal.App", "Com.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Com.EazyTender_Admin", "Com.EazyTender_Admin\Com.EazyTender_Admin.csproj", "{B52B4B3D-F45E-4BB7-9B98-1CEE4E8A551D}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Com.EzTender.WebApp", "Com.EzTender.WebApp\Com.EzTender.WebApp.csproj", "{BE4C8B4A-F8ED-4ECA-B05C-34D86A497C7A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -84,6 +86,10 @@ Global
 		{B52B4B3D-F45E-4BB7-9B98-1CEE4E8A551D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B52B4B3D-F45E-4BB7-9B98-1CEE4E8A551D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B52B4B3D-F45E-4BB7-9B98-1CEE4E8A551D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE4C8B4A-F8ED-4ECA-B05C-34D86A497C7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE4C8B4A-F8ED-4ECA-B05C-34D86A497C7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE4C8B4A-F8ED-4ECA-B05C-34D86A497C7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE4C8B4A-F8ED-4ECA-B05C-34D86A497C7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -99,6 +105,7 @@ Global
 		{2059F9C9-1AFE-465F-83A5-DB88B31EB8BA} = {7B82E778-676E-4923-92B1-6C134806B6CE}
 		{657C284E-5199-4292-BD54-BDEB44E7BDBF} = {7B82E778-676E-4923-92B1-6C134806B6CE}
 		{B52B4B3D-F45E-4BB7-9B98-1CEE4E8A551D} = {7B82E778-676E-4923-92B1-6C134806B6CE}
+		{BE4C8B4A-F8ED-4ECA-B05C-34D86A497C7A} = {7B82E778-676E-4923-92B1-6C134806B6CE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BD07161-C582-4271-A9D6-53BF9E07D42E}

@@ -22,3 +22,15 @@ D:\Projects\BudgetMetal_Admin-master\Com.BudgetMetal.ViewModels\obj\Debug\netcor
 D:\Projects\BudgetMetal_Admin-master\Com.BudgetMetal.ViewModels\obj\Debug\netcoreapp2.0\Com.BudgetMetal.ViewModels.csproj.CopyComplete
 D:\Projects\BudgetMetal_Admin-master\Com.BudgetMetal.ViewModels\obj\Debug\netcoreapp2.0\Com.BudgetMetal.ViewModels.dll
 D:\Projects\BudgetMetal_Admin-master\Com.BudgetMetal.ViewModels\obj\Debug\netcoreapp2.0\Com.BudgetMetal.ViewModels.pdb
+D:\Projects\EzyTender\Com.BudgetMetal.ViewModels\bin\Debug\netcoreapp2.0\Com.BudgetMetal.ViewModels.deps.json
+D:\Projects\EzyTender\Com.BudgetMetal.ViewModels\bin\Debug\netcoreapp2.0\Com.BudgetMetal.ViewModels.dll
+D:\Projects\EzyTender\Com.BudgetMetal.ViewModels\bin\Debug\netcoreapp2.0\Com.BudgetMetal.ViewModels.pdb
+D:\Projects\EzyTender\Com.BudgetMetal.ViewModels\bin\Debug\netcoreapp2.0\Com.BudgetMetal.Common.dll
+D:\Projects\EzyTender\Com.BudgetMetal.ViewModels\bin\Debug\netcoreapp2.0\Com.BudgetMetal.Common.pdb
+D:\Projects\EzyTender\Com.BudgetMetal.ViewModels\obj\Debug\netcoreapp2.0\Com.BudgetMetal.ViewModels.csprojAssemblyReference.cache
+D:\Projects\EzyTender\Com.BudgetMetal.ViewModels\obj\Debug\netcoreapp2.0\Com.BudgetMetal.ViewModels.csproj.CoreCompileInputs.cache
+D:\Projects\EzyTender\Com.BudgetMetal.ViewModels\obj\Debug\netcoreapp2.0\Com.BudgetMetal.ViewModels.AssemblyInfoInputs.cache
+D:\Projects\EzyTender\Com.BudgetMetal.ViewModels\obj\Debug\netcoreapp2.0\Com.BudgetMetal.ViewModels.AssemblyInfo.cs
+D:\Projects\EzyTender\Com.BudgetMetal.ViewModels\obj\Debug\netcoreapp2.0\Com.BudgetMetal.ViewModels.csproj.CopyComplete
+D:\Projects\EzyTender\Com.BudgetMetal.ViewModels\obj\Debug\netcoreapp2.0\Com.BudgetMetal.ViewModels.dll
+D:\Projects\EzyTender\Com.BudgetMetal.ViewModels\obj\Debug\netcoreapp2.0\Com.BudgetMetal.ViewModels.pdb

@@ -1,0 +1,227 @@
+﻿
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="block-header">
+    <h2>Prepare Quotation</h2>
+</div>
+<!-- Input -->
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    General Information
+                    
+                </h2>
+               
+            </div>
+            <div class="body">
+              
+                <div class="row clearfix">
+                    <div class="col-sm-10">
+                        <label for="quote_no">Quotation Reference</label>
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="text" id="quote_no" readonly class="form-control" placeholder="<Auto Generate by System>">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <label for="status">Status</label>
+                        <h4><span class="label label-info">New</span></h4>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="quote_no">RFQ Reference No</label>
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="text" id="quote_no" readonly class="form-control" placeholder="RFQ Reference">
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #END# Input -->
+<!-- Tabs -->
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="body">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs tab-nav-right" role="tablist">
+                    <li role="presentation" class="active"><a href="#basic_information" data-toggle="tab">Basic Information</a></li>
+                    
+                    <li role="presentation"><a href="#attachments" data-toggle="tab">Attachments</a></li>
+                    <li role="presentation"><a href="#settings" data-toggle="tab">User Settings</a></li>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade in active" id="basic_information">
+
+                        <div class="row clearfix">
+                            <div class="col-sm-3">
+                                <label for="quote_no">Contact Person</label>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="text" id="quote_no" readonly class="form-control" placeholder="Contact Person">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <label for="quote_no">Bid Price</label>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="text" id="quote_no" readonly class="form-control" placeholder="$">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <label for="quote_no">Valid Until</label>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="text" id="quote_no" readonly class="form-control datepicker" placeholder="Valid Until">
+                                    </div>
+                                </div>
+                            </div>
+                           
+
+                            <div class="col-sm-12">
+                                <label for="quote_no">Messages to Buyer</label>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <textarea rows="3" class="form-control no-resize"></textarea>
+                                        <label class="form-label">Messages to Buyer</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                   
+                    <div role="tabpanel" class="tab-pane fade" id="attachments">
+                        <div class="row clearfix">
+                            <div class="col-sm-12">
+                                <form action="/" id="frmFileUpload" class="dropzone" method="post" enctype="multipart/form-data">
+                                    <div class="dz-message">
+                                        <div class="drag-icon-cph">
+                                            <i class="material-icons">touch_app</i>
+                                        </div>
+                                        <h3>Drop files here or click to upload.</h3>
+                                        <em>(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</em>
+                                    </div>
+                                    <div class="fallback">
+                                        <input name="file" type="file" multiple />
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <table id="attachmentTable" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th width="25%">File Name</th>
+                                    <th width="70%">Description</th>
+                                    <th width="*">&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>File 1.pdf</th>
+                                    <td>File 1 Description</td>
+                                    <th><button type="button" class="btn btn-danger waves-effect">Remove</button></th>
+                                </tr>
+                                <tr>
+                                    <th>File 2.pdf</th>
+                                    <td>File 2 Description</td>
+                                    <th><button type="button" class="btn btn-danger waves-effect">Remove</button></th>
+                                </tr>
+                                <tr>
+                                    <th>File 3.pdf</th>
+                                    <td>File 3 Description</td>
+                                    <th><button type="button" class="btn btn-danger waves-effect">Remove</button></th>
+                                </tr>
+                                <tr>
+                                    <th>File 4.pdf</th>
+                                    <td>File 4 Description</td>
+                                    <th><button type="button" class="btn btn-danger waves-effect">Remove</button></th>
+                                </tr>
+                                <tr>
+                                    <th>File 5.pdf</th>
+                                    <td>File 5 Description</td>
+                                    <th><button type="button" class="btn btn-danger waves-effect">Remove</button></th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="settings">
+                        <table id="userSettingTable" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th width="95%">Accessible User(s)</th>
+                                    <th width="*">&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <h5>Tuan Tong</h5>
+                                        <span class="label bg-deep-purple">Admin</span> <span class="label label-success">Read / Write</span> <span class="label bg-deep-orange">Approve (publish)</span> <span class="label bg-cyan">Approve (procurement)</span>
+                                    </td>
+                                    <th><button type="button" class="btn btn-danger waves-effect">Remove</button></th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h5>Yin Loong</h5>
+                                        <span class="label bg-deep-purple">Owner</span> <span class="label label-success">Read / Write</span> <span class="label bg-deep-orange">Approve (publish)</span>
+                                    </td>
+                                    <th><button type="button" class="btn btn-danger waves-effect">Remove</button></th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h5>Ryan</h5>
+                                        <span class="label bg-deep-purple">Collaborator</span> <span class="label label-success">Read / Write</span>
+                                    </td>
+                                    <th><button type="button" class="btn btn-danger waves-effect">Remove</button></th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h5>Alex</h5>
+                                        <span class="label bg-deep-purple">Reviewer</span> <span class="label label-warning">Read</span> <span class="label bg-cyan">Approve (procurement)</span>
+                                    </td>
+                                    <th><button type="button" class="btn btn-danger waves-effect">Remove</button></th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Editable Table Plugin Js -->
+<script src="~/material_theme/plugins/editable-table/mindmup-editabletable.js"></script>
+<script src="~/material_theme/js/pages/tables/editable-table.js"></script>
+<!-- Moment Plugin Js -->
+<script src="~/material_theme/plugins/momentjs/moment.js"></script>
+<!-- Bootstrap Material Datetime Picker Plugin Js -->
+<script src="~/material_theme/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
+<!-- Input Mask Plugin Js -->
+<script src="~/material_theme/plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
+<!-- Autosize Plugin Js -->
+<script src="~/material_theme/plugins/autosize/autosize.js"></script>
+<!-- Custom Js -->
+<script src="~/material_theme/js/pages/forms/basic-form-elements.js"></script>
+<!-- Dropzone Css -->
+<link href="~/material_theme/plugins/dropzone/dropzone.css" rel="stylesheet">
+<!-- Dropzone Plugin Js -->
+<script src="~/material_theme/plugins/dropzone/dropzone.js"></script>
