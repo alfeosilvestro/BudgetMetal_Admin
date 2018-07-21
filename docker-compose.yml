@@ -3,7 +3,7 @@ version: '2'
 services:
   budgetmetal_admin:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Development
     image: budgetmetaladmin
     network_mode: host
     #networks:
@@ -16,7 +16,7 @@ services:
 
   com.budgetmetal.services.galleryapi:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Development
     image: combudgetmetalservicesgalleryapi
     network_mode: host
     #networks:
@@ -29,7 +29,7 @@ services:
 
   com.budgetmetal.api:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Development
     image: combudgetmetalapp
     network_mode: host
     #networks:
