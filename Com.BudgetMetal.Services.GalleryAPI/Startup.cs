@@ -58,7 +58,7 @@ namespace Com.BudgetMetal.Services.GalleryAPI
         private void RegisterForDependencyInjection(IServiceCollection services)
         {
             //// Register for repository classes
-            services.AddScoped<IGalleryRepository, GalleryRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
 
             //// Register for repository classes
             services.AddScoped<ISingle_Sign_OnRepository, Single_Sign_OnRepository>();

@@ -10,5 +10,9 @@ namespace Com.BudgetMetal.DB
         { }
 
         public virtual DbSet<bm_gallery> bm_gallery { get; set; }
+
+        public virtual DbSet<roles> roles { get; set; }
+
+        public virtual DbSet<user>  user { get; set; }
     }
 }

@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Com.BudgetMetal.DataRepository.Gallery
 {
-    public class GalleryRepository : GenericRepository<bm_gallery>, IGalleryRepository
+    public class RoleRepository : GenericRepository<bm_gallery>, IRoleRepository
     {
-        public GalleryRepository(DataContext context, ILoggerFactory loggerFactory) :
+        public RoleRepository(DataContext context, ILoggerFactory loggerFactory) :
        base(context, loggerFactory, "GalleryRepository")
         {
 

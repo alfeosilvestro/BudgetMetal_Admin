@@ -11,11 +11,11 @@ namespace Com.BudgetMetal.Services.Gallery
 {
     public class GalleryService : BaseService, IGalleryService
     {
-        private readonly IGalleryRepository repo;
+        private readonly IRoleRepository repo;
 
         private readonly ISingle_Sign_OnRepository repoBM;
 
-        public GalleryService(IGalleryRepository repo, ISingle_Sign_OnRepository repoBM)
+        public GalleryService(IRoleRepository repo, ISingle_Sign_OnRepository repoBM)
         {
             this.repo = repo;
             this.repoBM = repoBM;

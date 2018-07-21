@@ -54,8 +54,11 @@ namespace Com.BudgetMetal.DataRepository.Base
                 throw new ArgumentNullException("entity");
             }
 
-            entities.Add(entity);
+            entity.CreatedDate = entity.UpdatedDate = DateTime.Now;
+            entity.Version = _GenerateVersionNumber();
+            entity.IsActive = true;
 
+            entities.Add(entity);
             var result = entity;
 
             return result;
@@ -69,6 +72,11 @@ namespace Com.BudgetMetal.DataRepository.Base
                 throw new ArgumentNullException("entity");
             }
 
+            entity.UpdatedDate = DateTime.Now;
+            entity.Version = _GenerateVersionNumber();
+
+            entities.Update(entity);
+            //entities.Update(entity).State = EntityState.Modified;
             var result = entity;
 
             return result;
@@ -83,7 +91,6 @@ namespace Com.BudgetMetal.DataRepository.Base
             }
 
             entities.Remove(entity);
-           
         }
 
         public virtual async Task<PageResult<T>> GetPage(string keyword, int page, int totalRecords = 10)
@@ -105,6 +112,11 @@ namespace Com.BudgetMetal.DataRepository.Base
             };
 
             return result;
+        }
+
+        private string _GenerateVersionNumber()
+        {
+            return Guid.NewGuid().ToShortString();
         }
     }
 }

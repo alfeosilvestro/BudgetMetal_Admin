@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Com.BudgetMetal.Common.FoundationClasses;
 
-namespace Com.BudgetMetal.Services.GalleryAPI.Configurations
+namespace Com.EazyTender_Admin.Configurations
 {
     public class AppSettings : BaseSettings
     {

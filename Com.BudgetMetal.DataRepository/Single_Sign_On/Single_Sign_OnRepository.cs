@@ -9,8 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace Com.BudgetMetal.DataRepository.Single_Sign_On
-{
-    
+{   
 
     public class Single_Sign_OnRepository : GenericRepository_BM<single_sign_on>, ISingle_Sign_OnRepository
     {
@@ -18,8 +17,6 @@ namespace Com.BudgetMetal.DataRepository.Single_Sign_On
         {
 
         }
-
-       
 
         public single_sign_on GetSingleSignOnByToken(string token)
         {
