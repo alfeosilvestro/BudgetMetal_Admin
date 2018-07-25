@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Com.BudgetMetal.DataRepository.Roles
 {
-    public class RoleRepository : GenericRepository<roles>, IRoleRepository
+    public class RoleRepository : GenericRepository<Role>, IRoleRepository
     {
         public RoleRepository(DataContext context, ILoggerFactory loggerFactory) :
         base(context, loggerFactory, "RoleRepository")
@@ -18,7 +18,7 @@ namespace Com.BudgetMetal.DataRepository.Roles
 
         }
 
-        public PageResult<roles> GetRolesByPage(string keyword, int page, int totalRecords)
+        public PageResult<Role> GetRolesByPage(string keyword, int page, int totalRecords)
         {
             if (string.IsNullOrEmpty(keyword))
             {
@@ -26,22 +26,22 @@ namespace Com.BudgetMetal.DataRepository.Roles
                 //return await base.GetPage(keyword, page, totalRecords);
             }
 
-            var records = this.DbContext.roles.Where(e => 
+            var records = this.DbContext.Role.Where(e => 
                 e.IsActive==true &&
                 (keyword == string.Empty ||
-                e.Role.Contains(keyword) ||
-                e.RoleCode.Contains(keyword))
+                e.Name.Contains(keyword) ||
+                e.Code.Contains(keyword))
             );
 
             var recordList = records
             .Select(r =>
-                new roles()
+                new Role()
                 {
                     Id = r.Id,
-                    Role = r.Role,
-                    RoleCode = r.RoleCode
+                    Name = r.Name,
+                    Code = r.Code
                 })
-            .OrderBy(e => e.RoleCode)
+            .OrderBy(e => e.Name)
             .OrderBy(e => e.CreatedDate)
             .Skip((totalRecords * page) - totalRecords)
             .Take(totalRecords)
@@ -63,7 +63,7 @@ namespace Com.BudgetMetal.DataRepository.Roles
                 nextPage = page + 1;
             }
 
-            var result = new PageResult<roles>()
+            var result = new PageResult<Role>()
             {
                 Records = recordList,
                 TotalPage = totalPage,
@@ -76,36 +76,23 @@ namespace Com.BudgetMetal.DataRepository.Roles
             return result;
         }
 
-        public roles GetRoleById(int Id)
+        public Role GetRoleById(int Id)
         {
-            var records = this.DbContext.roles.Where(x=>x.IsActive==true).Select(r =>
-                new roles()
-                {
-                    Id = r.Id,
-                    Role = r.Role,
-                    RoleCode = r.RoleCode,
-                    IsActive = r.IsActive,
-                    CreatedBy = r.CreatedBy,
-                    CreatedDate = r.CreatedDate,
-                    UpdatedBy = r.UpdatedBy,
-                    UpdatedDate = r.UpdatedDate,
-                    Version = r.Version
-                })
+            var records = this.DbContext.Role.Where(x=>x.IsActive==true)
                 .Single(e =>
                 e.Id == Id);
 
             return records;
         }
 
-        public roles GetRoleFileById(int Id)
+        public Role GetRoleFileById(int Id)
         {
-            var records = this.DbContext.roles.Select(r =>
-                new roles()
+            var records = this.DbContext.Role.Select(r =>
+                new Role()
                 {
                     Id = r.Id,
-                    Role = r.Role,
-                    RoleCode = r.RoleCode
-                    
+                    Name = r.Name,
+                    Code = r.Code
                 })
                 .Single(e =>
                 e.Id == Id);

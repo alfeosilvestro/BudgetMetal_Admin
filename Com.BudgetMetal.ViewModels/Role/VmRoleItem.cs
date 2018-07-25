@@ -6,8 +6,8 @@ namespace Com.BudgetMetal.ViewModels.Role
 {
     public class VmRoleItem : ViewModelItemBase
     {
-        public string Role { get; set; }
+        public string Name { get; set; }
 
-        public string RoleCode { get; set; }
+        public string Code { get; set; }
     }
 }

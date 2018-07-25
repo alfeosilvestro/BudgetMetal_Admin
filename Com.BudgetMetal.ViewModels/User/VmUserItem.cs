@@ -10,16 +10,16 @@ namespace Com.BudgetMetal.ViewModels.User
 
         public string Password { get; set; }
 
-        public string Title { get; set; }
+        //public string Title { get; set; }
 
-        public string UserName { get; set; }
+        //public string UserName { get; set; }
 
-        public int RoleId { get; set; }
+        //public int RoleId { get; set; }
 
-        public string SiteAdmin { get; set; }
+        //public string SiteAdmin { get; set; }
 
-        public bool Status { get; set; }
+        //public bool Status { get; set; }
 
-        public bool Confirmed { get; set; }
+        //public bool Confirmed { get; set; }
     }
 }

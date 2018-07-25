@@ -26,11 +26,10 @@ namespace Com.BudgetMetal.DataRepository.Code_Category
                 //return await base.GetPage(keyword, page, totalRecords);
             }
 
-            var records = this.DbContext.codeCategorie.Where(e =>
+            var records = this.DbContext.CodeCategory.Where(e =>
                 e.IsActive == true &&
                 (keyword == string.Empty ||
-                e.Name.Contains(keyword) ||
-                e.Description.Contains(keyword))
+                e.Name.Contains(keyword))
             );
 
             var recordList = records
@@ -38,8 +37,7 @@ namespace Com.BudgetMetal.DataRepository.Code_Category
                 new CodeCategory()
                 {
                     Id = r.Id,
-                    Name = r.Name,
-                    Description = r.Description
+                    Name = r.Name
                 })
             .OrderBy(e => e.Name)
             .OrderBy(e => e.CreatedDate)
@@ -78,19 +76,7 @@ namespace Com.BudgetMetal.DataRepository.Code_Category
 
         public CodeCategory GetCodeCategoryById(int Id)
         {
-            var records = this.DbContext.codeCategorie.Where(x => x.IsActive == true).Select(r =>
-                    new CodeCategory()
-                    {
-                        Id = r.Id,
-                        Name = r.Name,
-                        Description = r.Description,
-                        IsActive = r.IsActive,
-                        CreatedBy = r.CreatedBy,
-                        CreatedDate = r.CreatedDate,
-                        UpdatedBy = r.UpdatedBy,
-                        UpdatedDate = r.UpdatedDate,
-                        Version = r.Version
-                    })
+            var records = this.DbContext.CodeCategory.Where(x => x.IsActive == true)
                 .Single(e =>
                 e.Id == Id);
 
@@ -99,12 +85,11 @@ namespace Com.BudgetMetal.DataRepository.Code_Category
 
         public CodeCategory GetCodeCategoryFileById(int Id)
         {
-            var records = this.DbContext.codeCategorie.Select(r =>
+            var records = this.DbContext.CodeCategory.Select(r =>
                 new CodeCategory()
                 {
                     Id = r.Id,
-                    Name = r.Name,
-                    Description = r.Description
+                    Name = r.Name
 
                 })
                 .Single(e =>

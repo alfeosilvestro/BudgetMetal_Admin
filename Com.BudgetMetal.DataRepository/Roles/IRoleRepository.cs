@@ -8,14 +8,12 @@ using System.Threading.Tasks;
 
 namespace Com.BudgetMetal.DataRepository.Roles
 {
-    public interface IRoleRepository : IGenericRepository<roles>
+    public interface IRoleRepository : IGenericRepository<Role>
     {
-        PageResult<roles> GetRolesByPage(string keyword, int page, int totalRecords);
+        PageResult<Role> GetRolesByPage(string keyword, int page, int totalRecords);
 
-        roles GetRoleById(int Id );
+        Role GetRoleById(int Id );
 
-        roles GetRoleFileById(int Id);
-
-        
+        Role GetRoleFileById(int Id);
     }
 }

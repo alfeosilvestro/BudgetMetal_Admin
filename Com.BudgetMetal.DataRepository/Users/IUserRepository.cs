@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace Com.BudgetMetal.DataRepository.Users
 {
-    public interface IUserRepository : IGenericRepository<user>
+    public interface IUserRepository : IGenericRepository<User>
     {
-        PageResult<user> GetUsersByPage(string keyword, int page, int totalRecords);
+        PageResult<User> GetUsersByPage(string keyword, int page, int totalRecords);
 
-        user GetUserById(int Id );
+        User GetUserById(int Id );
 
-        roles GetRoleFileById(int Id);
+        Role GetRoleFileById(int Id);
 
         
     }

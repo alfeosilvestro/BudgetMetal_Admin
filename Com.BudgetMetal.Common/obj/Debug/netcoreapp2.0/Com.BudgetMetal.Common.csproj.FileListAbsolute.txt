@@ -15,7 +15,6 @@ D:\Projects\BudgetMetal_Admin-master\Com.BudgetMetal.Common\obj\Debug\netcoreapp
 D:\Projects\BudgetMetal_Admin-master\Com.BudgetMetal.Common\obj\Debug\netcoreapp2.0\Com.BudgetMetal.Common.AssemblyInfo.cs
 D:\Projects\BudgetMetal_Admin-master\Com.BudgetMetal.Common\obj\Debug\netcoreapp2.0\Com.BudgetMetal.Common.dll
 D:\Projects\BudgetMetal_Admin-master\Com.BudgetMetal.Common\obj\Debug\netcoreapp2.0\Com.BudgetMetal.Common.pdb
-D:\Projects\BudgetMetal_Admin-master\Com.BudgetMetal.Common\obj\Debug\netcoreapp2.0\Com.BudgetMetal.Common.csprojAssemblyReference.cache
 D:\Projects\EzyTender\Com.BudgetMetal.Common\bin\Debug\netcoreapp2.0\Com.BudgetMetal.Common.deps.json
 D:\Projects\EzyTender\Com.BudgetMetal.Common\bin\Debug\netcoreapp2.0\Com.BudgetMetal.Common.dll
 D:\Projects\EzyTender\Com.BudgetMetal.Common\bin\Debug\netcoreapp2.0\Com.BudgetMetal.Common.pdb

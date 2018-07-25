@@ -7,7 +7,7 @@ using Com.BudgetMetal.ViewModels.User;
 using System.Collections.Generic;
 using System;
 
-namespace Com.BudgetMetal.Services.User
+namespace Com.BudgetMetal.Services.Users
 {
     public class UserService : BaseService, IUserService
     {
@@ -37,13 +37,13 @@ namespace Com.BudgetMetal.Services.User
             resultObj.Result = new PageResult<VmUserItem>();
             resultObj.Result.Records = new List<VmUserItem>();
 
-            Copy<PageResult<user>, PageResult<VmUserItem>>(dbPageResult, resultObj.Result, new string[] { "Records" });
+            Copy<PageResult<User>, PageResult<VmUserItem>>(dbPageResult, resultObj.Result, new string[] { "Records" });
 
             foreach (var dbItem in dbPageResult.Records)
             {
                 var resultItem = new VmUserItem();
 
-                Copy<user, VmUserItem>(dbItem, resultItem);
+                Copy<User, VmUserItem>(dbItem, resultItem);
 
                 resultObj.Result.Records.Add(resultItem);
             }
@@ -62,12 +62,12 @@ namespace Com.BudgetMetal.Services.User
 
             var resultObj = new VmUserItem();
             resultObj.Id = dbPageResult.Id;
-            resultObj.UserName = dbPageResult.UserName;
-            resultObj.Password = dbPageResult.Password;
-            resultObj.Title = dbPageResult.Title;
-            resultObj.SiteAdmin = dbPageResult.SiteAdmin;
-            resultObj.Status = dbPageResult.Status;
-            resultObj.Confirmed = dbPageResult.Confirmed;
+            //resultObj = dbPageResult.UserName;
+            //resultObj.Password = dbPageResult.Password;
+            //resultObj.Title = dbPageResult.Title;
+            //resultObj.SiteAdmin = dbPageResult.SiteAdmin;
+            //resultObj.Status = dbPageResult.Status;
+            //resultObj.Confirmed = dbPageResult.Confirmed;
             resultObj.IsActive = dbPageResult.IsActive;
             resultObj.Version = dbPageResult.Version;
             resultObj.CreatedBy = dbPageResult.CreatedBy;
@@ -77,48 +77,48 @@ namespace Com.BudgetMetal.Services.User
 
         public void Insert(VmUserItem vmRoleItem)
         {
-            user r = new user();
-            r.IsActive = true;
-            r.UserName = vmRoleItem.UserName;
-            r.Password = vmRoleItem.Password;
-            r.Email = vmRoleItem.Email;
-            r.Title = vmRoleItem.Title;
-            r.Status = vmRoleItem.Status;
-            r.SiteAdmin = vmRoleItem.SiteAdmin;
-            r.Confirmed = vmRoleItem.Confirmed;
-            r.RoleId = vmRoleItem.RoleId;
-            r.Version = "001";
-            r.CreatedBy = "System";
-            r.CreatedDate = DateTime.Now;
-            r.UpdatedBy = "System";
-            r.UpdatedDate = DateTime.Now;
-            repo.Add(r);
+            //user r = new user();
+            //r.IsActive = true;
+            //r.UserName = vmRoleItem.UserName;
+            //r.Password = vmRoleItem.Password;
+            //r.Email = vmRoleItem.Email;
+            //r.Title = vmRoleItem.Title;
+            //r.Status = vmRoleItem.Status;
+            //r.SiteAdmin = vmRoleItem.SiteAdmin;
+            //r.Confirmed = vmRoleItem.Confirmed;
+            //r.RoleId = vmRoleItem.RoleId;
+            //r.Version = "001";
+            //r.CreatedBy = "System";
+            //r.CreatedDate = DateTime.Now;
+            //r.UpdatedBy = "System";
+            //r.UpdatedDate = DateTime.Now;
+            //repo.Add(r);
         }
 
         public void Update(VmUserItem vmRoleItem)
         {
-            user r = new user();
-            r.Id = vmRoleItem.Id;
-            r.IsActive = vmRoleItem.IsActive;
-            r.Version = vmRoleItem.Version;
-            r.UpdatedBy = vmRoleItem.UpdatedBy;
-            r.UpdatedDate = DateTime.Now;
-            r.UserName = vmRoleItem.UserName;
-            r.Email = vmRoleItem.Email;
-            r.Password = vmRoleItem.Password;
-            r.Title = vmRoleItem.Title;
-            r.Confirmed = vmRoleItem.Confirmed;
-            r.SiteAdmin = vmRoleItem.SiteAdmin;
-            r.Status = vmRoleItem.Status;
-            r.RoleId = vmRoleItem.RoleId;
-            repo.Update(r);
+            //user r = new user();
+            //r.Id = vmRoleItem.Id;
+            //r.IsActive = vmRoleItem.IsActive;
+            //r.Version = vmRoleItem.Version;
+            //r.UpdatedBy = vmRoleItem.UpdatedBy;
+            //r.UpdatedDate = DateTime.Now;
+            //r.UserName = vmRoleItem.UserName;
+            //r.Email = vmRoleItem.Email;
+            //r.Password = vmRoleItem.Password;
+            //r.Title = vmRoleItem.Title;
+            //r.Confirmed = vmRoleItem.Confirmed;
+            //r.SiteAdmin = vmRoleItem.SiteAdmin;
+            //r.Status = vmRoleItem.Status;
+            //r.RoleId = vmRoleItem.RoleId;
+            //repo.Update(r);
         }
 
         public void Delete(int Id)
         {
-            user r= repo.GetUserById(Id);
-            r.IsActive = false;
-            repo.Update(r);
+            //user r= repo.GetUserById(Id);
+            //r.IsActive = false;
+            //repo.Update(r);
         }
     }
 }

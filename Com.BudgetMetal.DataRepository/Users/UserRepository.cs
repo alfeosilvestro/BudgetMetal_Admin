@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Com.BudgetMetal.DataRepository.Users
 {
-    public class UserRepository : GenericRepository<user>, IUserRepository
+    public class UserRepository : GenericRepository<User>, IUserRepository
     {
         public UserRepository(DataContext context, ILoggerFactory loggerFactory) :
         base(context, loggerFactory, "GalleryRepository")
@@ -18,7 +18,7 @@ namespace Com.BudgetMetal.DataRepository.Users
 
         }
 
-        public PageResult<user> GetUsersByPage(string keyword, int page, int totalRecords)
+        public PageResult<User> GetUsersByPage(string keyword, int page, int totalRecords)
         {
             if (string.IsNullOrEmpty(keyword))
             {
@@ -26,27 +26,26 @@ namespace Com.BudgetMetal.DataRepository.Users
                 //return await base.GetPage(keyword, page, totalRecords);
             }
 
-            var records = this.DbContext.user.Where(e => 
+            var records = this.DbContext.User.Where(e => 
                 e.IsActive==true &&
                 (keyword == string.Empty ||
-                e.UserName.Contains(keyword) ||
-                e.Title.Contains(keyword))
+                e.UserName.Contains(keyword))
             );
 
             var recordList = records
             .Select(r =>
-                new user()
+                new User()
                 {
                     Id = r.Id,
                     UserName = r.UserName,
                     Password = r.Password,
-                    Title = r.Title,
-                    RoleId = r.RoleId,
-                    SiteAdmin = r.SiteAdmin,
-                    UserTypeId = r.UserTypeId,
-                    Email   = r.Email,
-                    Confirmed = r.Confirmed,
-                    Status = r.Status
+                    //Title = r.Title,
+                    //RoleId = r.RoleId,
+                    //SiteAdmin = r.SiteAdmin,
+                    //UserTypeId = r.UserTypeId,
+                    //Email   = r.Email,
+                    //Confirmed = r.Confirmed,
+                    //Status = r.Status
                 })
             .OrderBy(e => e.UserName)
             .OrderBy(e => e.CreatedDate)
@@ -70,7 +69,7 @@ namespace Com.BudgetMetal.DataRepository.Users
                 nextPage = page + 1;
             }
 
-            var result = new PageResult<user>()
+            var result = new PageResult<User>()
             {
                 Records = recordList,
                 TotalPage = totalPage,
@@ -83,21 +82,21 @@ namespace Com.BudgetMetal.DataRepository.Users
             return result;
         }
 
-        public user GetUserById(int Id)
+        public User GetUserById(int Id)
         {
-            var records = this.DbContext.user.Where(x=>x.IsActive==true).Select(r =>
-                new user()
+            var records = this.DbContext.User.Where(x=>x.IsActive==true).Select(r =>
+                new User()
                 {
                     Id = r.Id,
                     UserName = r.UserName,
-                    Password = r.Password,
-                    Title = r.Title,
-                    RoleId = r.RoleId,
-                    SiteAdmin = r.SiteAdmin,
-                    UserTypeId = r.UserTypeId,
-                    Email = r.Email,
-                    Confirmed = r.Confirmed,
-                    Status = r.Status
+                    Password = r.Password
+                    //Title = r.Title,
+                    //RoleId = r.RoleId,
+                    //SiteAdmin = r.SiteAdmin,
+                    //UserTypeId = r.UserTypeId,
+                    //Email = r.Email,
+                    //Confirmed = r.Confirmed,
+                    //Status = r.Status
                 })
                 .Single(e =>
                 e.Id == Id);
@@ -105,14 +104,14 @@ namespace Com.BudgetMetal.DataRepository.Users
             return records;
         }
 
-        public roles GetRoleFileById(int Id)
+        public Role GetRoleFileById(int Id)
         {
-            var records = this.DbContext.roles.Select(r =>
-                new roles()
+            var records = this.DbContext.Role.Select(r =>
+                new Role()
                 {
                     Id = r.Id,
-                    Role = r.Role,
-                    RoleCode = r.RoleCode
+                    Name = r.Name,
+                    Code = r.Code
                 })
                 .Single(e =>
                 e.Id == Id);

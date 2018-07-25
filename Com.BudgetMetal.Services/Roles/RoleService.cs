@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System;
 using Com.BudgetMetal.ViewModels;
 
-namespace Com.BudgetMetal.Services.Role
+namespace Com.BudgetMetal.Services.Roles
 {
     public class RoleService : BaseService, IRoleService
     {
@@ -37,13 +37,13 @@ namespace Com.BudgetMetal.Services.Role
             resultObj.Result = new PageResult<VmRoleItem>();
             resultObj.Result.Records = new List<VmRoleItem>();
 
-            Copy<PageResult<roles>, PageResult<VmRoleItem>>(dbPageResult, resultObj.Result, new string[] { "Records" });
+            Copy<PageResult<Role>, PageResult<VmRoleItem>>(dbPageResult, resultObj.Result, new string[] { "Records" });
 
             foreach (var dbItem in dbPageResult.Records)
             {
                 var resultItem = new VmRoleItem();
 
-                Copy<roles, VmRoleItem>(dbItem, resultItem);
+                Copy<Role, VmRoleItem>(dbItem, resultItem);
 
                 resultObj.Result.Records.Add(resultItem);
             }
@@ -62,7 +62,7 @@ namespace Com.BudgetMetal.Services.Role
 
             var resultObj = new VmRoleItem();
 
-            Copy<roles, VmRoleItem>(dbPageResult, resultObj);
+            Copy<Role, VmRoleItem>(dbPageResult, resultObj);
 
             return resultObj;
         }
@@ -73,9 +73,9 @@ namespace Com.BudgetMetal.Services.Role
 
             try
             {
-                roles r = new roles();
+                Role r = new Role();
 
-                Copy<VmRoleItem, roles>(vmRoleItem, r);
+                Copy<VmRoleItem, Role>(vmRoleItem, r);
 
                 if (r.CreatedBy.IsNullOrEmpty())
                 {
@@ -103,9 +103,9 @@ namespace Com.BudgetMetal.Services.Role
 
             try
             {
-                roles r = repo.GetRoleById(vmRoleItem.Id);
+                Role r = repo.GetRoleById(vmRoleItem.Id);
 
-                Copy<VmRoleItem, roles>(vmRoleItem, r);
+                Copy<VmRoleItem, Role>(vmRoleItem, r);
 
                 if (r.UpdatedBy.IsNullOrEmpty())
                 {
@@ -128,7 +128,7 @@ namespace Com.BudgetMetal.Services.Role
 
         public void Delete(int Id)
         {
-            roles r= repo.GetRoleById(Id);
+            Role r = repo.GetRoleById(Id);
             r.IsActive = false;
             repo.Update(r);
             repo.Commit();

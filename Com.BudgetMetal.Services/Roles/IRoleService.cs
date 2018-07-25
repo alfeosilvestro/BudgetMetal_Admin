@@ -3,7 +3,7 @@ using Com.BudgetMetal.ViewModels;
 using Com.BudgetMetal.ViewModels.Role;
 using System;
 
-namespace Com.BudgetMetal.Services.Role
+namespace Com.BudgetMetal.Services.Roles
 {
     public interface IRoleService
     {

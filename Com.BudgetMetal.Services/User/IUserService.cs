@@ -2,7 +2,7 @@
 using Com.BudgetMetal.ViewModels.User;
 using System;
 
-namespace Com.BudgetMetal.Services.User
+namespace Com.BudgetMetal.Services.Users
 {
     public interface IUserService
     {
