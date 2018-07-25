@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Com.BudgetMetal.DataRepository.Code_Category;
 using Com.BudgetMetal.DataRepository.Gallery;
 using Com.BudgetMetal.DataRepository.Single_Sign_On;
 using Com.BudgetMetal.DataRepository.Users;
 using Com.BudgetMetal.DB;
+using Com.BudgetMetal.Services.Code_Category;
 using Com.BudgetMetal.Services.Gallery;
 using Com.BudgetMetal.Services.Role;
 using Com.BudgetMetal.Services.User;
@@ -75,7 +77,10 @@ namespace Com.EazyTender_Admin
 
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
-            
+
+            services.AddScoped<ICodeCategoryRepository, CodeCategoryRepository>();
+            services.AddScoped<ICodeCategoryService, CodeCategoryService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

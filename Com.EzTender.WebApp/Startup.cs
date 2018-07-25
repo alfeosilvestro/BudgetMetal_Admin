@@ -43,7 +43,7 @@ namespace Com.EzTender.WebApp
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=User}/{action=SignIn}/{id?}");
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

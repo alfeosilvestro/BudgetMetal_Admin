@@ -14,5 +14,7 @@ namespace Com.BudgetMetal.DB
         public virtual DbSet<roles> roles { get; set; }
 
         public virtual DbSet<user>  user { get; set; }
+
+        public virtual DbSet<CodeCategory> codeCategorie { get; set; }
     }
 }

@@ -7,7 +7,6 @@ namespace Com.BudgetMetal.DB.Entities
 {
     public class bm_gallery : GenericEntity
     {
-       
         public string Name { get; set; }
 
         public string Description { get; set; }

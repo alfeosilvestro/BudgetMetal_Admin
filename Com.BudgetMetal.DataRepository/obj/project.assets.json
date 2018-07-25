@@ -3457,23 +3457,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\galle\\.nuget\\packages\\": {},
+    "C:\\Users\\user\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Projects\\EzyTender\\Com.BudgetMetal.DataRepository\\Com.BudgetMetal.DataRepository.csproj",
+      "projectUniqueName": "D:\\Projects\\BudgetMetal_Admin-master\\Com.BudgetMetal.DataRepository\\Com.BudgetMetal.DataRepository.csproj",
       "projectName": "Com.BudgetMetal.DataRepository",
-      "projectPath": "D:\\Projects\\EzyTender\\Com.BudgetMetal.DataRepository\\Com.BudgetMetal.DataRepository.csproj",
-      "packagesPath": "C:\\Users\\galle\\.nuget\\packages\\",
-      "outputPath": "D:\\Projects\\EzyTender\\Com.BudgetMetal.DataRepository\\obj\\",
+      "projectPath": "D:\\Projects\\BudgetMetal_Admin-master\\Com.BudgetMetal.DataRepository\\Com.BudgetMetal.DataRepository.csproj",
+      "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
+      "outputPath": "D:\\Projects\\BudgetMetal_Admin-master\\Com.BudgetMetal.DataRepository\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\galle\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -3486,11 +3486,11 @@
       "frameworks": {
         "netcoreapp2.0": {
           "projectReferences": {
-            "D:\\Projects\\EzyTender\\Com.BudgetMetal.Common\\Com.BudgetMetal.Common.csproj": {
-              "projectPath": "D:\\Projects\\EzyTender\\Com.BudgetMetal.Common\\Com.BudgetMetal.Common.csproj"
+            "D:\\Projects\\BudgetMetal_Admin-master\\Com.BudgetMetal.Common\\Com.BudgetMetal.Common.csproj": {
+              "projectPath": "D:\\Projects\\BudgetMetal_Admin-master\\Com.BudgetMetal.Common\\Com.BudgetMetal.Common.csproj"
             },
-            "D:\\Projects\\EzyTender\\Com.BudgetMetal.DBContext\\Com.BudgetMetal.DB.csproj": {
-              "projectPath": "D:\\Projects\\EzyTender\\Com.BudgetMetal.DBContext\\Com.BudgetMetal.DB.csproj"
+            "D:\\Projects\\BudgetMetal_Admin-master\\Com.BudgetMetal.DBContext\\Com.BudgetMetal.DB.csproj": {
+              "projectPath": "D:\\Projects\\BudgetMetal_Admin-master\\Com.BudgetMetal.DBContext\\Com.BudgetMetal.DB.csproj"
             }
           }
         }

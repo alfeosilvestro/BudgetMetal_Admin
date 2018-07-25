@@ -14,7 +14,6 @@ namespace Com.BudgetMetal.Services.Role
     {
         private readonly IRoleRepository repo;
 
-
         public RoleService(IRoleRepository repo)
         {
             this.repo = repo;
@@ -132,6 +131,7 @@ namespace Com.BudgetMetal.Services.Role
             roles r= repo.GetRoleById(Id);
             r.IsActive = false;
             repo.Update(r);
+            repo.Commit();
         }
     }
 }

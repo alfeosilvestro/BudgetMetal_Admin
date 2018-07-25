@@ -13,7 +13,7 @@ namespace Com.BudgetMetal.DataRepository.Roles
     public class RoleRepository : GenericRepository<roles>, IRoleRepository
     {
         public RoleRepository(DataContext context, ILoggerFactory loggerFactory) :
-        base(context, loggerFactory, "GalleryRepository")
+        base(context, loggerFactory, "RoleRepository")
         {
 
         }
