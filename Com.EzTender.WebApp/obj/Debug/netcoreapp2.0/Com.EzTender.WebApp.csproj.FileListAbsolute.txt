@@ -24,6 +24,7 @@ D:\Projects\EzyTender\Com.EzTender.WebApp\bin\Debug\netcoreapp2.0\Com.EzTender.W
 D:\Projects\EzyTender\Com.EzTender.WebApp\bin\Debug\netcoreapp2.0\Com.EzTender.WebApp.runtimeconfig.json
 D:\Projects\EzyTender\Com.EzTender.WebApp\bin\Debug\netcoreapp2.0\Com.EzTender.WebApp.runtimeconfig.dev.json
 D:\Projects\EzyTender\Com.EzTender.WebApp\bin\Debug\netcoreapp2.0\Com.EzTender.WebApp.dll
+D:\Projects\EzyTender\Com.EzTender.WebApp\bin\Debug\netcoreapp2.0\Com.EzTender.WebApp.pdb
 D:\Projects\EzyTender\Com.EzTender.WebApp\bin\Debug\netcoreapp2.0\Com.BudgetMetal.Common.dll
 D:\Projects\EzyTender\Com.EzTender.WebApp\bin\Debug\netcoreapp2.0\Com.BudgetMetal.DataRepository.dll
 D:\Projects\EzyTender\Com.EzTender.WebApp\bin\Debug\netcoreapp2.0\Com.BudgetMetal.DB.dll
@@ -39,7 +40,6 @@ D:\Projects\EzyTender\Com.EzTender.WebApp\obj\Debug\netcoreapp2.0\Com.EzTender.W
 D:\Projects\EzyTender\Com.EzTender.WebApp\obj\Debug\netcoreapp2.0\Com.EzTender.WebApp.AssemblyInfoInputs.cache
 D:\Projects\EzyTender\Com.EzTender.WebApp\obj\Debug\netcoreapp2.0\Com.EzTender.WebApp.AssemblyInfo.cs
 D:\Projects\EzyTender\Com.EzTender.WebApp\obj\Debug\netcoreapp2.0\Com.EzTender.WebApp.csproj.CopyComplete
-D:\Projects\EzyTender\Com.EzTender.WebApp\bin\Debug\netcoreapp2.0\Com.EzTender.WebApp.pdb
 D:\Projects\EzyTender\Com.EzTender.WebApp\obj\Debug\netcoreapp2.0\Com.EzTender.WebApp.dll
 D:\Projects\EzyTender\Com.EzTender.WebApp\obj\Debug\netcoreapp2.0\Com.EzTender.WebApp.pdb
 D:\Projects\BudgetMetal_Admin-master\Com.EzTender.WebApp\bin\Debug\netcoreapp2.0\Com.EzTender.WebApp.deps.json
