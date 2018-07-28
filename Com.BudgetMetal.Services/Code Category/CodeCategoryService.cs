@@ -1,8 +1,8 @@
 ﻿using Com.BudgetMetal.Common;
 using Com.BudgetMetal.DataRepository.Code_Category;
-using Com.BudgetMetal.DB.Entities;
+using Com.BudgetMetal.DBEntities;
 using Com.BudgetMetal.Services.Base;
-using Com.BudgetMetal.ViewModels.Code_Category;
+using Com.BudgetMetal.ViewModels.CodeCategory;
 using System.Collections.Generic;
 using System;
 using Com.BudgetMetal.ViewModels;

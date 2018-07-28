@@ -1,5 +1,5 @@
 ﻿using Com.BudgetMetal.ViewModels;
-using Com.BudgetMetal.ViewModels.Code_Table;
+using Com.BudgetMetal.ViewModels.CodeTable;
 using System;
 using System.Collections.Generic;
 using System.Text;

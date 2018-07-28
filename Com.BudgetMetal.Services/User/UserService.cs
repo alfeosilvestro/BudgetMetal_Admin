@@ -1,7 +1,7 @@
 ﻿using Com.BudgetMetal.Common;
 using Com.BudgetMetal.DataRepository.Users;
 using Com.BudgetMetal.DataRepository.Single_Sign_On;
-using Com.BudgetMetal.DB.Entities;
+using Com.BudgetMetal.DBEntities;
 using Com.BudgetMetal.Services.Base;
 using Com.BudgetMetal.ViewModels.User;
 using System.Collections.Generic;

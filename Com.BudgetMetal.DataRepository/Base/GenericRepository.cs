@@ -1,4 +1,5 @@
 ﻿using Com.BudgetMetal.DB;
+using Com.BudgetMetal.DBEntities;
 using Com.BudgetMetal.DataRepository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;

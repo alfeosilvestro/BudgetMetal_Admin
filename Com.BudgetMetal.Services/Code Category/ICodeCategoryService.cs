@@ -1,6 +1,6 @@
 ﻿using Com.BudgetMetal.Common;
 using Com.BudgetMetal.ViewModels;
-using Com.BudgetMetal.ViewModels.Code_Category;
+using Com.BudgetMetal.ViewModels.CodeCategory;
 using System;
 
 namespace Com.BudgetMetal.Services.Code_Category

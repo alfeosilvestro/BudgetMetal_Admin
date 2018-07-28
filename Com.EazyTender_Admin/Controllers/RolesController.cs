@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Com.BudgetMetal.DB;
-using Com.BudgetMetal.DB.Entities;
 using Com.BudgetMetal.Services.Roles;
 using Com.BudgetMetal.ViewModels.Role;
 using Com.EazyTender_Admin.Configurations;

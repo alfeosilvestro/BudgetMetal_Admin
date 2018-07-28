@@ -1,4 +1,4 @@
-﻿using Com.BudgetMetal.DB.Entities;
+﻿using Com.BudgetMetal.DBEntities;
 using Microsoft.EntityFrameworkCore;
 using System;
 

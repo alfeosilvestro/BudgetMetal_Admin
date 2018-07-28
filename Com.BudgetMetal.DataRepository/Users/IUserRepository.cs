@@ -1,6 +1,6 @@
 ﻿using Com.BudgetMetal.Common;
 using Com.BudgetMetal.DataRepository.Base;
-using Com.BudgetMetal.DB.Entities;
+using Com.BudgetMetal.DBEntities;
 using System;
 using System.Collections.Generic;
 using System.Text;

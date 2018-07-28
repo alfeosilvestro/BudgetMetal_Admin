@@ -8,6 +8,7 @@
     <ProjectReference Include="..\Com.BudgetMetal.Common\Com.BudgetMetal.Common.csproj" />
     <ProjectReference Include="..\Com.BudgetMetal.DataRepository\Com.BudgetMetal.DataRepository.csproj" />
     <ProjectReference Include="..\Com.BudgetMetal.DBContext\Com.BudgetMetal.DB.csproj" />
+    <ProjectReference Include="..\Com.BudgetMetal.DBEntities\Com.BudgetMetal.DBEntities.csproj" />
     <ProjectReference Include="..\Com.BudgetMetal.ViewModels\Com.BudgetMetal.ViewModels.csproj" />
   </ItemGroup>
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Com.BudgetMetal.Services.Code_Category;
-using Com.BudgetMetal.ViewModels.Code_Category;
+using Com.BudgetMetal.ViewModels.CodeCategory;
 using Com.EazyTender_Admin.Configurations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

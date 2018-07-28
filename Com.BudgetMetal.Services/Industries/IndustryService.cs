@@ -1,6 +1,6 @@
 ﻿using Com.BudgetMetal.Common;
 using Com.BudgetMetal.DataRepository.Industries;
-using Com.BudgetMetal.DB.Entities;
+using Com.BudgetMetal.DBEntities;
 using Com.BudgetMetal.Services.Base;
 using Com.BudgetMetal.ViewModels;
 using Com.BudgetMetal.ViewModels.Industries;

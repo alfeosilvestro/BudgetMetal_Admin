@@ -1,6 +1,6 @@
 ﻿using Com.BudgetMetal.DataRepository.Base;
 using Com.BudgetMetal.DB;
-using Com.BudgetMetal.DB.Entities;
+using Com.BudgetMetal.DBEntities;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;

@@ -1,9 +1,9 @@
 ﻿using Com.BudgetMetal.Common;
 using Com.BudgetMetal.DataRepository.Code_Table;
-using Com.BudgetMetal.DB.Entities;
+using Com.BudgetMetal.DBEntities;
 using Com.BudgetMetal.Services.Base;
 using Com.BudgetMetal.ViewModels;
-using Com.BudgetMetal.ViewModels.Code_Table;
+using Com.BudgetMetal.ViewModels.CodeTable;
 using System;
 using System.Collections.Generic;
 using System.Text;
