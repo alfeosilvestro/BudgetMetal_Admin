@@ -1,8 +1,8 @@
 # set up network
 FROM microsoft/aspnetcore:2.0 AS base
 WORKDIR /app
-ENV ASPNETCORE_URLS=http://+:9910
-EXPOSE 9910
+ENV ASPNETCORE_URLS=http://+:2052
+EXPOSE 2052
 #EXPOSE 80
 
 FROM microsoft/aspnetcore-build:2.0 AS build
