@@ -23,12 +23,12 @@ namespace Com.BudgetMetal.DB
 
         //public virtual DbSet<Clarification> Clarification { get; set; }
         public virtual DbSet<CodeCategory> CodeCategory { get; set; }
-        //public virtual DbSet<CodeTable> CodeTable { get; set; }
+        public virtual DbSet<CodeTable> CodeTable { get; set; }
         //public virtual DbSet<Company> Company { get; set; }
         //public virtual DbSet<Document> Document { get; set; }
         //public virtual DbSet<DocumentUser> DocumentUser { get; set; }
         //public virtual DbSet<EmailLog> EmailLog { get; set; }
-        //public virtual DbSet<Industry> Industry { get; set; }
+        public virtual DbSet<Industry> Industry { get; set; }
         //public virtual DbSet<InvitedSupplier> InvitedSupplier { get; set; }
         //public virtual DbSet<Penalty> Penalty { get; set; }
         //public virtual DbSet<Quotation> Quotation { get; set; }

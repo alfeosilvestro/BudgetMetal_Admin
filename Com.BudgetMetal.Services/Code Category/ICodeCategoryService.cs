@@ -15,6 +15,6 @@ namespace Com.BudgetMetal.Services.Code_Category
 
         VmGenericServiceResult Update(VmCodeCategoryItem codeCategoryItem);
 
-        void Delete(int I);
+        void Delete(int Id);
     }
 }

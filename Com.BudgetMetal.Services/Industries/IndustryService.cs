@@ -1,47 +1,48 @@
 ﻿using Com.BudgetMetal.Common;
-using Com.BudgetMetal.DataRepository.Code_Category;
+using Com.BudgetMetal.DataRepository.Industries;
 using Com.BudgetMetal.DB.Entities;
 using Com.BudgetMetal.Services.Base;
-using Com.BudgetMetal.ViewModels.Code_Category;
-using System.Collections.Generic;
-using System;
 using Com.BudgetMetal.ViewModels;
+using Com.BudgetMetal.ViewModels.Industries;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Com.BudgetMetal.Services.Code_Category
+namespace Com.BudgetMetal.Services.Industries
 {
-    public class CodeCategoryService : BaseService, ICodeCategoryService
+    public class IndustryService : BaseService, IIndustryService
     {
-        private readonly ICodeCategoryRepository repo;
+        private readonly IIndustryRepository repo;
 
-        public CodeCategoryService(ICodeCategoryRepository repo)
+        public IndustryService(IIndustryRepository repo)
         {
             this.repo = repo;
         }
 
-        public VmCodeCategoryPage GetCodeCategoryByPage(string keyword, int page, int totalRecords)
+        public VmIndustryPage GetIndustriesByPage(string keyword, int page, int totalRecords)
         {
-            var dbPageResult = repo.GetCodeCategoryByPage(keyword,
+            var dbPageResult = repo.GetInsustriesByPage(keyword,
                 (page == 0 ? Constants.app_firstPage : page),
                 (totalRecords == 0 ? Constants.app_totalRecords : totalRecords));
 
             if (dbPageResult == null)
             {
-                return new VmCodeCategoryPage();
+                return new VmIndustryPage();
             }
 
-            var resultObj = new VmCodeCategoryPage();
+            var resultObj = new VmIndustryPage();
             resultObj.RequestId = DateTime.Now.ToString("yyyyMMddHHmmss");
             resultObj.RequestDate = DateTime.Now;
-            resultObj.Result = new PageResult<VmCodeCategoryItem>();
-            resultObj.Result.Records = new List<VmCodeCategoryItem>();
+            resultObj.Result = new PageResult<VmIndustryItem>();
+            resultObj.Result.Records = new List<VmIndustryItem>();
 
-            Copy<PageResult<CodeCategory>, PageResult<VmCodeCategoryItem>>(dbPageResult, resultObj.Result, new string[] { "Records" });
-            
+            Copy<PageResult<Industry>, PageResult<VmIndustryItem>>(dbPageResult, resultObj.Result, new string[] { "Records" });
+
             foreach (var dbItem in dbPageResult.Records)
             {
-                var resultItem = new VmCodeCategoryItem();
+                var resultItem = new VmIndustryItem();
 
-                Copy<CodeCategory, VmCodeCategoryItem>(dbItem, resultItem);
+                Copy<Industry, VmIndustryItem>(dbItem, resultItem);
 
                 resultObj.Result.Records.Add(resultItem);
             }
@@ -49,38 +50,37 @@ namespace Com.BudgetMetal.Services.Code_Category
             return resultObj;
         }
 
-        public VmCodeCategoryItem GetCodeCategoryById(int Id)
+        public VmIndustryItem GetIndustryById(int Id)
         {
-            var dbPageResult = repo.GetCodeCategoryById(Id);
+            var dbPageResult = repo.GetIndustryById(Id);
 
             if (dbPageResult == null)
             {
-                return new VmCodeCategoryItem();
+                return new VmIndustryItem();
             }
 
-            var resultObj = new VmCodeCategoryItem();
+            var resultObj = new VmIndustryItem();
 
-            Copy<CodeCategory, VmCodeCategoryItem>(dbPageResult, resultObj);
+            Copy<Industry, VmIndustryItem>(dbPageResult, resultObj);
 
             return resultObj;
         }
 
-        public VmGenericServiceResult Insert(VmCodeCategoryItem vmCodeCategoryItem)
+        public VmGenericServiceResult Insert(VmIndustryItem vmtem)
         {
             VmGenericServiceResult result = new VmGenericServiceResult();
 
             try
             {
-                CodeCategory r = new CodeCategory();
+                Industry r = new Industry();
 
-                Copy<VmCodeCategoryItem, CodeCategory>(vmCodeCategoryItem, r);
-
-                r.Id = repo.GetLastId();
+                Copy<VmIndustryItem, Industry>(vmtem, r);
 
                 if (r.CreatedBy.IsNullOrEmpty())
                 {
                     r.CreatedBy = r.UpdatedBy = "System";
                 }
+
                 repo.Add(r);
 
                 repo.Commit();
@@ -96,15 +96,15 @@ namespace Com.BudgetMetal.Services.Code_Category
             return result;
         }
 
-        public VmGenericServiceResult Update(VmCodeCategoryItem vmCodeCategoryItem)
+        public VmGenericServiceResult Update(VmIndustryItem vmtem)
         {
             VmGenericServiceResult result = new VmGenericServiceResult();
 
             try
             {
-                CodeCategory r = repo.GetCodeCategoryById(vmCodeCategoryItem.Id);
+                Industry r = repo.GetIndustryById(vmtem.Id);
 
-                Copy<VmCodeCategoryItem, CodeCategory>(vmCodeCategoryItem, r);
+                Copy<VmIndustryItem, Industry>(vmtem, r);
 
                 if (r.UpdatedBy.IsNullOrEmpty())
                 {
@@ -128,7 +128,7 @@ namespace Com.BudgetMetal.Services.Code_Category
 
         public void Delete(int Id)
         {
-            CodeCategory r = repo.GetCodeCategoryById(Id);
+            Industry r = repo.GetIndustryById(Id);
             r.IsActive = false;
             repo.Update(r);
             repo.Commit();

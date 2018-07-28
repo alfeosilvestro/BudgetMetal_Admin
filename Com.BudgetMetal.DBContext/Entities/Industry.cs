@@ -5,14 +5,14 @@ namespace Com.BudgetMetal.DB.Entities
 {
     public class Industry : GenericEntity
     {
-        public Industry()
-        {
-            ServiceTags = new HashSet<ServiceTags>();
-        }
+        //public Industry()
+        //{
+        //    ServiceTags = new HashSet<ServiceTags>();
+        //}
 
         
         public string Name { get; set; }
 
-        public ICollection<ServiceTags> ServiceTags { get; set; }
+        //public ICollection<ServiceTags> ServiceTags { get; set; }
     }
 }
