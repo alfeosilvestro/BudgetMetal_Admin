@@ -1,10 +1,10 @@
-﻿@model Com.BudgetMetal.ViewModels.Role.VmRolePage
+﻿@model Com.BudgetMetal.ViewModels.Industries.VmIndustryPage
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h2>Role</h2>
+<h2>Industry</h2>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,10 +13,7 @@
     <thead>
         <tr>
             <th>
-                Name@*@Html.DisplayNameFor(model => model.Result.Records[0].Role)*@
-            </th>
-            <th>
-                Code@*@Html.DisplayNameFor(model => model.Result.Records[0].RoleCode)*@
+                @Html.DisplayNameFor(model => model.Result.Records[0].Name)
             </th>
             <th></th>
             <th></th>
@@ -27,7 +24,6 @@
         {
             <tr>
                 <td> @item.Name </td>
-                <td> @item.Code </td>
                 <td hidden="hidden"> @item.Id </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>

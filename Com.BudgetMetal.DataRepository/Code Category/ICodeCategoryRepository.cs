@@ -15,5 +15,7 @@ namespace Com.BudgetMetal.DataRepository.Code_Category
         CodeCategory GetCodeCategoryById(int Id);
 
         CodeCategory GetCodeCategoryFileById(int Id);
+
+        int GetLastId();
     }
 }

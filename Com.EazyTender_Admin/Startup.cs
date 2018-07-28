@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Com.BudgetMetal.DataRepository.Code_Category;
+using Com.BudgetMetal.DataRepository.Code_Table;
 using Com.BudgetMetal.DataRepository.Gallery;
+using Com.BudgetMetal.DataRepository.Industries;
 using Com.BudgetMetal.DataRepository.Single_Sign_On;
 using Com.BudgetMetal.DataRepository.Users;
 using Com.BudgetMetal.DB;
 using Com.BudgetMetal.Services.Code_Category;
+using Com.BudgetMetal.Services.Code_Table;
 using Com.BudgetMetal.Services.Gallery;
+using Com.BudgetMetal.Services.Industries;
 using Com.BudgetMetal.Services.Roles;
 using Com.BudgetMetal.Services.Users;
 using Microsoft.AspNetCore.Builder;
@@ -80,6 +84,13 @@ namespace Com.EazyTender_Admin
 
             services.AddScoped<ICodeCategoryRepository, CodeCategoryRepository>();
             services.AddScoped<ICodeCategoryService, CodeCategoryService>();
+
+            services.AddScoped<IIndustryRepository, IndustryRepository>();
+            services.AddScoped<IIndustryService, IndustryService>();
+
+            //CodeTable
+            services.AddScoped<ICodeTableRepository, CodeTableRepository>();
+            services.AddScoped<ICodeTableService, CodeTableService>();
 
         }
 

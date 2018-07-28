@@ -1,5 +1,4 @@
-﻿using Com.BudgetMetal.Common;
-using Com.BudgetMetal.DataRepository.Base;
+﻿using Com.BudgetMetal.DataRepository.Base;
 using Com.BudgetMetal.DB;
 using Com.BudgetMetal.DB.Entities;
 using Microsoft.Extensions.Logging;
@@ -7,18 +6,19 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using Com.BudgetMetal.Common;
 
-namespace Com.BudgetMetal.DataRepository.Code_Category
+namespace Com.BudgetMetal.DataRepository.Industries
 {
-    public class CodeCategoryRepository : GenericRepository<CodeCategory>, ICodeCategoryRepository
+    public class IndustryRepository : GenericRepository<Industry>, IIndustryRepository
     {
-        public CodeCategoryRepository(DataContext context, ILoggerFactory loggerFactory) :
-        base(context, loggerFactory, "CodeCategoryRepository")
+        public IndustryRepository(DataContext context, ILoggerFactory loggerFactory) :
+        base(context, loggerFactory, "IndustryRepository")
         {
 
         }
 
-        public PageResult<CodeCategory> GetCodeCategoryByPage(string keyword, int page, int totalRecords)
+        public PageResult<Industry> GetInsustriesByPage(string keyword, int page, int totalRecords)
         {
             if (string.IsNullOrEmpty(keyword))
             {
@@ -26,7 +26,7 @@ namespace Com.BudgetMetal.DataRepository.Code_Category
                 //return await base.GetPage(keyword, page, totalRecords);
             }
 
-            var records = this.DbContext.CodeCategory.Where(e =>
+            var records = this.DbContext.Industry.Where(e =>
                 e.IsActive == true &&
                 (keyword == string.Empty ||
                 e.Name.Contains(keyword))
@@ -34,7 +34,7 @@ namespace Com.BudgetMetal.DataRepository.Code_Category
 
             var recordList = records
             .Select(r =>
-                new CodeCategory()
+                new Industry()
                 {
                     Id = r.Id,
                     Name = r.Name
@@ -61,7 +61,7 @@ namespace Com.BudgetMetal.DataRepository.Code_Category
                 nextPage = page + 1;
             }
 
-            var result = new PageResult<CodeCategory>()
+            var result = new PageResult<Industry>()
             {
                 Records = recordList,
                 TotalPage = totalPage,
@@ -74,41 +74,13 @@ namespace Com.BudgetMetal.DataRepository.Code_Category
             return result;
         }
 
-        public CodeCategory GetCodeCategoryById(int Id)
+        public Industry GetIndustryById(int Id)
         {
-            var records = this.DbContext.CodeCategory.Where(x => x.IsActive == true)
+            var records = this.DbContext.Industry.Where(x => x.IsActive == true)
                 .Single(e =>
                 e.Id == Id);
 
             return records;
-        }
-
-        public CodeCategory GetCodeCategoryFileById(int Id)
-        {
-            var records = this.DbContext.CodeCategory.Select(r =>
-                new CodeCategory()
-                {
-                    Id = r.Id,
-                    Name = r.Name
-
-                })
-                .Single(e =>
-                e.Id == Id);
-
-            return records;
-        }
-
-        public int GetLastId()
-        {
-            var record = this.DbContext.CodeCategory.OrderByDescending(x => x.Id).FirstOrDefault();
-            if (record != null)
-            {
-                return record.Id + 1;
-            }
-            else
-            {
-                return 1;
-            }
         }
     }
 }
