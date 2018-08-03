@@ -12,6 +12,6 @@ namespace Com.BudgetMetal.ViewModels.Code_Table
         public string Name { get; set; }
         public CodeCategory CodeCategory { get; set; }
 
-        public List<Code MyProperty { get; set; }
+        public List<CodeCategory> MyProperty { get; set; }
     }
 }

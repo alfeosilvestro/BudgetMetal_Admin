@@ -30,7 +30,6 @@ namespace Com.GenericPlatform.WebApp.Controllers
 
         // POST: Rfq/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Create(VmRfq Rfq)
         {
             try

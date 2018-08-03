@@ -69,7 +69,7 @@
                         <li role="presentation"><a href="#detailed_requirements" data-toggle="tab">Requirements</a></li>
                         <li role="presentation"><a href="#service_level_agreement" data-toggle="tab">SLA</a></li>
                         <li role="presentation"><a href="#penalty" data-toggle="tab">Penalty / LD</a></li>
-                        <li role="presentation"><a href="#price_table" data-toggle="tab">Pricing Table</a></li>
+                        <li role="presentation"><a href="#pricing" data-toggle="tab">Pricing Table</a></li>
                         <li role="presentation"><a href="#invited_suppliers" data-toggle="tab">Invited Suppliers</a></li>
                         <li role="presentation"><a href="#attachments" data-toggle="tab">Files</a></li>
                         <li role="presentation"><a href="#settings" data-toggle="tab">Users</a></li>
@@ -113,11 +113,11 @@
                                 </div>
 
                                 <div class="col-sm-3">
-                                    <input asp-for="SupplierProvideMaterial" class="chk-col-red" checked />
+                                    <input type="checkbox" asp-for="SupplierProvideMaterial" class="chk-col-red" />
                                     <label for="SupplierProvideMaterial">Supplier to Provide Materials</label>
                                 </div>
                                 <div class="col-sm-3">
-                                    <input asp-for="SupplierProvideTransport" class="chk-col-red" checked />
+                                    <input type="checkbox" asp-for="SupplierProvideTransport" class="chk-col-red" />
                                     <label for="SupplierProvideTransport">Supplier to Provide Transport</label>
                                 </div>
                                 <div class="col-sm-6">
@@ -138,7 +138,7 @@
 
                         </div>
                         <div role="tabpanel" class="tab-pane fade in" id="detailed_requirements">
-
+                            <input type="hidden" id="detailRequirementLastId" value="1" />
                             <table id="requirementsTable" class="table table-striped">
                                 <thead>
                                     <tr>
@@ -148,51 +148,32 @@
                                         <th>&nbsp;</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody data-test="abc">
                                     <tr>
-                                        <td><input type="text" name="Requirement[0].ServiceName" /></td>
-                                        <td><input type="text" name="Requirement[0].Description" /></td>
-                                        <td><input type="text" name="Requirement[0].Quantity" /></td>
-                                        <td><button type="button" class="btn btn-danger waves-effect">Remove</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td><input type="text" name="Requirement[1].ServiceName" /></td>
-                                        <td><input type="text" name="Requirement[1].Description" /></td>
-                                        <td><input type="text" name="Requirement[1].Quantity" /></td>
-                                        <td><button type="button" class="btn btn-danger waves-effect">Remove</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td><input type="text" name="Requirement[2].ServiceName" /></td>
-                                        <td><input type="text" name="Requirement[2].Description" /></td>
-                                        <td><input type="text" name="Requirement[2].Quantity" /></td>
-                                        <td><button type="button" class="btn btn-danger waves-effect">Remove</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td><input type="text" name="Requirement[3].ServiceName" /></td>
-                                        <td><input type="text" name="Requirement[3].Description" /></td>
-                                        <td><input type="text" name="Requirement[3].Quantity" /></td>
-                                        <td><button type="button" class="btn btn-danger waves-effect">Remove</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td><input type="text" name="Requirement[4].ServiceName" /></td>
-                                        <td><input type="text" name="Requirement[4].Description" /></td>
-                                        <td><input type="text" name="Requirement[4].Quantity" /></td>
-                                        <td><button type="button" class="btn btn-danger waves-effect">Remove</button></td>
+                                        <td><input type="text" name="Requirement[0].ServiceName" class="form-control" /></td>
+                                        <td><input type="text" name="Requirement[0].Description" class="form-control" /></td>
+                                        <td><input type="text" name="Requirement[0].Quantity" class="form-control" /></td>
+                                        <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveRequirementRow(this)'>Remove</button></td>
                                     </tr>
                                 </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th><strong>TOTAL</strong></th>
-                                        <th>1290</th>
-                                        <th>1420</th>
-                                        <td><button type="button" class="btn btn-danger waves-effect">Remove</button></td>
-                                    </tr>
-                                </tfoot>
+                                @*<tfoot>
+                    <tr>
+                        <th><strong>TOTAL</strong></th>
+                        <th></th>
+                        <th><span class="bold text-right" id="totalQuantity"></span></th>
+                        <td></td>
+                    </tr>
+                </tfoot>*@
                             </table>
+                            <div class="row">
+                                <div class="form-group col-sm-12">
+                                    <a class="btn btn-success" id="btnNewRequirement"> New Requirement </a>
+                                </div>
 
+                            </div>
                         </div>
                         <div role="tabpanel" class="tab-pane fade in" id="service_level_agreement">
-
+                            <input type="hidden" id="detailSLALastId" value="1" />
                             <table id="slaTable" class="table table-striped">
                                 <thead>
                                     <tr>
@@ -203,44 +184,21 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>Car</td>
-                                        <td>100</td>
-                                        <td><button type="button" class="btn btn-danger waves-effect">Remove</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Bike</td>
-                                        <td>330</td>
-                                        <td><button type="button" class="btn btn-danger waves-effect">Remove</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Plane</td>
-                                        <td>430</td>
-                                        <td><button type="button" class="btn btn-danger waves-effect">Remove</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Yacht</td>
-                                        <td>100</td>
-                                        <td><button type="button" class="btn btn-danger waves-effect">Remove</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Segway</td>
-                                        <td>330</td>
-                                        <td><button type="button" class="btn btn-danger waves-effect">Remove</button></td>
+                                        <td><input type="text" name="SLA[0].Requirement" class="form-control" /></td>
+                                        <td><input type="text" name="SLA[0].Description" class="form-control" /></td>
+                                        <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveSLARow(this)'>Remove</button></td>
                                     </tr>
                                 </tbody>
-                                @*<tfoot>
-                                        <tr>
-                                            <th><strong>TOTAL</strong></th>
-                                            <th>1290</th>
-                                            <th>1420</th>
-                                            <td><button type="button" class="btn btn-danger waves-effect">Remove</button></td>
-                                        </tr>
-                                    </tfoot>*@
                             </table>
+                            <div class="row">
+                                <div class="form-group col-sm-12">
+                                    <a class="btn btn-success" id="btnNewSLA"> New SLA </a>
+                                </div>
 
+                            </div>
                         </div>
                         <div role="tabpanel" class="tab-pane fade in" id="penalty">
-
+                            <input type="hidden" id="PenaltyLastId" value="1" />
                             <table id="penaltyTable" class="table table-striped">
                                 <thead>
                                     <tr>
@@ -252,49 +210,54 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>Car</td>
-                                        <td>100</td>
-                                        <td>100</td>
-                                        <th><button type="button" class="btn btn-danger waves-effect">Remove</button></th>
-                                    </tr>
-                                    <tr>
-                                        <td>Bike</td>
-                                        <td>330</td>
-                                        <td>100</td>
-                                        <td><button type="button" class="btn btn-danger waves-effect">Remove</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Plane</td>
-                                        <td>430</td>
-                                        <td>100</td>
-                                        <td><button type="button" class="btn btn-danger waves-effect">Remove</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Yacht</td>
-                                        <td>100</td>
-                                        <td>100</td>
-                                        <td><button type="button" class="btn btn-danger waves-effect">Remove</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Segway</td>
-                                        <td>330</td>
-                                        <td>100</td>
-                                        <td><button type="button" class="btn btn-danger waves-effect">Remove</button></td>
+                                        <td><input type="text" name="Penalty[0].BreachOfServiceDefinition" class="form-control" /></td>
+                                        <td><input type="text" name="Penalty[0].PenaltyAmount" class="form-control" /></td>
+                                        <td><input type="text" name="Penalty[0].Description" class="form-control" /></td>
+                                        <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePenaltyRow(this)'>Remove</button></td>
                                     </tr>
                                 </tbody>
-                                @*<tfoot>
-                                        <tr>
-                                            <th><strong>TOTAL</strong></th>
-                                            <th>1290</th>
-                                            <th>1420</th>
-                                            <td><button type="button" class="btn btn-danger waves-effect">Remove</button></td>
-                                        </tr>
-                                    </tfoot>*@
-                            </table>
 
+                            </table>
+                            <div class="row">
+                                <div class="form-group col-sm-12">
+                                    <a class="btn btn-success" id="btnNewPenalty"> New Penalty </a>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane fade in" id="pricing">
+                            <input type="hidden" id="PricingLastId" value="1" />
+                            <table id="pricingTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="25%">Item Name</th>
+                                        <th width="35%">Item Description</th>
+                                        <th width="20%">Internal Reference Code</th>
+                                        <th width="10%">Quantity</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><input type="text" name="RfqPriceSchedule[0].ItemName" class="form-control" /></td>
+                                        <td><input type="text" name="RfqPriceSchedule[0].ItemDescription" class="form-control" /></td>
+                                        <td><input type="text" name="RfqPriceSchedule[0].InternalRefrenceCode" class="form-control" /></td>
+                                        <td><input type="text" name="RfqPriceSchedule[0].QuantityRequired" class="form-control" /></td>
+                                        <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePricingRow(this)'>Remove</button></td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                            <div class="row">
+                                <div class="form-group col-sm-12">
+                                    <a class="btn btn-success" id="btnNewPricing"> New </a>
+                                </div>
+
+                            </div>
                         </div>
                         <div role="tabpanel" class="tab-pane fade" id="invited_suppliers">
-                            <table id="penaltyTable" class="table table-hover">
+                            <table id="invitedSupplierTable" class="table table-hover">
                                 <thead>
                                     <tr>
                                         <th width="95%">Supplier Information</th>
@@ -358,7 +321,7 @@
                         <div role="tabpanel" class="tab-pane fade" id="attachments">
                             <div class="row clearfix">
                                 <div class="col-sm-12">
-                                    <form action="/" id="frmFileUpload" class="dropzone" method="post" enctype="multipart/form-data">
+                                    <div action="/" id="frmFileUpload" class="dropzone" method="post" enctype="multipart/form-data">
                                         <div class="dz-message">
                                             <div class="drag-icon-cph">
                                                 <i class="material-icons">touch_app</i>
@@ -369,7 +332,7 @@
                                         <div class="fallback">
                                             <input name="file" type="file" multiple />
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
                             <table id="attachmentTable" class="table table-striped">
@@ -562,21 +525,24 @@
             </div>
         </div>
     </div>
-    </form>
-    <!-- Editable Table Plugin Js -->
-    <script src="~/material_theme/plugins/editable-table/mindmup-editabletable.js"></script>
-    <script src="~/material_theme/js/pages/tables/editable-table.js"></script>
-    <!-- Moment Plugin Js -->
-    <script src="~/material_theme/plugins/momentjs/moment.js"></script>
-    <!-- Bootstrap Material Datetime Picker Plugin Js -->
-    <script src="~/material_theme/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
-    <!-- Input Mask Plugin Js -->
-    <script src="~/material_theme/plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
-    <!-- Autosize Plugin Js -->
-    <script src="~/material_theme/plugins/autosize/autosize.js"></script>
-    <!-- Custom Js -->
-    <script src="~/material_theme/js/pages/forms/basic-form-elements.js"></script>
-    <!-- Dropzone Css -->
-    <link href="~/material_theme/plugins/dropzone/dropzone.css" rel="stylesheet">
-    <!-- Dropzone Plugin Js -->
-    <script src="~/material_theme/plugins/dropzone/dropzone.js"></script>
+</form>
+<!-- Editable Table Plugin Js -->
+<script src="~/material_theme/plugins/editable-table/mindmup-editabletable.js"></script>
+<script src="~/material_theme/js/pages/tables/editable-table.js"></script>
+<!-- Moment Plugin Js -->
+<script src="~/material_theme/plugins/momentjs/moment.js"></script>
+<!-- Bootstrap Material Datetime Picker Plugin Js -->
+<script src="~/material_theme/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
+<!-- Input Mask Plugin Js -->
+<script src="~/material_theme/plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
+<!-- Autosize Plugin Js -->
+<script src="~/material_theme/plugins/autosize/autosize.js"></script>
+<!-- Custom Js -->
+<script src="~/material_theme/js/pages/forms/basic-form-elements.js"></script>
+<!-- Dropzone Css -->
+<link href="~/material_theme/plugins/dropzone/dropzone.css" rel="stylesheet">
+<!-- Dropzone Plugin Js -->
+<script src="~/material_theme/plugins/dropzone/dropzone.js"></script>
+
+<!-- Create RFQ Js -->
+<script src="~/material_theme/js/RFQ/create.js"></script>
