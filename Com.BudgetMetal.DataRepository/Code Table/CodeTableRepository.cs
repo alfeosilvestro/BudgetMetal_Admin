@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace Com.BudgetMetal.DataRepository.Code_Table
 {
@@ -16,20 +17,17 @@ namespace Com.BudgetMetal.DataRepository.Code_Table
         public CodeTableRepository(DataContext context, ILoggerFactory loggerFactory) :
         base(context, loggerFactory, "CodeTableRepository")
         {
-
         }
 
         public PageResult<CodeTable> GetCodeTableByPage(string keyword, int page, int totalRecords)
         {
-            //ICollection<CodeTable> ct = this.DbContext.CodeTable.Include(c => c.CodeCategory).ToList();
             if (string.IsNullOrEmpty(keyword))
             {
                 keyword = string.Empty;
                 //return await base.GetPage(keyword, page, totalRecords);
             }
 
-            var records = this.DbContext.CodeTable.Where(e =>
-                e.IsActive == true &&
+            var records = this.DbContext.CodeTable.Include(r=>r.CodeCategory).Where(e =>
                 (keyword == string.Empty ||
                 e.Name.Contains(keyword))
             );
@@ -39,8 +37,8 @@ namespace Com.BudgetMetal.DataRepository.Code_Table
                 new CodeTable()
                 {
                     Id = r.Id,
-                    CodeCategory_Id = r.CodeCategory_Id,
                     Name = r.Name,
+                    CodeCategory_Id = r.CodeCategory_Id,
                     CodeCategory = r.CodeCategory
                 })
             .OrderBy(e => e.Name)
@@ -48,7 +46,6 @@ namespace Com.BudgetMetal.DataRepository.Code_Table
             .Skip((totalRecords * page) - totalRecords)
             .Take(totalRecords)
             .ToList();
-            //DetailImage = (getDetailImage ? r.DetailImage : null),
 
             var count = records.Count();
 
@@ -77,43 +74,5 @@ namespace Com.BudgetMetal.DataRepository.Code_Table
 
             return result;
         }
-
-        public CodeTable GetCodeTableById(int Id)
-        {
-            var records = this.DbContext.CodeTable.Where(x => x.IsActive == true)
-                .Single(e =>
-                e.Id == Id);
-
-            return records;
-        }
-
-        public CodeTable GetCodeTableFileById(int Id)
-        {
-            var records = this.DbContext.CodeCategory.Select(r =>
-                new CodeTable()
-                {
-                    Id = r.Id,
-                    Name = r.Name
-
-                })
-                .Single(e =>
-                e.Id == Id);
-
-            return records;
-        }
-
-        public int GetLastId()
-        {
-            var record = this.DbContext.CodeTable.OrderByDescending(x => x.Id).FirstOrDefault();
-            if (record != null)
-            {
-                return record.Id + 1;
-            }
-            else
-            {
-                return 1;
-            }
-        }
-
     }
 }

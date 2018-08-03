@@ -10,10 +10,6 @@ namespace Com.BudgetMetal.DataRepository.Roles
 {
     public interface IRoleRepository : IGenericRepository<Role>
     {
-        PageResult<Role> GetRolesByPage(string keyword, int page, int totalRecords);
-
-        Role GetRoleById(int Id );
-
-        Role GetRoleFileById(int Id);
+        
     }
 }

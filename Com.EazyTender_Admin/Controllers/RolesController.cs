@@ -25,17 +25,17 @@ namespace Com.EazyTender_Admin.Controllers
             this.dataContext = dataContext;
         }
         // GET: Roles
-        public ActionResult Index(string keyword, int page, int totalRecords)
+        public async Task<ActionResult> Index(string keyword, int page, int totalRecords)
         {
-            var result = svs.GetRolesByPage(keyword, page, _appSettings.TotalRecordPerPage);
+            var result = await svs.GetRolesByPage(keyword, page, _appSettings.TotalRecordPerPage);
 
             return View(result);
         }
 
         // GET: Roles/Details/5
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            VmRoleItem item = svs.GetRoleById(id);
+            VmRoleItem item = await svs.GetRoleById(id);
 
             if (item == null)
             {
@@ -79,7 +79,7 @@ namespace Com.EazyTender_Admin.Controllers
 
             int _id = (int)id;
 
-            VmRoleItem rItem = svs.GetRoleById(_id);
+            VmRoleItem rItem = await svs.GetRoleById(_id);
             
             if (rItem == null)
             {
@@ -100,7 +100,7 @@ namespace Com.EazyTender_Admin.Controllers
                 return NotFound();
             }
 
-            var result = svs.Update(roles);
+            var result = await svs.Update(roles);
 
             if (result.IsSuccess)
             {
@@ -122,12 +122,12 @@ namespace Com.EazyTender_Admin.Controllers
         // POST: Roles/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int id, IFormCollection collection)
         {
             try
             {
                 // TODO: Add delete logic here
-                svs.Delete(id);
+                await svs.Delete(id);
                 return RedirectToAction(nameof(Index));
             }
             catch

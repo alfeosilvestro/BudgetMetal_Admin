@@ -3,19 +3,20 @@ using Com.BudgetMetal.ViewModels.CodeTable;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Com.BudgetMetal.Services.Code_Table
 {
     public interface ICodeTableService
     {
-        VmCodeTablePage GetCodeTableByPage(string keyword, int page, int totalRecords);
+        Task<VmCodeTablePage> GetCodeTableByPage(string keyword, int page, int totalRecords);
 
-        VmCodeTableItem GetCodeTableById(int Id);
+        Task<VmCodeTableItem> GetCodeTableById(int Id);
 
         VmGenericServiceResult Insert(VmCodeTableItem vmCodeTableItem);
 
-        VmGenericServiceResult Update(VmCodeTableItem codeTableItem);
+        Task<VmGenericServiceResult> Update(VmCodeTableItem codeTableItem);
 
-        void Delete(int Id);
+        Task Delete(int Id);
     }
 }

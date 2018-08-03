@@ -3,19 +3,20 @@ using Com.BudgetMetal.ViewModels.Industries;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Com.BudgetMetal.Services.Industries
 {
     public interface IIndustryService
     {
-        VmIndustryPage GetIndustriesByPage(string keyword, int page, int totalRecords);
+        Task<VmIndustryPage> GetIndustriesByPage(string keyword, int page, int totalRecords);
 
-        VmIndustryItem GetIndustryById(int Id);
+        Task<VmIndustryItem> GetIndustryById(int Id);
 
         VmGenericServiceResult Insert(VmIndustryItem vmIndustryItem);
 
-        VmGenericServiceResult Update(VmIndustryItem IndustryItem);
+        Task<VmGenericServiceResult> Update(VmIndustryItem IndustryItem);
 
-        void Delete(int Id);
+        Task Delete(int Id);
     }
 }

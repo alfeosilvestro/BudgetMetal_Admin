@@ -1,4 +1,5 @@
 ﻿using Com.BudgetMetal.Common;
+using Com.BudgetMetal.DataRepository.Code_Category;
 using Com.BudgetMetal.DataRepository.Code_Table;
 using Com.BudgetMetal.DBEntities;
 using Com.BudgetMetal.Services.Base;
@@ -7,21 +8,28 @@ using Com.BudgetMetal.ViewModels.CodeTable;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
+using Com.BudgetMetal.ViewModels.CodeCategory;
 
 namespace Com.BudgetMetal.Services.Code_Table
 {
     public class CodeTableService : BaseService, ICodeTableService
     {
         private readonly ICodeTableRepository repo;
+        private readonly ICodeCategoryRepository repoCate;
 
-        public CodeTableService(ICodeTableRepository repo)
+        public CodeTableService(ICodeTableRepository repo, ICodeCategoryRepository repoC)
         {
             this.repo = repo;
+            this.repoCate = repoC;
         }
 
-        public VmCodeTablePage GetCodeTableByPage(string keyword, int page, int totalRecords)
-        {
-            
+        public async Task<VmCodeTablePage> GetCodeTableByPage(string keyword, int page, int totalRecords)
+        {   
+            //var dbPageResult = await repo.GetPage(keyword,
+            //    (page == 0 ? Constants.app_firstPage : page),
+            //    (totalRecords == 0 ? Constants.app_totalRecords : totalRecords));
+
             var dbPageResult = repo.GetCodeTableByPage(keyword,
                 (page == 0 ? Constants.app_firstPage : page),
                 (totalRecords == 0 ? Constants.app_totalRecords : totalRecords));
@@ -45,15 +53,41 @@ namespace Com.BudgetMetal.Services.Code_Table
 
                 Copy<CodeTable, VmCodeTableItem>(dbItem, resultItem);
 
+                if (dbItem.CodeCategory != null)
+                {
+                    resultItem.CodeCategory = new ViewModels.CodeCategory.VmCodeCategoryItem()
+                    {
+                        Name = dbItem.CodeCategory.Name
+                    };
+                }
+
                 resultObj.Result.Records.Add(resultItem);
             }
 
             return resultObj;
         }
 
-        public VmCodeTableItem GetCodeTableById(int Id)
+        public List<VmCodeCategoryItem> GetCodeCategory()
+        {   
+            List<VmCodeCategoryItem> lstCodeCategory = new List<VmCodeCategoryItem>();
+
+            var result = repoCate.GetAll();
+
+            foreach (var item in result)
+            {
+                var resultItem = new VmCodeCategoryItem();
+
+                Copy<CodeCategory, VmCodeCategoryItem>(item, resultItem);
+
+                lstCodeCategory.Add(resultItem);
+            }
+            
+            return lstCodeCategory;
+        }
+
+        public async Task<VmCodeTableItem> GetCodeTableById(int Id)
         {
-            var dbPageResult = repo.GetCodeTableById(Id);
+            var dbPageResult = await repo.Get(Id);
 
             if (dbPageResult == null)
             {
@@ -98,13 +132,13 @@ namespace Com.BudgetMetal.Services.Code_Table
             return result;
         }
 
-        public VmGenericServiceResult Update(VmCodeTableItem vmCodeTableItem)
+        public async Task<VmGenericServiceResult> Update(VmCodeTableItem vmCodeTableItem)
         {
             VmGenericServiceResult result = new VmGenericServiceResult();
 
             try
             {
-                CodeTable r = repo.GetCodeTableById(vmCodeTableItem.Id);
+                CodeTable r = await repo.Get(vmCodeTableItem.Id);
 
                 Copy<VmCodeTableItem, CodeTable>(vmCodeTableItem, r);
 
@@ -128,9 +162,9 @@ namespace Com.BudgetMetal.Services.Code_Table
             return result;
         }
 
-        public void Delete(int Id)
+        public async Task Delete(int Id)
         {
-            CodeTable r = repo.GetCodeTableById(Id);
+            CodeTable r = await repo.Get(Id);
             r.IsActive = false;
             repo.Update(r);
             repo.Commit();

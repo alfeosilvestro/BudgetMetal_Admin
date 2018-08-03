@@ -10,12 +10,9 @@ namespace Com.BudgetMetal.DataRepository.Code_Category
 {
     public interface ICodeCategoryRepository : IGenericRepository<CodeCategory>
     {
-        PageResult<CodeCategory> GetCodeCategoryByPage(string keyword, int page, int totalRecords);
+        //Task<PageResult<CodeCategory>> GetCodeCategoryByPage(string keyword, int page, int totalRecords);
 
-        CodeCategory GetCodeCategoryById(int Id);
-
-        CodeCategory GetCodeCategoryFileById(int Id);
-
-        int GetLastId();
+        //Task<CodeCategory> GetCodeCategoryById(int Id);
+        
     }
 }

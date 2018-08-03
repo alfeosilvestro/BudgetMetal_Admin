@@ -7,6 +7,7 @@ using Com.BudgetMetal.ViewModels.Role;
 using System.Collections.Generic;
 using System;
 using Com.BudgetMetal.ViewModels;
+using System.Threading.Tasks;
 
 namespace Com.BudgetMetal.Services.Roles
 {
@@ -19,9 +20,9 @@ namespace Com.BudgetMetal.Services.Roles
             this.repo = repo;
         }
 
-        public VmRolePage GetRolesByPage(string keyword, int page, int totalRecords)
+        public async Task<VmRolePage> GetRolesByPage(string keyword, int page, int totalRecords)
         {
-            var dbPageResult = repo.GetRolesByPage(keyword,
+            var dbPageResult = await repo.GetPage(keyword,
                 (page == 0 ? Constants.app_firstPage : page),
                 (totalRecords == 0 ? Constants.app_totalRecords : totalRecords));
 
@@ -51,9 +52,9 @@ namespace Com.BudgetMetal.Services.Roles
             return resultObj;
         }
 
-        public VmRoleItem GetRoleById(int Id)
+        public async Task<VmRoleItem> GetRoleById(int Id)
         {
-            var dbPageResult = repo.GetRoleById(Id);
+            var dbPageResult = await repo.Get(Id);
 
             if (dbPageResult == null)
             {
@@ -97,13 +98,13 @@ namespace Com.BudgetMetal.Services.Roles
             return result;
         }
 
-        public VmGenericServiceResult Update(VmRoleItem vmRoleItem)
+        public async Task<VmGenericServiceResult> Update(VmRoleItem vmRoleItem)
         {
             VmGenericServiceResult result = new VmGenericServiceResult();
 
             try
             {
-                Role r = repo.GetRoleById(vmRoleItem.Id);
+                Role r = await repo.Get(vmRoleItem.Id);
 
                 Copy<VmRoleItem, Role>(vmRoleItem, r);
 
@@ -126,9 +127,9 @@ namespace Com.BudgetMetal.Services.Roles
             return result;
         }
 
-        public void Delete(int Id)
+        public async Task Delete(int Id)
         {
-            Role r = repo.GetRoleById(Id);
+            Role r = await repo.Get(Id);
             r.IsActive = false;
             repo.Update(r);
             repo.Commit();

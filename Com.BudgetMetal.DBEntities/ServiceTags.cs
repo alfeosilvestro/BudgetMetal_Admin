@@ -9,7 +9,6 @@ namespace Com.BudgetMetal.DBEntities
         {
             SupplierServiceTags = new HashSet<SupplierServiceTags>();
         }
-
        
         public uint IndustryId { get; set; }
         public string Name { get; set; }

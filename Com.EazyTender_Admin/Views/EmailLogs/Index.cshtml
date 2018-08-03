@@ -1,0 +1,54 @@
+﻿@model Com.BudgetMetal.ViewModels.EmailLog.VmEmailLogPage
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Email Log</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                ToEmailAddress@*@Html.DisplayNameFor(model => model.Result.Records[0].Role)*@
+            </th>
+            <th>
+                Message@*@Html.DisplayNameFor(model => model.Result.Records[0].RoleCode)*@
+            </th>
+            @*<th>
+                Sent By@*@Html.DisplayNameFor(model => model.Result.Records[0].RoleCode)*@
+            </th>
+            <th>
+                Sent Date@*@Html.DisplayNameFor(model => model.Result.Records[0].RoleCode)*@
+            </th>
+            <th>
+                Updated By@*@Html.DisplayNameFor(model => model.Result.Records[0].RoleCode)*@
+            </th>
+            <th>Updated Date</th>*@
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Result.Records)
+        {
+        <tr>
+            <td> @item.ToEmailAddress</td>
+            <td> @item.Message </td>
+            @*<td> @item.SentByUserId </td>
+            <td> @item.SentDate </td>
+            <td> @item.UpdatedBy </td>
+            <td> @item.UpdatedDate </td>*@
+            <td hidden="hidden"> @item.Id </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

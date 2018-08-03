@@ -23,9 +23,9 @@ namespace Com.EazyTender_Admin.Controllers
         }
 
         // GET: CodeCategory
-        public ActionResult Index(string keyword, int page, int totalRecords)
+        public async Task<ActionResult> Index(string keyword, int page, int totalRecords)
         {
-            var result = svs.GetCodeCategoryByPage(keyword, page, _appSettings.TotalRecordPerPage);
+            var result = await svs.GetCodeCategoryByPage(keyword, page, _appSettings.TotalRecordPerPage);
 
             return View(result);
         }
@@ -61,7 +61,7 @@ namespace Com.EazyTender_Admin.Controllers
         }
 
         // GET: CodeCategory/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
             if (id == null)
             {
@@ -70,7 +70,7 @@ namespace Com.EazyTender_Admin.Controllers
 
             int _id = (int)id;
 
-            VmCodeCategoryItem rItem = svs.GetCodeCategoryById(_id);
+            VmCodeCategoryItem rItem = await svs.GetCodeCategoryById(_id);
 
             if (rItem == null)
             {
@@ -90,7 +90,7 @@ namespace Com.EazyTender_Admin.Controllers
                 return NotFound();
             }
 
-            var result = svs.Update(codeCategoriesItem);
+            var result = await svs.Update(codeCategoriesItem);
 
             if (result.IsSuccess)
             {
@@ -112,12 +112,12 @@ namespace Com.EazyTender_Admin.Controllers
         // POST: CodeCategory/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int id, IFormCollection collection)
         {
             try
             {
                 // TODO: Add delete logic here
-                svs.Delete(id);
+                await svs.Delete(id);
                 return RedirectToAction(nameof(Index));
             }
             catch

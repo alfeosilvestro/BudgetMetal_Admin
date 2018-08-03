@@ -23,9 +23,9 @@ namespace Com.EazyTender_Admin.Controllers
         }
 
         // GET: Industries
-        public ActionResult Index(string keyword, int page, int totalRecords)
+        public async Task<ActionResult> Index(string keyword, int page, int totalRecords)
         {
-            var result = svs.GetIndustriesByPage(keyword, page, _appSettings.TotalRecordPerPage);
+            var result = await svs.GetIndustriesByPage(keyword, page, _appSettings.TotalRecordPerPage);
 
             return View(result);
         }
@@ -61,7 +61,7 @@ namespace Com.EazyTender_Admin.Controllers
         }
 
         // GET: Industries/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
             if (id == null)
             {
@@ -70,7 +70,7 @@ namespace Com.EazyTender_Admin.Controllers
 
             int _id = (int)id;
 
-            VmIndustryItem rItem = svs.GetIndustryById(_id);
+            VmIndustryItem rItem = await svs.GetIndustryById(_id);
 
             if (rItem == null)
             {
@@ -82,14 +82,14 @@ namespace Com.EazyTender_Admin.Controllers
         // POST: Industries/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditEdit(int id, VmIndustryItem insustry)
+        public async Task<ActionResult> Edit(int id, VmIndustryItem insustry)
         {
             if (id != insustry.Id)
             {
                 return NotFound();
             }
 
-            var result = svs.Update(insustry);
+            var result = await svs.Update(insustry);
 
             if (result.IsSuccess)
             {
@@ -111,12 +111,12 @@ namespace Com.EazyTender_Admin.Controllers
         // POST: Industries/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int id, IFormCollection collection)
         {
             try
             {
                 // TODO: Add delete logic here
-                svs.Delete(id);
+                await svs.Delete(id);
                 return RedirectToAction(nameof(Index));
             }
             catch

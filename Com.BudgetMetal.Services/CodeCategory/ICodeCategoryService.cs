@@ -2,19 +2,20 @@
 using Com.BudgetMetal.ViewModels;
 using Com.BudgetMetal.ViewModels.CodeCategory;
 using System;
+using System.Threading.Tasks;
 
 namespace Com.BudgetMetal.Services.Code_Category
 {
     public interface ICodeCategoryService
     {
-        VmCodeCategoryPage GetCodeCategoryByPage(string keyword, int page, int totalRecords);
+        Task<VmCodeCategoryPage> GetCodeCategoryByPage(string keyword, int page, int totalRecords);
 
-        VmCodeCategoryItem GetCodeCategoryById(int Id);
+        Task<VmCodeCategoryItem> GetCodeCategoryById(int Id);
 
         VmGenericServiceResult Insert(VmCodeCategoryItem vmCodeCategoryItem);
 
-        VmGenericServiceResult Update(VmCodeCategoryItem codeCategoryItem);
+        Task<VmGenericServiceResult> Update(VmCodeCategoryItem codeCategoryItem);
 
-        void Delete(int Id);
+        Task Delete(int Id);
     }
 }

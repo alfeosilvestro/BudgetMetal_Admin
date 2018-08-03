@@ -7,6 +7,7 @@ using Com.BudgetMetal.ViewModels.Industries;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Com.BudgetMetal.Services.Industries
 {
@@ -19,9 +20,9 @@ namespace Com.BudgetMetal.Services.Industries
             this.repo = repo;
         }
 
-        public VmIndustryPage GetIndustriesByPage(string keyword, int page, int totalRecords)
+        public async Task<VmIndustryPage> GetIndustriesByPage(string keyword, int page, int totalRecords)
         {
-            var dbPageResult = repo.GetInsustriesByPage(keyword,
+            var dbPageResult = await repo.GetPage(keyword,
                 (page == 0 ? Constants.app_firstPage : page),
                 (totalRecords == 0 ? Constants.app_totalRecords : totalRecords));
 
@@ -50,9 +51,9 @@ namespace Com.BudgetMetal.Services.Industries
             return resultObj;
         }
 
-        public VmIndustryItem GetIndustryById(int Id)
+        public async Task<VmIndustryItem> GetIndustryById(int Id)
         {
-            var dbPageResult = repo.GetIndustryById(Id);
+            var dbPageResult = await repo.Get(Id);
 
             if (dbPageResult == null)
             {
@@ -96,13 +97,13 @@ namespace Com.BudgetMetal.Services.Industries
             return result;
         }
 
-        public VmGenericServiceResult Update(VmIndustryItem vmtem)
+        public async Task<VmGenericServiceResult> Update(VmIndustryItem vmtem)
         {
             VmGenericServiceResult result = new VmGenericServiceResult();
 
             try
             {
-                Industry r = repo.GetIndustryById(vmtem.Id);
+                Industry r = await repo.Get(vmtem.Id);
 
                 Copy<VmIndustryItem, Industry>(vmtem, r);
 
@@ -126,9 +127,9 @@ namespace Com.BudgetMetal.Services.Industries
             return result;
         }
 
-        public void Delete(int Id)
+        public async Task Delete(int Id)
         {
-            Industry r = repo.GetIndustryById(Id);
+            Industry r = await repo.Get(Id);
             r.IsActive = false;
             repo.Update(r);
             repo.Commit();

@@ -6,6 +6,7 @@ using Com.BudgetMetal.ViewModels.CodeCategory;
 using System.Collections.Generic;
 using System;
 using Com.BudgetMetal.ViewModels;
+using System.Threading.Tasks;
 
 namespace Com.BudgetMetal.Services.Code_Category
 {
@@ -18,9 +19,9 @@ namespace Com.BudgetMetal.Services.Code_Category
             this.repo = repo;
         }
 
-        public VmCodeCategoryPage GetCodeCategoryByPage(string keyword, int page, int totalRecords)
+        public async Task<VmCodeCategoryPage> GetCodeCategoryByPage(string keyword, int page, int totalRecords)
         {
-            var dbPageResult = repo.GetCodeCategoryByPage(keyword,
+            var dbPageResult = await repo.GetPage(keyword,
                 (page == 0 ? Constants.app_firstPage : page),
                 (totalRecords == 0 ? Constants.app_totalRecords : totalRecords));
 
@@ -49,9 +50,9 @@ namespace Com.BudgetMetal.Services.Code_Category
             return resultObj;
         }
 
-        public VmCodeCategoryItem GetCodeCategoryById(int Id)
+        public async Task<VmCodeCategoryItem> GetCodeCategoryById(int Id)
         {
-            var dbPageResult = repo.GetCodeCategoryById(Id);
+            var dbPageResult = await repo.Get(Id);
 
             if (dbPageResult == null)
             {
@@ -75,8 +76,6 @@ namespace Com.BudgetMetal.Services.Code_Category
 
                 Copy<VmCodeCategoryItem, CodeCategory>(vmCodeCategoryItem, r);
 
-                r.Id = repo.GetLastId();
-
                 if (r.CreatedBy.IsNullOrEmpty())
                 {
                     r.CreatedBy = r.UpdatedBy = "System";
@@ -96,13 +95,13 @@ namespace Com.BudgetMetal.Services.Code_Category
             return result;
         }
 
-        public VmGenericServiceResult Update(VmCodeCategoryItem vmCodeCategoryItem)
+        public async Task<VmGenericServiceResult> Update(VmCodeCategoryItem vmCodeCategoryItem)
         {
             VmGenericServiceResult result = new VmGenericServiceResult();
 
             try
             {
-                CodeCategory r = repo.GetCodeCategoryById(vmCodeCategoryItem.Id);
+                CodeCategory r = await repo.Get(vmCodeCategoryItem.Id);
 
                 Copy<VmCodeCategoryItem, CodeCategory>(vmCodeCategoryItem, r);
 
@@ -126,9 +125,9 @@ namespace Com.BudgetMetal.Services.Code_Category
             return result;
         }
 
-        public void Delete(int Id)
+        public async Task Delete(int Id)
         {
-            CodeCategory r = repo.GetCodeCategoryById(Id);
+            CodeCategory r = await repo.Get(Id);
             r.IsActive = false;
             repo.Update(r);
             repo.Commit();

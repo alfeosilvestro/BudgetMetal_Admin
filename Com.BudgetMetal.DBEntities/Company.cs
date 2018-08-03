@@ -13,7 +13,6 @@ namespace Com.BudgetMetal.DBEntities
             SupplierServiceTags = new HashSet<SupplierServiceTags>();
             User = new HashSet<User>();
         }
-
        
         public string Name { get; set; }
         public string Address { get; set; }

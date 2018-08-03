@@ -1,13 +1,17 @@
 ﻿using Com.BudgetMetal.DBEntities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
+
 
 namespace Com.BudgetMetal.DB
 {
     public class DataContext : DbContext
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
-        { }
+        {
+            
+        }
 
         //public virtual DbSet<bm_gallery> bm_gallery { get; set; }
 
@@ -27,7 +31,7 @@ namespace Com.BudgetMetal.DB
         //public virtual DbSet<Company> Company { get; set; }
         //public virtual DbSet<Document> Document { get; set; }
         //public virtual DbSet<DocumentUser> DocumentUser { get; set; }
-        //public virtual DbSet<EmailLog> EmailLog { get; set; }
+        public virtual DbSet<EmailLog> EmailLog { get; set; }
         public virtual DbSet<Industry> Industry { get; set; }
         //public virtual DbSet<InvitedSupplier> InvitedSupplier { get; set; }
         //public virtual DbSet<Penalty> Penalty { get; set; }

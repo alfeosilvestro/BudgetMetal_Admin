@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Com.BudgetMetal.DB;
-using Com.BudgetMetal.Services.Code_Table;
-using Com.BudgetMetal.ViewModels.CodeTable;
+using Com.BudgetMetal.Services.EmailLog;
 using Com.EazyTender_Admin.Configurations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,69 +10,63 @@ using Microsoft.Extensions.Options;
 
 namespace Com.EazyTender_Admin.Controllers
 {
-    public class CodeTablesController : Controller
+    public class EmailLogsController : Controller
     {
-        private readonly ICodeTableService svs;
+        private readonly IEmailLogService svs;
         private readonly AppSettings _appSettings;
-        private readonly DataContext dataContext;
-        public CodeTablesController(ICodeTableService svs, IOptions<AppSettings> appSettings, DataContext dataContext)
+        public EmailLogsController(IEmailLogService svs, IOptions<AppSettings> appSettings)
         {
             this.svs = svs;
             this._appSettings = appSettings.Value;
-            this.dataContext = dataContext;
         }
 
-        // GET: CodeTables
+        // GET: EmailLogs
         public async Task<ActionResult> Index(string keyword, int page, int totalRecords)
         {
-            var result = await svs.GetCodeTableByPage(keyword, page, _appSettings.TotalRecordPerPage);
+            var result = await svs.GetEmailLogByPage(keyword, page, _appSettings.TotalRecordPerPage);
 
             return View(result);
         }
 
-        // GET: CodeTables/Details/5
+        // GET: EmailLogs/Details/5
         public ActionResult Details(int id)
         {
-
             return View();
         }
 
-        // GET: CodeTables/Create
+        // GET: EmailLogs/Create
         public ActionResult Create()
         {
-            
-            VmCodeTableItem roleObj = new VmCodeTableItem();
-            
-            return View(roleObj);
+            return View();
         }
 
-        // POST: CodeTables/Create
+        // POST: EmailLogs/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(VmCodeTableItem codeTableItem)
+        public ActionResult Create(IFormCollection collection)
         {
-            var result = svs.Insert(codeTableItem);
-
-            if (result.IsSuccess)
+            try
             {
+                // TODO: Add insert logic here
+
                 return RedirectToAction(nameof(Index));
             }
-            else
+            catch
             {
-                return View(codeTableItem);
+                return View();
             }
         }
 
-        // GET: CodeTables/Edit/5
+        // GET: EmailLogs/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: CodeTables/Edit/5
+        // POST: EmailLogs/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, IFormCollection collection)
         {
             try
             {
@@ -88,21 +80,21 @@ namespace Com.EazyTender_Admin.Controllers
             }
         }
 
-        // GET: CodeTables/Delete/5
+        // GET: EmailLogs/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: CodeTables/Delete/5
+        // POST: EmailLogs/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id, IFormCollection collection)
         {
             try
             {
                 // TODO: Add delete logic here
-                await svs.Delete(id);
+
                 return RedirectToAction(nameof(Index));
             }
             catch

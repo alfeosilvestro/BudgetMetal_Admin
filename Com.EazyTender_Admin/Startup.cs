@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Com.BudgetMetal.DataRepository.Code_Category;
 using Com.BudgetMetal.DataRepository.Code_Table;
+using Com.BudgetMetal.DataRepository.EmailLog;
 using Com.BudgetMetal.DataRepository.Gallery;
 using Com.BudgetMetal.DataRepository.Industries;
 using Com.BudgetMetal.DataRepository.Single_Sign_On;
@@ -11,6 +12,7 @@ using Com.BudgetMetal.DataRepository.Users;
 using Com.BudgetMetal.DB;
 using Com.BudgetMetal.Services.Code_Category;
 using Com.BudgetMetal.Services.Code_Table;
+using Com.BudgetMetal.Services.EmailLog;
 using Com.BudgetMetal.Services.Gallery;
 using Com.BudgetMetal.Services.Industries;
 using Com.BudgetMetal.Services.Roles;
@@ -91,6 +93,10 @@ namespace Com.EazyTender_Admin
             //CodeTable
             services.AddScoped<ICodeTableRepository, CodeTableRepository>();
             services.AddScoped<ICodeTableService, CodeTableService>();
+
+            //EmailLog
+            services.AddScoped<IEmailsLogRepository, EmailLogRepository>();
+            services.AddScoped<IEmailLogService, EmailLogService>();
 
         }
 
