@@ -1,12 +1,13 @@
 ﻿using Com.BudgetMetal.Common;
 using Com.BudgetMetal.DataRepository.Base;
 using Com.BudgetMetal.DB;
-using Com.BudgetMetal.DB.Entities;
+using Com.BudgetMetal.DBEntities;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Com.BudgetMetal.DataRepository.Code_Category
 {
@@ -17,98 +18,6 @@ namespace Com.BudgetMetal.DataRepository.Code_Category
         {
 
         }
-
-        public PageResult<CodeCategory> GetCodeCategoryByPage(string keyword, int page, int totalRecords)
-        {
-            if (string.IsNullOrEmpty(keyword))
-            {
-                keyword = string.Empty;
-                //return await base.GetPage(keyword, page, totalRecords);
-            }
-
-            var records = this.DbContext.CodeCategory.Where(e =>
-                e.IsActive == true &&
-                (keyword == string.Empty ||
-                e.Name.Contains(keyword))
-            );
-
-            var recordList = records
-            .Select(r =>
-                new CodeCategory()
-                {
-                    Id = r.Id,
-                    Name = r.Name
-                })
-            .OrderBy(e => e.Name)
-            .OrderBy(e => e.CreatedDate)
-            .Skip((totalRecords * page) - totalRecords)
-            .Take(totalRecords)
-            .ToList();
-            //DetailImage = (getDetailImage ? r.DetailImage : null),
-
-            var count = records.Count();
-
-            var nextPage = 0;
-            var prePage = 0;
-            if (page > 1)
-            {
-                prePage = page - 1;
-            }
-
-            var totalPage = (count + totalRecords - 1) / totalRecords;
-            if (page < totalPage)
-            {
-                nextPage = page + 1;
-            }
-
-            var result = new PageResult<CodeCategory>()
-            {
-                Records = recordList,
-                TotalPage = totalPage,
-                CurrentPage = page,
-                PreviousPage = prePage,
-                NextPage = nextPage,
-                TotalRecords = count
-            };
-
-            return result;
-        }
-
-        public CodeCategory GetCodeCategoryById(int Id)
-        {
-            var records = this.DbContext.CodeCategory.Where(x => x.IsActive == true)
-                .Single(e =>
-                e.Id == Id);
-
-            return records;
-        }
-
-        public CodeCategory GetCodeCategoryFileById(int Id)
-        {
-            var records = this.DbContext.CodeCategory.Select(r =>
-                new CodeCategory()
-                {
-                    Id = r.Id,
-                    Name = r.Name
-
-                })
-                .Single(e =>
-                e.Id == Id);
-
-            return records;
-        }
-
-        public int GetLastId()
-        {
-            var record = this.DbContext.CodeCategory.OrderByDescending(x => x.Id).FirstOrDefault();
-            if (record != null)
-            {
-                return record.Id + 1;
-            }
-            else
-            {
-                return 1;
-            }
-        }
+        
     }
 }

@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Com.BudgetMetal.Common\Com.BudgetMetal.Common.csproj" />
-    <ProjectReference Include="..\Com.BudgetMetal.DBContext\Com.BudgetMetal.DB.csproj" />
   </ItemGroup>
 
 </Project>

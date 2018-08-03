@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Com.BudgetMetal.DB;
-using Com.BudgetMetal.DB.Entities;
 using Com.BudgetMetal.Services.Code_Table;
-using Com.BudgetMetal.ViewModels.Code_Table;
+using Com.BudgetMetal.ViewModels.CodeTable;
 using Com.EazyTender_Admin.Configurations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,9 +25,9 @@ namespace Com.EazyTender_Admin.Controllers
         }
 
         // GET: CodeTables
-        public ActionResult Index(string keyword, int page, int totalRecords)
+        public async Task<ActionResult> Index(string keyword, int page, int totalRecords)
         {
-            var result = svs.GetCodeTableByPage(keyword, page, _appSettings.TotalRecordPerPage);
+            var result = await svs.GetCodeTableByPage(keyword, page, _appSettings.TotalRecordPerPage);
 
             return View(result);
         }
@@ -36,20 +35,23 @@ namespace Com.EazyTender_Admin.Controllers
         // GET: CodeTables/Details/5
         public ActionResult Details(int id)
         {
+
             return View();
         }
 
         // GET: CodeTables/Create
         public ActionResult Create()
         {
+            
             VmCodeTableItem roleObj = new VmCodeTableItem();
+            
             return View(roleObj);
         }
 
         // POST: CodeTables/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(VmCodeTableItem codeTableItem)
+        public IActionResult Create(VmCodeTableItem codeTableItem)
         {
             var result = svs.Insert(codeTableItem);
 
@@ -72,7 +74,7 @@ namespace Com.EazyTender_Admin.Controllers
         // POST: CodeTables/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(int id, IFormCollection collection)
         {
             try
             {
@@ -95,12 +97,12 @@ namespace Com.EazyTender_Admin.Controllers
         // POST: CodeTables/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int id, IFormCollection collection)
         {
             try
             {
                 // TODO: Add delete logic here
-
+                await svs.Delete(id);
                 return RedirectToAction(nameof(Index));
             }
             catch

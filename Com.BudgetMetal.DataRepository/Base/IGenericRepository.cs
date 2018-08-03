@@ -1,5 +1,6 @@
 ﻿using Com.BudgetMetal.Common;
 using Com.BudgetMetal.DB;
+using Com.BudgetMetal.DBEntities;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

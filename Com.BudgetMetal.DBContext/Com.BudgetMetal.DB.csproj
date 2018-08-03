@@ -9,4 +9,8 @@
     <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.11" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Com.BudgetMetal.DBEntities\Com.BudgetMetal.DBEntities.csproj" />
+  </ItemGroup>
+
 </Project>
