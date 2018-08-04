@@ -18,5 +18,7 @@ namespace Com.BudgetMetal.Services.Code_Table
         Task<VmGenericServiceResult> Update(VmCodeTableItem codeTableItem);
 
         Task Delete(int Id);
+
+        Task<VmCodeTableItem> GetFormObject();
     }
 }

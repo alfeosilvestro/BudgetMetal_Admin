@@ -40,11 +40,10 @@ namespace Com.EazyTender_Admin.Controllers
         }
 
         // GET: CodeTables/Create
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {            
-            VmCodeTableItem roleObj = new VmCodeTableItem();
-            
-            return View(roleObj);
+            var obj = await svs.GetFormObject();
+            return View(obj);
         }
 
         // POST: CodeTables/Create

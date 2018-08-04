@@ -135,9 +135,9 @@ namespace Com.BudgetMetal.Services.Industries
             repo.Commit();
         }
 
-        public List<VmIndustryItem> GetActiveIndustries()
+        public async Task<List<VmIndustryItem>> GetActiveIndustries()
         {
-            var dbResult =  repo.GetAll();
+            var dbResult = await repo.GetAll();
 
             var resultList = new List<VmIndustryItem>();
             foreach(var item in dbResult)

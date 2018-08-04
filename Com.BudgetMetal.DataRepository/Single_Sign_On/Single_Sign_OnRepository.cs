@@ -30,6 +30,9 @@ namespace Com.BudgetMetal.DataRepository.Single_Sign_On
             return records;
         }
 
-       
+        Task<IEnumerable<single_sign_on>> IGenericRepository<single_sign_on>.GetAll()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
