@@ -14,7 +14,7 @@ namespace Com.BudgetMetal.DataRepository.Base
         void Delete(T entity);
         
         Task<T> Get(int id);
-        IEnumerable<T> GetAll();
+        Task<IEnumerable<T>> GetAll();
         Task<PageResult<T>> GetPage(string keyword, int page, int totalRecords = 10);
 
         void Commit();

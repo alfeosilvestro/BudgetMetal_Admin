@@ -1,26 +1,25 @@
 ﻿using Com.BudgetMetal.Common;
-using Com.BudgetMetal.DataRepository.Industries;
-using Com.BudgetMetal.DBEntities;
+using Com.BudgetMetal.DataRepository.ServiceTags;
 using Com.BudgetMetal.Services.Base;
 using Com.BudgetMetal.ViewModels;
-using Com.BudgetMetal.ViewModels.Industries;
+using Com.BudgetMetal.ViewModels.ServiceTags;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Com.BudgetMetal.Services.Industries
+namespace Com.BudgetMetal.Services.ServiceTags
 {
-    public class IndustryService : BaseService, IIndustryService
+    public class ServiceTagsService : BaseService, IServiceTagsService
     {
-        private readonly IIndustryRepository repo;
+        private readonly IServiceTagsRepository repo;
 
-        public IndustryService(IIndustryRepository repo)
+        public ServiceTagsService(IServiceTagsRepository repo)
         {
             this.repo = repo;
         }
 
-        public async Task<VmIndustryPage> GetIndustriesByPage(string keyword, int page, int totalRecords)
+        public async Task<VmServiceTagsPage> GetServiceTagsByPage(string keyword, int page, int totalRecords)
         {
             var dbPageResult = await repo.GetPage(keyword,
                 (page == 0 ? Constants.app_firstPage : page),
@@ -28,22 +27,22 @@ namespace Com.BudgetMetal.Services.Industries
 
             if (dbPageResult == null)
             {
-                return new VmIndustryPage();
+                return new VmServiceTagsPage();
             }
 
-            var resultObj = new VmIndustryPage();
+            var resultObj = new VmServiceTagsPage();
             resultObj.RequestId = DateTime.Now.ToString("yyyyMMddHHmmss");
             resultObj.RequestDate = DateTime.Now;
-            resultObj.Result = new PageResult<VmIndustryItem>();
-            resultObj.Result.Records = new List<VmIndustryItem>();
+            resultObj.Result = new PageResult<VmServiceTagsItem>();
+            resultObj.Result.Records = new List<VmServiceTagsItem>();
 
-            Copy<PageResult<Industry>, PageResult<VmIndustryItem>>(dbPageResult, resultObj.Result, new string[] { "Records" });
+            Copy<PageResult<Com.BudgetMetal.DBEntities.ServiceTags>, PageResult<VmServiceTagsItem>>(dbPageResult, resultObj.Result, new string[] { "Records" });
 
             foreach (var dbItem in dbPageResult.Records)
             {
-                var resultItem = new VmIndustryItem();
+                var resultItem = new VmServiceTagsItem();
 
-                Copy<Industry, VmIndustryItem>(dbItem, resultItem);
+                Copy<Com.BudgetMetal.DBEntities.ServiceTags, VmServiceTagsItem>(dbItem, resultItem);
 
                 resultObj.Result.Records.Add(resultItem);
             }
@@ -51,37 +50,37 @@ namespace Com.BudgetMetal.Services.Industries
             return resultObj;
         }
 
-        public async Task<VmIndustryItem> GetIndustryById(int Id)
+        public async Task<VmServiceTagsItem> GetServiceTagsById(int Id)
         {
             var dbPageResult = await repo.Get(Id);
 
             if (dbPageResult == null)
             {
-                return new VmIndustryItem();
+                return new VmServiceTagsItem();
             }
 
-            var resultObj = new VmIndustryItem();
+            var resultObj = new VmServiceTagsItem();
 
-            Copy<Industry, VmIndustryItem>(dbPageResult, resultObj);
+            Copy<Com.BudgetMetal.DBEntities.ServiceTags, VmServiceTagsItem>(dbPageResult, resultObj);
 
             return resultObj;
         }
 
-        public VmGenericServiceResult Insert(VmIndustryItem vmtem)
+        public VmGenericServiceResult Insert(VmServiceTagsItem vmtem)
         {
             VmGenericServiceResult result = new VmGenericServiceResult();
 
             try
             {
-                Industry r = new Industry();
+                Com.BudgetMetal.DBEntities.ServiceTags r = new Com.BudgetMetal.DBEntities.ServiceTags();
 
-                Copy<VmIndustryItem, Industry>(vmtem, r);
+                Copy<VmServiceTagsItem, Com.BudgetMetal.DBEntities.ServiceTags>(vmtem, r);
 
                 if (r.CreatedBy.IsNullOrEmpty())
                 {
                     r.CreatedBy = r.UpdatedBy = "System";
                 }
-
+                r.Industry_Id = 1;//hard code
                 repo.Add(r);
 
                 repo.Commit();
@@ -97,15 +96,15 @@ namespace Com.BudgetMetal.Services.Industries
             return result;
         }
 
-        public async Task<VmGenericServiceResult> Update(VmIndustryItem vmtem)
+        public async Task<VmGenericServiceResult> Update(VmServiceTagsItem vmtem)
         {
             VmGenericServiceResult result = new VmGenericServiceResult();
 
             try
             {
-                Industry r = await repo.Get(vmtem.Id);
+                Com.BudgetMetal.DBEntities.ServiceTags r = await repo.Get(vmtem.Id);
 
-                Copy<VmIndustryItem, Industry>(vmtem, r);
+                Copy<VmServiceTagsItem, Com.BudgetMetal.DBEntities.ServiceTags>(vmtem, r);
 
                 if (r.UpdatedBy.IsNullOrEmpty())
                 {
@@ -129,27 +128,10 @@ namespace Com.BudgetMetal.Services.Industries
 
         public async Task Delete(int Id)
         {
-            Industry r = await repo.Get(Id);
+            Com.BudgetMetal.DBEntities.ServiceTags r = await repo.Get(Id);
             r.IsActive = false;
             repo.Update(r);
             repo.Commit();
-        }
-
-        public async Task<List<VmIndustryItem>> GetActiveIndustries()
-        {
-            var dbResult = await repo.GetAll();
-
-            var resultList = new List<VmIndustryItem>();
-            foreach(var item in dbResult)
-            {
-                var resultItem = new VmIndustryItem();
-
-                Copy<Industry, VmIndustryItem>(item, resultItem);
-
-                resultList.Add(resultItem);
-            }
-
-            return resultList;
         }
     }
 }

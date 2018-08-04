@@ -7,6 +7,6 @@ namespace Com.BudgetMetal.DataRepository.Code_Table
 {
     public interface ICodeTableRepository : IGenericRepository<CodeTable>
     {
-        PageResult<CodeTable> GetCodeTableByPage(string keyword, int page, int totalRecords);
+        
     }
 }

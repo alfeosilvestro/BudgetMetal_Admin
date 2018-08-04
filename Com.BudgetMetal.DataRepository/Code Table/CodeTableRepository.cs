@@ -19,7 +19,7 @@ namespace Com.BudgetMetal.DataRepository.Code_Table
         {
         }
 
-        public PageResult<CodeTable> GetCodeTableByPage(string keyword, int page, int totalRecords)
+        public override async Task<PageResult<CodeTable>> GetPage(string keyword, int page, int totalRecords = 10)
         {
             if (string.IsNullOrEmpty(keyword))
             {
@@ -27,9 +27,9 @@ namespace Com.BudgetMetal.DataRepository.Code_Table
                 //return await base.GetPage(keyword, page, totalRecords);
             }
 
-            var records = this.DbContext.CodeTable.Include(r=>r.CodeCategory).Where(e =>
-                (keyword == string.Empty ||
-                e.Name.Contains(keyword))
+            var records = this.DbContext.CodeTable.Where(e =>
+                  (keyword == string.Empty ||
+                  e.Name.Contains(keyword))
             );
 
             var recordList = records
@@ -41,13 +41,12 @@ namespace Com.BudgetMetal.DataRepository.Code_Table
                     CodeCategory_Id = r.CodeCategory_Id,
                     CodeCategory = r.CodeCategory
                 })
-            .OrderBy(e => e.Name)
-            .OrderBy(e => e.CreatedDate)
+            .OrderBy(e => new { e.Name, e.CreatedDate })
             .Skip((totalRecords * page) - totalRecords)
             .Take(totalRecords)
             .ToList();
 
-            var count = records.Count();
+            var count = await records.CountAsync();
 
             var nextPage = 0;
             var prePage = 0;

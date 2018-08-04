@@ -25,14 +25,14 @@ namespace Com.BudgetMetal.Services.Code_Table
         }
 
         public async Task<VmCodeTablePage> GetCodeTableByPage(string keyword, int page, int totalRecords)
-        {   
-            //var dbPageResult = await repo.GetPage(keyword,
-            //    (page == 0 ? Constants.app_firstPage : page),
-            //    (totalRecords == 0 ? Constants.app_totalRecords : totalRecords));
-
-            var dbPageResult = repo.GetCodeTableByPage(keyword,
+        {
+            var dbPageResult = await repo.GetPage(keyword,
                 (page == 0 ? Constants.app_firstPage : page),
                 (totalRecords == 0 ? Constants.app_totalRecords : totalRecords));
+
+            //var dbPageResult = repo.GetCodeTableByPage(keyword,
+            //    (page == 0 ? Constants.app_firstPage : page),
+            //    (totalRecords == 0 ? Constants.app_totalRecords : totalRecords));
 
             if (dbPageResult == null)
             {
@@ -67,23 +67,23 @@ namespace Com.BudgetMetal.Services.Code_Table
             return resultObj;
         }
 
-        public List<VmCodeCategoryItem> GetCodeCategory()
-        {   
-            List<VmCodeCategoryItem> lstCodeCategory = new List<VmCodeCategoryItem>();
+        //public async Task<List<VmCodeCategoryItem>> GetCodeCategory()
+        //{   
+        //    List<VmCodeCategoryItem> lstCodeCategory = new List<VmCodeCategoryItem>();
 
-            var result = repoCate.GetAll();
+        //    var result = await repoCate.GetAll();
 
-            foreach (var item in result)
-            {
-                var resultItem = new VmCodeCategoryItem();
+        //    foreach (var item in result)
+        //    {
+        //        var resultItem = new VmCodeCategoryItem();
 
-                Copy<CodeCategory, VmCodeCategoryItem>(item, resultItem);
+        //        Copy<CodeCategory, VmCodeCategoryItem>(item, resultItem);
 
-                lstCodeCategory.Add(resultItem);
-            }
+        //        lstCodeCategory.Add(resultItem);
+        //    }
             
-            return lstCodeCategory;
-        }
+        //    return lstCodeCategory;
+        //}
 
         public async Task<VmCodeTableItem> GetCodeTableById(int Id)
         {
@@ -168,6 +168,29 @@ namespace Com.BudgetMetal.Services.Code_Table
             r.IsActive = false;
             repo.Update(r);
             repo.Commit();
+        }
+
+        public async Task<VmCodeTableItem> GetFormObject()
+        {
+            VmCodeTableItem result = new VmCodeTableItem();
+            
+            var dbCatList = await repoCate.GetAll();
+
+            if (dbCatList == null) return result;
+
+            result.CodeCategoryList = new List<VmCodeCategoryItem>();
+
+            foreach (var dbcat in dbCatList)
+            {
+                VmCodeCategoryItem cat = new VmCodeCategoryItem() {
+                    Id = dbcat.Id,
+                    Name = dbcat.Name
+                };
+
+                result.CodeCategoryList.Add(cat);
+            }
+
+            return result;
         }
     }
 }

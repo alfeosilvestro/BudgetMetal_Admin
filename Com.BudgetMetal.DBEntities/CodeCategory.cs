@@ -8,16 +8,14 @@ namespace Com.BudgetMetal.DBEntities
 {
     public class CodeCategory : GenericEntity
     {
-        public CodeCategory()
-        {
-            CodeTable = new HashSet<CodeTable>();
-        }
-
+        //public CodeCategory()
+        //{
+        //    CodeTable = new HashSet<CodeTable>();
+        //}
 
         public string Name { get; set; }
-       
 
-        public ICollection<CodeTable> CodeTable { get; set; }
+        //public ICollection<CodeTable> CodeTable { get; set; }
     }
 }
 

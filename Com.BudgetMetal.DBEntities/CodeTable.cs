@@ -17,7 +17,7 @@ namespace Com.BudgetMetal.DBEntities
 
         [ForeignKey("CodeCategory")]
         public int CodeCategory_Id { get; set; }
-        public CodeCategory CodeCategory { get; set; }
+        public virtual CodeCategory CodeCategory { get; set; }
         //public ICollection<Document> DocumentDocumentStatus { get; set; }
         //public ICollection<Document> DocumentDocumentType { get; set; }
         //public ICollection<User> User { get; set; }

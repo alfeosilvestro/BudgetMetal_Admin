@@ -27,10 +27,10 @@ namespace Com.BudgetMetal.DataRepository.Base
             repoLogger = loggerFactory.CreateLogger(childClassName);
         }
 
-        public IEnumerable<T> GetAll()
+        public async Task<IEnumerable<T>> GetAll()
         {
             repoLogger.LogDebug("GetAll", null);
-            return entities.Where(s => s.IsActive == true).ToList();
+            return await entities.Where(s => s.IsActive == true).ToListAsync();
         }
 
         public async Task<T> Get(int id)

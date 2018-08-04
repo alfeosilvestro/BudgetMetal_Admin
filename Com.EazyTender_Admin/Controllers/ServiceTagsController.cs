@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Com.BudgetMetal.DB;
-using Com.BudgetMetal.Services.Code_Table;
-using Com.BudgetMetal.ViewModels.CodeTable;
+using Com.BudgetMetal.Services.ServiceTags;
+using Com.BudgetMetal.ViewModels.ServiceTags;
 using Com.EazyTender_Admin.Configurations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,46 +11,44 @@ using Microsoft.Extensions.Options;
 
 namespace Com.EazyTender_Admin.Controllers
 {
-    public class CodeTablesController : Controller
+    public class ServiceTagsController : Controller
     {
-        private readonly ICodeTableService svs;
+        private readonly IServiceTagsService svs;
         private readonly AppSettings _appSettings;
-        private readonly DataContext dataContext;
-        public CodeTablesController(ICodeTableService svs, IOptions<AppSettings> appSettings, DataContext dataContext)
+
+        public ServiceTagsController(IServiceTagsService svs, IOptions<AppSettings> appSettings)
         {
             this.svs = svs;
             this._appSettings = appSettings.Value;
-            this.dataContext = dataContext;
         }
 
-        // GET: CodeTables
+        // GET: ServiceTags
         public async Task<ActionResult> Index(string keyword, int page, int totalRecords)
         {
-            var result = await svs.GetCodeTableByPage(keyword, page, _appSettings.TotalRecordPerPage);
+            var result = await svs.GetServiceTagsByPage(keyword, page, _appSettings.TotalRecordPerPage);
 
             return View(result);
         }
 
-        // GET: CodeTables/Details/5
+        // GET: ServiceTags/Details/5
         public ActionResult Details(int id)
-        {
-
+        {   
             return View();
         }
 
-        // GET: CodeTables/Create
-        public async Task<ActionResult> Create()
-        {            
-            var obj = await svs.GetFormObject();
-            return View(obj);
+        // GET: ServiceTags/Create
+        public ActionResult Create()
+        {
+            VmServiceTagsItem roleObj = new VmServiceTagsItem();
+            return View(roleObj);
         }
 
-        // POST: CodeTables/Create
+        // POST: ServiceTags/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(VmCodeTableItem codeTableItem)
+        public async Task<IActionResult> Create(VmServiceTagsItem serviceTagsItem)
         {
-            var result = svs.Insert(codeTableItem);
+            var result = svs.Insert(serviceTagsItem);
 
             if (result.IsSuccess)
             {
@@ -59,20 +56,34 @@ namespace Com.EazyTender_Admin.Controllers
             }
             else
             {
-                return View(codeTableItem);
+                return View(serviceTagsItem);
             }
         }
 
-        // GET: CodeTables/Edit/5
-        public ActionResult Edit(int id)
+        // GET: ServiceTags/Edit/5
+        public async Task<IActionResult> Edit(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            int _id = (int)id;
+
+            VmServiceTagsItem rItem = await svs.GetServiceTagsById(_id);
+
+            if (rItem == null)
+            {
+                return NotFound();
+            }
+            return View(rItem);
+
         }
 
-        // POST: CodeTables/Edit/5
+        // POST: ServiceTags/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, IFormCollection collection)
         {
             try
             {
@@ -86,21 +97,21 @@ namespace Com.EazyTender_Admin.Controllers
             }
         }
 
-        // GET: CodeTables/Delete/5
+        // GET: ServiceTags/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: CodeTables/Delete/5
+        // POST: ServiceTags/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id, IFormCollection collection)
         {
             try
             {
                 // TODO: Add delete logic here
-                await svs.Delete(id);
+
                 return RedirectToAction(nameof(Index));
             }
             catch
