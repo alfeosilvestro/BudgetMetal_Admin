@@ -18,5 +18,7 @@ namespace Com.BudgetMetal.Services.Industries
         Task<VmGenericServiceResult> Update(VmIndustryItem IndustryItem);
 
         Task Delete(int Id);
+
+        List<VmIndustryItem> GetActiveIndustries();
     }
 }

@@ -23,8 +23,8 @@ namespace Com.BudgetMetal.ViewModels.EzyTender
         public DateTime? ValidRfqdate { get; set; }
         public DateTime? EstimatedProjectStartDate { get; set; }
         public DateTime? EstimatedProjectEndDate { get; set; }
-        public bool? SupplierProvideMaterial { get; set; }
-        public bool? SupplierProvideTransport { get; set; }
+        public bool SupplierProvideMaterial { get; set; }
+        public bool SupplierProvideTransport { get; set; }
         public string MessageToSupplier { get; set; }
         public string IndustryOfRfq { get; set; }
         public string SelectedTags { get; set; }
