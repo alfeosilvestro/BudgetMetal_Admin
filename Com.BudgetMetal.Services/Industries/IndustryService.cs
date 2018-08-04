@@ -134,5 +134,22 @@ namespace Com.BudgetMetal.Services.Industries
             repo.Update(r);
             repo.Commit();
         }
+
+        public List<VmIndustryItem> GetActiveIndustries()
+        {
+            var dbResult =  repo.GetAll();
+
+            var resultList = new List<VmIndustryItem>();
+            foreach(var item in dbResult)
+            {
+                var resultItem = new VmIndustryItem();
+
+                Copy<Industry, VmIndustryItem>(item, resultItem);
+
+                resultList.Add(resultItem);
+            }
+
+            return resultList;
+        }
     }
 }

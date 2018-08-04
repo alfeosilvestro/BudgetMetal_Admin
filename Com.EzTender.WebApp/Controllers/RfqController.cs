@@ -2,14 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Com.BudgetMetal.Services.Industries;
 using Com.BudgetMetal.ViewModels.EzyTender;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Com.GenericPlatform.WebApp.Controllers
 {
     public class RfqController : Controller
     {
+        private readonly IIndustryService industryService;
+
+        public RfqController(IIndustryService industryService)
+        {
+            this.industryService = industryService;
+        }
+
         // GET: Rfq
         public ActionResult Index()
         {
@@ -44,50 +53,27 @@ namespace Com.GenericPlatform.WebApp.Controllers
             }
         }
 
-        // GET: Rfq/Edit/5
-        public ActionResult Edit(int id)
+        [HttpGet]
+        public async Task<JsonResult> GetActiveIndustries()
         {
-            return View();
+            var result =  industryService.GetActiveIndustries();
+
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
         }
 
-        // POST: Rfq/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        [HttpGet]
+        public async Task<JsonResult> GetServiceTagByIndustry(int Id)
         {
-            try
-            {
-                // TODO: Add update logic here
+            var result = industryService.GetServiceTagByIndustry(Id);
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
+            return new JsonResult(result, new JsonSerializerSettings()
             {
-                return View();
-            }
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
         }
 
-        // GET: Rfq/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Rfq/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }

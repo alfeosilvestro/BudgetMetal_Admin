@@ -1,4 +1,6 @@
-﻿$("#btnNewRequirement").click(function () {
+﻿
+
+$("#btnNewRequirement").click(function () {
     var detailRequirementLastId = $("#detailRequirementLastId").val();
 
     var newRow = "<tr>" +
@@ -108,3 +110,4 @@ $("#btnNewPricing").click(function () {
 function RemovePricingRow(item) {
     $(item).parent().parent().remove();
 }
+

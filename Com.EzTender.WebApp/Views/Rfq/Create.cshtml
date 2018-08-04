@@ -257,6 +257,18 @@
                             </div>
                         </div>
                         <div role="tabpanel" class="tab-pane fade" id="invited_suppliers">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <select asp-for="IndustryOfRfq" id="ddlIndustry" class="form-control show-tick"></select>
+                                </div>
+                                <div class="col-sm-9">
+                                    @*<select id="ddlServiceTags" class="form-control"></select>*@
+                                    <select class="form-control show-tick" id="ddlServiceTags" data-live-search="true" multiple>
+                                       
+                                    </select>
+                                </div>
+                            </div>
+                            
                             <table id="invitedSupplierTable" class="table table-hover">
                                 <thead>
                                     <tr>
@@ -526,6 +538,75 @@
         </div>
     </div>
 </form>
+<script>
+    $(function () {
+        
+    loadIndustry();
+});
+
+function loadIndustry() {
+    var ajaxurl = '@Url.Action("GetActiveIndustries", "Rfq")';
+
+    $('#ddlIndustry').empty();
+    $('#ddlIndustry').append($('<option>', {
+        value: 0,
+        text: '--Select Industry--'
+    }));
+
+    $.ajax({
+        url: ajaxurl,
+        dataType: 'json',
+        success: function (response) {
+            //console.log(response);
+            var obj = response;
+            for (var k in obj) {
+                var item = obj[k];
+                $('#ddlIndustry').append($('<option>', {
+                    value: item.Id,
+                    text: item.Name
+                }));
+            }
+
+
+        },
+        error: function (response) {
+            alert(response)
+        }
+
+    });
+    }
+
+    $("#ddlIndustry").change(function () {
+        var industryId = $('#ddlIndustry').val();
+        loadServiceTags(industryId);
+    });
+
+    function loadServiceTags(industryId) {
+
+    var ajaxurl = '@Url.Action("GetServiceTagByIndustry", "Rfq")';
+        
+    $('#ddlServiceTags').empty();
+    $.ajax({
+        url: ajaxurl,
+        data: "{Id: " + industryId+"}",
+        dataType: 'json',
+        success: function (response) {
+            console.log(response);
+            var obj = response;
+            for (var k in obj) {
+                var item = obj[k];
+                $('#ddlServiceTags').append($('<option>', {
+                    value: item.Id,
+                    text: item.Name
+                }));
+            }
+        },
+        error: function (response) {
+            alert(response)
+        }
+    });
+}
+</script>
 <!-- Editable Table Plugin Js -->
 <script src="~/material_theme/plugins/editable-table/mindmup-editabletable.js"></script>
 <script src="~/material_theme/js/pages/tables/editable-table.js"></script>
