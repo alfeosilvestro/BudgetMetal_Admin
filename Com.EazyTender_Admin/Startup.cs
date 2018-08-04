@@ -7,6 +7,7 @@ using Com.BudgetMetal.DataRepository.Code_Table;
 using Com.BudgetMetal.DataRepository.EmailLog;
 using Com.BudgetMetal.DataRepository.Gallery;
 using Com.BudgetMetal.DataRepository.Industries;
+using Com.BudgetMetal.DataRepository.ServiceTags;
 using Com.BudgetMetal.DataRepository.Single_Sign_On;
 using Com.BudgetMetal.DataRepository.Users;
 using Com.BudgetMetal.DB;
@@ -17,11 +18,14 @@ using Com.BudgetMetal.Services.Gallery;
 using Com.BudgetMetal.Services.Industries;
 using Com.BudgetMetal.Services.Roles;
 using Com.BudgetMetal.Services.Users;
+using Com.BudgetMetal.Services.ServiceTags;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Com.BudgetMetal.Services.Company;
+using Com.BudgetMetal.DataRepository.Company;
 
 namespace Com.EazyTender_Admin
 {
@@ -98,6 +102,13 @@ namespace Com.EazyTender_Admin
             services.AddScoped<IEmailsLogRepository, EmailLogRepository>();
             services.AddScoped<IEmailLogService, EmailLogService>();
 
+            //ServiceTags
+            services.AddScoped<IServiceTagsRepository, ServiceTagsRepository>();
+            services.AddScoped<IServiceTagsService, ServiceTagsService>();
+
+            //Companies
+            services.AddScoped<ICompanyRepository, CompanyRepository>();
+            services.AddScoped<ICompanyService, CompanyService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

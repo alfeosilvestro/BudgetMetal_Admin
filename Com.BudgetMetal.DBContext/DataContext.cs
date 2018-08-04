@@ -28,7 +28,7 @@ namespace Com.BudgetMetal.DB
         //public virtual DbSet<Clarification> Clarification { get; set; }
         public virtual DbSet<CodeCategory> CodeCategory { get; set; }
         public virtual DbSet<CodeTable> CodeTable { get; set; }
-        //public virtual DbSet<Company> Company { get; set; }
+        public virtual DbSet<Company> Company { get; set; }
         //public virtual DbSet<Document> Document { get; set; }
         //public virtual DbSet<DocumentUser> DocumentUser { get; set; }
         public virtual DbSet<EmailLog> EmailLog { get; set; }
@@ -42,7 +42,7 @@ namespace Com.BudgetMetal.DB
         //public virtual DbSet<Rfq> Rfq { get; set; }
         //public virtual DbSet<RfqPriceSchedule> RfqPriceSchedule { get; set; }
         public virtual DbSet<Role> Role { get; set; }
-        //public virtual DbSet<ServiceTags> ServiceTags { get; set; }
+        public virtual DbSet<ServiceTags> ServiceTags { get; set; }
         //public virtual DbSet<Sla> Sla { get; set; }
         //public virtual DbSet<SupplierServiceTags> SupplierServiceTags { get; set; }
         public virtual DbSet<User> User { get; set; }

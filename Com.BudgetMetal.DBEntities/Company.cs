@@ -5,14 +5,14 @@ namespace Com.BudgetMetal.DBEntities
 {
     public class Company : GenericEntity
     {
-        public Company()
-        {
-            Document = new HashSet<Document>();
-            InvitedSupplier = new HashSet<InvitedSupplier>();
-            Rating = new HashSet<Rating>();
-            SupplierServiceTags = new HashSet<SupplierServiceTags>();
-            User = new HashSet<User>();
-        }
+        //public Company()
+        //{
+        //    Document = new HashSet<Document>();
+        //    InvitedSupplier = new HashSet<InvitedSupplier>();
+        //    Rating = new HashSet<Rating>();
+        //    SupplierServiceTags = new HashSet<SupplierServiceTags>();
+        //    User = new HashSet<User>();
+        //}
        
         public string Name { get; set; }
         public string Address { get; set; }
@@ -26,10 +26,10 @@ namespace Com.BudgetMetal.DBEntities
         public int? SubmittedQuotation { get; set; }
        
 
-        public ICollection<Document> Document { get; set; }
-        public ICollection<InvitedSupplier> InvitedSupplier { get; set; }
-        public ICollection<Rating> Rating { get; set; }
-        public ICollection<SupplierServiceTags> SupplierServiceTags { get; set; }
-        public ICollection<User> User { get; set; }
+        //public ICollection<Document> Document { get; set; }
+        //public ICollection<InvitedSupplier> InvitedSupplier { get; set; }
+        //public ICollection<Rating> Rating { get; set; }
+        //public ICollection<SupplierServiceTags> SupplierServiceTags { get; set; }
+        //public ICollection<User> User { get; set; }
     }
 }

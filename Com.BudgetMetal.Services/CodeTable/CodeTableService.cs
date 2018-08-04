@@ -25,7 +25,7 @@ namespace Com.BudgetMetal.Services.Code_Table
         }
 
         public async Task<VmCodeTablePage> GetCodeTableByPage(string keyword, int page, int totalRecords)
-        {   
+        {
             //var dbPageResult = await repo.GetPage(keyword,
             //    (page == 0 ? Constants.app_firstPage : page),
             //    (totalRecords == 0 ? Constants.app_totalRecords : totalRecords));
