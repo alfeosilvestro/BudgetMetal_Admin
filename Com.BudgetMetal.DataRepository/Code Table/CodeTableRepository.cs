@@ -27,7 +27,9 @@ namespace Com.BudgetMetal.DataRepository.Code_Table
                 //return await base.GetPage(keyword, page, totalRecords);
             }
 
-            var records = this.DbContext.CodeTable.Where(e =>
+            var records = this.DbContext.CodeTable
+                .Include("CodeCategory")
+                .Where(e =>
                   (keyword == string.Empty ||
                   e.Name.Contains(keyword))
             );
