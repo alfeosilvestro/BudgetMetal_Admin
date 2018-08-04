@@ -27,12 +27,14 @@ namespace Com.BudgetMetal.DataRepository.Code_Table
                 //return await base.GetPage(keyword, page, totalRecords);
             }
 
-            var records = this.DbContext.CodeTable
-                .Include("CodeCategory")
+            var records = entities
+                .Include(ct => ct.CodeCategory)
                 .Where(e =>
-                  (keyword == string.Empty ||
-                  e.Name.Contains(keyword))
-            );
+                  (keyword == string.Empty || e.Name.Contains(keyword))
+                )
+                .OrderBy(e => new { e.Name, e.CreatedDate })
+                .Skip((totalRecords * page) - totalRecords)
+                .Take(totalRecords);
 
             var recordList = records
             .Select(r =>
@@ -43,9 +45,6 @@ namespace Com.BudgetMetal.DataRepository.Code_Table
                     CodeCategory_Id = r.CodeCategory_Id,
                     CodeCategory = r.CodeCategory
                 })
-            .OrderBy(e => new { e.Name, e.CreatedDate })
-            .Skip((totalRecords * page) - totalRecords)
-            .Take(totalRecords)
             .ToList();
 
             var count = await records.CountAsync();
