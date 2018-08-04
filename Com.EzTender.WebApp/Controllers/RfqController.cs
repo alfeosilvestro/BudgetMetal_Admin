@@ -67,7 +67,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
         [HttpGet]
         public async Task<JsonResult> GetServiceTagByIndustry(int Id)
         {
-            var result = industryService.GetServiceTagByIndustry(Id);
+            var result = industryService.GetActiveIndustries();
 
             return new JsonResult(result, new JsonSerializerSettings()
             {
