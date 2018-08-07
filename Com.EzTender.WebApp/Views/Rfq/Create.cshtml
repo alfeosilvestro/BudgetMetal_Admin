@@ -259,16 +259,17 @@
                         <div role="tabpanel" class="tab-pane fade" id="invited_suppliers">
                             <div class="row">
                                 <div class="col-sm-3">
-                                    <select asp-for="IndustryOfRfq" id="ddlIndustry" class="form-control selectpicker">
-                                      
-                                    </select>
+                                    <select asp-for="IndustryOfRfq" id="ddlIndustry" class="form-control selectpicker"></select>
                                 </div>
-                                <div class="col-sm-9">
+                                <div class="col-sm-8">
                                     @*<select id="ddlServiceTags" class="form-control"></select>*@
                                     <select class="form-control show-tick" id="ddlServiceTags" data-live-search="true" multiple></select>
                                 </div>
+                                <div class="col-sm-1">
+                                    
+                                </div>
                             </div>
-
+                           
                             <table id="invitedSupplierTable" class="table table-hover">
                                 <thead>
                                     <tr>
@@ -581,14 +582,14 @@ function loadIndustry() {
         text: '--Select Industry--'
     }));
 
-  
+
 
     $.ajax({
         url: ajaxurl,
         dataType: 'json',
         success: function (response) {
-            //console.log(response);
-            var obj = response;
+            console.log(response);
+            var obj = response.Result;
             for (var k in obj) {
                 var item = obj[k];
                 $('#ddlIndustry').append($('<option>', {
@@ -604,7 +605,7 @@ function loadIndustry() {
         }
 
     });
-    
+
     }
 
     $("#ddlIndustry").change(function () {
@@ -613,30 +614,38 @@ function loadIndustry() {
     });
 
     function loadServiceTags(industryId) {
+        $('#ddlServiceTags').empty();
+        if (industryId == "0") {
 
-    var ajaxurl = '@Url.Action("GetServiceTagByIndustry", "Rfq")';
-
-    $('#ddlServiceTags').empty();
-    $.ajax({
-        url: ajaxurl,
-        data: {Id: industryId},
-        dataType: 'json',
-        success: function (response) {
-            //console.log(response);
-            var obj = response;
-            for (var k in obj) {
-                var item = obj[k];
-                $('#ddlServiceTags').append($('<option>', {
-                    value: item.Id,
-                    text: item.Name
-                }));
-            }
             $("#ddlServiceTags").selectpicker('refresh');
-        },
-        error: function (response) {
-            alert(response)
+        } else {
+
+            var ajaxurl = '@Url.Action("GetServiceTagByIndustry", "Rfq")';
+
+            
+            $.ajax({
+                url: ajaxurl,
+                data: {Id: industryId},
+                dataType: 'json',
+                success: function (response) {
+                    console.log(response);
+                    var obj = response.Result;
+                    for (var k in obj) {
+                        var item = obj[k];
+                        $('#ddlServiceTags').append($('<option>', {
+                            value: item.Id,
+                            text: item.Name
+                        }));
+                    }
+                    $("#ddlServiceTags").selectpicker('refresh');
+                },
+                error: function (response) {
+                    alert(response)
+                }
+            });
         }
-    });
+        
+
 }
 </script>
 

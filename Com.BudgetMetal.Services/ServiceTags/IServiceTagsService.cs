@@ -18,5 +18,7 @@ namespace Com.BudgetMetal.Services.ServiceTags
         Task<VmGenericServiceResult> Update(VmServiceTagsItem ServiceTagItem);
 
         Task Delete(int Id);
+
+        Task<List<VmServiceTagsItem>> GetVmServiceTagsByIndustry(int Id);
     }
 }

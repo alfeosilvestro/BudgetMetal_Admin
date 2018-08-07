@@ -7,6 +7,7 @@ using Com.BudgetMetal.DataRepository.Code_Table;
 using Com.BudgetMetal.DataRepository.EmailLog;
 using Com.BudgetMetal.DataRepository.Industries;
 using Com.BudgetMetal.DataRepository.Roles;
+using Com.BudgetMetal.DataRepository.ServiceTags;
 using Com.BudgetMetal.DataRepository.Single_Sign_On;
 using Com.BudgetMetal.DataRepository.Users;
 using Com.BudgetMetal.DB;
@@ -16,6 +17,7 @@ using Com.BudgetMetal.Services.EmailLog;
 using Com.BudgetMetal.Services.Gallery;
 using Com.BudgetMetal.Services.Industries;
 using Com.BudgetMetal.Services.Roles;
+using Com.BudgetMetal.Services.ServiceTags;
 using Com.BudgetMetal.Services.Users;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -89,6 +91,9 @@ namespace Com.EzTender.WebApp
 
             services.AddScoped<IIndustryRepository, IndustryRepository>();
             services.AddScoped<IIndustryService, IndustryService>();
+
+            services.AddScoped<IServiceTagsRepository, ServiceTagsRepository>();
+            services.AddScoped<IServiceTagsService, ServiceTagsService>();
 
             //CodeTable
             services.AddScoped<ICodeTableRepository, CodeTableRepository>();

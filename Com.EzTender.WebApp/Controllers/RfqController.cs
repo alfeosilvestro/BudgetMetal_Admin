@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Com.BudgetMetal.Services.Industries;
+using Com.BudgetMetal.Services.ServiceTags;
 using Com.BudgetMetal.ViewModels.EzyTender;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +14,12 @@ namespace Com.GenericPlatform.WebApp.Controllers
     public class RfqController : Controller
     {
         private readonly IIndustryService industryService;
+        private readonly IServiceTagsService serviceTagsService;
 
-        public RfqController(IIndustryService industryService)
+        public RfqController(IIndustryService industryService, IServiceTagsService serviceTagsService)
         {
             this.industryService = industryService;
+            this.serviceTagsService = serviceTagsService;
         }
 
         // GET: Rfq
@@ -67,7 +70,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
         [HttpGet]
         public async Task<JsonResult> GetServiceTagByIndustry(int Id)
         {
-            var result = industryService.GetActiveIndustries();
+            var result = serviceTagsService.GetVmServiceTagsByIndustry(Id);
 
             return new JsonResult(result, new JsonSerializerSettings()
             {

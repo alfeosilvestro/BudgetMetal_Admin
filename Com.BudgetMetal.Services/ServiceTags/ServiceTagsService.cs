@@ -133,5 +133,22 @@ namespace Com.BudgetMetal.Services.ServiceTags
             repo.Update(r);
             repo.Commit();
         }
+
+        public async Task<List<VmServiceTagsItem>> GetVmServiceTagsByIndustry(int Id)
+        {
+            var dbResult = await repo.GetServiceTagsByIndustry(Id);
+
+            var resultList = new List<VmServiceTagsItem>();
+            foreach (var item in dbResult)
+            {
+                var resultItem = new VmServiceTagsItem();
+
+                Copy<Com.BudgetMetal.DBEntities.ServiceTags, VmServiceTagsItem>(item, resultItem);
+
+                resultList.Add(resultItem);
+            }
+
+            return resultList;
+        }
     }
 }
