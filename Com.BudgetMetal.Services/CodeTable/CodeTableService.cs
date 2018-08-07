@@ -111,8 +111,7 @@ namespace Com.BudgetMetal.Services.Code_Table
 
                 Copy<VmCodeTableItem, CodeTable>(vmCodeTableItem, r);
 
-                r.Id = 1;// repo.GetLastId();
-
+                r.CodeCategory_Id = (int)vmCodeTableItem.CodeCategory_Id;
                 if (r.CreatedBy.IsNullOrEmpty())
                 {
                     r.CreatedBy = r.UpdatedBy = "System";

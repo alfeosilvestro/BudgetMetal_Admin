@@ -94,6 +94,8 @@ namespace Com.BudgetMetal.DBEntities
         {
             this.Version = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
         }
+
+        
     }
 }
 
