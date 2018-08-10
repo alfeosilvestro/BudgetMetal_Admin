@@ -6,11 +6,11 @@ namespace Com.BudgetMetal.ViewModels.EzyTender
     public class VmRequirement : ViewModelItemBase
     {
        
-        public uint RfqId { get; set; }
+        public int Rfq_Id { get; set; }
         public string ServiceName { get; set; }
         public string Description { get; set; }
         public int? Quantity { get; set; }
 
-        public VmRfq Rfq { get; set; }
+        public virtual VmRfq Rfq { get; set; }
     }
 }

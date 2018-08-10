@@ -25,7 +25,13 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <input type="text" asp-for="Document.DocumentNo" readonly class="form-control" placeholder="<Auto Generate by System>">
-
+                                    <input type="hidden" asp-for="Document.DocumentStatus_Id" value="1">
+                                    <input type="hidden" asp-for="Document.DocumentType_Id" value="1">
+                                    <input type="hidden" asp-for="Document.Company_Id" value="1">
+                                    <input type="hidden" asp-for="Document.CreatedBy" value="system">
+                                    <input type="hidden" asp-for="Document.UpdatedBy" value="system">
+                                    <input type="hidden" asp-for="CreatedBy" value="system">
+                                    <input type="hidden" asp-for="UpdatedBy" value="system">
                                 </div>
                             </div>
                         </div>
@@ -249,6 +255,7 @@
 
                             </div>
                         </div>
+
                         <div role="tabpanel" class="tab-pane fade" id="invited_suppliers">
                             <div class="row">
                                 <div class="col-sm-3">
@@ -256,7 +263,7 @@
                                 </div>
                                 <div class="col-sm-8">
                                     @*<select id="ddlServiceTags" class="form-control"></select>*@
-                                    <select class="form-control show-tick" id="ddlServiceTags" data-live-search="true" multiple></select>
+                                    <select asp-for="SelectedTags" class="form-control show-tick" id="ddlServiceTags" data-live-search="true" multiple></select>
                                 </div>
                                 <div class="col-sm-1">
 

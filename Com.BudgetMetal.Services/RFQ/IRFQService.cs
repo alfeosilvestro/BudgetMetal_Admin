@@ -7,6 +7,6 @@ namespace Com.BudgetMetal.Services.RFQ
 {
     public interface IRFQService
     {
-        int SaveRFQ(VmRfq rfq);
+        string SaveRFQ(VmRfq rfq);
     }
 }

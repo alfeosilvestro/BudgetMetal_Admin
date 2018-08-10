@@ -11,8 +11,10 @@ namespace Com.BudgetMetal.DBEntities
         public string PenaltyAmount { get; set; }
         public string Description { get; set; }
 
-        [ForeignKey("Rfq")]
+       
         public int Rfq_Id { get; set; }
+
+        [ForeignKey("Rfq_Id")]
         public virtual Rfq Rfq { get; set; }
     }
 }

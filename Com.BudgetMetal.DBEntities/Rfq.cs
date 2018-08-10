@@ -4,7 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Com.BudgetMetal.DBEntities
 {
-    public class Rfq
+    [Table("RFQ")]
+    public class Rfq : GenericEntity
     {
         //public Rfq()
         //{
@@ -16,7 +17,7 @@ namespace Com.BudgetMetal.DBEntities
         //    Sla = new HashSet<Sla>();
         //}
 
-        public int Id { get; set; }
+      
         
         public string InternalRefrenceNo { get; set; }
         public string InternalProjectName { get; set; }
@@ -24,14 +25,16 @@ namespace Com.BudgetMetal.DBEntities
         public DateTime? ValidRfqdate { get; set; }
         public DateTime? EstimatedProjectStartDate { get; set; }
         public DateTime? EstimatedProjectEndDate { get; set; }
-        public bool? SupplierProvideMaterial { get; set; }
-        public bool? SupplierProvideTransport { get; set; }
+        public bool SupplierProvideMaterial { get; set; }
+        public bool SupplierProvideTransport { get; set; }
         public string MessageToSupplier { get; set; }
         public string IndustryOfRfq { get; set; }
         public string SelectedTags { get; set; }
 
-        [ForeignKey("Document")]
+        
         public int Document_Id { get; set; }
+
+        [ForeignKey("Document_Id")]
         public virtual Document Document { get; set; }
         //public ICollection<InvitedSupplier> InvitedSupplier { get; set; }
         //public ICollection<Penalty> Penalty { get; set; }

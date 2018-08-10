@@ -2,14 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Com.BudgetMetal.DataRepository.Attachment;
 using Com.BudgetMetal.DataRepository.Code_Category;
 using Com.BudgetMetal.DataRepository.Code_Table;
 using Com.BudgetMetal.DataRepository.Company;
+using Com.BudgetMetal.DataRepository.Document;
 using Com.BudgetMetal.DataRepository.EmailLog;
 using Com.BudgetMetal.DataRepository.Industries;
+using Com.BudgetMetal.DataRepository.InvitedSupplier;
+using Com.BudgetMetal.DataRepository.Penalty;
+using Com.BudgetMetal.DataRepository.Requirement;
+using Com.BudgetMetal.DataRepository.RFQ;
+using Com.BudgetMetal.DataRepository.RfqPriceSchedule;
 using Com.BudgetMetal.DataRepository.Roles;
 using Com.BudgetMetal.DataRepository.ServiceTags;
 using Com.BudgetMetal.DataRepository.Single_Sign_On;
+using Com.BudgetMetal.DataRepository.Sla;
 using Com.BudgetMetal.DataRepository.Users;
 using Com.BudgetMetal.DB;
 using Com.BudgetMetal.Services.Code_Category;
@@ -18,6 +26,7 @@ using Com.BudgetMetal.Services.Company;
 using Com.BudgetMetal.Services.EmailLog;
 using Com.BudgetMetal.Services.Gallery;
 using Com.BudgetMetal.Services.Industries;
+using Com.BudgetMetal.Services.RFQ;
 using Com.BudgetMetal.Services.Roles;
 using Com.BudgetMetal.Services.ServiceTags;
 using Com.BudgetMetal.Services.Users;
@@ -81,6 +90,17 @@ namespace Com.EzTender.WebApp
 
             //// Register for logic classes
             services.AddScoped<IGalleryService, GalleryService>();
+
+            services.AddScoped<IDocumentRepository, DocumentRepository>();
+            services.AddScoped<IRfqRepository, RfqRepository>();
+            services.AddScoped<IAttachmentRepository, AttachmentRepository>();
+            services.AddScoped<IRequirementRepository, RequirementRepository>();
+            services.AddScoped<ISlaRepository, SlaRepository>();
+            services.AddScoped<IPenaltyRepository, PenaltyRepository>();
+            services.AddScoped<IInvitedSupplierRepository, InvitedSupplierRepository>();
+            services.AddScoped<IRfqPriceScheduleRepository, RfqPriceScheduleRepository>();
+
+            services.AddScoped<IRFQService, RFQService>();
 
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IRoleService, RoleService>();
