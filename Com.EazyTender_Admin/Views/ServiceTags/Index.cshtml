@@ -18,6 +18,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Result.Records[0].Description)
             </th>
+            <th>Industry</th>
             <th></th>
             <th></th>
         </tr>
@@ -28,6 +29,7 @@
             <tr>
                 <td> @item.Name </td>
                 <td> @item.Description </td>
+                <td>@(item.Industry == null ? "" : item.Industry.Name)</td>
                 <td hidden="hidden"> @item.Id </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>

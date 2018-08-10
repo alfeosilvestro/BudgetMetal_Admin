@@ -1,19 +1,23 @@
 ﻿using Com.BudgetMetal.Common;
+using Com.BudgetMetal.ViewModels;
 using Com.BudgetMetal.ViewModels.User;
 using System;
+using System.Threading.Tasks;
 
 namespace Com.BudgetMetal.Services.Users
 {
     public interface IUserService
     {
-        VmUserPage GetUserByPage(string keyword, int page, int totalRecords);
+        Task<VmUserPage> GetUserByPage(string keyword, int page, int totalRecords);
 
-        VmUserItem GetUserById(int Id);
+        Task<VmUserItem> GetUserById(int Id);
 
-        void Insert(VmUserItem vmUserItem);
+        VmGenericServiceResult Insert(VmUserItem vmUserItem);
 
-        void Update(VmUserItem userItem);
+        Task<VmGenericServiceResult> Update(VmUserItem vmUserItem);
 
-        void Delete(int Id);
+        Task Delete(int Id);
+
+        Task<VmUserItem> GetFormObject();
     }
 }

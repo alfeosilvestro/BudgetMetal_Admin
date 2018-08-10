@@ -37,10 +37,10 @@ namespace Com.EazyTender_Admin.Controllers
         }
 
         // GET: ServiceTags/Create
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
-            VmServiceTagsItem roleObj = new VmServiceTagsItem();
-            return View(roleObj);
+            var obj = await svs.GetFormObject();
+            return View(obj);
         }
 
         // POST: ServiceTags/Create
@@ -83,17 +83,22 @@ namespace Com.EazyTender_Admin.Controllers
         // POST: ServiceTags/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(int id, VmServiceTagsItem _serviceTags)
         {
-            try
+            if (id != _serviceTags.Id)
             {
-                // TODO: Add update logic here
+                return NotFound();
+            }
 
+            var result = await svs.Update(_serviceTags);
+
+            if (result.IsSuccess)
+            {
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            else
             {
-                return View();
+                return View(_serviceTags);
             }
         }
 

@@ -10,12 +10,10 @@ namespace Com.BudgetMetal.DataRepository.Users
 {
     public interface IUserRepository : IGenericRepository<User>
     {
-        PageResult<User> GetUsersByPage(string keyword, int page, int totalRecords);
+        //PageResult<User> GetUsersByPage1(string keyword, int page, int totalRecords);
 
-        User GetUserById(int Id );
+        //User GetUserById(int Id );
 
-        Role GetRoleFileById(int Id);
-
-        
+        //Role GetRoleFileById(int Id);
     }
 }

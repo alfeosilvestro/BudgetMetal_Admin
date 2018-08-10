@@ -10,6 +10,7 @@ namespace Com.BudgetMetal.Services.EmailLog
     {
         Task<VmEmailLogPage> GetEmailLogByPage(string keyword, int page, int totalRecords);
 
-        Task<VmEmailLogItem> GetEmailLogById(int Id);
+        //Task<VmEmailLogItem> GetEmailLogById(int Id);
+
     }
 }

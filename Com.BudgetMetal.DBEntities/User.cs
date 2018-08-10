@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Com.BudgetMetal.DBEntities
@@ -32,7 +33,6 @@ namespace Com.BudgetMetal.DBEntities
         //    UserRoles = new HashSet<UserRoles>();
         //}
 
-
         public string EmailAddress { get; set; }
         public string Password { get; set; }
         public string UserName { get; set; }
@@ -40,11 +40,14 @@ namespace Com.BudgetMetal.DBEntities
         public string JobTitle { get; set; }
         public string ContactNumber { get; set; }
         public bool? IsConfirmed { get; set; }
-        public uint CompanyId { get; set; }
-        public uint UserType { get; set; }
+        
 
-        //public Company Company { get; set; }
-        //public CodeTable UserTypeNavigation { get; set; }
+        [ForeignKey("Company")]
+        public int Company_Id { get; set; }
+        public virtual Company Company { get; set; }
+        [ForeignKey("CodeTable")]
+        public int UserType { get; set; }
+        public virtual CodeTable CodeTable { get; set; }
         //public ICollection<Clarification> Clarification { get; set; }
         //public ICollection<DocumentUser> DocumentUser { get; set; }
         //public ICollection<Rating> Rating { get; set; }

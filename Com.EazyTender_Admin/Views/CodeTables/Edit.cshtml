@@ -1,4 +1,4 @@
-﻿@model Com.BudgetMetal.ViewModels.ServiceTags.VmServiceTagsItem
+﻿@model Com.BudgetMetal.ViewModels.CodeTable.VmCodeTableItem
 
 @{
     ViewData["Title"] = "Edit";
@@ -6,7 +6,7 @@
 
 <h2>Edit</h2>
 
-<h4>Service Tags</h4>
+<h4>Code Table</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,7 +14,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" readonly="readonly" class="form-control" />
+                <input asp-for="Id" class="form-control" readonly="readonly" />
                 <span asp-validation-for="Id" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -23,22 +23,13 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Industry_Id" class="control-label">Code Category</label>
-                <select asp-for="Industry_Id" onchange="onFormSelected(this.value)" asp-items="@(new SelectList(Model.IndustryList, "Id", "Name", Model.Industry_Id))" class="form-control">
+                <label asp-for="CodeCategory_Id" class="control-label">Code Category</label>
+                <select asp-for="CodeCategory_Id" onchange="onFormSelected(this.value)" asp-items="@(new SelectList(Model.CodeCategoryList, "Id", "Name", Model.CodeCategory_Id))" class="form-control">
                     <option>Please select one</option>
                 </select>
-                <span asp-validation-for="Industry_Id" class="text-danger"></span>
+                <span asp-validation-for="CodeCategory_Id" class="text-danger"></span>
             </div>
-            <div class="form-group" hidden="hidden">
-                <label asp-for="UpdatedBy" class="control-label"></label>
-                <input asp-for="UpdatedBy" class="form-control" />
-                <span asp-validation-for="UpdatedBy" class="text-danger"></span>
-            </div>
+
             <div class="form-group">
                 <div class="checkbox">
                     <label>

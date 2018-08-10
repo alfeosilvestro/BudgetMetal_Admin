@@ -12,10 +12,11 @@ namespace Com.BudgetMetal.Services.EmailLog
     public class EmailLogService : BaseService, IEmailLogService
     {
         private readonly IEmailsLogRepository repo;
-
-        public EmailLogService(IEmailsLogRepository repo)
+        private readonly EmailLogRepository repos;
+        public EmailLogService(IEmailsLogRepository repo, EmailLogRepository repos)
         {
             this.repo = repo;
+            this.repos = repos;
         }
 
         public async Task<VmEmailLogPage> GetEmailLogByPage(string keyword, int page, int totalRecords)
@@ -24,6 +25,10 @@ namespace Com.BudgetMetal.Services.EmailLog
                 (page == 0 ? Constants.app_firstPage : page),
                 (totalRecords == 0 ? Constants.app_totalRecords : totalRecords));
 
+            //var dbPageResult = await repo.GetByPage(keyword,
+            //    (page == 0 ? Constants.app_firstPage : page),
+            //    (totalRecords == 0 ? Constants.app_totalRecords : totalRecords));
+
             if (dbPageResult == null)
             {
                 return new VmEmailLogPage();
@@ -31,8 +36,7 @@ namespace Com.BudgetMetal.Services.EmailLog
 
             var resultObj = new VmEmailLogPage();
             //resultObj.ApplicationToken = applicationToken;
-            resultObj.RequestId = DateTime.Now.ToString("yyyyMMddHHmmss");
-            resultObj.RequestDate = DateTime.Now;
+            
             resultObj.Result = new PageResult<VmEmailLogItem>();
             resultObj.Result.Records = new List<VmEmailLogItem>();
 
@@ -50,20 +54,20 @@ namespace Com.BudgetMetal.Services.EmailLog
             return resultObj;
         }
 
-        public async Task<VmEmailLogItem> GetEmailLogById(int Id)
-        {
-            var dbPageResult = await repo.Get(Id);
+        //public async Task<VmEmailLogItem> GetEmailLogById(int Id)
+        //{
+        //    var dbPageResult = await repo.Get(Id);
 
-            if (dbPageResult == null)
-            {
-                return new VmEmailLogItem();
-            }
+        //    if (dbPageResult == null)
+        //    {
+        //        return new VmEmailLogItem();
+        //    }
 
-            var resultObj = new VmEmailLogItem();
+        //    var resultObj = new VmEmailLogItem();
 
-            Copy<Com.BudgetMetal.DBEntities.EmailLog, VmEmailLogItem>(dbPageResult, resultObj);
+        //    Copy<Com.BudgetMetal.DBEntities.EmailLog, VmEmailLogItem>(dbPageResult, resultObj);
 
-            return resultObj;
-        }
+        //    return resultObj;
+        //}
     }
 }

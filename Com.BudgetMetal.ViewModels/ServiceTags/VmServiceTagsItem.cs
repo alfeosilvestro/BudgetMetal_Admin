@@ -9,7 +9,8 @@ namespace Com.BudgetMetal.ViewModels.ServiceTags
     {
         public string Name { get; set; }
         public string Description { get; set; }
-
+        public int Industry_Id { get; set; }
         public virtual VmIndustryItem Industry { get; set; }
+        public List<VmIndustryItem> IndustryList { get; set; }
     }
 }

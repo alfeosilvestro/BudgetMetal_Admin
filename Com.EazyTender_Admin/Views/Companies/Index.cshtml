@@ -12,36 +12,17 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                ID
-            </th>
-            <th>
-                Name
-            </th>
-            <th>
-                Domain
-            </th>
-            <th>
-                Registration No.
-            </th>
-            <th>
-                IsVerified
-            </th>
-            <th>
-                About
-            </th>
-            <th>
-                SupplierAvgRating
-            </th>
-            <th>
-                BuyerAvgRating
-            </th>
-            <th>
-                AwardedQuotation
-            </th>
-            <th>
-                SubmittedQuotation
-            </th>
+            <th>ID</th>
+            <th> Name </th>
+            <th>Address</th>
+            <th> Domain </th>
+            <th> Registration No. </th>
+            <th> About </th>
+            <th> IsVerified </th>
+            <th> SupplierAvgRating </th>
+            <th> BuyerAvgRating </th>
+            <th> AwardedQuotation </th>
+            <th> SubmittedQuotation </th>
             <th></th>
             <th></th>
         </tr>
@@ -55,15 +36,15 @@
             <td> @item.Address </td>
             <td> @item.Domain </td>
             <td> @item.RegNo </td>
-            <td> @item.IsVerified </td>
             <td> @item.About </td>
+
+            <td> @item.IsVerified </td>
             <td> @item.SupplierAvgRating </td>
             <td> @item.BuyerAvgRating </td>
             <td> @item.AwardedQuotation </td>
             <td> @item.SubmittedQuotation </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>

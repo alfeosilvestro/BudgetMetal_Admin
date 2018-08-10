@@ -101,20 +101,21 @@ namespace Com.EazyTender_Admin.Controllers
         }
 
         // GET: Companies/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            await svs.Delete(id);
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: Companies/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int id, IFormCollection collection)
         {
             try
             {
                 // TODO: Add delete logic here
-
+                await svs.Delete(id);
                 return RedirectToAction(nameof(Index));
             }
             catch

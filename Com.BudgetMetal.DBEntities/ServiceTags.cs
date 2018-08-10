@@ -14,9 +14,9 @@ namespace Com.BudgetMetal.DBEntities
         public string Name { get; set; }
         public string Description { get; set; }
 
-        //[ForeignKey("Industry")]
-        public uint Industry_Id { get; set; }
-        //public Industry Industry { get; set; }
+        [ForeignKey("Industry")]
+        public int Industry_Id { get; set; }
+        public virtual Industry Industry { get; set; }
         //public ICollection<SupplierServiceTags> SupplierServiceTags { get; set; }
     }
 }
