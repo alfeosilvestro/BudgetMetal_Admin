@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Com.BudgetMetal.DBEntities
 {
     public class Rating : GenericEntity
     {
        
-        public uint CompanyId { get; set; }
-        public uint UserId { get; set; }
-        public uint DocumentId { get; set; }
+        
         public int? SpeedOfQuotation { get; set; }
         public int? SpeedofDelivery { get; set; }
         public int? ServiceQuality { get; set; }
@@ -19,8 +18,16 @@ namespace Com.BudgetMetal.DBEntities
         public string Description { get; set; }
         public string Ratingcol { get; set; }
 
-        public Company Company { get; set; }
-        public Document Document { get; set; }
-        public User User { get; set; }
+        [ForeignKey("Company")]
+        public int Company_Id { get; set; }
+        public virtual Company Company { get; set; }
+
+        [ForeignKey("Document")]
+        public int Document_Id { get; set; }
+        public virtual Document Document { get; set; }
+
+        [ForeignKey("User")]
+        public int User_Id { get; set; }
+        public virtual User User { get; set; }
     }
 }

@@ -1,22 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Com.BudgetMetal.DBEntities
 {
     public class Rfq
     {
-        public Rfq()
-        {
-            InvitedSupplier = new HashSet<InvitedSupplier>();
-            Penalty = new HashSet<Penalty>();
-            Quotation = new HashSet<Quotation>();
-            Requirement = new HashSet<Requirement>();
-            RfqPriceSchedule = new HashSet<RfqPriceSchedule>();
-            Sla = new HashSet<Sla>();
-        }
+        //public Rfq()
+        //{
+        //    InvitedSupplier = new HashSet<InvitedSupplier>();
+        //    Penalty = new HashSet<Penalty>();
+        //    Quotation = new HashSet<Quotation>();
+        //    Requirement = new HashSet<Requirement>();
+        //    RfqPriceSchedule = new HashSet<RfqPriceSchedule>();
+        //    Sla = new HashSet<Sla>();
+        //}
 
-        public uint Id { get; set; }
-        public uint DocumentId { get; set; }
+        public int Id { get; set; }
+        
         public string InternalRefrenceNo { get; set; }
         public string InternalProjectName { get; set; }
         public DateTime? StartRfqdate { get; set; }
@@ -29,12 +30,14 @@ namespace Com.BudgetMetal.DBEntities
         public string IndustryOfRfq { get; set; }
         public string SelectedTags { get; set; }
 
-        public Document Document { get; set; }
-        public ICollection<InvitedSupplier> InvitedSupplier { get; set; }
-        public ICollection<Penalty> Penalty { get; set; }
-        public ICollection<Quotation> Quotation { get; set; }
-        public ICollection<Requirement> Requirement { get; set; }
-        public ICollection<RfqPriceSchedule> RfqPriceSchedule { get; set; }
-        public ICollection<Sla> Sla { get; set; }
+        [ForeignKey("Document")]
+        public int Document_Id { get; set; }
+        public virtual Document Document { get; set; }
+        //public ICollection<InvitedSupplier> InvitedSupplier { get; set; }
+        //public ICollection<Penalty> Penalty { get; set; }
+        //public ICollection<Quotation> Quotation { get; set; }
+        //public ICollection<Requirement> Requirement { get; set; }
+        //public ICollection<RfqPriceSchedule> RfqPriceSchedule { get; set; }
+        //public ICollection<Sla> Sla { get; set; }
     }
 }
