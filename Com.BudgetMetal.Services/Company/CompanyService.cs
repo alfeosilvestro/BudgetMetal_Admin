@@ -43,7 +43,7 @@ namespace Com.BudgetMetal.Services.Company
                 var resultItem = new VmCompanyItem();
 
                 Copy<Com.BudgetMetal.DBEntities.Company, VmCompanyItem>(dbItem, resultItem);
-
+                resultItem.IsVerified = (dbItem.IsVerified == null) ? false : (bool)dbItem.IsVerified ;
                 resultObj.Result.Records.Add(resultItem);
             }
 
@@ -59,9 +59,12 @@ namespace Com.BudgetMetal.Services.Company
                 return new VmCompanyItem();
             }
 
+
             var resultObj = new VmCompanyItem();
 
             Copy<Com.BudgetMetal.DBEntities.Company, VmCompanyItem>(dbPageResult, resultObj);
+
+            resultObj.IsVerified = (dbPageResult.IsVerified == null) ? false : (bool)dbPageResult.IsVerified; ;
 
             return resultObj;
         }
@@ -76,7 +79,7 @@ namespace Com.BudgetMetal.Services.Company
 
                 Copy<VmCompanyItem, Com.BudgetMetal.DBEntities.Company>(vmItem, r);
 
-                //r.Id = 1;// repo.GetLastId();
+                r.IsVerified = false;
                 r.AwardedQuotation = 0;
                 r.SubmittedQuotation = 0;
                 r.BuyerAvgRating = 0;
@@ -101,20 +104,22 @@ namespace Com.BudgetMetal.Services.Company
             return result;
         }
 
-        public async Task<VmGenericServiceResult> Update(VmCompanyItem vmCodeTableItem)
+        public async Task<VmGenericServiceResult> Update(VmCompanyItem vmCompanyItem)
         {
             VmGenericServiceResult result = new VmGenericServiceResult();
 
             try
             {
-                Com.BudgetMetal.DBEntities.Company r = await repo.Get(vmCodeTableItem.Id);
+                Com.BudgetMetal.DBEntities.Company r = await repo.Get(vmCompanyItem.Id);
 
-                Copy<VmCompanyItem, Com.BudgetMetal.DBEntities.Company>(vmCodeTableItem, r);
+                Copy<VmCompanyItem, Com.BudgetMetal.DBEntities.Company>(vmCompanyItem, r);
 
                 if (r.UpdatedBy.IsNullOrEmpty())
                 {
                     r.UpdatedBy = "System";
                 }
+
+                r.IsVerified = vmCompanyItem.IsVerified;
 
                 repo.Update(r);
 

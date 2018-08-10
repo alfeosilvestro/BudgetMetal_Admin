@@ -17,28 +17,28 @@
                 @Html.DisplayNameFor(model => model.Result.Records[0].UserName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Result.Records[0].Email)
+                @Html.DisplayNameFor(model => model.Result.Records[0].EmailAddress)
             </th>
             <th>
-
                 @Html.DisplayNameFor(model => model.Result.Records[0].Password)
             </th>
             <th>
-
-                @Html.DisplayNameFor(model => model.Result.Records[0].Title)
+                @Html.DisplayNameFor(model => model.Result.Records[0].ContactName)
             </th>
             <th>
-
-                @Html.DisplayNameFor(model => model.Result.Records[0].RoleId)
+                @Html.DisplayNameFor(model => model.Result.Records[0].ContactNumber)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Result.Records[0].SiteAdmin)
+                @Html.DisplayNameFor(model => model.Result.Records[0].JobTitle)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Result.Records[0].Confirmed)
+                @Html.DisplayNameFor(model => model.Result.Records[0].IsConfirmed)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Result.Records[0].Status)
+                Company
+            </th>
+            <th>
+                User Type
             </th>
             <th></th>
             <th></th>
@@ -51,17 +51,17 @@
             {
                 <tr>
                     <td> @item.UserName </td>
-                    <td> @item.Email </td>
+                    <td> @item.EmailAddress </td>
                     <td> @item.Password </td>
-                    <td>@item.Title</td>
-                    <td> @item.RoleId </td>
-                    <td> @item.SiteAdmin </td>
-                    <td> @item.Confirmed </td>
-                    <td> @item.Status </td>
+                    <td>@item.ContactName</td>
+                    <td> @item.ContactNumber </td>
+                    <td> @item.JobTitle </td>
+                    <td> @item.IsConfirmed </td>
+                    <td> @item.Company.Name </td>
+                    <td> @item.CodeTable.Name </td>
                     <td hidden="hidden"> @item.Id </td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a>
                         <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                     </td>
                 </tr>

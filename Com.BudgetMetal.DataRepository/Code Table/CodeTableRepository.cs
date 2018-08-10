@@ -30,6 +30,7 @@ namespace Com.BudgetMetal.DataRepository.Code_Table
             var records = entities
                 .Include(ct => ct.CodeCategory)
                 .Where(e =>
+                  (e.IsActive == true) &&
                   (keyword == string.Empty || e.Name.Contains(keyword))
                 )
                 .OrderBy(e => new { e.Name, e.CreatedDate })

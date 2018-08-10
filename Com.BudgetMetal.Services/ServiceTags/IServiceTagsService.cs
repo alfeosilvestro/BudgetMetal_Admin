@@ -19,6 +19,8 @@ namespace Com.BudgetMetal.Services.ServiceTags
 
         Task Delete(int Id);
 
+        Task<VmServiceTagsItem> GetFormObject();
+
         Task<List<VmServiceTagsItem>> GetVmServiceTagsByIndustry(int Id);
     }
 }

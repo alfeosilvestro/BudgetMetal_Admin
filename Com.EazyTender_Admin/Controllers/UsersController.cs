@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Com.BudgetMetal.Services.Users;
+using Com.BudgetMetal.ViewModels.User;
 using Com.EazyTender_Admin.Configurations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,9 +23,9 @@ namespace Com.EazyTender_Admin.Controllers
         }
 
         // GET: Users
-        public ActionResult Index(string keyword, int page, int totalRecords)
+        public async Task<ActionResult> Index(string keyword, int page, int totalRecords)
         {
-            var result = svs.GetUserByPage(keyword, page, _appSettings.TotalRecordPerPage);
+            var result = await svs.GetUserByPage(keyword, page, _appSettings.TotalRecordPerPage);
 
             return View(result);
         }
@@ -36,48 +37,67 @@ namespace Com.EazyTender_Admin.Controllers
         }
 
         // GET: Users/Create
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
-            return View();
+            var obj = await svs.GetFormObject();
+            return View(obj);
         }
 
         // POST: Users/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create(VmUserItem _vmUserItem)
         {
-            try
-            {
-                // TODO: Add insert logic here
+            var result = svs.Insert(_vmUserItem);
 
+            if (result.IsSuccess)
+            {
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            else
             {
-                return View();
+                return View(_vmUserItem);
             }
         }
 
         // GET: Users/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            int _id = (int)id;
+
+            var rItem = await svs.GetUserById(_id);
+
+            if (rItem == null)
+            {
+                return NotFound();
+            }
+            return View(rItem);
         }
 
         // POST: Users/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(int id, VmUserItem _userItem)
         {
-            try
+            if (id != _userItem.Id)
             {
-                // TODO: Add update logic here
+                return NotFound();
+            }
 
+            var result = await svs.Update(_userItem);
+
+            if (result.IsSuccess)
+            {
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            else
             {
-                return View();
+                return View(_userItem);
             }
         }
 

@@ -64,32 +64,39 @@ namespace Com.EazyTender_Admin.Controllers
         }
 
         // GET: CodeTables/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            var obj = await svs.GetCodeTableById(id);
+            return View(obj);
         }
 
         // POST: CodeTables/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(int id, VmCodeTableItem codeTableItem)
         {
-            try
+            if (id != codeTableItem.Id)
             {
-                // TODO: Add update logic here
+                return NotFound();
+            }
 
+            var result = await svs.Update(codeTableItem);
+
+            if (result.IsSuccess)
+            {
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            else
             {
-                return View();
+                return View(codeTableItem);
             }
         }
 
         // GET: CodeTables/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            await svs.Delete(id);
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: CodeTables/Delete/5

@@ -7,7 +7,7 @@ namespace Com.BudgetMetal.ViewModels.CodeTable
 {
     public class VmCodeTableItem : ViewModelItemBase
     {        
-        public uint CodeCategory_Id { get; set; }
+        public int CodeCategory_Id { get; set; }
         public string Name { get; set; }
         public VmCodeCategoryItem CodeCategory { get; set; }
         public List<VmCodeCategoryItem> CodeCategoryList { get; set; }

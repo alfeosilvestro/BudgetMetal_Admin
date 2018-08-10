@@ -1,7 +1,10 @@
 ﻿using Com.BudgetMetal.Common;
+using Com.BudgetMetal.DataRepository.Industries;
 using Com.BudgetMetal.DataRepository.ServiceTags;
 using Com.BudgetMetal.Services.Base;
+using Com.BudgetMetal.Services.Industries;
 using Com.BudgetMetal.ViewModels;
+using Com.BudgetMetal.ViewModels.Industries;
 using Com.BudgetMetal.ViewModels.ServiceTags;
 using System;
 using System.Collections.Generic;
@@ -13,13 +16,16 @@ namespace Com.BudgetMetal.Services.ServiceTags
     public class ServiceTagsService : BaseService, IServiceTagsService
     {
         private readonly IServiceTagsRepository repo;
+        private readonly IIndustryRepository industryRepo;
 
-        public ServiceTagsService(IServiceTagsRepository repo)
+        public ServiceTagsService(IServiceTagsRepository repo, IIndustryRepository inRepo)
         {
             this.repo = repo;
+            this.industryRepo = inRepo;
         }
 
         public async Task<VmServiceTagsPage> GetServiceTagsByPage(string keyword, int page, int totalRecords)
+
         {
             var dbPageResult = await repo.GetPage(keyword,
                 (page == 0 ? Constants.app_firstPage : page),
@@ -44,6 +50,14 @@ namespace Com.BudgetMetal.Services.ServiceTags
 
                 Copy<Com.BudgetMetal.DBEntities.ServiceTags, VmServiceTagsItem>(dbItem, resultItem);
 
+                if (dbItem.Industry != null)
+                {
+                    resultItem.Industry = new ViewModels.Industries.VmIndustryItem()
+                    {
+                        Name = dbItem.Industry.Name
+                    };
+                }
+
                 resultObj.Result.Records.Add(resultItem);
             }
 
@@ -59,9 +73,28 @@ namespace Com.BudgetMetal.Services.ServiceTags
                 return new VmServiceTagsItem();
             }
 
+            
+
             var resultObj = new VmServiceTagsItem();
 
             Copy<Com.BudgetMetal.DBEntities.ServiceTags, VmServiceTagsItem>(dbPageResult, resultObj);
+
+            var dbIndustryList = await industryRepo.GetAll();
+
+            if (dbIndustryList == null) return resultObj;
+
+            resultObj.IndustryList = new List<VmIndustryItem>();
+
+            foreach (var dbcat in dbIndustryList)
+            {
+                VmIndustryItem cat = new VmIndustryItem()
+                {
+                    Id = dbcat.Id,
+                    Name = dbcat.Name
+                };
+
+                resultObj.IndustryList.Add(cat);
+            }
 
             return resultObj;
         }
@@ -80,7 +113,7 @@ namespace Com.BudgetMetal.Services.ServiceTags
                 {
                     r.CreatedBy = r.UpdatedBy = "System";
                 }
-                r.Industry_Id = 1;//hard code
+               // r.Industry_Id = 1;//hard code
                 repo.Add(r);
 
                 repo.Commit();
@@ -132,6 +165,30 @@ namespace Com.BudgetMetal.Services.ServiceTags
             r.IsActive = false;
             repo.Update(r);
             repo.Commit();
+        }
+
+        public async Task<VmServiceTagsItem> GetFormObject()
+        {
+            VmServiceTagsItem result = new VmServiceTagsItem();
+
+            var dbCatList = await industryRepo.GetAll();
+
+            if (dbCatList == null) return result;
+
+            result.IndustryList = new List<VmIndustryItem>();
+
+            foreach (var dbcat in dbCatList)
+            {
+                VmIndustryItem _industry = new VmIndustryItem()
+                {
+                    Id = dbcat.Id,
+                    Name = dbcat.Name
+                };
+
+                result.IndustryList.Add(_industry);
+            }
+
+            return result;
         }
 
         public async Task<List<VmServiceTagsItem>> GetVmServiceTagsByIndustry(int Id)

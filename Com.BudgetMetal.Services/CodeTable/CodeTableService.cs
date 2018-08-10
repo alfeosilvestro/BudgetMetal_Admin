@@ -98,6 +98,25 @@ namespace Com.BudgetMetal.Services.Code_Table
 
             Copy<CodeTable, VmCodeTableItem>(dbPageResult, resultObj);
 
+            var dbCatList = await repoCate.GetAll();
+
+            if (dbCatList == null) return resultObj;
+
+            resultObj.CodeCategoryList = new List<VmCodeCategoryItem>();
+
+            foreach (var dbcat in dbCatList)
+            {
+                VmCodeCategoryItem cat = new VmCodeCategoryItem()
+                {
+                    Id = dbcat.Id,
+                    Name = dbcat.Name
+                };
+
+                resultObj.CodeCategoryList.Add(cat);
+            }
+
+            //
+
             return resultObj;
         }
 
@@ -163,9 +182,9 @@ namespace Com.BudgetMetal.Services.Code_Table
 
         public async Task Delete(int Id)
         {
-            CodeTable r = await repo.Get(Id);
-            r.IsActive = false;
-            repo.Update(r);
+            var codeTable = await repo.Get(Id);
+            codeTable.IsActive = false;
+            repo.Update(codeTable);
             repo.Commit();
         }
 
@@ -182,6 +201,30 @@ namespace Com.BudgetMetal.Services.Code_Table
             foreach (var dbcat in dbCatList)
             {
                 VmCodeCategoryItem cat = new VmCodeCategoryItem() {
+                    Id = dbcat.Id,
+                    Name = dbcat.Name
+                };
+
+                result.CodeCategoryList.Add(cat);
+            }
+
+            return result;
+        }
+
+        public async Task<VmCodeTableItem> GetObject(int id)
+        {
+            VmCodeTableItem result = new VmCodeTableItem();
+
+            var dbCatList = await repoCate.GetAll();
+
+            if (dbCatList == null) return result;
+
+            result.CodeCategoryList = new List<VmCodeCategoryItem>();
+
+            foreach (var dbcat in dbCatList)
+            {
+                VmCodeCategoryItem cat = new VmCodeCategoryItem()
+                {
                     Id = dbcat.Id,
                     Name = dbcat.Name
                 };
