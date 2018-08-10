@@ -111,3 +111,23 @@ function RemovePricingRow(item) {
     $(item).parent().parent().remove();
 }
 
+// Add and Remove Attachment
+$("#btnNewFile").click(function () {
+    var newRow = "<tr>" +
+        "<td> " +
+        "<input type='file' name='attachmentRFQ[]' class='form-control' />" +
+        "</td> " +
+        "<td> " +
+        "<input type='text' name='fileDescriptionRFQ[]' class='form-control' />" +
+        "</td> " +
+        "<td> " +
+        "<button type='button' class='btn btn-danger waves-effect' onclick='RemoveAttachmentRFQRow(this)'> Remove</button >" +
+        "</td> " +
+        "</tr> ";
+
+    $("#attachmentTable > tbody").append(newRow);
+});
+
+function RemoveAttachmentRFQRow(item) {
+    $(item).parent().parent().remove();
+}

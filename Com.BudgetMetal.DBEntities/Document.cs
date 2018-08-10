@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Com.BudgetMetal.DBEntities
 {
@@ -16,16 +17,24 @@ namespace Com.BudgetMetal.DBEntities
         }
         
         public string Title { get; set; }
-        public uint DocumentTypeId { get; set; }
+       
         public string ContactPersonName { get; set; }
         public string DocumentNo { get; set; }
-        public uint CompanyId { get; set; }
         public DateTime? SubmissionDate { get; set; }
-        public uint DocumentStatusId { get; set; }
+       
 
-        public Company Company { get; set; }
-        public CodeTable DocumentStatus { get; set; }
-        public CodeTable DocumentType { get; set; }
+        [ForeignKey("Company")]
+        public int Company_Id { get; set; }
+        public virtual Company Company { get; set; }
+
+        [ForeignKey("CodeTable")]
+        public int DocumentStatus_Id { get; set; }
+        public virtual CodeTable DocumentStatus { get; set; }
+
+        [ForeignKey("CodeTable")]
+        public int DocumentType_Id { get; set; }
+        public virtual CodeTable DocumentType { get; set; }
+
         public ICollection<Attachment> Attachment { get; set; }
         public ICollection<Clarification> Clarification { get; set; }
         public ICollection<DocumentUser> DocumentUser { get; set; }

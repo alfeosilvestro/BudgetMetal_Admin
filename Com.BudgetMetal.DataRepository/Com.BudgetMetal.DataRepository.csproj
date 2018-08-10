@@ -10,4 +10,14 @@
     <ProjectReference Include="..\Com.BudgetMetal.DBEntities\Com.BudgetMetal.DBEntities.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Attachment\" />
+    <Folder Include="InvitedSupplier\" />
+    <Folder Include="RFQRequirement\" />
+    <Folder Include="Penalty\" />
+    <Folder Include="RFQPriceSchedule\" />
+    <Folder Include="SLA\" />
+    <Folder Include="RFQ\" />
+  </ItemGroup>
+
 </Project>

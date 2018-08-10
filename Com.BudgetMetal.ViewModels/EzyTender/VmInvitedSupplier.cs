@@ -6,8 +6,8 @@ namespace Com.BudgetMetal.ViewModels.EzyTender
     public class VmInvitedSupplier : ViewModelItemBase
     {
         
-        public uint RfqId { get; set; }
-        public uint CompanyId { get; set; }
+        public int RfqId { get; set; }
+        public int Company_Id { get; set; }
         
 
         public VmCompany Company { get; set; }

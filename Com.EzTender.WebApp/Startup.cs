@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Com.BudgetMetal.DataRepository.Code_Category;
 using Com.BudgetMetal.DataRepository.Code_Table;
+using Com.BudgetMetal.DataRepository.Company;
 using Com.BudgetMetal.DataRepository.EmailLog;
 using Com.BudgetMetal.DataRepository.Industries;
 using Com.BudgetMetal.DataRepository.Roles;
@@ -13,6 +14,7 @@ using Com.BudgetMetal.DataRepository.Users;
 using Com.BudgetMetal.DB;
 using Com.BudgetMetal.Services.Code_Category;
 using Com.BudgetMetal.Services.Code_Table;
+using Com.BudgetMetal.Services.Company;
 using Com.BudgetMetal.Services.EmailLog;
 using Com.BudgetMetal.Services.Gallery;
 using Com.BudgetMetal.Services.Industries;
@@ -72,7 +74,7 @@ namespace Com.EzTender.WebApp
         private void RegisterForDependencyInjection(IServiceCollection services)
         {
             //// Register for repository classes
-            services.AddScoped<IRoleRepository, RoleRepository>();
+            
 
             //// Register for repository classes
             services.AddScoped<ISingle_Sign_OnRepository, Single_Sign_OnRepository>();
@@ -80,8 +82,11 @@ namespace Com.EzTender.WebApp
             //// Register for logic classes
             services.AddScoped<IGalleryService, GalleryService>();
 
-            
+            services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IRoleService, RoleService>();
+
+            services.AddScoped<ICompanyRepository, CompanyRepository>();
+            services.AddScoped<ICompanyService, CompanyService>();
 
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();

@@ -2,9 +2,9 @@
 @{
     ViewData["Title"] = "Create";
 }
-<form asp-controller="Rfq" asp-action="Create" method="post">
+<form asp-controller="Rfq" asp-action="Create" method="post" enctype = "multipart/form-data">
     <div class="block-header">
-        <h2>Prepare Request for Quotation</h2> <button type="submit">Submit</button>
+        <h2>Prepare Request for Quotation</h2>
     </div>
     <!-- Input -->
     <div class="row clearfix">
@@ -156,14 +156,7 @@
                                         <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveRequirementRow(this)'>Remove</button></td>
                                     </tr>
                                 </tbody>
-                                @*<tfoot>
-                                        <tr>
-                                            <th><strong>TOTAL</strong></th>
-                                            <th></th>
-                                            <th><span class="bold text-right" id="totalQuantity"></span></th>
-                                            <td></td>
-                                        </tr>
-                                    </tfoot>*@
+                               
                             </table>
                             <div class="row">
                                 <div class="form-group col-sm-12">
@@ -266,88 +259,47 @@
                                     <select class="form-control show-tick" id="ddlServiceTags" data-live-search="true" multiple></select>
                                 </div>
                                 <div class="col-sm-1">
-                                    
+
                                 </div>
                             </div>
-                           
-                            <table id="invitedSupplierTable" class="table table-hover">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <a class="btn btn-success" id="btnLoadSupplier">Load Supplier</a>
+                                </div>
+                            </div>
+                            <table id="invitedSupplierTable" class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th width="95%">Supplier Information</th>
                                         <th width="*">&nbsp;</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <h5>Car</h5>
-                                            <small>Different sizes and widths</small> <span class="label label-success">Verified</span>
-                                            <p class="m-t-15 m-b-30">
-                                                In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.
-                                            </p>
-                                        </td>
-                                        <th><button type="button" class="btn btn-danger waves-effect">Remove</button></th>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <h5>Train</h5>
-                                            <small>Different sizes and widths</small> <span class="label label-success">Verified</span>
-                                            <p class="m-t-15 m-b-30">
-                                                In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.
-                                            </p>
-                                        </td>
-                                        <th><button type="button" class="btn btn-danger waves-effect">Remove</button></th>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <h5>Plane</h5>
-                                            <small>Different sizes and widths</small> <span class="label label-success">Verified</span>
-                                            <p class="m-t-15 m-b-30">
-                                                In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.
-                                            </p>
-                                        </td>
-                                        <th><button type="button" class="btn btn-danger waves-effect">Remove</button></th>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <h5>Yacht</h5>
-                                            <small>Different sizes and widths</small> <span class="label label-success">Verified</span>
-                                            <p class="m-t-15 m-b-30">
-                                                In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.
-                                            </p>
-                                        </td>
-                                        <th><button type="button" class="btn btn-danger waves-effect">Remove</button></th>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <h5>Segway</h5>
-                                            <small>Different sizes and widths</small> <span class="label label-warning">Un-verified</span>
-                                            <p class="m-t-15 m-b-30">
-                                                In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.
-                                            </p>
-                                        </td>
-                                        <th><button type="button" class="btn btn-danger waves-effect">Remove</button></th>
-                                    </tr>
-                                </tbody>
+                                <tbody></tbody>
                             </table>
-                        </div>
-                        <div role="tabpanel" class="tab-pane fade" id="attachments">
-                            <div class="row clearfix">
-                                <div class="col-sm-12">
-                                    <div action="/" id="frmFileUpload" class="dropzone" method="post" enctype="multipart/form-data">
-                                        <div class="dz-message">
-                                            <div class="drag-icon-cph">
-                                                <i class="material-icons">touch_app</i>
-                                            </div>
-                                            <h3>Drop files here or click to upload.</h3>
-                                            <em>(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</em>
-                                        </div>
-                                        <div class="fallback">
-                                            <input name="file" type="file" multiple />
-                                        </div>
-                                    </div>
+                            <div class="row">
+                                <div class="pagination" style="padding:10px;">
+
                                 </div>
                             </div>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane fade" id="attachments">
+                            @*<div class="row clearfix">
+            <div class="col-sm-12">
+                <div action="/" id="frmFileUpload" class="dropzone" method="post" enctype="multipart/form-data">
+                    <div class="dz-message">
+                        <div class="drag-icon-cph">
+                            <i class="material-icons">touch_app</i>
+                        </div>
+                        <h3>Drop files here or click to upload.</h3>
+                        <em>(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</em>
+                    </div>
+                    <div class="fallback">
+                        <input name="file" type="file" multiple />
+                    </div>
+                </div>
+            </div>
+        </div>*@
                             <table id="attachmentTable" class="table table-striped">
                                 <thead>
                                     <tr>
@@ -356,35 +308,16 @@
                                         <th width="*">&nbsp;</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <th>File 1.pdf</th>
-                                        <td>File 1 Description</td>
-                                        <th><button type="button" class="btn btn-danger waves-effect">Remove</button></th>
-                                    </tr>
-                                    <tr>
-                                        <th>File 2.pdf</th>
-                                        <td>File 2 Description</td>
-                                        <th><button type="button" class="btn btn-danger waves-effect">Remove</button></th>
-                                    </tr>
-                                    <tr>
-                                        <th>File 3.pdf</th>
-                                        <td>File 3 Description</td>
-                                        <th><button type="button" class="btn btn-danger waves-effect">Remove</button></th>
-                                    </tr>
-                                    <tr>
-                                        <th>File 4.pdf</th>
-                                        <td>File 4 Description</td>
-                                        <th><button type="button" class="btn btn-danger waves-effect">Remove</button></th>
-                                    </tr>
-                                    <tr>
-                                        <th>File 5.pdf</th>
-                                        <td>File 5 Description</td>
-                                        <th><button type="button" class="btn btn-danger waves-effect">Remove</button></th>
-                                    </tr>
-                                </tbody>
+                                <tbody></tbody>
+
                             </table>
+                            <div class="row">
+                                <div class="form-group col-sm-12">
+                                    <a class="btn btn-success" id="btnNewFile"> New </a>
+                                </div>
+                            </div>
                         </div>
+
                         <div role="tabpanel" class="tab-pane fade" id="settings">
                             <table id="userSettingTable" class="table table-hover">
                                 <thead>
@@ -431,113 +364,111 @@
         </div>
     </div>
 
-    <!--Quotations-->
-    <div class="row clearfix">
+    <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
-                <div class="header">
-                    <h2>
-                        Quotations
-                        @*<small>Different sizes and widths</small>*@
-                    </h2>
-                    @*<ul class="header-dropdown m-r--5">
-                            <li class="dropdown">
-                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                    <i class="material-icons">more_vert</i>
-                                </a>
-                                <ul class="dropdown-menu pull-right">
-                                    <li><a href="javascript:void(0);">Action</a></li>
-                                    <li><a href="javascript:void(0);">Another action</a></li>
-                                    <li><a href="javascript:void(0);">Something else here</a></li>
-                                </ul>
-                            </li>
-                        </ul>*@
-                </div>
                 <div class="body">
-                    <table id="penaltyTable" class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th width="90%">Quotation Information</th>
-                                <th width="*">&nbsp;</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <h5>Company: Car</h5>
-                                    <small>Different sizes and widths</small> <span class="label label-success">Verified</span>
-                                    <p class="m-t-15 m-b-30">
-                                        In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.
-                                    </p>
-                                </td>
-                                <th>
-                                    <button type="button" class="btn btn-danger waves-effect">View</button>
-                                    <br /><br />
-                                    <button type="button" class="btn btn-success waves-effect">Award</button>
-                                </th>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <h5>Train</h5>
-                                    <small>Different sizes and widths</small> <span class="label label-success">Verified</span>
-                                    <p class="m-t-15 m-b-30">
-                                        In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.
-                                    </p>
-                                </td>
-                                <th>
-                                    <button type="button" class="btn btn-danger waves-effect">View</button>
-                                    <br /><br />
-                                    <button type="button" class="btn btn-success waves-effect">Award</button>
-                                </th>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <h5>Plane</h5>
-                                    <small>Different sizes and widths</small> <span class="label label-success">Verified</span>
-                                    <p class="m-t-15 m-b-30">
-                                        In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.
-                                    </p>
-                                </td>
-                                <th>
-                                    <button type="button" class="btn btn-danger waves-effect">View</button>
-                                    <br /><br />
-                                    <button type="button" class="btn btn-success waves-effect">Award</button>
-                                </th>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <h5>Yacht</h5>
-                                    <small>Different sizes and widths</small> <span class="label label-success">Verified</span>
-                                    <p class="m-t-15 m-b-30">
-                                        In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.
-                                    </p>
-                                </td>
-                                <th>
-                                    <button type="button" class="btn btn-danger waves-effect">View</button>
-                                    <br /><br />
-                                    <button type="button" class="btn btn-success waves-effect">Award</button>
-                                </th>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <h5>Segway</h5>
-                                    <small>Different sizes and widths</small> <span class="label label-warning">Un-verified</span>
-                                    <p class="m-t-15 m-b-30">
-                                        In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.
-                                    </p>
-                                </td>
-                                <th>
-                                    <button type="button" class="btn btn-danger waves-effect">View</button>
-                                    <br /><br />
-                                    <button type="button" class="btn btn-success waves-effect">Award</button>
-                                </th>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <button type="submit" class="btn btn-success">Submit</button>
                 </div>
             </div>
         </div>
-    </div>
+</div>
+        <!--Quotations-->
+        @*<div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>
+                            Quotations
+
+                        </h2>
+
+                    </div>
+                    <div class="body">
+                        <table id="penaltyTable" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th width="90%">Quotation Information</th>
+                                    <th width="*">&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <h5>Company: Car</h5>
+                                        <small>Different sizes and widths</small> <span class="label label-success">Verified</span>
+                                        <p class="m-t-15 m-b-30">
+                                            In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.
+                                        </p>
+                                    </td>
+                                    <th>
+                                        <button type="button" class="btn btn-danger waves-effect">View</button>
+                                        <br /><br />
+                                        <button type="button" class="btn btn-success waves-effect">Award</button>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h5>Train</h5>
+                                        <small>Different sizes and widths</small> <span class="label label-success">Verified</span>
+                                        <p class="m-t-15 m-b-30">
+                                            In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.
+                                        </p>
+                                    </td>
+                                    <th>
+                                        <button type="button" class="btn btn-danger waves-effect">View</button>
+                                        <br /><br />
+                                        <button type="button" class="btn btn-success waves-effect">Award</button>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h5>Plane</h5>
+                                        <small>Different sizes and widths</small> <span class="label label-success">Verified</span>
+                                        <p class="m-t-15 m-b-30">
+                                            In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.
+                                        </p>
+                                    </td>
+                                    <th>
+                                        <button type="button" class="btn btn-danger waves-effect">View</button>
+                                        <br /><br />
+                                        <button type="button" class="btn btn-success waves-effect">Award</button>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h5>Yacht</h5>
+                                        <small>Different sizes and widths</small> <span class="label label-success">Verified</span>
+                                        <p class="m-t-15 m-b-30">
+                                            In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.
+                                        </p>
+                                    </td>
+                                    <th>
+                                        <button type="button" class="btn btn-danger waves-effect">View</button>
+                                        <br /><br />
+                                        <button type="button" class="btn btn-success waves-effect">Award</button>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h5>Segway</h5>
+                                        <small>Different sizes and widths</small> <span class="label label-warning">Un-verified</span>
+                                        <p class="m-t-15 m-b-30">
+                                            In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.
+                                        </p>
+                                    </td>
+                                    <th>
+                                        <button type="button" class="btn btn-danger waves-effect">View</button>
+                                        <br /><br />
+                                        <button type="button" class="btn btn-success waves-effect">Award</button>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>*@
 </form>
 
 <!-- Editable Table Plugin Js -->
@@ -569,26 +500,72 @@
 
 <script>
     $(function () {
-
         loadIndustry();
-});
+    });
+    $("#btnLoadSupplier").click(function () {
+        $('#invitedSupplierTable > tbody').empty();
+        loadSupplier(1);
+    });
+ function loadSupplier(page) {
+     var serviceTagsId = $('#ddlServiceTags').val();
 
+     var stringServiceTagsId = serviceTagsId.toString();
+     
+     if (serviceTagsId == null) {
+            alert("Please select the service tags!")
+        } else {
+            var ajaxurl = '@Url.Action("GetSupplierByServiceTagsId", "Rfq")';
+            $.ajax({
+                url: ajaxurl,
+                data: { serviceTagsId: stringServiceTagsId, page:page},
+                dataType: 'json',
+                success: function (response) {
+                    //$('#invitedSupplierTable > tbody').empty();
+                    var obj = response.Result.Result.Records;
+                    for (var k in obj) {
+                        var item = obj[k];
+                        $('#invitedSupplierTable > tbody').append(
+                            "<tr>" +
+                            "<td> <h5>" + item.Name + "</h5><span class='label label-success'>Verified</span>" +
+                            " <p class='m-t-15 m-b-30'>" + item.About + "</p></td>" +
+                            "<td><input type='checkbox' class='filled-in' id='chkSupplier_" + item.Id + "'  name='supplier_list[]' value='" + item.Id + "'> <button type='button' class='btn btn-success' onclick='checkSupplier(" + item.Id + ")'>Invite</button></td>" +
+                            "</tr>");
+                       
+                    }
+                    var totalpage = response.Result.Result.TotalPage;
+                    var currentpage = response.Result.Result.CurrentPage;
+                    if (totalpage > currentpage) {
+                        $(".pagination").empty();
+                        $(".pagination").append(" <a class='btn btn-md btn-default' OnClick='loadSupplier(" + response.Result.Result.NextPage + ")'> Load More </a> ");
+                    }
+                    
+                },
+                error: function (response) {
+                    alert(response)
+                }
+            });
+     }
+
+    }
+
+    function checkSupplier(n) {
+        //alert(n);
+        $("#chkSupplier_" + n).prop("checked", true);
+        //alert($("#chkSupplier_" + n).prop("checked"));
+    }
 function loadIndustry() {
     var ajaxurl = '@Url.Action("GetActiveIndustries", "Rfq")';
-
-    //$('#ddlIndustry').empty();
+    
     $('#ddlIndustry').append($('<option>', {
         value: 0,
         text: '--Select Industry--'
     }));
-
-
-
+    
     $.ajax({
         url: ajaxurl,
         dataType: 'json',
         success: function (response) {
-            console.log(response);
+            //console.log(response);
             var obj = response.Result;
             for (var k in obj) {
                 var item = obj[k];
@@ -621,14 +598,13 @@ function loadIndustry() {
         } else {
 
             var ajaxurl = '@Url.Action("GetServiceTagByIndustry", "Rfq")';
-
             
             $.ajax({
                 url: ajaxurl,
                 data: {Id: industryId},
                 dataType: 'json',
                 success: function (response) {
-                    console.log(response);
+                    //console.log(response);
                     var obj = response.Result;
                     for (var k in obj) {
                         var item = obj[k];

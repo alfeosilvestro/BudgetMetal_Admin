@@ -18,5 +18,7 @@ namespace Com.BudgetMetal.Services.Company
         Task<VmGenericServiceResult> Update(VmCompanyItem codeTableItem);
 
         Task Delete(int Id);
+
+        Task<VmCompanyPage> GetSupplierByServiceTagsId(string serviceTagsId, int page);
     }
 }

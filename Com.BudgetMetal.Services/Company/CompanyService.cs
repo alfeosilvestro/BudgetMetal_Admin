@@ -138,5 +138,36 @@ namespace Com.BudgetMetal.Services.Company
             repo.Update(r);
             repo.Commit();
         }
+
+        public async Task<VmCompanyPage> GetSupplierByServiceTagsId(string serviceTagsId, int page)
+        {
+            var dbPageResult = repo.GetSupplierByServiceTagsId(serviceTagsId,
+                (page == 0 ? Constants.app_firstPage : page),
+                Constants.app_totalRecords);
+
+            if (dbPageResult == null)
+            {
+                return new VmCompanyPage();
+            }
+
+            var resultObj = new VmCompanyPage();
+            resultObj.RequestId = DateTime.Now.ToString("yyyyMMddHHmmss");
+            resultObj.RequestDate = DateTime.Now;
+            resultObj.Result = new PageResult<VmCompanyItem>();
+            resultObj.Result.Records = new List<VmCompanyItem>();
+
+            Copy<PageResult<Com.BudgetMetal.DBEntities.Company>, PageResult<VmCompanyItem>>(dbPageResult, resultObj.Result, new string[] { "Records" });
+
+            foreach (var dbItem in dbPageResult.Records)
+            {
+                var resultItem = new VmCompanyItem();
+
+                Copy<Com.BudgetMetal.DBEntities.Company, VmCompanyItem>(dbItem, resultItem);
+
+                resultObj.Result.Records.Add(resultItem);
+            }
+
+            return resultObj;
+        }
     }
 }

@@ -38,7 +38,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Com.EazyTender_Admin", "Com
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Com.EzTender.WebApp", "Com.EzTender.WebApp\Com.EzTender.WebApp.csproj", "{BE4C8B4A-F8ED-4ECA-B05C-34D86A497C7A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Com.BudgetMetal.DBEntities", "Com.BudgetMetal.DBEntities\Com.BudgetMetal.DBEntities.csproj", "{AC8AB1F2-A3B9-4747-8998-21370AF120B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Com.BudgetMetal.DBEntities", "Com.BudgetMetal.DBEntities\Com.BudgetMetal.DBEntities.csproj", "{AC8AB1F2-A3B9-4747-8998-21370AF120B8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

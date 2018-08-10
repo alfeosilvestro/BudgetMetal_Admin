@@ -1,18 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Com.BudgetMetal.DBEntities
 {
     public class DocumentUser : GenericEntity
     {
-       
-        public uint DocumentId { get; set; }
-        public uint RoleId { get; set; }
-        public uint UserId { get; set; }
-       
+        [ForeignKey("CodeCategory")]
+        public int DocumentId { get; set; }
+public virtual Document Document { get; set; }
 
-        public Document Document { get; set; }
-        public Role Role { get; set; }
-        public User User { get; set; }
+        [ForeignKey("CodeCategory")]
+        public int RoleId { get; set; }
+ public virtual Role Role { get; set; }
+
+        [ForeignKey("CodeCategory")]
+        public int UserId { get; set; }
+       public virtual User User { get; set; }
     }
 }
