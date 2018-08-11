@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Com.BudgetMetal.Services.Users;
+using Com.BudgetMetal.ViewModels.Role;
 using Com.BudgetMetal.ViewModels.User;
 using Com.EazyTender_Admin.Configurations;
 using Microsoft.AspNetCore.Http;
@@ -46,9 +47,22 @@ namespace Com.EazyTender_Admin.Controllers
         // POST: Users/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(VmUserItem _vmUserItem)
+        public async Task<IActionResult> Create(VmUserItem _vmObject)
         {
-            var result = svs.Insert(_vmUserItem);
+            var roleListArr = Request.Form["RoleList"].ToArray();
+
+            for (int i = 0; i < roleListArr.Length; i++)
+            {
+                VmRoleItem _lst = new VmRoleItem();
+
+                if (roleListArr[i].ToString().All(char.IsDigit))
+                {
+                    _lst.Id = int.Parse(roleListArr[i]);
+                    _vmObject.RoleList.Add(_lst);
+                }
+            }
+
+            var result = await svs.Insert(_vmObject);
 
             if (result.IsSuccess)
             {
@@ -56,7 +70,7 @@ namespace Com.EazyTender_Admin.Controllers
             }
             else
             {
-                return View(_vmUserItem);
+                return View(_vmObject);
             }
         }
 
@@ -82,14 +96,27 @@ namespace Com.EazyTender_Admin.Controllers
         // POST: Users/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int id, VmUserItem _userItem)
+        public async Task<ActionResult> Edit(int id, VmUserItem _vmObject)
         {
-            if (id != _userItem.Id)
+            var roleListArr = Request.Form["RoleList"].ToArray();
+
+            for (int i = 0; i < roleListArr.Length; i++)
+            {
+                VmRoleItem _lst = new VmRoleItem();
+
+                if (roleListArr[i].ToString().All(char.IsDigit))
+                {
+                    _lst.Id = int.Parse(roleListArr[i]);
+                    _vmObject.RoleList.Add(_lst);
+                }
+            }
+
+            if (id != _vmObject.Id)
             {
                 return NotFound();
             }
 
-            var result = await svs.Update(_userItem);
+            var result = await svs.Update(_vmObject);
 
             if (result.IsSuccess)
             {
@@ -97,7 +124,7 @@ namespace Com.EazyTender_Admin.Controllers
             }
             else
             {
-                return View(_userItem);
+                return View(_vmObject);
             }
         }
 

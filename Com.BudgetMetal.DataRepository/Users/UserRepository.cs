@@ -106,24 +106,27 @@ namespace Com.BudgetMetal.DataRepository.Users
                .Skip((totalRecords * page) - totalRecords)
                .Take(totalRecords);
 
-            var recordList = records
-                .Select(r =>
-                    new User()
-                    {
-                        EmailAddress = r.EmailAddress,
-                        Id = r.Id,
-                        UserName = r.UserName,
-                        Password = r.Password,
-                        ContactName = r.ContactName,
-                        JobTitle = r.JobTitle,
-                        ContactNumber = r.ContactNumber,
-                        IsConfirmed = r.IsConfirmed,
-                        Company = r.Company,
-                        Company_Id = r.Company_Id,
-                        UserType = r.UserType,
-                        CodeTable = r.CodeTable
-                    })
-                .ToList();
+            //var recordList = records
+            //    .Select(r =>
+            //        new User()
+            //        {
+            //            EmailAddress = r.EmailAddress,
+            //            Id = r.Id,
+            //            UserName = r.UserName,
+            //            Password = r.Password,
+            //            ContactName = r.ContactName,
+            //            JobTitle = r.JobTitle,
+            //            ContactNumber = r.ContactNumber,
+            //            IsConfirmed = r.IsConfirmed,
+            //            IsActive = r.IsActive,
+            //            Company = r.Company,
+            //            Company_Id = r.Company_Id,
+            //            UserType = r.UserType,
+            //            CodeTable = r.CodeTable
+            //        })
+            //    .ToList();
+
+            var recordList = records.ToList();
 
             var count = await records.CountAsync();
 

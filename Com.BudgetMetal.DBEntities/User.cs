@@ -25,13 +25,13 @@ namespace Com.BudgetMetal.DBEntities
 
         //public bool Confirmed { get; set; }
 
-        //public User()
-        //{
-        //    Clarification = new HashSet<Clarification>();
-        //    DocumentUser = new HashSet<DocumentUser>();
-        //    Rating = new HashSet<Rating>();
-        //    UserRoles = new HashSet<UserRoles>();
-        //}
+        public User()
+        {
+            //Clarification = new HashSet<Clarification>();
+            //DocumentUser = new HashSet<DocumentUser>();
+            //Rating = new HashSet<Rating>();
+            UserRoles = new HashSet<UserRoles>();
+        }
 
         public string EmailAddress { get; set; }
         public string Password { get; set; }
@@ -39,7 +39,7 @@ namespace Com.BudgetMetal.DBEntities
         public string ContactName { get; set; }
         public string JobTitle { get; set; }
         public string ContactNumber { get; set; }
-        public bool? IsConfirmed { get; set; }
+        public bool IsConfirmed { get; set; }
         
 
         [ForeignKey("Company")]
@@ -52,5 +52,6 @@ namespace Com.BudgetMetal.DBEntities
         //public ICollection<DocumentUser> DocumentUser { get; set; }
         //public ICollection<Rating> Rating { get; set; }
         //public ICollection<UserRoles> UserRoles { get; set; }
+        public ICollection<UserRoles> UserRoles { get; } = new List<UserRoles>();
     }
 }

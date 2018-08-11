@@ -1,10 +1,10 @@
-﻿@model Com.BudgetMetal.ViewModels.Company.VmCompanyPage
-
+﻿@*@model ReflectionIT.Mvc.Paging.PagingList<Com.BudgetMetal.ViewModels.Company.VmCompanyPage>*@
+@model Com.BudgetMetal.ViewModels.Company.VmCompanyPage
 @{
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h2>Company</h2>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -30,24 +30,26 @@
     <tbody>
         @foreach (var item in Model.Result.Records)
         {
-        <tr>
-            <td> @item.Id </td>
-            <td> @item.Name </td>
-            <td> @item.Address </td>
-            <td> @item.Domain </td>
-            <td> @item.RegNo </td>
-            <td> @item.About </td>
-
-            <td> @item.IsVerified </td>
-            <td> @item.SupplierAvgRating </td>
-            <td> @item.BuyerAvgRating </td>
-            <td> @item.AwardedQuotation </td>
-            <td> @item.SubmittedQuotation </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+            <tr>
+                <td> @item.Id </td>
+                <td> @item.Name </td>
+                <td> @item.Address </td>
+                <td> @item.Domain </td>
+                <td> @item.RegNo </td>
+                <td> @item.About </td>
+                <td> @item.IsVerified </td>
+                <td> @item.SupplierAvgRating </td>
+                <td> @item.BuyerAvgRating </td>
+                <td> @item.AwardedQuotation </td>
+                <td> @item.SubmittedQuotation </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>
+@*<nav aria-label="Suppliers navigation example">
+    <vc:pager paging-list="@Model" />
+</nav>*@

@@ -12,6 +12,9 @@ using Com.BudgetMetal.DataRepository.Company;
 using Com.BudgetMetal.DataRepository.Code_Table;
 using Com.BudgetMetal.ViewModels.Company;
 using Com.BudgetMetal.ViewModels.CodeTable;
+using Com.BudgetMetal.DataRepository.Roles;
+using Com.BudgetMetal.ViewModels.Role;
+using Com.BudgetMetal.DataRepository.UserRoles;
 
 namespace Com.BudgetMetal.Services.Users
 {
@@ -20,12 +23,16 @@ namespace Com.BudgetMetal.Services.Users
         private readonly IUserRepository repo;
         private readonly ICompanyRepository cRepo;
         private readonly ICodeTableRepository CTrepo;
+        private readonly IRoleRepository roleRepo;
+        private readonly IUserRolesRepository userRolesRepo;
 
-        public UserService(IUserRepository repo, ICompanyRepository _cRepo, ICodeTableRepository _ctRepo)
+        public UserService(IUserRepository repo, ICompanyRepository _cRepo, ICodeTableRepository _ctRepo, IRoleRepository _roleRepo, IUserRolesRepository _userRoleRepo)
         {
             this.repo = repo;
             cRepo = _cRepo;
             CTrepo = _ctRepo;
+            roleRepo = _roleRepo;
+            userRolesRepo = _userRoleRepo;
         }
 
         public async Task<VmUserPage> GetUserByPage(string keyword, int page, int totalRecords)
@@ -93,7 +100,9 @@ namespace Com.BudgetMetal.Services.Users
             //filter with companyId
             var dbCCList = await CTrepo.GetAll();
 
-            if (dbCList == null && dbCCList == null) { return result; }
+            var dbRoleList = await roleRepo.GetAll();
+
+            if (dbCList == null && dbCCList == null && dbRoleList == null) { return result; }
 
             if (dbCList != null)
             {
@@ -125,26 +134,93 @@ namespace Com.BudgetMetal.Services.Users
                     result.CodeTableList.Add(_codeTable);
                 }
             }
+            if (dbRoleList != null)
+            {
+                result.RoleList = new List<VmRoleItem>();
+
+                foreach (var item in dbRoleList)
+                {
+                    VmRoleItem _roleItem = new VmRoleItem()
+                    {
+                        Id = item.Id,
+                        Name = item.Name
+                    };
+
+                    result.RoleList.Add(_roleItem);
+                }
+            }
 
             return result;
         }
 
-        public VmGenericServiceResult Insert(VmUserItem vmtem)
+        public async Task<VmGenericServiceResult> Insert(VmUserItem vObj)
         {
             VmGenericServiceResult result = new VmGenericServiceResult();
 
             try
             {
-                Com.BudgetMetal.DBEntities.User r = new Com.BudgetMetal.DBEntities.User();
+                Com.BudgetMetal.DBEntities.User dbObj = new Com.BudgetMetal.DBEntities.User();
 
-                Copy<VmUserItem, Com.BudgetMetal.DBEntities.User>(vmtem, r);
+                Copy<VmUserItem, Com.BudgetMetal.DBEntities.User>(vObj, dbObj);
 
-                if (r.CreatedBy.IsNullOrEmpty())
-                {
-                    r.CreatedBy = r.UpdatedBy = "System";
-                }
+                #region comments
                 // r.Industry_Id = 1;//hard code
-                repo.Add(r);
+                //var user = new[]
+                //{
+                //    new User { Id = r.Id },
+                //    //new User {Id = 2}
+                //};
+                ////var role = new Role { Id = 1 };
+                ////var role1 = new Role { Id = 2 };
+
+                //var role = new[]
+                //{
+                //    new Role {Id=1},
+                //    new Role {Id=2}
+                //};
+                //r.UserRoles.Add(new UserRoles { User = user[0], Role = role[0] });
+
+                //r.UserRoles.Add(new UserRoles { User = user, Role = role1 });
+
+
+                //foreach (var post in UserRoles)
+                //{
+                //    var oldPostTag = post.PostTags.FirstOrDefault(e => e.Tag.Text == "Pineapple");
+                //    if (oldPostTag != null)
+                //    {
+                //        post.PostTags.Remove(oldPostTag);
+                //        post.PostTags.Add(new PostTag { Post = post, Tag = newTag1 });
+                //    }
+                //    post.PostTags.Add(new PostTag { Post = post, Tag = newTag2 });
+                //}
+                //UserRoles _userRole = new UserRoles();
+                ////_userRole.User = user[0];
+                //_userRole.User_Id = r.Id;
+                //_userRole.Role_Id = 1;
+                ////_userRole.Role = role[0];
+                //userRolesRepo.Add(_userRole);
+                //userRolesRepo.Commit();
+                #endregion
+
+                if (vObj.RoleList != null && vObj.RoleList.Count > 0)
+                {
+                    foreach (var vUsrRole in vObj.RoleList)
+                    {
+                        var dbRoleObj = await roleRepo.Get(vUsrRole.Id);
+
+                        if (dbRoleObj != null)
+                        {
+                            UserRoles ur = new UserRoles();
+                            ur.Role = dbRoleObj;
+                            ur.PrepareNewRecord("System");
+                            dbObj.UserRoles.Add(ur);
+                        }
+                    }
+
+                }
+                dbObj.PrepareNewRecord("System");
+
+                repo.Add(dbObj);
 
                 repo.Commit();
 
@@ -159,22 +235,34 @@ namespace Com.BudgetMetal.Services.Users
             return result;
         }
 
-        public async Task<VmGenericServiceResult> Update(VmUserItem vmtem)
+        public async Task<VmGenericServiceResult> Update(VmUserItem vObj)
         {
             VmGenericServiceResult result = new VmGenericServiceResult();
 
             try
             {
-                Com.BudgetMetal.DBEntities.User r = await repo.Get(vmtem.Id);
+                Com.BudgetMetal.DBEntities.User dbObj = await repo.Get(vObj.Id);
 
-                Copy<VmUserItem, Com.BudgetMetal.DBEntities.User>(vmtem, r);
+                Copy<VmUserItem, Com.BudgetMetal.DBEntities.User>(vObj, dbObj);
 
-                if (r.UpdatedBy.IsNullOrEmpty())
+                if (vObj.RoleList != null && vObj.RoleList.Count > 0)
                 {
-                    r.UpdatedBy = "System";
-                }
+                    foreach (var vUsrRole in vObj.RoleList)
+                    {
+                        var dbRoleObj = await roleRepo.Get(vUsrRole.Id);
 
-                repo.Update(r);
+                        if (dbRoleObj != null)
+                        {
+                            UserRoles ur = new UserRoles();
+                            ur.Role = dbRoleObj;
+                            ur.PrepareNewRecord("System");
+                            dbObj.UserRoles.Add(ur);
+                        }
+                    }
+
+                }
+                dbObj.PrepareNewRecord("System");
+                repo.Update(dbObj);
 
                 repo.Commit();
 
@@ -207,7 +295,9 @@ namespace Com.BudgetMetal.Services.Users
             //filter with companyId
             var dbCCList = await CTrepo.GetAll();
 
-            if (dbCList == null && dbCCList == null) { return result; }
+            var dbRoleList = await roleRepo.GetAll();
+
+            if (dbCList == null && dbCCList == null && dbRoleList == null) { return result; }
 
             if (dbCList != null)
             {
@@ -237,6 +327,21 @@ namespace Com.BudgetMetal.Services.Users
                     };
 
                     result.CodeTableList.Add(_codeTable);
+                }
+            }
+            if (dbRoleList != null)
+            {
+                result.RoleList = new List<VmRoleItem>();
+
+                foreach (var item in dbRoleList)
+                {
+                    VmRoleItem _roleItem = new VmRoleItem()
+                    {
+                        Id = item.Id,
+                        Name = item.Name
+                    };
+
+                    result.RoleList.Add(_roleItem);
                 }
             }
 

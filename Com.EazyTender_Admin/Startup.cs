@@ -27,6 +27,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Com.BudgetMetal.Services.Company;
 using Com.BudgetMetal.DataRepository.Company;
 using Microsoft.Extensions.Logging;
+using ReflectionIT.Mvc.Paging;
+using Com.BudgetMetal.DataRepository.UserRoles;
 
 namespace Com.EazyTender_Admin
 {
@@ -69,6 +71,8 @@ namespace Com.EazyTender_Admin
 
             services.AddMvc();
 
+            services.AddPaging();
+
             RegisterForDependencyInjection(services);
         }
 
@@ -99,10 +103,6 @@ namespace Com.EazyTender_Admin
             services.AddScoped<ICodeTableRepository, CodeTableRepository>();
             services.AddScoped<ICodeTableService, CodeTableService>();
 
-            //EmailLog
-            services.AddScoped<IEmailsLogRepository, EmailLogRepository>();
-            services.AddScoped<IEmailLogService, EmailLogService>();
-
             //ServiceTags
             services.AddScoped<IServiceTagsRepository, ServiceTagsRepository>();
             services.AddScoped<IServiceTagsService, ServiceTagsService>();
@@ -110,6 +110,15 @@ namespace Com.EazyTender_Admin
             //Companies
             services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<ICompanyService, CompanyService>();
+
+            //EmailLog
+            services.AddScoped<IEmailLogRepository, EmailLogRepository>();
+            services.AddScoped<IEmailLogService, EmailLogService>();
+
+            //UserRoles
+            services.AddScoped<IUserRolesRepository, UserRolesRepository>();
+            //services.AddScoped<IUserRolesService, UserRolesService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Com.BudgetMetal.DBEntities
 {
     public class GenericEntity
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id
         {
             get;
@@ -80,6 +82,7 @@ namespace Com.BudgetMetal.DBEntities
         {
             this.CreatedDate = this.UpdatedDate = DateTime.Now;
             this.CreatedBy = this.UpdatedBy = userName;
+            this.IsActive = true;
             UpdateVersion();
         }
 

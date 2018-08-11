@@ -21,7 +21,7 @@ namespace Com.BudgetMetal.DBEntities
         public string Name { get; set; }
 
         //public ICollection<DocumentUser> DocumentUser { get; set; }
-        //public ICollection<UserRoles> UserRoles { get; set; }
+        public ICollection<UserRoles> UserRoles { get; } = new List<UserRoles>();
 
     }
 }

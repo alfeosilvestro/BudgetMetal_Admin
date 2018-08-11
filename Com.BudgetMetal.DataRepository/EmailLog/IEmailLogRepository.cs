@@ -2,12 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
-using Com.BudgetMetal.Common;
 
 namespace Com.BudgetMetal.DataRepository.EmailLog
 {
-    public interface IEmailsLogRepository : IGenericRepository<Com.BudgetMetal.DBEntities.EmailLog>
+    public interface IEmailLogRepository : IGenericRepository<Com.BudgetMetal.DBEntities.EmailLog>
     {
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Com.BudgetMetal.Services.EmailLog;
+using Com.BudgetMetal.ViewModels.Industries;
 using Com.EazyTender_Admin.Configurations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,7 @@ namespace Com.EazyTender_Admin.Controllers
     {
         private readonly IEmailLogService svs;
         private readonly AppSettings _appSettings;
+
         public EmailLogsController(IEmailLogService svs, IOptions<AppSettings> appSettings)
         {
             this.svs = svs;

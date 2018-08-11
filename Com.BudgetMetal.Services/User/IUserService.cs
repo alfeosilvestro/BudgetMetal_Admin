@@ -12,7 +12,7 @@ namespace Com.BudgetMetal.Services.Users
 
         Task<VmUserItem> GetUserById(int Id);
 
-        VmGenericServiceResult Insert(VmUserItem vmUserItem);
+        Task<VmGenericServiceResult> Insert(VmUserItem vmUserItem);
 
         Task<VmGenericServiceResult> Update(VmUserItem vmUserItem);
 
