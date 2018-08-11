@@ -6,12 +6,16 @@ namespace Com.BudgetMetal.DBEntities
 {
     public class InvitedSupplier : GenericEntity
     {
-        [ForeignKey("Rfq")]
+       
         public int Rfq_Id { get; set; }
+
+        [ForeignKey("Rfq_Id")]
         public virtual Rfq Rfq { get; set; }
 
-        [ForeignKey("Company")]
+       
         public int Company_Id { get; set; }
+
+        [ForeignKey("Company_Id")]
         public virtual Company Company { get; set; }
 
 

@@ -23,16 +23,22 @@ namespace Com.BudgetMetal.DBEntities
         public DateTime? SubmissionDate { get; set; }
        
 
-        [ForeignKey("Company")]
+        
         public int Company_Id { get; set; }
+
+        [ForeignKey("Company_Id")]
         public virtual Company Company { get; set; }
 
-        [ForeignKey("CodeTable")]
+        
         public int DocumentStatus_Id { get; set; }
+
+        [ForeignKey("DocumentStatus_Id")]
         public virtual CodeTable DocumentStatus { get; set; }
 
-        [ForeignKey("CodeTable")]
+       
         public int DocumentType_Id { get; set; }
+
+        [ForeignKey("DocumentType_Id")]
         public virtual CodeTable DocumentType { get; set; }
 
         //public ICollection<Attachment> Attachment { get; set; }

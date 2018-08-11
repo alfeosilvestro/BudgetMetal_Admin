@@ -53,17 +53,24 @@ namespace Com.GenericPlatform.WebApp.Controllers
         {
             try
             {
+                Rfq.SelectedTags = Request.Form["SelectedTags"].ToString();
                 var listAttachment = new List<VmAttachment>();
                 int i = 0;
-                foreach(var itemFile in Request.Form.Files)
+                foreach (var itemFile in Request.Form.Files)
                 {
-                    var att = new VmAttachment();
+                    if (itemFile.Length > 0)
+                    {
+                        var att = new VmAttachment();
 
-                    att.FileName = itemFile.FileName;
-                    att.FileSize = itemFile.Length;
-                    att.FileBinary = Convert.ToBase64String(ConvertFiletoBytes(itemFile));
-                    att.Description = Request.Form["fileDescriptionRFQ[]"].ToArray()[i].ToString();
-                    listAttachment.Add(att);
+                        att.FileName = itemFile.FileName;
+                        att.FileSize = itemFile.Length;
+                        att.FileBinary = Convert.ToBase64String(ConvertFiletoBytes(itemFile));
+                        att.Description = Request.Form["fileDescriptionRFQ[]"].ToArray()[i].ToString();
+                        att.CreatedBy = Rfq.CreatedBy;
+                        att.UpdatedBy = Rfq.UpdatedBy;
+                        listAttachment.Add(att);
+
+                    }
                     i++;
                 }
 
@@ -71,7 +78,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
 
                 var listInvitedSupplier = new List<VmInvitedSupplier>();
                 var arrInvitedSupplier = Request.Form["supplier_list[]"].ToArray();
-                foreach(var itemSupplier in arrInvitedSupplier)
+                foreach (var itemSupplier in arrInvitedSupplier)
                 {
                     var supplier = new VmInvitedSupplier();
                     supplier.Company_Id = Convert.ToInt32(itemSupplier);
@@ -80,7 +87,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
                 }
                 Rfq.InvitedSupplier = listInvitedSupplier;
 
-                int documentId = rfqService.SaveRFQ(Rfq);
+                string documentNo = rfqService.SaveRFQ(Rfq);
 
                 return View();
             }
@@ -112,7 +119,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
         [HttpGet]
         public async Task<JsonResult> GetActiveIndustries()
         {
-            var result =  industryService.GetActiveIndustries();
+            var result = industryService.GetActiveIndustries();
 
             return new JsonResult(result, new JsonSerializerSettings()
             {
@@ -133,7 +140,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
         [HttpGet]
         public async Task<JsonResult> GetSupplierByServiceTagsId(string serviceTagsId, int page)
         {
-            var result = companyService.GetSupplierByServiceTagsId(serviceTagsId,page);
+            var result = companyService.GetSupplierByServiceTagsId(serviceTagsId, page);
 
             return new JsonResult(result, new JsonSerializerSettings()
             {

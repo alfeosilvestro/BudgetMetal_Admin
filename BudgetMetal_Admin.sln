@@ -16,9 +16,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. App", "1. App", "{7B82E778-676E-4923-92B1-6C134806B6CE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Logic", "2. Logic", "{436C3BB9-EC05-42AE-9A08-CD3A230D8CE0}"
-	ProjectSection(SolutionItems) = preProject
-		Com.BudgetMetal.Services.GalleryAPI\Startup.cs = Com.BudgetMetal.Services.GalleryAPI\Startup.cs
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. DB", "3. DB", "{7D08EBAD-3A9A-44EF-A1E3-E7058B5EB8C5}"
 EndProject

@@ -12,8 +12,10 @@ namespace Com.BudgetMetal.DBEntities
         public string Description { get; set; }
         public int? Quantity { get; set; }
 
-        [ForeignKey("Rfq")]
-        public int RfqId { get; set; }
+       
+        public int Rfq_Id { get; set; }
+
+        [ForeignKey("Rfq_Id")]
         public virtual Rfq Rfq { get; set; }
     }
 }

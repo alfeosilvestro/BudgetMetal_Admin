@@ -13,8 +13,10 @@ namespace Com.BudgetMetal.DBEntities
         public string Description { get; set; }
         public long? FileSize { get; set; }
 
-        [ForeignKey("Document")]
+        
         public int Document_Id { get; set; }
+
+        [ForeignKey("Document_Id")]
         public virtual Document Document { get; set; }
     }
 }

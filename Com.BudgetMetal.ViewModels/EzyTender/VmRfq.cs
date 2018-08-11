@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Com.BudgetMetal.ViewModels.EzyTender
 {
-    public class VmRfq
+    public class VmRfq : ViewModelItemBase
     {
         //public Rfq()
         //{
@@ -15,8 +15,8 @@ namespace Com.BudgetMetal.ViewModels.EzyTender
         //    Sla = new HashSet<Sla>();
         //}
 
-        public uint Id { get; set; }
-        public uint DocumentId { get; set; }
+       
+        public int Document_Id { get; set; }
         public string InternalRefrenceNo { get; set; }
         public string InternalProjectName { get; set; }
         public DateTime? StartRfqdate { get; set; }

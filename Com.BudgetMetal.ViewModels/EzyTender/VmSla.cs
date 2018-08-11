@@ -6,7 +6,7 @@ namespace Com.BudgetMetal.ViewModels.EzyTender
     public class VmSla : ViewModelItemBase
     {
       
-        public uint RfqId { get; set; }
+        public int Rfq_Id { get; set; }
         public string Requirement { get; set; }
         public string Description { get; set; }
 
