@@ -222,44 +222,44 @@ namespace Com.BudgetMetal.Services.RFQ
             return documentNo;
         }
 
-        public async Task<VmRfqPage> GetRfqByPage(string keyword, int page, int totalRecords)
-        {
-            var dbPageResult = await repoRfq.GetPage(keyword,
-                (page == 0 ? Constants.app_firstPage : page),
-                (totalRecords == 0 ? Constants.app_totalRecords : totalRecords));
+        ////public async Task<VmRfqPage> GetRfqByPage(string keyword, int page, int totalRecords)
+        ////{
+        ////    var dbPageResult = await repoRfq.GetPage(keyword,
+        ////        (page == 0 ? Constants.app_firstPage : page),
+        ////        (totalRecords == 0 ? Constants.app_totalRecords : totalRecords));
 
-            if (dbPageResult == null)
-            {
-                return new VmRfqPage();
-            }
+        ////    if (dbPageResult == null)
+        ////    {
+        ////        return new VmRfqPage();
+        ////    }
 
-            var resultObj = new VmRfqPage();
-            resultObj.RequestId = DateTime.Now.ToString("yyyyMMddHHmmss");
-            resultObj.RequestDate = DateTime.Now;
-            resultObj.Result = new PageResult<VmRfqItem>();
-            resultObj.Result.Records = new List<VmRfqItem>();
+        ////    var resultObj = new VmRfqPage();
+        ////    resultObj.RequestId = DateTime.Now.ToString("yyyyMMddHHmmss");
+        ////    resultObj.RequestDate = DateTime.Now;
+        ////    resultObj.Result = new PageResult<VmRfqItem>();
+        ////    resultObj.Result.Records = new List<VmRfqItem>();
 
-            Copy<PageResult<Rfq>, PageResult<VmRfqItem>>(dbPageResult, resultObj.Result, new string[] { "Records" });
+        ////    Copy<PageResult<Rfq>, PageResult<VmRfqItem>>(dbPageResult, resultObj.Result, new string[] { "Records" });
 
-            foreach (var dbItem in dbPageResult.Records)
-            {
-                var resultItem = new VmRfqItem();
+        ////    foreach (var dbItem in dbPageResult.Records)
+        ////    {
+        ////        var resultItem = new VmRfqItem();
 
-                Copy<Rfq, VmRfqItem>(dbItem, resultItem);
+        ////        Copy<Rfq, VmRfqItem>(dbItem, resultItem);
 
-                if (dbItem.Document != null)
-                {
-                    resultItem.Document = new ViewModels.Document.VmDocumentItem()
-                    {
-                        Title = dbItem.Document.Title
-                    };
-                }
+        ////        if (dbItem.Document != null)
+        ////        {
+        ////            resultItem.Document = new ViewModels.Document.VmDocumentItem()
+        ////            {
+        ////                Title = dbItem.Document.Title
+        ////            };
+        ////        }
 
-                resultObj.Result.Records.Add(resultItem);
-            }
+        ////        resultObj.Result.Records.Add(resultItem);
+        ////    }
 
-            return resultObj;
-        }
+        ////    return resultObj;
+        ////}
 
         public async Task<VmRfqItem> GetRfqtById(int Id)
         {

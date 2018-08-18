@@ -23,9 +23,9 @@ namespace Com.EazyTender_Admin.Controllers
         }
 
         // GET: Rfqs
-        public async Task<ActionResult> Index(string keyword, int page, int totalRecords)
+        public async Task<ActionResult> Index(int documentOwner, int page, int totalRecords)
         {
-            var result = await svs.GetRfqByPage(keyword, page, _appSettings.TotalRecordPerPage);
+            var result = await svs.GetRfqByPage(documentOwner, page, _appSettings.TotalRecordPerPage);
 
             return View(result);
         }

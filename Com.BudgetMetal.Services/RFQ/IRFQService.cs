@@ -14,7 +14,7 @@ namespace Com.BudgetMetal.Services.RFQ
 
         string SaveRFQ(VmRfq rfq);
 
-        Task<VmRfqPage> GetRfqByPage(string keyword, int page, int totalRecords);
+        //Task<VmRfqPage> GetRfqByPage(string keyword, int page, int totalRecords);
 
         Task<VmRfqItem> GetRfqtById(int Id);
 
