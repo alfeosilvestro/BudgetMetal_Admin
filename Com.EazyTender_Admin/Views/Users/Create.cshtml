@@ -6,17 +6,17 @@
 
 <h2>Create</h2>
 
-<h4>User</h4>
+<h4>Users</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
+            @*<div class="form-group">
+            <label asp-for="Id" class="control-label"></label>
+            <input asp-for="Id" class="form-control" />
+            <span asp-validation-for="Id" class="text-danger"></span>
+        </div>*@
             <div class="form-group">
                 <label asp-for="UserName" class="control-label">User Name</label>
                 <input asp-for="UserName" class="form-control" />
@@ -80,7 +80,18 @@
                 </select>
                 <span asp-validation-for="UserType" class="text-danger"></span>
             </div>
-
+            <div class="form-group">
+                @*<label asp-for="RoleList" class="control-label">Roles</label>
+        <select asp-for="RoleList" asp-items="@(new SelectList(Model.RoleList, "Id", "Name"))" class="form-control" multiple>
+            <option>Please select one</option>
+        </select>
+        <span asp-validation-for="RoleList" class="text-danger"></span>*@
+                <label asp-for="RoleList" class="control-label">Roles</label>
+                <select asp-for="RoleList" multiple="multiple" id="RoleList" name="RoleList" asp-items="@(new SelectList(Model.RoleList, "Id", "Name"))" class="form-control">
+                    <option>Please select</option>
+                </select>
+                <span asp-validation-for="RoleList" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>

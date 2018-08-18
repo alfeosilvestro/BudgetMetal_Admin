@@ -49,7 +49,7 @@ namespace Com.EazyTender_Admin.Controllers
         // POST: CodeTables/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(VmCodeTableItem codeTableItem)
+        public ActionResult Create(VmCodeTableItem codeTableItem)
         {
             var result = svs.Insert(codeTableItem);
 

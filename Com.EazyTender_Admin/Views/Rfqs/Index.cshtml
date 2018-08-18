@@ -1,0 +1,54 @@
+﻿@model Com.BudgetMetal.ViewModels.Rfq.VmRfqPage
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th> Internal Refrence No. </th>
+            <th> Internal Project Name </th>
+            <th> Start Date </th>
+            <th> Valid Date </th>
+            <th> Estimated Start Date </th>
+            <th> Estimated EndDate </th>
+            <th> Supplier Provide Material </th>
+            <th> Supplier Provide Transport </th>
+            <th> Message To Supplier </th>
+            <th> Industry Of Rfq </th>
+            <th> Selected Tags </th>
+            <th> Document </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Result.Records)
+        {
+            <tr>
+                <td> @item.InternalRefrenceNo </td>
+                <td> @item.InternalProjectName </td>
+                <td> @item.StartRfqdate </td>
+                <td> @item.ValidRfqdate </td>
+                <td> @item.EstimatedProjectStartDate </td>
+                <td> @item.EstimatedProjectEndDate </td>
+                <td> @item.SupplierProvideMaterial </td>
+                <td> @item.SupplierProvideTransport </td>
+                <td> @item.MessageToSupplier </td>
+                <td> @item.IndustryOfRfq </td>
+                <td> @item.SelectedTags </td>
+                <td> @((item.Document == null) ? "" : item.Document.Title)</td>
+                <td hidden="hidden"> @item.Id </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

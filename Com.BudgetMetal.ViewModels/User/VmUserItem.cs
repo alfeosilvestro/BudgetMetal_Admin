@@ -1,5 +1,6 @@
 ﻿using Com.BudgetMetal.ViewModels.CodeTable;
 using Com.BudgetMetal.ViewModels.Company;
+using Com.BudgetMetal.ViewModels.Role;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -37,5 +38,6 @@ namespace Com.BudgetMetal.ViewModels.User
         public int UserType { get; set; }
         public virtual VmCodeTableItem CodeTable { get; set; }
         public List<VmCodeTableItem> CodeTableList { get; set; }
+        public List<VmRoleItem> RoleList { get; set; }
     }
 }

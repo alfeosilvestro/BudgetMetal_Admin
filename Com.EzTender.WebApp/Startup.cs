@@ -135,7 +135,7 @@ namespace Com.EzTender.WebApp
             services.AddScoped<ICodeTableService, CodeTableService>();
 
             //EmailLog
-            services.AddScoped<IEmailsLogRepository, EmailLogRepository>();
+            services.AddScoped<IEmailLogRepository, EmailLogRepository>();
             services.AddScoped<IEmailLogService, EmailLogService>();
 
         }

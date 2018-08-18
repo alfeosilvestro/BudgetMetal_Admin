@@ -13,21 +13,17 @@
     <thead>
         <tr>
             <th>
-                ToEmailAddress@*@Html.DisplayNameFor(model => model.Result.Records[0].Role)*@
+                ToEmail Address
             </th>
             <th>
-                Message@*@Html.DisplayNameFor(model => model.Result.Records[0].RoleCode)*@
-            </th>
-            @*<th>
-                Sent By@*@Html.DisplayNameFor(model => model.Result.Records[0].RoleCode)*@
+                Message
             </th>
             <th>
-                Sent Date@*@Html.DisplayNameFor(model => model.Result.Records[0].RoleCode)*@
+                Sent By
             </th>
             <th>
-                Updated By@*@Html.DisplayNameFor(model => model.Result.Records[0].RoleCode)*@
+                Sent Date
             </th>
-            <th>Updated Date</th>*@
             <th></th>
             <th></th>
         </tr>
@@ -38,15 +34,15 @@
         <tr>
             <td> @item.ToEmailAddress</td>
             <td> @item.Message </td>
-            @*<td> @item.SentByUserId </td>
+            <td> @item.SentByUserId </td>
             <td> @item.SentDate </td>
-            <td> @item.UpdatedBy </td>
+            @*<td> @item.UpdatedBy </td>
             <td> @item.UpdatedDate </td>*@
             <td hidden="hidden"> @item.Id </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a>*@
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                @*<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
             </td>
         </tr>
         }

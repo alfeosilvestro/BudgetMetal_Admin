@@ -47,5 +47,12 @@ namespace Com.BudgetMetal.DB
         public virtual DbSet<SupplierServiceTags> SupplierServiceTags { get; set; }
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<UserRoles> UserRoles { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<UserRoles>()
+                .HasKey(t => new { t.User_Id, t.Role_Id });
+        }
+
     }
 }

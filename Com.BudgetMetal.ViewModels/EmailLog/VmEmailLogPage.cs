@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Com.BudgetMetal.ViewModels.EmailLog
 {
-    public class VmEmailLogPage
+    public class VmEmailLogPage : ViewModelBase
     {
         public PageResult<VmEmailLogItem> Result { get; set; }
     }

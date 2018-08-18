@@ -27,6 +27,18 @@ using Microsoft.Extensions.DependencyInjection;
 using Com.BudgetMetal.Services.Company;
 using Com.BudgetMetal.DataRepository.Company;
 using Microsoft.Extensions.Logging;
+using ReflectionIT.Mvc.Paging;
+using Com.BudgetMetal.DataRepository.UserRoles;
+using Com.BudgetMetal.DataRepository.Document;
+using Com.BudgetMetal.Services.Document;
+using Com.BudgetMetal.DataRepository.RFQ;
+using Com.BudgetMetal.Services.RFQ;
+using Com.BudgetMetal.DataRepository.Attachment;
+using Com.BudgetMetal.DataRepository.Requirement;
+using Com.BudgetMetal.DataRepository.Sla;
+using Com.BudgetMetal.DataRepository.Penalty;
+using Com.BudgetMetal.DataRepository.InvitedSupplier;
+using Com.BudgetMetal.DataRepository.RfqPriceSchedule;
 
 namespace Com.EazyTender_Admin
 {
@@ -69,6 +81,8 @@ namespace Com.EazyTender_Admin
 
             services.AddMvc();
 
+            services.AddPaging();
+
             RegisterForDependencyInjection(services);
         }
 
@@ -99,10 +113,6 @@ namespace Com.EazyTender_Admin
             services.AddScoped<ICodeTableRepository, CodeTableRepository>();
             services.AddScoped<ICodeTableService, CodeTableService>();
 
-            //EmailLog
-            services.AddScoped<IEmailsLogRepository, EmailLogRepository>();
-            services.AddScoped<IEmailLogService, EmailLogService>();
-
             //ServiceTags
             services.AddScoped<IServiceTagsRepository, ServiceTagsRepository>();
             services.AddScoped<IServiceTagsService, ServiceTagsService>();
@@ -110,6 +120,29 @@ namespace Com.EazyTender_Admin
             //Companies
             services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<ICompanyService, CompanyService>();
+
+            //EmailLog
+            services.AddScoped<IEmailLogRepository, EmailLogRepository>();
+            services.AddScoped<IEmailLogService, EmailLogService>();
+
+            //UserRoles
+            services.AddScoped<IUserRolesRepository, UserRolesRepository>();
+            //services.AddScoped<IUserRolesService, UserRolesService>();
+
+            services.AddScoped<IDocumentRepository, DocumentRepository>();
+            services.AddScoped<IDocumentService, DocumentService>();
+
+            services.AddScoped<IRfqRepository, RfqRepository>();
+            services.AddScoped<IRFQService, RFQService>();
+
+            services.AddScoped<IAttachmentRepository, AttachmentRepository>();
+
+            services.AddScoped<IRequirementRepository, RequirementRepository>();
+            
+            services.AddScoped<ISlaRepository, SlaRepository>();
+            services.AddScoped<IPenaltyRepository, PenaltyRepository>();
+            services.AddScoped<IInvitedSupplierRepository, InvitedSupplierRepository>();
+            services.AddScoped<IRfqPriceScheduleRepository, RfqPriceScheduleRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

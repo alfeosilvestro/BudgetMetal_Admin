@@ -67,24 +67,6 @@ namespace Com.BudgetMetal.Services.Code_Table
             return resultObj;
         }
 
-        //public async Task<List<VmCodeCategoryItem>> GetCodeCategory()
-        //{   
-        //    List<VmCodeCategoryItem> lstCodeCategory = new List<VmCodeCategoryItem>();
-
-        //    var result = await repoCate.GetAll();
-
-        //    foreach (var item in result)
-        //    {
-        //        var resultItem = new VmCodeCategoryItem();
-
-        //        Copy<CodeCategory, VmCodeCategoryItem>(item, resultItem);
-
-        //        lstCodeCategory.Add(resultItem);
-        //    }
-            
-        //    return lstCodeCategory;
-        //}
-
         public async Task<VmCodeTableItem> GetCodeTableById(int Id)
         {
             var dbPageResult = await repo.Get(Id);

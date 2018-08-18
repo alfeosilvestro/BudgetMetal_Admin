@@ -1,0 +1,58 @@
+﻿@model Com.BudgetMetal.ViewModels.Document.VmDocumentPage
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Title
+            </th>
+            <th>
+                Contact Person
+            </th>
+            <th>
+                Document No.
+            </th>
+            <th>
+                SubmissionDate
+            </th>
+            <th>
+                Company
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Type
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Result.Records)
+        {
+            <tr>
+                <td> @item.Title </td>
+                <td> @item.ContactPersonName </td>
+                <td> @item.DocumentNo </td>
+                <td> @item.SubmissionDate </td>
+                <td> @(item.Company == null ? "" : item.Company.Name)</td>
+                <td> @(item.DocumentStatus == null ? "" : item.DocumentStatus.Name)</td>
+                <td> @(item.DocumentType == null ? "" : item.DocumentType.Name)</td>
+                <td hidden="hidden"> @item.Id </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
