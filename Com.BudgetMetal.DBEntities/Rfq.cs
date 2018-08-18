@@ -16,8 +16,6 @@ namespace Com.BudgetMetal.DBEntities
         //    RfqPriceSchedule = new HashSet<RfqPriceSchedule>();
         //    Sla = new HashSet<Sla>();
         //}
-
-      
         
         public string InternalRefrenceNo { get; set; }
         public string InternalProjectName { get; set; }

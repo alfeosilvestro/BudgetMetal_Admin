@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Com.BudgetMetal.DB;
-using Com.BudgetMetal.Services.Code_Table;
-using Com.BudgetMetal.ViewModels.CodeTable;
+using Com.BudgetMetal.Services.RFQ;
+using Com.BudgetMetal.ViewModels.Rfq;
 using Com.EazyTender_Admin.Configurations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,46 +11,44 @@ using Microsoft.Extensions.Options;
 
 namespace Com.EazyTender_Admin.Controllers
 {
-    public class CodeTablesController : Controller
+    public class RfqsController : Controller
     {
-        private readonly ICodeTableService svs;
+        private readonly IRFQService svs;
         private readonly AppSettings _appSettings;
-        private readonly DataContext dataContext;
-        public CodeTablesController(ICodeTableService svs, IOptions<AppSettings> appSettings, DataContext dataContext)
+
+        public RfqsController(IRFQService svs, IOptions<AppSettings> appSettings)
         {
             this.svs = svs;
             this._appSettings = appSettings.Value;
-            this.dataContext = dataContext;
         }
 
-        // GET: CodeTables
+        // GET: Rfqs
         public async Task<ActionResult> Index(string keyword, int page, int totalRecords)
         {
-            var result = await svs.GetCodeTableByPage(keyword, page, _appSettings.TotalRecordPerPage);
+            var result = await svs.GetRfqByPage(keyword, page, _appSettings.TotalRecordPerPage);
 
             return View(result);
         }
 
-        // GET: CodeTables/Details/5
+        // GET: Rfqs/Details/5
         public ActionResult Details(int id)
         {
-
             return View();
         }
 
-        // GET: CodeTables/Create
+        // GET: Rfqs/Create
         public async Task<ActionResult> Create()
-        {            
+        {
             var obj = await svs.GetFormObject();
             return View(obj);
         }
 
-        // POST: CodeTables/Create
+        // POST: Rfqs/Create 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(VmCodeTableItem codeTableItem)
+        public ActionResult Create(VmRfqItem vmItem)
         {
-            var result = svs.Insert(codeTableItem);
+            var result = svs.Insert(vmItem);
 
             if (result.IsSuccess)
             {
@@ -59,28 +56,28 @@ namespace Com.EazyTender_Admin.Controllers
             }
             else
             {
-                return View(codeTableItem);
+                return View(vmItem);
             }
         }
 
-        // GET: CodeTables/Edit/5
+        // GET: Rfqs/Edit/5
         public async Task<ActionResult> Edit(int id)
         {
-            var obj = await svs.GetCodeTableById(id);
+            var obj = await svs.GetRfqtById(id);
             return View(obj);
         }
 
-        // POST: CodeTables/Edit/5
+        // POST: Rfqs/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int id, VmCodeTableItem codeTableItem)
+        public async Task<ActionResult> Edit(int id, VmRfqItem vmItem)
         {
-            if (id != codeTableItem.Id)
+            if (id != vmItem.Id)
             {
                 return NotFound();
             }
 
-            var result = await svs.Update(codeTableItem);
+            var result = await svs.Update(vmItem);
 
             if (result.IsSuccess)
             {
@@ -88,18 +85,18 @@ namespace Com.EazyTender_Admin.Controllers
             }
             else
             {
-                return View(codeTableItem);
+                return View(vmItem);
             }
         }
 
-        // GET: CodeTables/Delete/5
+        // GET: Rfqs/Delete/5
         public async Task<ActionResult> Delete(int id)
         {
             await svs.Delete(id);
             return RedirectToAction(nameof(Index));
         }
 
-        // POST: CodeTables/Delete/5
+        // POST: Rfqs/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Delete(int id, IFormCollection collection)

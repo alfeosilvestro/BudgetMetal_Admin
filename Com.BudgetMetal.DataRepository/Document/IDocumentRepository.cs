@@ -9,6 +9,4 @@ namespace Com.BudgetMetal.DataRepository.Document
     {
 
     }
-
-     
 }

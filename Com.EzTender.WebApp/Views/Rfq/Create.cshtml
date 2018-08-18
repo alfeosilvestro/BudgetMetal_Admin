@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Create";
 }
-<form asp-controller="Rfq" asp-action="Create" method="post" enctype = "multipart/form-data">
+<form asp-controller="Rfq" asp-action="Create" method="post" enctype="multipart/form-data">
     <div class="block-header">
         <h2>Prepare Request for Quotation</h2>
     </div>
@@ -162,7 +162,7 @@
                                         <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveRequirementRow(this)'>Remove</button></td>
                                     </tr>
                                 </tbody>
-                               
+
                             </table>
                             <div class="row">
                                 <div class="form-group col-sm-12">
@@ -292,21 +292,21 @@
 
                         <div role="tabpanel" class="tab-pane fade" id="attachments">
                             @*<div class="row clearfix">
-            <div class="col-sm-12">
-                <div action="/" id="frmFileUpload" class="dropzone" method="post" enctype="multipart/form-data">
-                    <div class="dz-message">
-                        <div class="drag-icon-cph">
-                            <i class="material-icons">touch_app</i>
-                        </div>
-                        <h3>Drop files here or click to upload.</h3>
-                        <em>(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</em>
-                    </div>
-                    <div class="fallback">
-                        <input name="file" type="file" multiple />
-                    </div>
-                </div>
-            </div>
-        </div>*@
+                                    <div class="col-sm-12">
+                                        <div action="/" id="frmFileUpload" class="dropzone" method="post" enctype="multipart/form-data">
+                                            <div class="dz-message">
+                                                <div class="drag-icon-cph">
+                                                    <i class="material-icons">touch_app</i>
+                                                </div>
+                                                <h3>Drop files here or click to upload.</h3>
+                                                <em>(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</em>
+                                            </div>
+                                            <div class="fallback">
+                                                <input name="file" type="file" multiple />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>*@
                             <table id="attachmentTable" class="table table-striped">
                                 <thead>
                                     <tr>
@@ -379,9 +379,9 @@
                 </div>
             </div>
         </div>
-</div>
-        <!--Quotations-->
-        @*<div class="row clearfix">
+    </div>
+    <!--Quotations-->
+    @*<div class="row clearfix">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="card">
                     <div class="header">
@@ -517,7 +517,7 @@
      var serviceTagsId = $('#ddlServiceTags').val();
 
      var stringServiceTagsId = serviceTagsId.toString();
-     
+
      if (serviceTagsId == null) {
             alert("Please select the service tags!")
         } else {
@@ -537,7 +537,7 @@
                             " <p class='m-t-15 m-b-30'>" + item.About + "</p></td>" +
                             "<td><input type='checkbox' class='filled-in' id='chkSupplier_" + item.Id + "'  name='supplier_list[]' value='" + item.Id + "'> <button type='button' class='btn btn-success' onclick='checkSupplier(" + item.Id + ")'>Invite</button></td>" +
                             "</tr>");
-                       
+
                     }
                     var totalpage = response.Result.Result.TotalPage;
                     var currentpage = response.Result.Result.CurrentPage;
@@ -545,7 +545,7 @@
                         $(".pagination").empty();
                         $(".pagination").append(" <a class='btn btn-md btn-default' OnClick='loadSupplier(" + response.Result.Result.NextPage + ")'> Load More </a> ");
                     }
-                    
+
                 },
                 error: function (response) {
                     alert(response)
@@ -562,12 +562,12 @@
     }
 function loadIndustry() {
     var ajaxurl = '@Url.Action("GetActiveIndustries", "Rfq")';
-    
+
     $('#ddlIndustry').append($('<option>', {
         value: 0,
         text: '--Select Industry--'
     }));
-    
+
     $.ajax({
         url: ajaxurl,
         dataType: 'json',
@@ -605,7 +605,7 @@ function loadIndustry() {
         } else {
 
             var ajaxurl = '@Url.Action("GetServiceTagByIndustry", "Rfq")';
-            
+
             $.ajax({
                 url: ajaxurl,
                 data: {Id: industryId},
@@ -627,7 +627,7 @@ function loadIndustry() {
                 }
             });
         }
-        
+
 
 }
 </script>

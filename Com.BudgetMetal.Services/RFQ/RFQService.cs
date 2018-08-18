@@ -1,4 +1,5 @@
-﻿using Com.BudgetMetal.DataRepository.Attachment;
+﻿using Com.BudgetMetal.Common;
+using Com.BudgetMetal.DataRepository.Attachment;
 using Com.BudgetMetal.DataRepository.Document;
 using Com.BudgetMetal.DataRepository.InvitedSupplier;
 using Com.BudgetMetal.DataRepository.Penalty;
@@ -6,11 +7,16 @@ using Com.BudgetMetal.DataRepository.Requirement;
 using Com.BudgetMetal.DataRepository.RFQ;
 using Com.BudgetMetal.DataRepository.RfqPriceSchedule;
 using Com.BudgetMetal.DataRepository.Sla;
+using Com.BudgetMetal.DBEntities;
 using Com.BudgetMetal.Services.Base;
+using Com.BudgetMetal.ViewModels;
+using Com.BudgetMetal.ViewModels.Document;
 using Com.BudgetMetal.ViewModels.EzyTender;
+using Com.BudgetMetal.ViewModels.Rfq;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Com.BudgetMetal.Services.RFQ
 {
@@ -157,6 +163,172 @@ namespace Com.BudgetMetal.Services.RFQ
 
 
             return documentNo;
+        }
+
+        public async Task<VmRfqPage> GetRfqByPage(string keyword, int page, int totalRecords)
+        {
+            var dbPageResult = await repoRfq.GetPage(keyword,
+                (page == 0 ? Constants.app_firstPage : page),
+                (totalRecords == 0 ? Constants.app_totalRecords : totalRecords));
+
+            if (dbPageResult == null)
+            {
+                return new VmRfqPage();
+            }
+
+            var resultObj = new VmRfqPage();
+            resultObj.RequestId = DateTime.Now.ToString("yyyyMMddHHmmss");
+            resultObj.RequestDate = DateTime.Now;
+            resultObj.Result = new PageResult<VmRfqItem>();
+            resultObj.Result.Records = new List<VmRfqItem>();
+
+            Copy<PageResult<Rfq>, PageResult<VmRfqItem>>(dbPageResult, resultObj.Result, new string[] { "Records" });
+
+            foreach (var dbItem in dbPageResult.Records)
+            {
+                var resultItem = new VmRfqItem();
+
+                Copy<Rfq, VmRfqItem>(dbItem, resultItem);
+
+                if (dbItem.Document != null)
+                {
+                    resultItem.Document = new ViewModels.Document.VmDocumentItem()
+                    {
+                        Title = dbItem.Document.Title
+                    };
+                }
+
+                resultObj.Result.Records.Add(resultItem);
+            }
+
+            return resultObj;
+        }
+
+        public async Task<VmRfqItem> GetRfqtById(int Id)
+        {
+            var dbPageResult = await repoRfq.Get(Id);
+
+            if (dbPageResult == null)
+            {
+                return new VmRfqItem();
+            }
+
+            var resultObj = new VmRfqItem();
+
+            Copy<Rfq, VmRfqItem>(dbPageResult, resultObj);
+
+            var dbDocumentEntity = await repoDocument.GetAll();
+
+            if (dbDocumentEntity == null) return resultObj;
+
+            resultObj.DocumentList = new List<VmDocumentItem>();
+
+            foreach (var dbcat in dbDocumentEntity)
+            {
+                VmDocumentItem docuentItem = new VmDocumentItem()
+                {
+                    Id = dbcat.Id,
+                    Title = dbcat.Title
+                };
+
+                resultObj.DocumentList.Add(docuentItem);
+            }
+
+            return resultObj;
+        }
+
+        public VmGenericServiceResult Insert(VmRfqItem vmItem)
+        {
+            VmGenericServiceResult result = new VmGenericServiceResult();
+
+            try
+            {
+                Rfq entity = new Rfq();
+
+                Copy<VmRfqItem, Rfq>(vmItem, entity);
+
+                entity.Document_Id = (int)vmItem.Document_Id;
+                if (entity.CreatedBy.IsNullOrEmpty())
+                {
+                    entity.CreatedBy = entity.UpdatedBy = "System";
+                }
+                repoRfq.Add(entity);
+
+                repoRfq.Commit();
+
+                result.IsSuccess = true;
+            }
+            catch (Exception e)
+            {
+                result.IsSuccess = false;
+                result.Error = e;
+            }
+
+            return result;
+        }
+
+        public async Task<VmGenericServiceResult> Update(VmRfqItem vmItem)
+        {
+            VmGenericServiceResult result = new VmGenericServiceResult();
+
+            try
+            {
+                Rfq entity = await repoRfq.Get(vmItem.Id);
+
+                Copy<VmRfqItem, Rfq>(vmItem, entity);
+
+                if (entity.UpdatedBy.IsNullOrEmpty())
+                {
+                    entity.UpdatedBy = "System";
+                }
+
+                repoRfq.Update(entity);
+
+                repoRfq.Commit();
+
+                result.IsSuccess = true;
+            }
+            catch (Exception e)
+            {
+                result.IsSuccess = false;
+                result.Error = e;
+            }
+
+            return result;
+        }
+
+        public async Task Delete(int Id)
+        {
+            var entity = await repoRfq.Get(Id);
+            entity.IsActive = false;
+            repoRfq.Update(entity);
+            repoRfq.Commit();
+        }
+
+        public async Task<VmRfqItem> GetFormObject()
+        {
+            VmRfqItem resultObj = new VmRfqItem();
+
+            var dbDocumentList = await repoDocument.GetAll();
+
+            if (dbDocumentList == null) return resultObj;
+
+            resultObj.DocumentList = new List<VmDocumentItem>();
+
+            foreach (var dbcat in dbDocumentList)
+            {
+                VmDocumentItem document = new VmDocumentItem()
+                {
+                    Id = dbcat.Id,
+                    Title = dbcat.Title,
+                    ContactPersonName = dbcat.ContactPersonName,
+                    DocumentNo = dbcat.DocumentNo
+                };
+
+                resultObj.DocumentList.Add(document);
+            }
+
+            return resultObj;
         }
     }
 }
