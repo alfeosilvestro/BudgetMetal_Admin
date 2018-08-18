@@ -1,0 +1,101 @@
+﻿@model Com.BudgetMetal.ViewModels.Rfq.VmRfqPage
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="block-header">
+    <h2>Request for Quotation</h2>
+</div>
+
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    List
+
+                </h2>
+
+            </div>
+            <div class="body">
+
+                <div class="row clearfix">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Document No</th>
+                                <th>Company</th>
+                                <th>Status</th>
+                                <th>Internal Refrence No</th>
+                                <th>Internal Project Name</th>
+                                <th>Industry Of Rfq</th>
+                                <th>Start Rfq Date</th>
+                                <th>Valid Rfq Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                foreach (var item in Model.Result.Records)
+                                {
+                                    <tr>
+                                        <td> <button type="button" class="btn btn-warning">View</button> </td>
+                                        <td>@item.Document.DocumentNo</td>
+                                        <td>@item.Document.Company.Name</td>
+                                        <td>@item.Document.DocumentStatus.Name</td>
+                                        <td>@item.InternalRefrenceNo</td>
+                                        <td>@item.InternalProjectName</td>
+                                        <td>@item.IndustryOfRfq</td>
+                                        <td>@item.StartRfqdate</td>
+                                        <td>@item.ValidRfqdate</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="pagination pull-right" style="padding:10px;">
+
+
+
+
+                                @{
+                                    int currentPage = Model.Result.CurrentPage;
+                                    int totalPage = Model.Result.TotalPage;
+                                    int previousPage = Model.Result.PreviousPage;
+                                    int nextPage = Model.Result.NextPage;
+
+                                    if (previousPage > 0)
+                                    {
+                                        <a class='btn btn-md btn-default' href="?page=@previousPage"> < </a>
+                                    }
+
+                                    for (int i = 1; i <= totalPage; i++)
+                                    {
+                                        if (i == currentPage)
+                                        {
+                                            <a class='btn btn-md btn-default'> @i </a>
+
+                                        }
+                                        else
+                                        {
+                                            <a class='btn btn-md btn-default' href="?page=@i"> @i </a>
+
+                                        }
+                                    }
+
+                                    if (nextPage > 0)
+                                    {
+                                        <a class='btn btn-md btn-default' href="?page=@nextPage"> > </a>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

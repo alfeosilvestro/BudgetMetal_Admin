@@ -1,4 +1,5 @@
-﻿using Com.BudgetMetal.DataRepository.Attachment;
+﻿using Com.BudgetMetal.Common;
+using Com.BudgetMetal.DataRepository.Attachment;
 using Com.BudgetMetal.DataRepository.Document;
 using Com.BudgetMetal.DataRepository.InvitedSupplier;
 using Com.BudgetMetal.DataRepository.Penalty;
@@ -6,11 +7,15 @@ using Com.BudgetMetal.DataRepository.Requirement;
 using Com.BudgetMetal.DataRepository.RFQ;
 using Com.BudgetMetal.DataRepository.RfqPriceSchedule;
 using Com.BudgetMetal.DataRepository.Sla;
+using Com.BudgetMetal.DBEntities;
 using Com.BudgetMetal.Services.Base;
+using Com.BudgetMetal.ViewModels.CodeTable;
 using Com.BudgetMetal.ViewModels.EzyTender;
+using Com.BudgetMetal.ViewModels.Rfq;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Com.BudgetMetal.Services.RFQ
 {
@@ -35,6 +40,62 @@ namespace Com.BudgetMetal.Services.RFQ
             this.repoRfqPriceSchedule = repoRfqPriceSchedule;
             this.repoPenalty = repoPenalty;
             this.repoInvitedSupplier = repoInvitedSupplier;
+        }
+
+        public async Task<VmRfqPage> GetRfqByPage(int documentOwner, int page,int totalRecords)
+        {
+            var dbPageResult = await repoRfq.GetRfqByPage(documentOwner,
+                (page == 0 ? Constants.app_firstPage : page),
+                (totalRecords == 0 ? Constants.app_totalRecords : totalRecords));
+
+            //var dbPageResult = repo.GetCodeTableByPage(keyword,
+            //    (page == 0 ? Constants.app_firstPage : page),
+            //    (totalRecords == 0 ? Constants.app_totalRecords : totalRecords));
+
+            if (dbPageResult == null)
+            {
+                return new VmRfqPage();
+            }
+
+            var resultObj = new VmRfqPage();
+            resultObj.RequestId = DateTime.Now.ToString("yyyyMMddHHmmss");
+            resultObj.RequestDate = DateTime.Now;
+            resultObj.Result = new PageResult<VmRfq>();
+            resultObj.Result.Records = new List<VmRfq>();
+
+            Copy<PageResult<Rfq>, PageResult<VmRfq>>(dbPageResult, resultObj.Result, new string[] { "Records" });
+
+            foreach (var dbItem in dbPageResult.Records)
+            {
+                var resultItem = new VmRfq();
+
+                Copy<Rfq, VmRfq>(dbItem, resultItem);
+
+                if (dbItem.Document != null)
+                {
+                    resultItem.Document = new ViewModels.EzyTender.VmDocument()
+                    {
+                        DocumentNo = dbItem.Document.DocumentNo,
+                        DocumentStatus = new ViewModels.CodeTable.VmCodeTableItem()
+                        {
+                            Name = dbItem.Document.DocumentStatus.Name
+                        },
+                        DocumentType = new ViewModels.CodeTable.VmCodeTableItem()
+                        {
+                            Name = dbItem.Document.DocumentStatus.Name
+                        },
+                        Company = new ViewModels.EzyTender.VmCompany()
+                        {
+                            Name = dbItem.Document.Company.Name
+                        }
+                    };
+
+                }
+
+                resultObj.Result.Records.Add(resultItem);
+            }
+
+            return resultObj;
         }
 
         public string SaveRFQ(VmRfq rfq)
@@ -157,6 +218,112 @@ namespace Com.BudgetMetal.Services.RFQ
 
 
             return documentNo;
+        }
+
+        public async Task<VmRfq> GetSingleRfqById(int documentId)
+        {
+            var dbResult = await repoRfq.GetSingleRfqById(documentId);
+
+            var resultObject = new VmRfq();
+
+            Copy<Com.BudgetMetal.DBEntities.Rfq, VmRfq>(dbResult, resultObject, new string[] { "Document", "InvitedSupplier", "Penalty", "Requirement", "RfqPriceSchedule", "Sla" });
+
+            var resultDocument = new VmDocument();
+
+            Copy<Com.BudgetMetal.DBEntities.Document, VmDocument>(dbResult.Document, resultDocument, new string[] { "DocumentStatus", "DocumentType", "Attachment" });
+
+            var documentStaus = new VmCodeTableItem
+            {
+                Id = dbResult.Document.DocumentStatus.Id,
+                Name = dbResult.Document.DocumentStatus.Name
+            };
+            resultDocument.DocumentStatus = documentStaus;
+
+            var documentType = new VmCodeTableItem
+            {
+                Id = dbResult.Document.DocumentType.Id,
+                Name = dbResult.Document.DocumentType.Name
+            };
+            resultDocument.DocumentType = documentType;
+
+            var listAttachment = new List<VmAttachment>();
+            if(dbResult.Document.Attachment != null)
+            {
+                foreach(var item in dbResult.Document.Attachment)
+                {
+                    var itemAttachment = new VmAttachment();
+                    Copy<Com.BudgetMetal.DBEntities.Attachment, VmAttachment>(item, itemAttachment, new string[] { "Document"});
+                    listAttachment.Add(itemAttachment);
+                }
+            }
+            resultDocument.Attachment = listAttachment;
+
+            resultObject.Document = resultDocument;
+
+            var listRequirement = new List<VmRequirement>();
+            if (dbResult.Requirement != null)
+            {
+                foreach (var item in dbResult.Requirement)
+                {
+                    var itemRequirement = new VmRequirement();
+                    Copy<Com.BudgetMetal.DBEntities.Requirement, VmRequirement>(item, itemRequirement, new string[] { "Rfq" });
+                    listRequirement.Add(itemRequirement);
+                }
+            }
+            resultObject.Requirement = listRequirement;
+
+            var listSla = new List<VmSla>();
+            if (dbResult.Sla != null)
+            {
+                foreach (var item in dbResult.Sla)
+                {
+                    var itemSla = new VmSla();
+                    Copy<Com.BudgetMetal.DBEntities.Sla, VmSla>(item, itemSla, new string[] { "Rfq" });
+                    listSla.Add(itemSla);
+                }
+            }
+            resultObject.Sla = listSla;
+
+
+            var listPenalty = new List<VmPenalty>();
+            if (dbResult.Penalty != null)
+            {
+                foreach (var item in dbResult.Penalty)
+                {
+                    var itemPenalty = new VmPenalty();
+                    Copy<Com.BudgetMetal.DBEntities.Penalty, VmPenalty>(item, itemPenalty, new string[] { "Rfq" });
+                    listPenalty.Add(itemPenalty);
+                }
+            }
+            resultObject.Penalty = listPenalty;
+
+            var listRfqPriceSchedule = new List<VmRfqPriceSchedule>();
+            if (dbResult.RfqPriceSchedule != null)
+            {
+                foreach (var item in dbResult.RfqPriceSchedule)
+                {
+                    var itemRfqPriceSchedule = new VmRfqPriceSchedule();
+                    Copy<Com.BudgetMetal.DBEntities.RfqPriceSchedule, VmRfqPriceSchedule>(item, itemRfqPriceSchedule, new string[] { "Rfq" });
+                    listRfqPriceSchedule.Add(itemRfqPriceSchedule);
+                }
+            }
+            resultObject.RfqPriceSchedule = listRfqPriceSchedule;
+
+            var listInvitedSupplier = new List<VmInvitedSupplier>();
+            if (dbResult.InvitedSupplier != null)
+            {
+                foreach (var item in dbResult.InvitedSupplier)
+                {
+                    var itemInvitedSupplier = new VmInvitedSupplier();
+                    Copy<Com.BudgetMetal.DBEntities.InvitedSupplier, VmInvitedSupplier>(item, itemInvitedSupplier, new string[] { "Rfq" });
+                    listInvitedSupplier.Add(itemInvitedSupplier);
+                }
+            }
+            resultObject.InvitedSupplier = listInvitedSupplier;
+
+
+
+            return resultObject;
         }
     }
 }

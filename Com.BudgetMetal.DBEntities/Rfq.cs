@@ -7,18 +7,7 @@ namespace Com.BudgetMetal.DBEntities
     [Table("RFQ")]
     public class Rfq : GenericEntity
     {
-        //public Rfq()
-        //{
-        //    InvitedSupplier = new HashSet<InvitedSupplier>();
-        //    Penalty = new HashSet<Penalty>();
-        //    Quotation = new HashSet<Quotation>();
-        //    Requirement = new HashSet<Requirement>();
-        //    RfqPriceSchedule = new HashSet<RfqPriceSchedule>();
-        //    Sla = new HashSet<Sla>();
-        //}
-
-      
-        
+              
         public string InternalRefrenceNo { get; set; }
         public string InternalProjectName { get; set; }
         public DateTime? StartRfqdate { get; set; }
@@ -31,16 +20,16 @@ namespace Com.BudgetMetal.DBEntities
         public string IndustryOfRfq { get; set; }
         public string SelectedTags { get; set; }
 
-        
         public int Document_Id { get; set; }
 
         [ForeignKey("Document_Id")]
         public virtual Document Document { get; set; }
-        //public ICollection<InvitedSupplier> InvitedSupplier { get; set; }
-        //public ICollection<Penalty> Penalty { get; set; }
-        //public ICollection<Quotation> Quotation { get; set; }
-        //public ICollection<Requirement> Requirement { get; set; }
-        //public ICollection<RfqPriceSchedule> RfqPriceSchedule { get; set; }
-        //public ICollection<Sla> Sla { get; set; }
+
+        public virtual ICollection<InvitedSupplier> InvitedSupplier { get; set; }
+        public virtual ICollection<Penalty> Penalty { get; set; }
+        public virtual ICollection<Quotation> Quotation { get; set; }
+        public virtual ICollection<Requirement> Requirement { get; set; }
+        public virtual ICollection<RfqPriceSchedule> RfqPriceSchedule { get; set; }
+        public virtual ICollection<Sla> Sla { get; set; }
     }
 }

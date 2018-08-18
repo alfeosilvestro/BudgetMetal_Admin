@@ -134,5 +134,20 @@ namespace Com.BudgetMetal.Services.Roles
             repo.Update(r);
             repo.Commit();
         }
+
+        public async Task<List<VmRoleItem>> GetActiveRoles()
+        {
+            var dbResult = await repo.GetAll() ;
+
+            var resultList = new List<VmRoleItem>();
+            foreach(var dbItem in dbResult)
+            {
+                var resultItem = new VmRoleItem();
+                Copy<Role, VmRoleItem>(dbItem, resultItem);
+                resultList.Add(resultItem);
+            }
+            return resultList;
+
+        }
     }
 }

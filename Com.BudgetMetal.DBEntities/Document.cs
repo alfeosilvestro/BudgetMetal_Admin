@@ -41,7 +41,7 @@ namespace Com.BudgetMetal.DBEntities
         [ForeignKey("DocumentType_Id")]
         public virtual CodeTable DocumentType { get; set; }
 
-        //public ICollection<Attachment> Attachment { get; set; }
+        public virtual ICollection<Attachment> Attachment { get; set; }
         //public ICollection<Clarification> Clarification { get; set; }
         //public ICollection<DocumentUser> DocumentUser { get; set; }
         //public ICollection<Quotation> Quotation { get; set; }

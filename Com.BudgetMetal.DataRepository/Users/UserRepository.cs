@@ -19,6 +19,16 @@ namespace Com.BudgetMetal.DataRepository.Users
 
         }
 
+        public async Task<List<User>> GetUserByCompany(int Id)
+        {
+            var records  = await entities.Where(e => e.IsActive == true && e.IsConfirmed == true
+            && e.Company_Id == Id)
+            .OrderBy(e => e.ContactName)
+            .ToListAsync();
+
+            return records;
+        }
+
         //public PageResult<User> GetUsersByPage1(string keyword, int page, int totalRecords)
         //{
         //    if (string.IsNullOrEmpty(keyword))

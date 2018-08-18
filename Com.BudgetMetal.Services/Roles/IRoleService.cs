@@ -2,6 +2,7 @@
 using Com.BudgetMetal.ViewModels;
 using Com.BudgetMetal.ViewModels.Role;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Com.BudgetMetal.Services.Roles
@@ -17,5 +18,7 @@ namespace Com.BudgetMetal.Services.Roles
         Task<VmGenericServiceResult> Update(VmRoleItem roleItem);
 
         Task Delete(int I);
+
+        Task<List<VmRoleItem>> GetActiveRoles();
     }
 }

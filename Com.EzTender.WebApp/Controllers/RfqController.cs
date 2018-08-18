@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using Com.BudgetMetal.Services.Company;
 using Com.BudgetMetal.Services.Industries;
 using Com.BudgetMetal.Services.RFQ;
+using Com.BudgetMetal.Services.Roles;
 using Com.BudgetMetal.Services.ServiceTags;
+using Com.BudgetMetal.Services.Users;
 using Com.BudgetMetal.ViewModels.EzyTender;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,19 +22,30 @@ namespace Com.GenericPlatform.WebApp.Controllers
         private readonly IServiceTagsService serviceTagsService;
         private readonly ICompanyService companyService;
         private readonly IRFQService rfqService;
+        private readonly IUserService userService;
+        private readonly IRoleService roleService;
 
-        public RfqController(IIndustryService industryService, IServiceTagsService serviceTagsService, ICompanyService companyService, IRFQService rfqService)
+        public RfqController(IIndustryService industryService, IServiceTagsService serviceTagsService, ICompanyService companyService, IRFQService rfqService, IUserService userService, IRoleService roleService)
         {
             this.industryService = industryService;
             this.serviceTagsService = serviceTagsService;
             this.companyService = companyService;
             this.rfqService = rfqService;
+            this.userService = userService;
+            this.roleService = roleService;
         }
 
         // GET: Rfq
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View();
+            string queryPage = HttpContext.Request.Query["page"];
+            int page = 1;
+            if (queryPage != null)
+            {
+                page = Convert.ToInt32(queryPage);
+            }
+            var result = await rfqService.GetRfqByPage(0, page, 10);
+            return View(result);
         }
 
         // GET: Rfq/Details/5
@@ -89,7 +102,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
 
                 string documentNo = rfqService.SaveRFQ(Rfq);
 
-                return View();
+                return RedirectToAction("Index");
             }
             catch
             {
@@ -119,7 +132,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
         [HttpGet]
         public async Task<JsonResult> GetActiveIndustries()
         {
-            var result = industryService.GetActiveIndustries();
+            var result = await industryService.GetActiveIndustries();
 
             return new JsonResult(result, new JsonSerializerSettings()
             {
@@ -130,17 +143,40 @@ namespace Com.GenericPlatform.WebApp.Controllers
         [HttpGet]
         public async Task<JsonResult> GetServiceTagByIndustry(int Id)
         {
-            var result = serviceTagsService.GetVmServiceTagsByIndustry(Id);
+            var result = await serviceTagsService.GetVmServiceTagsByIndustry(Id);
 
             return new JsonResult(result, new JsonSerializerSettings()
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             });
         }
+
+        [HttpGet]
+        public async Task<JsonResult> GetActiveUserByCompany(int CompanyId)
+        {
+            var result = await userService.GetUserByCompany(CompanyId);
+
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetActiveRoles()
+        {
+            var result = await roleService.GetActiveRoles();
+
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
+
         [HttpGet]
         public async Task<JsonResult> GetSupplierByServiceTagsId(string serviceTagsId, int page)
         {
-            var result = companyService.GetSupplierByServiceTagsId(serviceTagsId, page);
+            var result = await companyService.GetSupplierByServiceTagsId(serviceTagsId, page);
 
             return new JsonResult(result, new JsonSerializerSettings()
             {

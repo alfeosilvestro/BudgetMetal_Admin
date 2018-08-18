@@ -242,5 +242,23 @@ namespace Com.BudgetMetal.Services.Users
 
             return result;
         }
+
+        public async Task<List<VmUserItem>> GetUserByCompany(int Id)
+        {
+            var dbResult = await repo.GetUserByCompany(Id);
+            var resultList = new List<VmUserItem>();
+
+            foreach(var item in dbResult)
+            {
+                var result = new VmUserItem();
+
+                Copy<Com.BudgetMetal.DBEntities.User, VmUserItem>(item, result);
+
+                resultList.Add(result);
+            }
+
+
+            return resultList;
+        }
     }
 }

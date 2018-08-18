@@ -29,12 +29,12 @@ namespace Com.BudgetMetal.ViewModels.EzyTender
         public string IndustryOfRfq { get; set; }
         public string SelectedTags { get; set; }
 
-        public VmDocument Document { get; set; }
-        public ICollection<VmInvitedSupplier> InvitedSupplier { get; set; }
-        public ICollection<VmPenalty> Penalty { get; set; }
-        public ICollection<VmQuotation> Quotation { get; set; }
-        public ICollection<VmRequirement> Requirement { get; set; }
-        public ICollection<VmRfqPriceSchedule> RfqPriceSchedule { get; set; }
-        public ICollection<VmSla> Sla { get; set; }
+        public virtual VmDocument Document { get; set; }
+        public virtual ICollection<VmInvitedSupplier> InvitedSupplier { get; set; }
+        public virtual ICollection<VmPenalty> Penalty { get; set; }
+        public virtual ICollection<VmQuotation> Quotation { get; set; }
+        public virtual ICollection<VmRequirement> Requirement { get; set; }
+        public virtual ICollection<VmRfqPriceSchedule> RfqPriceSchedule { get; set; }
+        public virtual ICollection<VmSla> Sla { get; set; }
     }
 }

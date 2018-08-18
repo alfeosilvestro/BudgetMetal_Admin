@@ -10,6 +10,6 @@ namespace Com.BudgetMetal.ViewModels.EzyTender
         public string Requirement { get; set; }
         public string Description { get; set; }
 
-        public VmRfq Rfq { get; set; }
+        public virtual VmRfq Rfq { get; set; }
     }
 }

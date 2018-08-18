@@ -259,7 +259,8 @@
                         <div role="tabpanel" class="tab-pane fade" id="invited_suppliers">
                             <div class="row">
                                 <div class="col-sm-3">
-                                    <select asp-for="IndustryOfRfq" id="ddlIndustry" class="form-control selectpicker"></select>
+                                    <select  id="ddlIndustry" class="form-control selectpicker"></select>
+                                    <input type="hidden" asp-for="IndustryOfRfq" id="hdIndustry"/>
                                 </div>
                                 <div class="col-sm-8">
                                     @*<select id="ddlServiceTags" class="form-control"></select>*@
@@ -326,6 +327,18 @@
                         </div>
 
                         <div role="tabpanel" class="tab-pane fade" id="settings">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <select id="ddlUser" class="form-control selectpicker"></select>
+                                </div>
+                                <div class="col-sm-5">
+                                    <select class="form-control show-tick" id="ddlRole" data-live-search="true" multiple></select>
+                                </div>
+                                <div class="col-sm-2">
+                                    <button id="btnAddUser" class="btn btn-success">Add</button>
+                                </div>
+                            </div>
+                            
                             <table id="userSettingTable" class="table table-hover">
                                 <thead>
                                     <tr>
@@ -341,27 +354,7 @@
                                         </td>
                                         <th><button type="button" class="btn btn-danger waves-effect">Remove</button></th>
                                     </tr>
-                                    <tr>
-                                        <td>
-                                            <h5>Yin Loong</h5>
-                                            <span class="label bg-deep-purple">Owner</span> <span class="label label-success">Read / Write</span> <span class="label bg-deep-orange">Approve (publish)</span>
-                                        </td>
-                                        <th><button type="button" class="btn btn-danger waves-effect">Remove</button></th>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <h5>Ryan</h5>
-                                            <span class="label bg-deep-purple">Collaborator</span> <span class="label label-success">Read / Write</span>
-                                        </td>
-                                        <th><button type="button" class="btn btn-danger waves-effect">Remove</button></th>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <h5>Alex</h5>
-                                            <span class="label bg-deep-purple">Reviewer</span> <span class="label label-warning">Read</span> <span class="label bg-cyan">Approve (procurement)</span>
-                                        </td>
-                                        <th><button type="button" class="btn btn-danger waves-effect">Remove</button></th>
-                                    </tr>
+
                                 </tbody>
                             </table>
                         </div>
@@ -508,11 +501,78 @@
 <script>
     $(function () {
         loadIndustry();
+        loadUser();
+        loadRole()
     });
+
+    function loadUser() {
+        var ajaxurl = '@Url.Action("GetActiveUserByCompany", "Rfq")';
+    
+        $('#ddlUser').append($('<option>', {
+            value: 0,
+            text: '--Select User--'
+        }));
+    
+        $.ajax({
+            url: ajaxurl,
+            data: { CompanyId: 1},
+            dataType: 'json',
+            success: function (response) {
+                //console.log(response);
+                var obj = response;
+                for (var k in obj) {
+                    var item = obj[k];
+                    $('#ddlUser').append($('<option>', {
+                        value: item.Id,
+                        text: item.Name
+                    }));
+                }
+                $("#ddlUser").selectpicker('refresh');
+
+            },
+            error: function (response) {
+                alert(response)
+            }
+
+        });
+    }
+
+    $("#btnAddUser").click(function () {
+        alert("add")
+    });
+
+    function loadRole() {
+        var ajaxurl = '@Url.Action("GetActiveRoles", "Rfq")';
+    
+         $.ajax({
+            url: ajaxurl,
+            dataType: 'json',
+            success: function (response) {
+                //console.log(response);
+                var obj = response;
+                for (var k in obj) {
+                    var item = obj[k];
+                    $('#ddlRole').append($('<option>', {
+                        value: item.Id,
+                        text: item.Name
+                    }));
+                    
+                }
+                $("#ddlRole").selectpicker('refresh');
+
+            },
+            error: function (response) {
+                alert(response)
+            }
+
+        });
+    }
+
     $("#btnLoadSupplier").click(function () {
         $('#invitedSupplierTable > tbody').empty();
         loadSupplier(1);
     });
+
  function loadSupplier(page) {
      var serviceTagsId = $('#ddlServiceTags').val();
 
@@ -573,7 +633,7 @@ function loadIndustry() {
         dataType: 'json',
         success: function (response) {
             //console.log(response);
-            var obj = response.Result;
+            var obj = response;
             for (var k in obj) {
                 var item = obj[k];
                 $('#ddlIndustry').append($('<option>', {
@@ -594,6 +654,7 @@ function loadIndustry() {
 
     $("#ddlIndustry").change(function () {
         var industryId = $('#ddlIndustry').val();
+        
         loadServiceTags(industryId);
     });
 
@@ -603,7 +664,8 @@ function loadIndustry() {
 
             $("#ddlServiceTags").selectpicker('refresh');
         } else {
-
+            $('#hdIndustry').val($("#ddlIndustry option:selected").text());
+            //alert($('#hdIndustry').val())
             var ajaxurl = '@Url.Action("GetServiceTagByIndustry", "Rfq")';
             
             $.ajax({
@@ -612,7 +674,7 @@ function loadIndustry() {
                 dataType: 'json',
                 success: function (response) {
                     //console.log(response);
-                    var obj = response.Result;
+                    var obj = response;
                     for (var k in obj) {
                         var item = obj[k];
                         $('#ddlServiceTags').append($('<option>', {

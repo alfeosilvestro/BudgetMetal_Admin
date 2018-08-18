@@ -2,6 +2,7 @@
 using Com.BudgetMetal.ViewModels;
 using Com.BudgetMetal.ViewModels.User;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Com.BudgetMetal.Services.Users
@@ -19,5 +20,7 @@ namespace Com.BudgetMetal.Services.Users
         Task Delete(int Id);
 
         Task<VmUserItem> GetFormObject();
+
+        Task<List<VmUserItem>> GetUserByCompany(int Id);
     }
 }

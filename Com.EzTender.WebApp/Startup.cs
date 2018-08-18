@@ -75,6 +75,16 @@ namespace Com.EzTender.WebApp
 
             services.Configure<EazyTender.WebApp.Configurations.AppSettings>(Configuration.GetSection("AppSettings"));
 
+
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                // Set a short timeout for easy testing.
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.Cookie.HttpOnly = true;
+            });
+
             services.AddMvc();
 
             RegisterForDependencyInjection(services);
@@ -143,12 +153,12 @@ namespace Com.EzTender.WebApp
             }
 
             app.UseStaticFiles();
-
+            app.UseSession();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=User}/{action=SignIn}/{id?}");
             });
         }
     }

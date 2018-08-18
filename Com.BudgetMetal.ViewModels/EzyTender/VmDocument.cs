@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Com.BudgetMetal.ViewModels.CodeTable;
+using System;
 using System.Collections.Generic;
 
 namespace Com.BudgetMetal.ViewModels.EzyTender
@@ -28,13 +29,13 @@ namespace Com.BudgetMetal.ViewModels.EzyTender
 
        
         public int DocumentStatus_Id { get; set; }
-        public virtual VmCodeTable DocumentStatus { get; set; }
+        public virtual VmCodeTableItem DocumentStatus { get; set; }
 
 
         public int DocumentType_Id { get; set; }
-        public virtual VmCodeTable DocumentType { get; set; }
+        public virtual VmCodeTableItem DocumentType { get; set; }
 
-        public ICollection<VmAttachment> Attachment { get; set; }
+        public virtual ICollection<VmAttachment> Attachment { get; set; }
         //public ICollection<Clarification> Clarification { get; set; }
         //public ICollection<DocumentUser> DocumentUser { get; set; }
         //public ICollection<Quotation> Quotation { get; set; }
