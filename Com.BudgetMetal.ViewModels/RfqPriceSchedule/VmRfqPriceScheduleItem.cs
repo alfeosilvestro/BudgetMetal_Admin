@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Com.BudgetMetal.ViewModels.Rfq;
+using System;
 using System.Collections.Generic;
 
-namespace Com.BudgetMetal.ViewModels.EzyTender
+namespace Com.BudgetMetal.ViewModels.RfqPriceSchedule
 {
-    public class VmRfqPriceSchedule
+    public class VmRfqPriceScheduleItem
     {
         public string ItemName { get; set; }
         public string ItemDescription { get; set; }
@@ -14,6 +15,6 @@ namespace Com.BudgetMetal.ViewModels.EzyTender
         public int Rfq_Id { get; set; }
 
        
-        public virtual VmRfq Rfq { get; set; }
+        public virtual VmRfqItem Rfq { get; set; }
     }
 }

@@ -7,6 +7,7 @@ using Com.BudgetMetal.DataRepository.Code_Category;
 using Com.BudgetMetal.DataRepository.Code_Table;
 using Com.BudgetMetal.DataRepository.Company;
 using Com.BudgetMetal.DataRepository.Document;
+using Com.BudgetMetal.DataRepository.DocumentUser;
 using Com.BudgetMetal.DataRepository.EmailLog;
 using Com.BudgetMetal.DataRepository.Industries;
 using Com.BudgetMetal.DataRepository.InvitedSupplier;
@@ -18,6 +19,7 @@ using Com.BudgetMetal.DataRepository.Roles;
 using Com.BudgetMetal.DataRepository.ServiceTags;
 using Com.BudgetMetal.DataRepository.Single_Sign_On;
 using Com.BudgetMetal.DataRepository.Sla;
+using Com.BudgetMetal.DataRepository.UserRoles;
 using Com.BudgetMetal.DataRepository.Users;
 using Com.BudgetMetal.DB;
 using Com.BudgetMetal.Services.Code_Category;
@@ -86,7 +88,7 @@ namespace Com.EzTender.WebApp
             });
 
             services.AddMvc();
-
+            services.AddMvc(options => options.MaxModelValidationErrors = 50);
             RegisterForDependencyInjection(services);
         }
 
@@ -109,6 +111,7 @@ namespace Com.EzTender.WebApp
             services.AddScoped<IPenaltyRepository, PenaltyRepository>();
             services.AddScoped<IInvitedSupplierRepository, InvitedSupplierRepository>();
             services.AddScoped<IRfqPriceScheduleRepository, RfqPriceScheduleRepository>();
+            services.AddScoped<IDocumentUserRepository, DocumentUserRepository>();
 
             services.AddScoped<IRFQService, RFQService>();
 
@@ -120,6 +123,8 @@ namespace Com.EzTender.WebApp
 
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
+
+            services.AddScoped<IUserRolesRepository, UserRolesRepository>();
 
             services.AddScoped<ICodeCategoryRepository, CodeCategoryRepository>();
             services.AddScoped<ICodeCategoryService, CodeCategoryService>();
@@ -137,6 +142,7 @@ namespace Com.EzTender.WebApp
             //EmailLog
             services.AddScoped<IEmailLogRepository, EmailLogRepository>();
             services.AddScoped<IEmailLogService, EmailLogService>();
+
 
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,5 +1,7 @@
-﻿using Com.BudgetMetal.ViewModels.CodeTable;
+﻿using Com.BudgetMetal.ViewModels.Attachment;
+using Com.BudgetMetal.ViewModels.CodeTable;
 using Com.BudgetMetal.ViewModels.Company;
+using Com.BudgetMetal.ViewModels.DocumentUser;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -40,6 +42,9 @@ namespace Com.BudgetMetal.ViewModels.Document
         public VmCompanyItem Company { get; set; }
         public List<VmCompanyItem> CompanyList { get; set; }
 
+        public virtual ICollection<VmAttachmentItem> Attachment { get; set; }
+
+        public virtual ICollection<VmDocumentUserItem> DocumentUser { get; set; }
         
     }
 }

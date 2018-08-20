@@ -52,6 +52,8 @@ namespace Com.BudgetMetal.DBEntities
         //public ICollection<DocumentUser> DocumentUser { get; set; }
         //public ICollection<Rating> Rating { get; set; }
         //public ICollection<UserRoles> UserRoles { get; set; }
+
+        //public virtual ICollection<UserRoles> UserRoles { get; set; }
         public virtual ICollection<UserRoles> UserRoles { get; } = new List<UserRoles>();
     }
 }

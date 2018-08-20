@@ -68,5 +68,12 @@ namespace Com.BudgetMetal.DataRepository.Document
 
             return result;
         }
+
+
+        public int GetRfqCountByCompany(int companyId)
+        {
+            var records = entities.Where(e => e.Company_Id == companyId).ToList().Count();
+            return records;
+        }
     }
 }

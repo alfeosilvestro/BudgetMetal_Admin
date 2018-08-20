@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Com.BudgetMetal.ViewModels.Document;
+using Com.BudgetMetal.ViewModels.User;
 
-namespace Com.BudgetMetal.ViewModels.EzyTender
+namespace Com.BudgetMetal.ViewModels.Clarification
 {
-    public class VmClarification : ViewModelItemBase
+    public class VmClarificationItem : ViewModelItemBase
     {
         
         public uint DocumentId { get; set; }
@@ -12,7 +14,7 @@ namespace Com.BudgetMetal.ViewModels.EzyTender
         public string ClarificationAnswer { get; set; }
         public bool? AnswerType { get; set; }
 
-        public VmDocument Document { get; set; }
-        public VmUser User { get; set; }
+        public virtual VmDocumentItem Document { get; set; }
+        public virtual VmUserItem User { get; set; }
     }
 }

@@ -9,7 +9,10 @@ using Com.BudgetMetal.Services.RFQ;
 using Com.BudgetMetal.Services.Roles;
 using Com.BudgetMetal.Services.ServiceTags;
 using Com.BudgetMetal.Services.Users;
-using Com.BudgetMetal.ViewModels.EzyTender;
+using Com.BudgetMetal.ViewModels.Attachment;
+using Com.BudgetMetal.ViewModels.DocumentUser;
+using Com.BudgetMetal.ViewModels.InvitedSupplier;
+using Com.BudgetMetal.ViewModels.Rfq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -48,39 +51,54 @@ namespace Com.GenericPlatform.WebApp.Controllers
             return View(result);
         }
 
-        // GET: Rfq/Details/5
-        public ActionResult Details(int id)
+        // GET: Rfq/Edit/5
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            var result = await rfqService.GetSingleRfqById(id);
+
+            return View(result);
         }
 
         // GET: Rfq/Create
         public ActionResult Create()
         {
+            HttpContext.Session.SetString("User_Id", "1");
+            HttpContext.Session.SetString("Company_Id", "1");
+            HttpContext.Session.SetString("UserName", "Peter");
+            HttpContext.Session.SetString("FullName", "Peter");
+
+            ViewBag.User_Id = HttpContext.Session.GetString("User_Id");
+            ViewBag.Company_Id = HttpContext.Session.GetString("Company_Id");
+            ViewBag.UserName = HttpContext.Session.GetString("UserName");
+            ViewBag.FullName = HttpContext.Session.GetString("FullName");
+
             return View();
         }
 
         // POST: Rfq/Create
         [HttpPost]
-        public ActionResult Create(VmRfq Rfq)
+        public ActionResult Create(VmRfqItem Rfq)
         {
             try
             {
+
                 Rfq.SelectedTags = Request.Form["SelectedTags"].ToString();
-                var listAttachment = new List<VmAttachment>();
+                var listAttachment = new List<VmAttachmentItem>();
                 int i = 0;
                 foreach (var itemFile in Request.Form.Files)
                 {
                     if (itemFile.Length > 0)
                     {
-                        var att = new VmAttachment();
-
-                        att.FileName = itemFile.FileName;
-                        att.FileSize = itemFile.Length;
-                        att.FileBinary = Convert.ToBase64String(ConvertFiletoBytes(itemFile));
-                        att.Description = Request.Form["fileDescriptionRFQ[]"].ToArray()[i].ToString();
-                        att.CreatedBy = Rfq.CreatedBy;
-                        att.UpdatedBy = Rfq.UpdatedBy;
+                        var att = new VmAttachmentItem
+                        {
+                            FileName = itemFile.FileName,
+                            FileSize = itemFile.Length,
+                            FileBinary = Convert.ToBase64String(ConvertFiletoBytes(itemFile)),
+                            Description = Request.Form["fileDescriptionRFQ[]"].ToArray()[i].ToString(),
+                            CreatedBy = Rfq.CreatedBy,
+                            UpdatedBy = Rfq.UpdatedBy
+                        };
+                        
                         listAttachment.Add(att);
 
                     }
@@ -89,16 +107,36 @@ namespace Com.GenericPlatform.WebApp.Controllers
 
                 Rfq.Document.Attachment = listAttachment;
 
-                var listInvitedSupplier = new List<VmInvitedSupplier>();
+                var listInvitedSupplier = new List<VmInvitedSupplierItem>();
                 var arrInvitedSupplier = Request.Form["supplier_list[]"].ToArray();
                 foreach (var itemSupplier in arrInvitedSupplier)
                 {
-                    var supplier = new VmInvitedSupplier();
+                    var supplier = new VmInvitedSupplierItem();
                     supplier.Company_Id = Convert.ToInt32(itemSupplier);
 
                     listInvitedSupplier.Add(supplier);
                 }
                 Rfq.InvitedSupplier = listInvitedSupplier;
+
+                var listDocumentUser = new List<VmDocumentUserItem>();
+                var arrUser = Request.Form["documentUserId[]"].ToArray();
+                var arrRole = Request.Form["documentUserRole[]"].ToArray();
+                for(int j=0; j<arrUser.Length; j++)
+                {
+                    var userId = arrUser[j];
+                    var rolesId = arrRole[j];
+                    var roles = rolesId.Split(',');
+                    foreach(var item in roles)
+                    {
+                        var documentUser = new VmDocumentUserItem
+                        {
+                            User_Id = Convert.ToInt32(userId),
+                            Role_Id = Convert.ToInt32(item)
+                        };
+                        listDocumentUser.Add(documentUser);
+                    }
+                }
+                Rfq.Document.DocumentUser = listDocumentUser;
 
                 string documentNo = rfqService.SaveRFQ(Rfq);
 

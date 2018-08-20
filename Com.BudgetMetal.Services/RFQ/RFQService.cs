@@ -12,12 +12,21 @@ using Com.BudgetMetal.Services.Base;
 using Com.BudgetMetal.ViewModels;
 using Com.BudgetMetal.ViewModels.Document;
 using Com.BudgetMetal.ViewModels.CodeTable;
-using Com.BudgetMetal.ViewModels.EzyTender;
 using Com.BudgetMetal.ViewModels.Rfq;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Com.BudgetMetal.ViewModels.Attachment;
+using Com.BudgetMetal.ViewModels.Requirement;
+using Com.BudgetMetal.ViewModels.Sla;
+using Com.BudgetMetal.ViewModels.RfqPenalty;
+using Com.BudgetMetal.ViewModels.RfqPriceSchedule;
+using Com.BudgetMetal.ViewModels.InvitedSupplier;
+using Com.BudgetMetal.DataRepository.DocumentUser;
+using Com.BudgetMetal.ViewModels.DocumentUser;
+using Com.BudgetMetal.ViewModels.User;
+using Com.BudgetMetal.ViewModels.Role;
 
 namespace Com.BudgetMetal.Services.RFQ
 {
@@ -31,8 +40,10 @@ namespace Com.BudgetMetal.Services.RFQ
         private readonly IRfqPriceScheduleRepository repoRfqPriceSchedule;
         private readonly IPenaltyRepository repoPenalty;
         private readonly IInvitedSupplierRepository repoInvitedSupplier;
+        private readonly IDocumentUserRepository repoDocumentUser;
+        
 
-        public RFQService(IDocumentRepository repoDocument, IRfqRepository repoRfq, IAttachmentRepository repoAttachment, IRequirementRepository repoRequirement, ISlaRepository repoSla, IRfqPriceScheduleRepository repoRfqPriceSchedule, IPenaltyRepository repoPenalty, IInvitedSupplierRepository repoInvitedSupplier)
+        public RFQService(IDocumentRepository repoDocument, IRfqRepository repoRfq, IAttachmentRepository repoAttachment, IRequirementRepository repoRequirement, ISlaRepository repoSla, IRfqPriceScheduleRepository repoRfqPriceSchedule, IPenaltyRepository repoPenalty, IInvitedSupplierRepository repoInvitedSupplier, IDocumentUserRepository repoDocumentUser)
         {
             this.repoDocument = repoDocument;
             this.repoRfq = repoRfq;
@@ -42,6 +53,7 @@ namespace Com.BudgetMetal.Services.RFQ
             this.repoRfqPriceSchedule = repoRfqPriceSchedule;
             this.repoPenalty = repoPenalty;
             this.repoInvitedSupplier = repoInvitedSupplier;
+            this.repoDocumentUser = repoDocumentUser;
         }
 
         public async Task<VmRfqPage> GetRfqByPage(int documentOwner, int page,int totalRecords)
@@ -62,20 +74,20 @@ namespace Com.BudgetMetal.Services.RFQ
             var resultObj = new VmRfqPage();
             resultObj.RequestId = DateTime.Now.ToString("yyyyMMddHHmmss");
             resultObj.RequestDate = DateTime.Now;
-            resultObj.Result = new PageResult<VmRfq>();
-            resultObj.Result.Records = new List<VmRfq>();
+            resultObj.Result = new PageResult<VmRfqItem>();
+            resultObj.Result.Records = new List<VmRfqItem>();
 
-            Copy<PageResult<Rfq>, PageResult<VmRfq>>(dbPageResult, resultObj.Result, new string[] { "Records" });
+            Copy<PageResult<Rfq>, PageResult<VmRfqItem>>(dbPageResult, resultObj.Result, new string[] { "Records" });
 
             foreach (var dbItem in dbPageResult.Records)
             {
-                var resultItem = new VmRfq();
+                var resultItem = new VmRfqItem();
 
-                Copy<Rfq, VmRfq>(dbItem, resultItem);
+                Copy<Rfq, VmRfqItem>(dbItem, resultItem);
 
                 if (dbItem.Document != null)
                 {
-                    resultItem.Document = new ViewModels.EzyTender.VmDocument()
+                    resultItem.Document = new ViewModels.Document.VmDocumentItem()
                     {
                         DocumentNo = dbItem.Document.DocumentNo,
                         DocumentStatus = new ViewModels.CodeTable.VmCodeTableItem()
@@ -86,7 +98,7 @@ namespace Com.BudgetMetal.Services.RFQ
                         {
                             Name = dbItem.Document.DocumentStatus.Name
                         },
-                        Company = new ViewModels.EzyTender.VmCompany()
+                        Company = new ViewModels.Company.VmCompanyItem()
                         {
                             Name = dbItem.Document.Company.Name
                         }
@@ -100,19 +112,20 @@ namespace Com.BudgetMetal.Services.RFQ
             return resultObj;
         }
 
-        public string SaveRFQ(VmRfq rfq)
+        public string SaveRFQ(VmRfqItem rfq)
         {
             var dbDocument = new Com.BudgetMetal.DBEntities.Document();
-            string documentNo = "RFQ_" + rfq.Document.Company_Id.ToString().PadLeft(4, '0') + "_" + DateTime.Now.ToString("yyyyMMddhhmmss");
+            string documentNo = "";
+            documentNo = GenerateDocumentNo(rfq.Document.Company_Id);
             rfq.Document.DocumentNo = documentNo;
-            Copy<VmDocument, Com.BudgetMetal.DBEntities.Document>(rfq.Document, dbDocument);
+            Copy<VmDocumentItem, Com.BudgetMetal.DBEntities.Document>(rfq.Document, dbDocument);
             repoDocument.Add(dbDocument);
             repoDocument.Commit();
 
             rfq.Document_Id = dbDocument.Id;
 
             var dbRFQ = new Com.BudgetMetal.DBEntities.Rfq();
-            Copy<VmRfq, Com.BudgetMetal.DBEntities.Rfq>(rfq, dbRFQ);
+            Copy<VmRfqItem, Com.BudgetMetal.DBEntities.Rfq>(rfq, dbRFQ);
             repoRfq.Add(dbRFQ);
             repoRfq.Commit();
 
@@ -123,12 +136,26 @@ namespace Com.BudgetMetal.Services.RFQ
                 {
                     var dbAttachment = new Com.BudgetMetal.DBEntities.Attachment();
 
-                    Copy<VmAttachment, Com.BudgetMetal.DBEntities.Attachment>(item, dbAttachment);
+                    Copy<VmAttachmentItem, Com.BudgetMetal.DBEntities.Attachment>(item, dbAttachment);
                     dbAttachment.Document_Id = dbDocument.Id;
                     dbAttachment.CreatedBy = dbAttachment.UpdatedBy = dbRFQ.CreatedBy;
                     repoAttachment.Add(dbAttachment);
                 }
                 repoAttachment.Commit();
+            }
+
+            if (rfq.Document.DocumentUser.Count > 0)
+            {
+                foreach (var item in rfq.Document.DocumentUser)
+                {
+                    var dbDocumentUser = new Com.BudgetMetal.DBEntities.DocumentUser();
+
+                    Copy<VmDocumentUserItem, Com.BudgetMetal.DBEntities.DocumentUser>(item, dbDocumentUser);
+                    dbDocumentUser.Document_Id = dbDocument.Id;
+                    dbDocumentUser.CreatedBy = dbDocumentUser.UpdatedBy = dbRFQ.CreatedBy;
+                    repoDocumentUser.Add(dbDocumentUser);
+                }
+                repoDocumentUser.Commit();
             }
 
             if (rfq.Requirement.Count > 0)
@@ -139,7 +166,7 @@ namespace Com.BudgetMetal.Services.RFQ
                     {
                         var dbRequirement = new Com.BudgetMetal.DBEntities.Requirement();
 
-                        Copy<VmRequirement, Com.BudgetMetal.DBEntities.Requirement>(item, dbRequirement);
+                        Copy<VmRequirementItem, Com.BudgetMetal.DBEntities.Requirement>(item, dbRequirement);
                         dbRequirement.Rfq_Id = dbRFQ.Id;
                         dbRequirement.CreatedBy = dbRequirement.UpdatedBy = dbRFQ.CreatedBy;
                         repoRequirement.Add(dbRequirement);
@@ -157,7 +184,7 @@ namespace Com.BudgetMetal.Services.RFQ
                     {
                         var dbSla = new Com.BudgetMetal.DBEntities.Sla();
 
-                        Copy<VmSla, Com.BudgetMetal.DBEntities.Sla>(item, dbSla);
+                        Copy<VmSlaItem, Com.BudgetMetal.DBEntities.Sla>(item, dbSla);
                         dbSla.Rfq_Id = dbRFQ.Id;
                         dbSla.CreatedBy = dbSla.UpdatedBy = dbRFQ.CreatedBy;
                         repoSla.Add(dbSla);
@@ -176,7 +203,7 @@ namespace Com.BudgetMetal.Services.RFQ
                     {
                         var dbPenalty = new Com.BudgetMetal.DBEntities.Penalty();
 
-                        Copy<VmPenalty, Com.BudgetMetal.DBEntities.Penalty>(item, dbPenalty);
+                        Copy<VmPenaltyItem, Com.BudgetMetal.DBEntities.Penalty>(item, dbPenalty);
                         dbPenalty.Rfq_Id = dbRFQ.Id;
                         dbPenalty.CreatedBy = dbPenalty.UpdatedBy = dbRFQ.CreatedBy;
                         repoPenalty.Add(dbPenalty);
@@ -194,7 +221,7 @@ namespace Com.BudgetMetal.Services.RFQ
                     {
                         var dbRfqPriceSchedule = new Com.BudgetMetal.DBEntities.RfqPriceSchedule();
 
-                        Copy<VmRfqPriceSchedule, Com.BudgetMetal.DBEntities.RfqPriceSchedule>(item, dbRfqPriceSchedule);
+                        Copy<VmRfqPriceScheduleItem, Com.BudgetMetal.DBEntities.RfqPriceSchedule>(item, dbRfqPriceSchedule);
                         dbRfqPriceSchedule.Rfq_Id = dbRFQ.Id;
                         dbRfqPriceSchedule.CreatedBy = dbRfqPriceSchedule.UpdatedBy = dbRFQ.CreatedBy;
                         repoRfqPriceSchedule.Add(dbRfqPriceSchedule);
@@ -210,7 +237,7 @@ namespace Com.BudgetMetal.Services.RFQ
                 {
                     var dbInvitedSupplier = new Com.BudgetMetal.DBEntities.InvitedSupplier();
 
-                    Copy<VmInvitedSupplier, Com.BudgetMetal.DBEntities.InvitedSupplier>(item, dbInvitedSupplier);
+                    Copy<VmInvitedSupplierItem, Com.BudgetMetal.DBEntities.InvitedSupplier>(item, dbInvitedSupplier);
                     dbInvitedSupplier.Rfq_Id = dbRFQ.Id;
                     dbInvitedSupplier.CreatedBy = dbInvitedSupplier.UpdatedBy = dbRFQ.CreatedBy;
                     repoInvitedSupplier.Add(dbInvitedSupplier);
@@ -219,6 +246,14 @@ namespace Com.BudgetMetal.Services.RFQ
             }
 
 
+            return documentNo;
+        }
+
+        private string GenerateDocumentNo(int companyId)
+        {
+            int countRfq = repoDocument.GetRfqCountByCompany(companyId);
+            countRfq = countRfq + 1;
+            string documentNo = "RFQ_" + companyId.ToString().PadLeft(4, '0') + "_" + countRfq.ToString().PadLeft(4, '0');
             return documentNo;
         }
 
@@ -388,17 +423,17 @@ namespace Com.BudgetMetal.Services.RFQ
             return resultObj;
         }
 
-        public async Task<VmRfq> GetSingleRfqById(int documentId)
+        public async Task<VmRfqItem> GetSingleRfqById(int documentId)
         {
             var dbResult = await repoRfq.GetSingleRfqById(documentId);
 
-            var resultObject = new VmRfq();
+            var resultObject = new VmRfqItem();
 
-            Copy<Com.BudgetMetal.DBEntities.Rfq, VmRfq>(dbResult, resultObject, new string[] { "Document", "InvitedSupplier", "Penalty", "Requirement", "RfqPriceSchedule", "Sla" });
+            Copy<Com.BudgetMetal.DBEntities.Rfq, VmRfqItem>(dbResult, resultObject, new string[] { "Document", "InvitedSupplier", "Penalty", "Requirement", "RfqPriceSchedule", "Sla" });
 
-            var resultDocument = new VmDocument();
+            var resultDocument = new VmDocumentItem();
 
-            Copy<Com.BudgetMetal.DBEntities.Document, VmDocument>(dbResult.Document, resultDocument, new string[] { "DocumentStatus", "DocumentType", "Attachment" });
+            Copy<Com.BudgetMetal.DBEntities.Document, VmDocumentItem>(dbResult.Document, resultDocument, new string[] { "DocumentStatus", "DocumentType", "Attachment" });
 
             var documentStaus = new VmCodeTableItem
             {
@@ -414,76 +449,96 @@ namespace Com.BudgetMetal.Services.RFQ
             };
             resultDocument.DocumentType = documentType;
 
-            var listAttachment = new List<VmAttachment>();
+            var listAttachment = new List<VmAttachmentItem>();
             if(dbResult.Document.Attachment != null)
             {
                 foreach(var item in dbResult.Document.Attachment)
                 {
-                    var itemAttachment = new VmAttachment();
-                    Copy<Com.BudgetMetal.DBEntities.Attachment, VmAttachment>(item, itemAttachment, new string[] { "Document"});
+                    var itemAttachment = new VmAttachmentItem();
+                    Copy<Com.BudgetMetal.DBEntities.Attachment, VmAttachmentItem>(item, itemAttachment, new string[] { "Document,FileBinary" });
                     listAttachment.Add(itemAttachment);
                 }
             }
             resultDocument.Attachment = listAttachment;
 
+            var listDocumentUser = new List<VmDocumentUserItem>();
+            if(dbResult.Document.DocumentUser != null)
+            {
+                foreach (var item in dbResult.Document.DocumentUser)
+                {
+                    var itemDocumentUser = new VmDocumentUserItem();
+                    Copy<Com.BudgetMetal.DBEntities.DocumentUser, VmDocumentUserItem>(item, itemDocumentUser, new string[] { "Document" });
+
+                    var tmpUser = new VmUserItem();
+
+                    itemDocumentUser.User = tmpUser;
+
+                    var tmpRole = new VmRoleItem();
+                    itemDocumentUser.Role = tmpRole;
+
+                    listDocumentUser.Add(itemDocumentUser);
+                }
+                    
+            }
+            resultDocument.Attachment = listAttachment;
             resultObject.Document = resultDocument;
 
-            var listRequirement = new List<VmRequirement>();
+            var listRequirement = new List<VmRequirementItem>();
             if (dbResult.Requirement != null)
             {
                 foreach (var item in dbResult.Requirement)
                 {
-                    var itemRequirement = new VmRequirement();
-                    Copy<Com.BudgetMetal.DBEntities.Requirement, VmRequirement>(item, itemRequirement, new string[] { "Rfq" });
+                    var itemRequirement = new VmRequirementItem();
+                    Copy<Com.BudgetMetal.DBEntities.Requirement, VmRequirementItem>(item, itemRequirement, new string[] { "Rfq" });
                     listRequirement.Add(itemRequirement);
                 }
             }
             resultObject.Requirement = listRequirement;
 
-            var listSla = new List<VmSla>();
+            var listSla = new List<VmSlaItem>();
             if (dbResult.Sla != null)
             {
                 foreach (var item in dbResult.Sla)
                 {
-                    var itemSla = new VmSla();
-                    Copy<Com.BudgetMetal.DBEntities.Sla, VmSla>(item, itemSla, new string[] { "Rfq" });
+                    var itemSla = new VmSlaItem();
+                    Copy<Com.BudgetMetal.DBEntities.Sla, VmSlaItem>(item, itemSla, new string[] { "Rfq" });
                     listSla.Add(itemSla);
                 }
             }
             resultObject.Sla = listSla;
 
 
-            var listPenalty = new List<VmPenalty>();
+            var listPenalty = new List<VmPenaltyItem>();
             if (dbResult.Penalty != null)
             {
                 foreach (var item in dbResult.Penalty)
                 {
-                    var itemPenalty = new VmPenalty();
-                    Copy<Com.BudgetMetal.DBEntities.Penalty, VmPenalty>(item, itemPenalty, new string[] { "Rfq" });
+                    var itemPenalty = new VmPenaltyItem();
+                    Copy<Com.BudgetMetal.DBEntities.Penalty, VmPenaltyItem>(item, itemPenalty, new string[] { "Rfq" });
                     listPenalty.Add(itemPenalty);
                 }
             }
             resultObject.Penalty = listPenalty;
 
-            var listRfqPriceSchedule = new List<VmRfqPriceSchedule>();
+            var listRfqPriceSchedule = new List<VmRfqPriceScheduleItem>();
             if (dbResult.RfqPriceSchedule != null)
             {
                 foreach (var item in dbResult.RfqPriceSchedule)
                 {
-                    var itemRfqPriceSchedule = new VmRfqPriceSchedule();
-                    Copy<Com.BudgetMetal.DBEntities.RfqPriceSchedule, VmRfqPriceSchedule>(item, itemRfqPriceSchedule, new string[] { "Rfq" });
+                    var itemRfqPriceSchedule = new VmRfqPriceScheduleItem();
+                    Copy<Com.BudgetMetal.DBEntities.RfqPriceSchedule, VmRfqPriceScheduleItem>(item, itemRfqPriceSchedule, new string[] { "Rfq" });
                     listRfqPriceSchedule.Add(itemRfqPriceSchedule);
                 }
             }
             resultObject.RfqPriceSchedule = listRfqPriceSchedule;
 
-            var listInvitedSupplier = new List<VmInvitedSupplier>();
+            var listInvitedSupplier = new List<VmInvitedSupplierItem>();
             if (dbResult.InvitedSupplier != null)
             {
                 foreach (var item in dbResult.InvitedSupplier)
                 {
-                    var itemInvitedSupplier = new VmInvitedSupplier();
-                    Copy<Com.BudgetMetal.DBEntities.InvitedSupplier, VmInvitedSupplier>(item, itemInvitedSupplier, new string[] { "Rfq" });
+                    var itemInvitedSupplier = new VmInvitedSupplierItem();
+                    Copy<Com.BudgetMetal.DBEntities.InvitedSupplier, VmInvitedSupplierItem>(item, itemInvitedSupplier, new string[] { "Rfq" });
                     listInvitedSupplier.Add(itemInvitedSupplier);
                 }
             }

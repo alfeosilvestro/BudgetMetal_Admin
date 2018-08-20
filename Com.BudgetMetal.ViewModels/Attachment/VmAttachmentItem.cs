@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Com.BudgetMetal.ViewModels.Document;
 
-namespace Com.BudgetMetal.ViewModels.EzyTender
+namespace Com.BudgetMetal.ViewModels.Attachment
 {
-    public class VmAttachment : ViewModelItemBase
+    public class VmAttachmentItem : ViewModelItemBase
     {
         
         public int Document_Id { get; set; }
@@ -13,6 +14,6 @@ namespace Com.BudgetMetal.ViewModels.EzyTender
         public long? FileSize { get; set; }
         
 
-        public virtual VmDocument Document { get; set; }
+        public virtual VmDocumentItem Document { get; set; }
     }
 }

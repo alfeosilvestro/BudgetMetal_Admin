@@ -43,7 +43,7 @@ namespace Com.BudgetMetal.DBEntities
 
         public virtual ICollection<Attachment> Attachment { get; set; }
         //public ICollection<Clarification> Clarification { get; set; }
-        //public ICollection<DocumentUser> DocumentUser { get; set; }
+        public virtual ICollection<DocumentUser> DocumentUser { get; set; }
         //public ICollection<Quotation> Quotation { get; set; }
         //public ICollection<Rating> Rating { get; set; }
         //public ICollection<Rfq> Rfq { get; set; }

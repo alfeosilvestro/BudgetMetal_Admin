@@ -6,16 +6,16 @@ namespace Com.BudgetMetal.DBEntities
 {
     public class DocumentUser : GenericEntity
     {
-        [ForeignKey("CodeCategory")]
-        public int DocumentId { get; set; }
+        [ForeignKey("Document")]
+        public int Document_Id { get; set; }
         public virtual Document Document { get; set; }
 
-        [ForeignKey("CodeCategory")]
-        public int RoleId { get; set; }
+        [ForeignKey("Role")]
+        public int Role_Id { get; set; }
         public virtual Role Role { get; set; }
 
-        [ForeignKey("CodeCategory")]
-        public int UserId { get; set; }
+        [ForeignKey("User")]
+        public int User_Id { get; set; }
         public virtual User User { get; set; }
     }
 }

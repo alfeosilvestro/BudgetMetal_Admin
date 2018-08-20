@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Com.BudgetMetal.ViewModels;
-using Com.BudgetMetal.ViewModels.EzyTender;
 using Com.BudgetMetal.ViewModels.Rfq;
 
 namespace Com.BudgetMetal.Services.RFQ
@@ -12,7 +11,7 @@ namespace Com.BudgetMetal.Services.RFQ
     {
         Task<VmRfqPage> GetRfqByPage(int documentOwner, int page, int totalRecords);
 
-        string SaveRFQ(VmRfq rfq);
+        string SaveRFQ(VmRfqItem rfq);
 
         //Task<VmRfqPage> GetRfqByPage(string keyword, int page, int totalRecords);
 
@@ -26,6 +25,6 @@ namespace Com.BudgetMetal.Services.RFQ
 
         Task<VmRfqItem> GetFormObject();
 
-        Task<VmRfq> GetSingleRfqById(int documentId);
+        Task<VmRfqItem> GetSingleRfqById(int documentId);
     }
 }
