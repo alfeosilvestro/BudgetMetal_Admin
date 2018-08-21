@@ -679,6 +679,9 @@
                     if (totalpage > currentpage) {
                         $(".pagination").empty();
                         $(".pagination").append(" <a class='btn btn-md btn-default' OnClick='loadSupplier(" + response.Result.NextPage + ")'> Load More </a> ");
+                    } else {
+                        $(".pagination").empty();
+
                     }
 
                 },
@@ -748,7 +751,7 @@ function loadIndustry() {
 
             $("#ddlServiceTags").selectpicker('refresh');
         } else {
-            $('#hdIndustry').val($("#ddlIndustry option:selected").text());
+            $('#hdIndustry').val($("#ddlIndustry option:selected").val());
             //alert($('#hdIndustry').val())
             var ajaxurl = '@Url.Action("GetServiceTagByIndustry", "Rfq")';
 

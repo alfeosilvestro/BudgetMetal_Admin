@@ -52,15 +52,27 @@ namespace Com.GenericPlatform.WebApp.Controllers
         }
 
         // GET: Rfq/Edit/5
-        public async Task<ActionResult> Edit(int id)
+        public ActionResult Edit(int id)
         {
-            var result = await rfqService.GetSingleRfqById(id);
+            try
+            {
+                var result = rfqService.GetSingleRfqById(id);
 
-            return View(result);
+                return View(result);
+            }catch(Exception ex)
+            {
+                return RedirectToAction("Index");
+            }
+            
+        }
+        [HttpPost]
+        public ActionResult Edit(VmRfqItem Rfq)
+        {
+            return RedirectToAction("Index");
         }
 
-        // GET: Rfq/Create
-        public ActionResult Create()
+            // GET: Rfq/Create
+            public ActionResult Create()
         {
             HttpContext.Session.SetString("User_Id", "1");
             HttpContext.Session.SetString("Company_Id", "1");

@@ -461,26 +461,27 @@ namespace Com.BudgetMetal.Services.RFQ
             }
             resultDocument.Attachment = listAttachment;
 
-            var listDocumentUser = new List<VmDocumentUserItem>();
-            if(dbResult.Document.DocumentUser != null)
-            {
-                foreach (var item in dbResult.Document.DocumentUser)
-                {
-                    var itemDocumentUser = new VmDocumentUserItem();
-                    Copy<Com.BudgetMetal.DBEntities.DocumentUser, VmDocumentUserItem>(item, itemDocumentUser, new string[] { "Document" });
+            //var listDocumentUser = new List<VmDocumentUserItem>();
+            //if(dbResult.Document.DocumentUser != null)
+            //{
+            //    foreach (var item in dbResult.Document.DocumentUser)
+            //    {
+            //        var itemDocumentUser = new VmDocumentUserItem();
+            //        Copy<Com.BudgetMetal.DBEntities.DocumentUser, VmDocumentUserItem>(item, itemDocumentUser, new string[] { "Document" });
 
-                    var tmpUser = new VmUserItem();
+            //        var tmpUser = new VmUserItem();
 
-                    itemDocumentUser.User = tmpUser;
+            //        itemDocumentUser.User = tmpUser;
 
-                    var tmpRole = new VmRoleItem();
-                    itemDocumentUser.Role = tmpRole;
+            //        var tmpRole = new VmRoleItem();
+            //        itemDocumentUser.Role = tmpRole;
 
-                    listDocumentUser.Add(itemDocumentUser);
-                }
-                    
-            }
-            resultDocument.Attachment = listAttachment;
+            //        listDocumentUser.Add(itemDocumentUser);
+            //    }
+
+            //}
+            //resultDocument.DocumentUser = listDocumentUser;
+
             resultObject.Document = resultDocument;
 
             var listRequirement = new List<VmRequirementItem>();
