@@ -18,11 +18,25 @@ namespace Com.BudgetMetal.ViewModels.Rfq
         [Required]
         public string InternalRefrenceNo { get; set; }
 
+        [Required]
         public string InternalProjectName { get; set; }
+
+        [Required]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dddd dd MMMM yyyy}")]
         public DateTime? StartRfqdate { get; set; }
+
+        [Required]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dddd dd MMMM yyyy}")]
         public DateTime? ValidRfqdate { get; set; }
+
+        [Required]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dddd dd MMMM yyyy}")]
         public DateTime? EstimatedProjectStartDate { get; set; }
+
+        [Required]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dddd dd MMMM yyyy}")]
         public DateTime? EstimatedProjectEndDate { get; set; }
+
         public bool SupplierProvideMaterial { get; set; }
         public bool SupplierProvideTransport { get; set; }
         public string MessageToSupplier { get; set; }
@@ -36,7 +50,7 @@ namespace Com.BudgetMetal.ViewModels.Rfq
         public virtual List<VmRequirementItem> Requirement { get; set; }
         public virtual List<VmRfqPriceScheduleItem> RfqPriceSchedule { get; set; }
         public virtual List<VmSlaItem> Sla { get; set; }
-
+        
         public List<VmDocumentItem> DocumentList { get; set; }
     }
 }

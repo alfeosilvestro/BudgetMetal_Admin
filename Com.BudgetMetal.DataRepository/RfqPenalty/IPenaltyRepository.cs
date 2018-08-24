@@ -7,7 +7,7 @@ namespace Com.BudgetMetal.DataRepository.Penalty
 {
     public interface IPenaltyRepository : IGenericRepository<Com.BudgetMetal.DBEntities.Penalty>
     {
-
+        void InactiveByRFQId(int rfqId, string UpdatedBy);
     }
     
 }

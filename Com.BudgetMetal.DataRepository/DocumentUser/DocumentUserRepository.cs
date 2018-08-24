@@ -3,6 +3,7 @@ using Com.BudgetMetal.DB;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Com.BudgetMetal.DataRepository.DocumentUser
@@ -14,6 +15,18 @@ namespace Com.BudgetMetal.DataRepository.DocumentUser
         base(context, loggerFactory, "DocumentUserRepository")
         {
 
+        }
+
+        public void InactiveByDocumentId(int documentId,string UpdatedBy)
+        {
+            var dbResult = this.entities.Where(e=>e.IsActive == true && e.Document_Id == documentId).ToList();
+            dbResult.ForEach(e=>
+            {
+                e.IsActive = false;
+                e.UpdatedDate = DateTime.Now;
+                e.UpdatedBy = UpdatedBy;
+            }
+            );
         }
 
     }

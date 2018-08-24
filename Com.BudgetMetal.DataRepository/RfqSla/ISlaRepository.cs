@@ -7,7 +7,7 @@ namespace Com.BudgetMetal.DataRepository.Sla
 {
     public interface ISlaRepository : IGenericRepository<Com.BudgetMetal.DBEntities.Sla>
     {
-
+        void InactiveByRFQId(int rfqId, string UpdatedBy);
     }
     
 }

@@ -7,7 +7,7 @@ namespace Com.BudgetMetal.DataRepository.Requirement
 {
     public interface IRequirementRepository : IGenericRepository<Com.BudgetMetal.DBEntities.Requirement>
     {
-
+        void InactiveByRFQId(int rfqId, string UpdatedBy);
     }
     
 }
