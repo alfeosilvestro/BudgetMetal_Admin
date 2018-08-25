@@ -138,7 +138,11 @@ namespace Com.BudgetMetal.DataRepository.Users
 
             var recordList = records.ToList();
 
-            var count = await records.CountAsync();
+            var count = entities.Where(e =>
+                 (e.IsActive == true) &&
+                 (keyword == string.Empty || e.UserName.Contains(keyword)))
+                 .ToList().Count();
+            //await records.CountAsync();
 
             var nextPage = 0;
             var prePage = 0;

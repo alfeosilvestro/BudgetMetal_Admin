@@ -17,7 +17,6 @@
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            
             <div class="form-group">
                 <div class="checkbox">
                     <label>
@@ -25,6 +24,7 @@
                     </label>
                 </div>
             </div>
+            <input type="hidden" asp-for="UpdatedBy" class="form-control" />
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>

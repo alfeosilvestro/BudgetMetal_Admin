@@ -174,5 +174,20 @@ namespace Com.BudgetMetal.Services.Company
 
             return resultObj;
         }
+
+        public async Task<List<VmCompanyItem>> GetActiveCompanies()
+        {
+            var dbResult = await repo.GetAll();
+
+            var resultList = new List<VmCompanyItem>();
+            foreach (var dbItem in dbResult)
+            {
+                var resultItem = new VmCompanyItem();
+                Copy<Com.BudgetMetal.DBEntities.Company, VmCompanyItem>(dbItem, resultItem);
+                resultList.Add(resultItem);
+            }
+            return resultList;
+
+        }
     }
 }

@@ -2,110 +2,833 @@
 
 @{
     ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
-<h2>Edit</h2>
-
-<h4>VmRfqItem</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="InternalRefrenceNo" class="control-label">Internal Refrence No.</label>
-                <input asp-for="InternalRefrenceNo" class="form-control" />
-                <span asp-validation-for="InternalRefrenceNo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="InternalProjectName" class="control-label">Internal Project Name</label>
-                <input asp-for="InternalProjectName" class="form-control" />
-                <span asp-validation-for="InternalProjectName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StartRfqdate" class="control-label"></label>
-                <input asp-for="StartRfqdate" class="form-control" />
-                <span asp-validation-for="StartRfqdate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ValidRfqdate" class="control-label">Valid Rfq date</label>
-                <input asp-for="ValidRfqdate" class="form-control" />
-                <span asp-validation-for="ValidRfqdate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EstimatedProjectStartDate" class="control-label">Estimated Project Start Date</label>
-                <input asp-for="EstimatedProjectStartDate" class="form-control" />
-                <span asp-validation-for="EstimatedProjectStartDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EstimatedProjectEndDate" class="control-label">Estimated Project End Date</label>
-                <input asp-for="EstimatedProjectEndDate" class="form-control" />
-                <span asp-validation-for="EstimatedProjectEndDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input asp-for="SupplierProvideMaterial" /> @Html.DisplayNameFor(model => model.SupplierProvideMaterial)
-                    </label>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input asp-for="SupplierProvideTransport" /> @Html.DisplayNameFor(model => model.SupplierProvideTransport)
-                    </label>
-                </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="MessageToSupplier" class="control-label">Message To Supplier</label>
-                <input asp-for="MessageToSupplier" class="form-control" />
-                <span asp-validation-for="MessageToSupplier" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IndustryOfRfq" class="control-label">Industry Of Rfq</label>
-                <input asp-for="IndustryOfRfq" class="form-control" />
-                <span asp-validation-for="IndustryOfRfq" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SelectedTags" class="control-label">Selected Tags</label>
-                <input asp-for="SelectedTags" class="form-control" />
-                <span asp-validation-for="SelectedTags" class="text-danger"></span>
-            </div>            
-            <div class="form-group">
-                <label asp-for="Document_Id" class="control-label">Document</label>
-                <select asp-for="Document_Id" asp-items="@(new SelectList(Model.DocumentList, "Id", "Title"))" class="form-control">
-                    <option>Please select one</option>
-                </select>
-                <span asp-validation-for="Document_Id" class="text-danger"></span>
-            </div>
-            <div class="form-group" hidden="hidden">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
-            <div class="form-group" hidden="hidden">
-                <label asp-for="UpdatedBy" class="control-label"></label>
-                <input asp-for="UpdatedBy" class="form-control" />
-                <span asp-validation-for="UpdatedBy" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
-                    </label>
-                </div>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </form>
+@{
+    ViewData["Title"] = "Edit";
+}
+<form asp-controller="Rfq" asp-action="Create" method="post" enctype="multipart/form-data" id="frmCreateRFQ">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="block-header">
+        <h2>Prepare Request for Quotation</h2>
     </div>
-</div>
+    <!-- Input -->
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        General Information
+                    </h2>
+                </div>
+                <div class="body">
+                    <div class="col-sm-6">
+                        <label for="Company">Company</label>
+                        <div class="form-group">
+                            <div class="form-line">
+                                <select id="ddlCompany" class="form-control selectpicker"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="Company">User</label>
+                        <div class="form-group">
+                            <div class="form-line">
+                                <select id="ddlUserbyAdmin" class="form-control selectpicker"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row clearfix">
+                        <div class="col-sm-10">
+                            <label for="quote_no">RFQ Reference</label>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" asp-for="Document.DocumentNo" readonly class="form-control" placeholder="<Auto Generate by System>">
+                                    <input type="hidden" asp-for="Document.DocumentStatus_Id" value="100031">
+                                    <input type="hidden" asp-for="Document.DocumentType_Id" value="100021">
+                                    <input type="hidden" asp-for="Document.Company_Id" value="@ViewBag.Company_Id">
+                                    <input type="hidden" asp-for="Document.CreatedBy" value="@ViewBag.UserName">
+                                    <input type="hidden" asp-for="Document.UpdatedBy" value="@ViewBag.UserName">
+                                    <input type="hidden" asp-for="CreatedBy" value="@ViewBag.UserName">
+                                    <input type="hidden" asp-for="UpdatedBy" value="@ViewBag.UserName">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <label for="status">Status</label>
+                            <h4><span class="label label-info">New</span></h4>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="quote_no">Internal Reference No</label>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" asp-for="InternalRefrenceNo" class="form-control" placeholder="Internal Reference">
+                                    <span asp-validation-for="InternalRefrenceNo" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="quote_no">Internal Project Name</label>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" asp-for="InternalProjectName" class="form-control" placeholder="Internal Project Name">
+                                    <span asp-validation-for="InternalProjectName" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+                    </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- #END# Input -->
+    <!-- Tabs -->
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="body">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs tab-nav-right" role="tablist">
+                        <li role="presentation" class="active"><a href="#basic_requirements" data-toggle="tab">Info</a></li>
+                        <li role="presentation"><a href="#detailed_requirements" data-toggle="tab">Requirements</a></li>
+                        <li role="presentation"><a href="#service_level_agreement" data-toggle="tab">SLA</a></li>
+                        <li role="presentation"><a href="#penalty" data-toggle="tab">Penalty / LD</a></li>
+                        <li role="presentation"><a href="#pricing" data-toggle="tab">Pricing Table</a></li>
+                        <li role="presentation"><a href="#invited_suppliers" data-toggle="tab">Invited Suppliers</a></li>
+                        <li role="presentation"><a href="#attachments" data-toggle="tab">Files</a></li>
+                        <li role="presentation"><a href="#settings" data-toggle="tab">Users</a></li>
+                    </ul>
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane fade in active" id="basic_requirements">
+
+                            <div class="row clearfix">
+                                <div class="col-sm-3">
+                                    <label for="StartRfqdate">Start RFQ Date</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" asp-for="StartRfqdate" class="form-control datepicker" placeholder="Start RFQ Date">
+                                            <span asp-validation-for="StartRfqdate" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="ValidRfqdate">Valid RFQ Date</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" asp-for="ValidRfqdate" class="form-control datepicker" placeholder="End RFQ Date">
+                                            <span asp-validation-for="ValidRfqdate" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="quote_no">Estimated Project Start Date</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" asp-for="EstimatedProjectStartDate" class="form-control datepicker" placeholder="Start of Project Delivery">
+                                            <span asp-validation-for="EstimatedProjectStartDate" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="EstimatedProjectEndDate">Estimated Project End Date</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" asp-for="EstimatedProjectEndDate" class="form-control datepicker" placeholder="End of Project Delivery">
+                                            <span asp-validation-for="EstimatedProjectEndDate" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <input type="checkbox" asp-for="SupplierProvideMaterial" class="chk-col-red" />
+                                    <label for="SupplierProvideMaterial">Supplier to Provide Materials</label>
+                                </div>
+                                <div class="col-sm-3">
+                                    <input type="checkbox" asp-for="SupplierProvideTransport" class="chk-col-red" />
+                                    <label for="SupplierProvideTransport">Supplier to Provide Transport</label>
+                                </div>
+                                <div class="col-sm-6">
+                                    &nbsp;
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <label for="quote_no">Messages to Suppliers</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <textarea rows="3" asp-for="MessageToSupplier" class="form-control no-resize"></textarea>
+                                            <span asp-validation-for="MessageToSupplier" class="text-danger"></span>
+                                            <label class="form-label">Messages to Suppliers</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade in" id="detailed_requirements">
+                            <input type="hidden" id="detailRequirementLastId" value="@Model.Requirement.Count" />
+                            <table id="requirementsTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="30%">Service Name</th>
+                                        <th width="50%">Description</th>
+                                        <th width="10%">Quantity</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (Model.Requirement != null)
+                                        {
+                                            int i = 0;
+                                            foreach (var item in Model.Requirement)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <input type="text" name="Requirement[@i].ServiceName" class="form-control" value="@item.ServiceName" />
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" name="Requirement[@i].Description" class="form-control" value="@item.Description" />
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" name="Requirement[@i].Quantity" class="form-control" value="@item.Quantity" />
+                                                    </td>
+                                                    <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveRequirementRow(this)'>Remove</button></td>
+                                                </tr>
+                                                i++;
+                                            }
+                                        }
+                                    }
+
+                                </tbody>
+
+                            </table>
+                            <div class="row">
+                                <div class="form-group col-sm-12">
+                                    <a class="btn btn-success" id="btnNewRequirement"> New Requirement </a>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade in" id="service_level_agreement">
+                            <input type="hidden" id="detailSLALastId" value="@Model.Sla.Count" />
+                            <table id="slaTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="30%">Requirement</th>
+                                        <th width="65%">Description</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (Model.Sla != null)
+                                        {
+                                            int i = 0;
+                                            foreach (var item in Model.Sla)
+                                            {
+                                                <tr>
+                                                    <td><input type="text" name="Sla[@i].Requirement" class="form-control" value="@item.Requirement" /></td>
+                                                    <td><input type="text" name="Sla[@i].Description" class="form-control" value="@item.Description" /></td>
+                                                    <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveSLARow(this)'>Remove</button></td>
+                                                </tr>
+                                                i++;
+                                            }
+                                        }
+                                    }
+
+                                </tbody>
+                            </table>
+                            <div class="row">
+                                <div class="form-group col-sm-12">
+                                    <a class="btn btn-success" id="btnNewSLA"> New SLA </a>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade in" id="penalty">
+                            <input type="hidden" id="PenaltyLastId" value="@Model.Penalty.Count" />
+                            <table id="penaltyTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="30%">Breach of Service Definition</th>
+                                        <th width="20%">Penalty</th>
+                                        <th width="45%">Description</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (Model.Penalty != null)
+                                        {
+                                            int i = 0;
+                                            foreach (var item in Model.Penalty)
+                                            {
+                                                <tr>
+                                                    <td><input type="text" name="Penalty[@i].BreachOfServiceDefinition" class="form-control" value="@item.BreachOfServiceDefinition" /></td>
+                                                    <td><input type="text" name="Penalty[@i].PenaltyAmount" class="form-control" value="@item.PenaltyAmount" /></td>
+                                                    <td><input type="text" name="Penalty[@i].Description" class="form-control" value="@item.Description" /></td>
+                                                    <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePenaltyRow(this)'>Remove</button></td>
+                                                </tr>
+                                                i++;
+                                            }
+                                        }
+                                    }
+
+                                </tbody>
+
+                            </table>
+                            <div class="row">
+                                <div class="form-group col-sm-12">
+                                    <a class="btn btn-success" id="btnNewPenalty"> New Penalty </a>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane fade in" id="pricing">
+                            <input type="hidden" id="PricingLastId" value="1" />
+                            <table id="pricingTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="25%">Item Name</th>
+                                        <th width="35%">Item Description</th>
+                                        <th width="20%">Internal Reference Code</th>
+                                        <th width="10%">Quantity</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><input type="text" asp-for="RfqPriceSchedule[0].ItemName" class="form-control" /></td>
+                                        <td><input type="text" asp-for="RfqPriceSchedule[0].ItemDescription" class="form-control" /></td>
+                                        <td><input type="text" asp-for="RfqPriceSchedule[0].InternalRefrenceCode" class="form-control" /></td>
+                                        <td><input type="text" asp-for="RfqPriceSchedule[0].QuantityRequired" class="form-control" /></td>
+                                        <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePricingRow(this)'>Remove</button></td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                            <div class="row">
+                                <div class="form-group col-sm-12">
+                                    <a class="btn btn-success" id="btnNewPricing"> New </a>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane fade" id="invited_suppliers">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <select id="ddlIndustry" class="form-control selectpicker"></select>
+                                    <input type="hidden" asp-for="IndustryOfRfq" id="hdIndustry" />
+                                </div>
+                                <div class="col-sm-8">
+                                    @*<select id="ddlServiceTags" class="form-control"></select>*@
+                                    <select asp-for="SelectedTags" class="form-control show-tick" id="ddlServiceTags" data-live-search="true" multiple></select>
+                                </div>
+                                <div class="col-sm-1">
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <a class="btn btn-success" id="btnLoadSupplier">Search Supplier</a>
+                                </div>
+                            </div>
+                            <table id="invitedSupplierTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="95%">Supplier Information</th>
+                                        <th width="*">&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                            <div class="row">
+                                <div class="pagination" style="padding:10px;">
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane fade" id="attachments">
+                            @*<div class="row clearfix">
+                                    <div class="col-sm-12">
+                                        <div action="/" id="frmFileUpload" class="dropzone" method="post" enctype="multipart/form-data">
+                                            <div class="dz-message">
+                                                <div class="drag-icon-cph">
+                                                    <i class="material-icons">touch_app</i>
+                                                </div>
+                                                <h3>Drop files here or click to upload.</h3>
+                                                <em>(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</em>
+                                            </div>
+                                            <div class="fallback">
+                                                <input name="file" type="file" multiple />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>*@
+                            <table id="attachmentTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="25%">File Name</th>
+                                        <th width="70%">Description</th>
+                                        <th width="*">&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+
+                            </table>
+                            <div class="row">
+                                <div class="form-group col-sm-12">
+                                    <a class="btn btn-success" id="btnNewFile"> New </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane fade" id="settings">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <select id="ddlUser" class="form-control selectpicker"></select>
+                                </div>
+                                <div class="col-sm-5">
+                                    <select class="form-control show-tick" id="ddlRole" data-live-search="true" multiple></select>
+                                </div>
+                                <div class="col-sm-2">
+                                    <a id="btnAddUser" class="btn btn-success">Add</a>
+                                </div>
+                            </div>
+
+                            <table id="userSettingTable" class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th width="95%">Accessible User(s)</th>
+                                        <th width="*">&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" name="documentUserId[]" value="@ViewBag.User_Id" />
+                                            <h5> @ViewBag.FullName </h5>
+                                            <input type="hidden" name="documentUserRole[]" value="1" />
+                                            <span class="label bg-deep-purple">Admin</span>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="body">
+                    <button type="button" id="btnSubmit" class="btn btn-success">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Quotations-->
+    @*<div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>
+                            Quotations
+
+                        </h2>
+
+                    </div>
+                    <div class="body">
+                        <table id="penaltyTable" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th width="90%">Quotation Information</th>
+                                    <th width="*">&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <h5>Company: Car</h5>
+                                        <small>Different sizes and widths</small> <span class="label label-success">Verified</span>
+                                        <p class="m-t-15 m-b-30">
+                                            In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.
+                                        </p>
+                                    </td>
+                                    <th>
+                                        <button type="button" class="btn btn-danger waves-effect">View</button>
+                                        <br /><br />
+                                        <button type="button" class="btn btn-success waves-effect">Award</button>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h5>Train</h5>
+                                        <small>Different sizes and widths</small> <span class="label label-success">Verified</span>
+                                        <p class="m-t-15 m-b-30">
+                                            In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.
+                                        </p>
+                                    </td>
+                                    <th>
+                                        <button type="button" class="btn btn-danger waves-effect">View</button>
+                                        <br /><br />
+                                        <button type="button" class="btn btn-success waves-effect">Award</button>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h5>Plane</h5>
+                                        <small>Different sizes and widths</small> <span class="label label-success">Verified</span>
+                                        <p class="m-t-15 m-b-30">
+                                            In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.
+                                        </p>
+                                    </td>
+                                    <th>
+                                        <button type="button" class="btn btn-danger waves-effect">View</button>
+                                        <br /><br />
+                                        <button type="button" class="btn btn-success waves-effect">Award</button>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h5>Yacht</h5>
+                                        <small>Different sizes and widths</small> <span class="label label-success">Verified</span>
+                                        <p class="m-t-15 m-b-30">
+                                            In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.
+                                        </p>
+                                    </td>
+                                    <th>
+                                        <button type="button" class="btn btn-danger waves-effect">View</button>
+                                        <br /><br />
+                                        <button type="button" class="btn btn-success waves-effect">Award</button>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h5>Segway</h5>
+                                        <small>Different sizes and widths</small> <span class="label label-warning">Un-verified</span>
+                                        <p class="m-t-15 m-b-30">
+                                            In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.
+                                        </p>
+                                    </td>
+                                    <th>
+                                        <button type="button" class="btn btn-danger waves-effect">View</button>
+                                        <br /><br />
+                                        <button type="button" class="btn btn-success waves-effect">Award</button>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+</form>
+
+<!-- Editable Table Plugin Js -->
+<script src="~/material_theme/plugins/editable-table/mindmup-editabletable.js"></script>
+<script src="~/material_theme/js/pages/tables/editable-table.js"></script>
+<!-- Moment Plugin Js -->
+<script src="~/material_theme/plugins/momentjs/moment.js"></script>
+<!-- Bootstrap Material Datetime Picker Plugin Js -->
+<script src="~/material_theme/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
+<!-- Input Mask Plugin Js -->
+<script src="~/material_theme/plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
+<!-- Autosize Plugin Js -->
+<script src="~/material_theme/plugins/autosize/autosize.js"></script>
+<!-- Custom Js -->
+<script src="~/material_theme/js/pages/forms/basic-form-elements.js"></script>
+<!-- Dropzone Css -->
+<link href="~/material_theme/plugins/dropzone/dropzone.css" rel="stylesheet">
+<!-- Dropzone Plugin Js -->
+<script src="~/material_theme/plugins/dropzone/dropzone.js"></script>
+<!-- Bootstrap Colorpicker Js -->
+<script src="~/material_theme/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+
+<!-- Select Plugin Js -->
+<script src="~/material_theme/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
+<!-- Multi Select Plugin Js -->
+<script src="~/material_theme/plugins/multi-select/js/jquery.multi-select.js"></script>
+
+
+<script>
+    $(function () {
+
+        loadIndustry();
+        loadUser();
+        loadRole()
+
+    });
+
+    $("#btnSubmit").click(function () {
+        //alert($('.supplier:checkbox:checked'));
+        var haveInvitedSupplier = false;
+        $('input:checkbox.supplier').each(function () {
+            var sThisVal = (this.checked ? $(this).val() : "");
+            if (sThisVal != "") {
+                haveInvitedSupplier = true;
+            }
+        });
+
+        if (haveInvitedSupplier) {
+            $("#frmCreateRFQ").submit();
+        } else {
+            alert("Please invite at least one supplier.");
+        }
+    });
+
+    function loadUser() {
+        var ajaxurl = '@Url.Action("GetActiveUserByCompany", "Rfq")';
+
+        $('#ddlUser').append($('<option>', {
+            value: 0,
+            text: '--Select User--'
+        }));
+
+        $.ajax({
+            url: ajaxurl,
+            data: { CompanyId: @ViewBag.Company_Id},
+            dataType: 'json',
+            success: function (response) {
+                //console.log(response);
+                var obj = response;
+                for (var k in obj) {
+                    var item = obj[k];
+                    $('#ddlUser').append($('<option>', {
+                        value: item.Id,
+                        text: item.ContactName
+                    }));
+                }
+                $("#ddlUser").selectpicker('refresh');
+
+            },
+            error: function (response) {
+                alert(response)
+            }
+
+        });
+    }
+
+    $("#btnAddUser").click(function () {
+        var userId = $("#ddlUser").val();
+        var userName = $("#ddlUser option:selected").text();
+        var roleId = $("#ddlRole").val();
+
+        if (userId == 0 ) {
+            alert("Please select the user");
+        } else {
+            var isExistingUser = false;
+            $('#userSettingTable > tbody  > tr > td > input[name="documentUserId[]"]').each(function () {
+                if (userId == $(this).val()) {
+                    alert("User is already exist in list.");
+                    isExistingUser = true;
+                }
+            });
+            if (isExistingUser == false) {
+                if (roleId == null) {
+                    alert("Please select the role(s)");
+                } else {
+                    var tmptag = "<tr><td>" +
+                        "<input type='hidden' name='documentUserId[]' value='" + userId + "' />" +
+                        "<h5> " + userName + " </h5>" +
+                        "<input type='hidden' name='documentUserRole[]' value='" + roleId + "' />";
+                    $("#ddlRole option:selected").each(function () {
+                        var $this = $(this);
+                        if ($this.length) {
+                            var selText = $this.text();
+                            tmptag = tmptag + "<span class='label bg-deep-purple'> " + selText +" </span>&nbsp;  ";
+                        }
+                    });
+                    tmptag = tmptag + "</td><td><button type='button' class='btn btn-danger waves-effect'  onclick='RemoveUserRow(this)'>Remove</button></td>";
+                    tmptag = tmptag + "</tr>";
+                    $("#userSettingTable > tbody").append(tmptag);
+                    $("#ddlUser").val(0);
+                    $("#ddlUser").selectpicker('refresh');
+                    $("#ddlRole").val(0);
+                    $("#ddlRole").selectpicker('refresh');
+                }
+            }
+        }
+    });
+
+    function RemoveUserRow(item) {
+        $(item).parent().parent().remove();
+    }
+
+    function loadRole() {
+        var ajaxurl = '@Url.Action("GetActiveRoles", "Rfq")';
+
+         $.ajax({
+            url: ajaxurl,
+            dataType: 'json',
+            success: function (response) {
+                //console.log(response);
+                var obj = response;
+                for (var k in obj) {
+                    var item = obj[k];
+                    $('#ddlRole').append($('<option>', {
+                        value: item.Id,
+                        text: item.Name
+                    }));
+
+                }
+                $("#ddlRole").selectpicker('refresh');
+
+            },
+            error: function (response) {
+                alert(response)
+            }
+
+        });
+    }
+
+    $("#btnLoadSupplier").click(function () {
+        $('#invitedSupplierTable > tbody').empty();
+        loadSupplier(1);
+    });
+
+ function loadSupplier(page) {
+     var serviceTagsId = $('#ddlServiceTags').val();
+
+     var stringServiceTagsId = serviceTagsId.toString();
+
+     if (serviceTagsId == null) {
+            alert("Please select the service tags!")
+        } else {
+            var ajaxurl = '@Url.Action("GetSupplierByServiceTagsId", "Rfq")';
+            $.ajax({
+                url: ajaxurl,
+                data: { serviceTagsId: stringServiceTagsId, page:page},
+                dataType: 'json',
+                success: function (response) {
+                    var obj = response.Result.Records;
+                    for (var k in obj) {
+                        var item = obj[k];
+                        $('#invitedSupplierTable > tbody').append(
+                            "<tr>" +
+                            "<td> <h5>" + item.Name + "</h5><span class='label label-success'>Verified</span>" +
+                            " <p class='m-t-15 m-b-30'>" + item.About + "</p></td>" +
+                            "<td><input type='checkbox' class='filled-in supplier' id='chkSupplier_" + item.Id + "'  name='supplier_list[]' value='" + item.Id + "'> <button type='button' id='btnInvite_" + item.Id + "' class='btn btn-success' onclick='checkSupplier(" + item.Id + ")'>Invite</button></td>" +
+                            "</tr>");
+
+                    }
+                    var totalpage = response.Result.TotalPage;
+                    var currentpage = response.Result.CurrentPage;
+                    if (totalpage > currentpage) {
+                        $(".pagination").empty();
+                        $(".pagination").append(" <a class='btn btn-md btn-default' OnClick='loadSupplier(" + response.Result.NextPage + ")'> Load More </a> ");
+                    }
+
+                },
+                error: function (response) {
+                    alert(response)
+                }
+            });
+     }
+
+    }
+
+    function checkSupplier(n) {
+
+        if ($("#chkSupplier_" + n).prop("checked")) {
+
+            $("#chkSupplier_" + n).prop("checked", false);
+            $("#btnInvite_" + n).removeClass("btn btn-danger").addClass("btn btn-success");
+            $("#btnInvite_" + n).text("Invite");
+        } else {
+            $("#chkSupplier_" + n).prop("checked", true);
+            $("#btnInvite_" + n).removeClass("btn btn-success").addClass("btn btn-danger");
+            $("#btnInvite_" + n).text("Invited");
+        }
+
+    }
+function loadIndustry() {
+    var ajaxurl = '@Url.Action("GetActiveIndustries", "Rfq")';
+
+    $('#ddlIndustry').append($('<option>', {
+        value: 0,
+        text: '--Select Industry--'
+    }));
+
+    $.ajax({
+        url: ajaxurl,
+        dataType: 'json',
+        success: function (response) {
+            //console.log(response);
+            var obj = response;
+            for (var k in obj) {
+                var item = obj[k];
+                $('#ddlIndustry').append($('<option>', {
+                    value: item.Id,
+                    text: item.Name
+                }));
+            }
+            $("#ddlIndustry").selectpicker('refresh');
+
+        },
+        error: function (response) {
+            alert(response)
+        }
+
+    });
+
+    }
+
+    $("#ddlIndustry").change(function () {
+        var industryId = $('#ddlIndustry').val();
+
+        loadServiceTags(industryId);
+    });
+
+    function loadServiceTags(industryId) {
+        $('#ddlServiceTags').empty();
+        if (industryId == "0") {
+
+            $("#ddlServiceTags").selectpicker('refresh');
+        } else {
+            $('#hdIndustry').val($("#ddlIndustry option:selected").text());
+            //alert($('#hdIndustry').val())
+            var ajaxurl = '@Url.Action("GetServiceTagByIndustry", "Rfq")';
+
+            $.ajax({
+                url: ajaxurl,
+                data: {Id: industryId},
+                dataType: 'json',
+                success: function (response) {
+                    //console.log(response);
+                    var obj = response;
+                    for (var k in obj) {
+                        var item = obj[k];
+                        $('#ddlServiceTags').append($('<option>', {
+                            value: item.Id,
+                            text: item.Name
+                        }));
+                    }
+                    $("#ddlServiceTags").selectpicker('refresh');
+                },
+                error: function (response) {
+                    alert(response)
+                }
+            });
+        }
+
+
 }
+</script>
+
+<!-- Create RFQ Js -->
+<script src="~/material_theme/js/RFQ/create.js"></script>

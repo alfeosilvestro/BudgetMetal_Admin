@@ -80,6 +80,13 @@ namespace Com.EazyTender_Admin
 
             services.Configure<Configurations.AppSettings>(Configuration.GetSection("AppSettings"));
 
+            services.AddSession(options =>
+            {
+                // Set a short timeout for easy testing.
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.Cookie.HttpOnly = true;
+            });
+
             services.AddMvc();
 
             services.AddPaging();
@@ -163,7 +170,7 @@ namespace Com.EazyTender_Admin
             }
 
             app.UseStaticFiles();
-
+            app.UseSession();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

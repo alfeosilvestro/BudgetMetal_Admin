@@ -19,4 +19,65 @@
     </tr>
     }
 </table>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="pagination pull-right" style="padding:10px;">
+            @{
+                int currentPage = Model.Result.CurrentPage;
+                int totalPage = Model.Result.TotalPage;
+                int previousPage = Model.Result.PreviousPage;
+                int nextPage = Model.Result.NextPage;
+
+                int startPage = currentPage - 5;
+                int endPage = currentPage + 4;
+
+                if (startPage <= 0)
+                {
+                    endPage -= (startPage - 1);
+                    startPage = 1;
+                }
+                if (endPage > totalPage)
+                {
+                    endPage = totalPage;
+                    if (endPage > 10)
+                    {
+                        startPage = endPage - 9;
+                    }
+                }
+
+                @if (endPage > 1)
+                {
+                    <ul class="pagination">
+                        @if (currentPage > 1)
+                        {
+                            <li>
+                                <a href="~/Documents">First</a>
+                            </li>
+                            <li>
+                                <a href="?page=@(currentPage - 1)">Previous</a>
+                            </li>
+                        }
+
+                        @for (int page = startPage; page <= endPage; page++)
+                        {
+                            <li class="@(page == currentPage ? "active" : "")">
+                                <a class='btn btn-md btn-default' href="?page=@(page)"> @(page) </a>
+                            </li>
+                        }
+
+                        @if (currentPage < totalPage)
+                        {
+                            <li>
+                                <a href="?page=@(currentPage + 1)">Next</a>
+                            </li>
+                            <li>
+                                <a href="?page=@(totalPage)">Last</a>
+                            </li>
+                        }
+                    </ul>
+                }
+            }
+        </div>
+    </div>
+</div>
 
