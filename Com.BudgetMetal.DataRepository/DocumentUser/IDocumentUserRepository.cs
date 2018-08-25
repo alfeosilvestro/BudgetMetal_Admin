@@ -7,8 +7,8 @@ namespace Com.BudgetMetal.DataRepository.DocumentUser
 {
     public interface IDocumentUserRepository : IGenericRepository<Com.BudgetMetal.DBEntities.DocumentUser>
     {
-
+        void InactiveByDocumentId(int documentId, string UpdatedBy);
     }
 
-     
+
 }

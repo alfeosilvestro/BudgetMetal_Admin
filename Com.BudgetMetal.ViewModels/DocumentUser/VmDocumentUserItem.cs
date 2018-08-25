@@ -23,4 +23,18 @@ namespace Com.BudgetMetal.ViewModels.DocumentUser
 
        
     }
+
+    public class VmDocumentUserDisplay 
+    {
+
+        public int Document_Id { get; set; }
+
+
+        public string  Roles_Id{ get; set; }
+        public List<string> Roles { get; set; }
+
+
+        public int User_Id { get; set; }
+        public string UserName { get; set; }
+    }
 }

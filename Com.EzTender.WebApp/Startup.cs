@@ -22,6 +22,7 @@ using Com.BudgetMetal.DataRepository.Sla;
 using Com.BudgetMetal.DataRepository.UserRoles;
 using Com.BudgetMetal.DataRepository.Users;
 using Com.BudgetMetal.DB;
+using Com.BudgetMetal.Services.Attachment;
 using Com.BudgetMetal.Services.Code_Category;
 using Com.BudgetMetal.Services.Code_Table;
 using Com.BudgetMetal.Services.Company;
@@ -104,8 +105,8 @@ namespace Com.EzTender.WebApp
             services.AddScoped<IGalleryService, GalleryService>();
 
             services.AddScoped<IDocumentRepository, DocumentRepository>();
-            services.AddScoped<IRfqRepository, RfqRepository>();
-            services.AddScoped<IAttachmentRepository, AttachmentRepository>();
+           
+            
             services.AddScoped<IRequirementRepository, RequirementRepository>();
             services.AddScoped<ISlaRepository, SlaRepository>();
             services.AddScoped<IPenaltyRepository, PenaltyRepository>();
@@ -114,6 +115,10 @@ namespace Com.EzTender.WebApp
             services.AddScoped<IDocumentUserRepository, DocumentUserRepository>();
 
             services.AddScoped<IRFQService, RFQService>();
+            services.AddScoped<IRfqRepository, RfqRepository>();
+
+            services.AddScoped<IAttachmentRepository, AttachmentRepository>();
+            services.AddScoped<IAttachmentService, AttachmentService>();
 
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IRoleService, RoleService>();

@@ -80,5 +80,17 @@ namespace Com.BudgetMetal.DataRepository.Penalty
             return result;
         }
 
+
+        public void InactiveByRFQId(int rfqId, string UpdatedBy)
+        {
+            var dbResult = this.entities.Where(e => e.IsActive == true && e.Rfq_Id == rfqId).ToList();
+            dbResult.ForEach(e =>
+            {
+                e.IsActive = false;
+                e.UpdatedDate = DateTime.Now;
+                e.UpdatedBy = UpdatedBy;
+            }
+            );
+        }
     }
 }

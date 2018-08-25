@@ -7,7 +7,7 @@ namespace Com.BudgetMetal.DataRepository.RfqPriceSchedule
 {
     public interface IRfqPriceScheduleRepository : IGenericRepository<Com.BudgetMetal.DBEntities.RfqPriceSchedule>
     {
-
+        void InactiveByRFQId(int rfqId, string UpdatedBy);
     }
     
 }

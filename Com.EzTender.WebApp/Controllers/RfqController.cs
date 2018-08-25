@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Com.BudgetMetal.Services.Attachment;
 using Com.BudgetMetal.Services.Company;
 using Com.BudgetMetal.Services.Industries;
 using Com.BudgetMetal.Services.RFQ;
@@ -27,8 +28,9 @@ namespace Com.GenericPlatform.WebApp.Controllers
         private readonly IRFQService rfqService;
         private readonly IUserService userService;
         private readonly IRoleService roleService;
+        private readonly IAttachmentService attachmentService;
 
-        public RfqController(IIndustryService industryService, IServiceTagsService serviceTagsService, ICompanyService companyService, IRFQService rfqService, IUserService userService, IRoleService roleService)
+        public RfqController(IIndustryService industryService, IServiceTagsService serviceTagsService, ICompanyService companyService, IRFQService rfqService, IUserService userService, IRoleService roleService, IAttachmentService attachmentService)
         {
             this.industryService = industryService;
             this.serviceTagsService = serviceTagsService;
@@ -36,6 +38,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
             this.rfqService = rfqService;
             this.userService = userService;
             this.roleService = roleService;
+            this.attachmentService = attachmentService;
         }
 
         // GET: Rfq
@@ -52,15 +55,113 @@ namespace Com.GenericPlatform.WebApp.Controllers
         }
 
         // GET: Rfq/Edit/5
-        public async Task<ActionResult> Edit(int id)
+        [HttpGet]
+        public async Task<ActionResult> View(int id)
         {
-            var result = await rfqService.GetSingleRfqById(id);
+            try
+            {
+                var result = await rfqService.GetSingleRfqById(id);
 
-            return View(result);
+                return View(result);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index");
+            }
+
         }
 
-        // GET: Rfq/Create
-        public ActionResult Create()
+        // GET: Rfq/Edit/5
+        [HttpGet]
+        public async Task<ActionResult> Edit(int id)
+        {
+            try
+            {
+                var result = await rfqService.GetSingleRfqById(id);
+
+                return View(result);
+            }catch(Exception ex)
+            {
+                return RedirectToAction("Index");
+            }
+            
+        }
+        [HttpPost]
+        public ActionResult Edit(VmRfqItem Rfq)
+        {
+            try
+            {
+
+                Rfq.SelectedTags = Request.Form["SelectedTags"].ToString();
+                //var listAttachment = new List<VmAttachmentItem>();
+                int i = 0;
+                foreach (var itemFile in Request.Form.Files)
+                {
+                    if (itemFile.Length > 0)
+                    {
+                        var tmpFileNameArr = itemFile.FileName.ToString().Split("\\");
+                        string tmpFileName = tmpFileNameArr.Last();
+                        var att = new VmAttachmentItem
+                        {
+                            FileName = tmpFileName,
+                            FileSize = itemFile.Length,
+                            FileBinary = Convert.ToBase64String(ConvertFiletoBytes(itemFile)),
+                            Description = Request.Form["fileDescriptionRFQ[]"].ToArray()[i].ToString(),
+                            CreatedBy = Rfq.CreatedBy,
+                            UpdatedBy = Rfq.UpdatedBy
+                        };
+
+                        Rfq.Document.Attachment.Add(att);
+
+                    }
+                    i++;
+                }
+
+                //Rfq.Document.Attachment = listAttachment;
+
+                var listInvitedSupplier = new List<VmInvitedSupplierItem>();
+                var arrInvitedSupplier = Request.Form["supplier_list[]"].ToArray();
+                foreach (var itemSupplier in arrInvitedSupplier)
+                {
+                    var supplier = new VmInvitedSupplierItem();
+                    supplier.Company_Id = Convert.ToInt32(itemSupplier);
+
+                    listInvitedSupplier.Add(supplier);
+                }
+                Rfq.InvitedSupplier = listInvitedSupplier;
+
+                var listDocumentUser = new List<VmDocumentUserItem>();
+                var arrUser = Request.Form["documentUserId[]"].ToArray();
+                var arrRole = Request.Form["documentUserRole[]"].ToArray();
+                for (int j = 0; j < arrUser.Length; j++)
+                {
+                    var userId = arrUser[j];
+                    var rolesId = arrRole[j];
+                    var roles = rolesId.Split(',');
+                    foreach (var item in roles)
+                    {
+                        var documentUser = new VmDocumentUserItem
+                        {
+                            User_Id = Convert.ToInt32(userId),
+                            Role_Id = Convert.ToInt32(item)
+                        };
+                        listDocumentUser.Add(documentUser);
+                    }
+                }
+                Rfq.Document.DocumentUser = listDocumentUser;
+
+                string documentNo = rfqService.UpdateRFQ(Rfq);
+
+                return RedirectToAction("Index");
+            }
+            catch(Exception ex)
+            {
+                return View();
+            }
+        }
+
+            // GET: Rfq/Create
+            public ActionResult Create()
         {
             HttpContext.Session.SetString("User_Id", "1");
             HttpContext.Session.SetString("Company_Id", "1");
@@ -89,9 +190,11 @@ namespace Com.GenericPlatform.WebApp.Controllers
                 {
                     if (itemFile.Length > 0)
                     {
+                        var tmpFileNameArr = itemFile.FileName.ToString().Split("\\");
+                        string tmpFileName = tmpFileNameArr.Last();
                         var att = new VmAttachmentItem
                         {
-                            FileName = itemFile.FileName,
+                            FileName = tmpFileName,
                             FileSize = itemFile.Length,
                             FileBinary = Convert.ToBase64String(ConvertFiletoBytes(itemFile)),
                             Description = Request.Form["fileDescriptionRFQ[]"].ToArray()[i].ToString(),
@@ -220,6 +323,17 @@ namespace Com.GenericPlatform.WebApp.Controllers
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             });
+        }
+
+        public async Task<FileResult> AttachmentDownload(int fileid)
+        {
+            var result = await attachmentService.GetAttachmentById(fileid);
+
+            var fileByeArray = result.FileBinary;
+            string fileName = result.FileName;
+            var readStream = new MemoryStream(Convert.FromBase64String(fileByeArray));
+            var mimeType = "application/zip";
+            return File(readStream, mimeType, fileName);
         }
     }
 }

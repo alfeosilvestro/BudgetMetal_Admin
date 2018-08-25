@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Linq;
 
 namespace Com.BudgetMetal.DataRepository.RFQ
 {
@@ -75,8 +74,6 @@ namespace Com.BudgetMetal.DataRepository.RFQ
                             .Include(e => e.Document.DocumentType)
                             .Include(e => e.Document.Company)
                             .Include(e => e.Document.DocumentUser)
-                            .Include(e => e.Document.DocumentUser).ThenInclude(u => u.User)
-                            .Include(e => e.Document.DocumentUser).ThenInclude(u => u.Role)
                             .Include(e=>e.Document.Attachment)
                             .Include(e=>e.Requirement)
                             .Include(e => e.Penalty)

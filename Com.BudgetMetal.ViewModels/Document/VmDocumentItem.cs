@@ -46,5 +46,6 @@ namespace Com.BudgetMetal.ViewModels.Document
 
         public virtual ICollection<VmDocumentUserItem> DocumentUser { get; set; }
         
+        public List<VmDocumentUserDisplay> DocumentUserDisplay { get; set; }
     }
 }
