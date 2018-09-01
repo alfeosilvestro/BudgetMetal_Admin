@@ -1,11 +1,11 @@
-﻿@model Com.BudgetMetal.ViewModels.Rfq.VmRfqPage
+﻿@model Com.BudgetMetal.ViewModels.Quotation.VmQuotationPage
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="block-header">
-    <h2>Request for Quotation</h2>
+    <h2>Quotation</h2>
 </div>
 
 <div class="row clearfix">
@@ -14,9 +14,7 @@
             <div class="header">
                 <h2>
                     List
-
                 </h2>
-
             </div>
             <div class="body">
 
@@ -28,11 +26,6 @@
                                 <th>Document No</th>
                                 <th>Company</th>
                                 <th>Status</th>
-                                <th>Internal Refrence No</th>
-                                <th>Internal Project Name</th>
-                                <th>Industry Of Rfq</th>
-                                <th>Start Rfq Date</th>
-                                <th>Valid Rfq Date</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -40,15 +33,10 @@
                                 foreach (var item in Model.Result.Records)
                                 {
                                     <tr>
-                                        <td> <a type="button" class="btn btn-warning" href='@Url.Action("View","Rfq",new { id= item.Id })'>View</a>  <a type="button" class="btn btn-success" href='@Url.Action("Edit","Rfq",new { id= item.Id })'>Edit</a>  <a type="button" class="btn btn-danger" href='@Url.Action("Create","Quotation",new { id= item.Id })'>Create Quotation</a>  </td>
+                                        <td> <a type="button" class="btn btn-warning" href='@Url.Action("View","Quotation",new { id= item.Id })'>View</a>   <a type="button" class="btn btn-success" href='@Url.Action("Edit","Quotation",new { id= item.Id })'>Edit</a></td>
                                         <td>@item.Document.DocumentNo</td>
                                         <td>@item.Document.Company.Name</td>
-                                        <td>@item.Document.DocumentStatus.Name</td> 
-                                        <td>@item.InternalRefrenceNo</td>
-                                        <td>@item.InternalProjectName</td>
-                                        <td>@item.IndustryOfRfq</td>
-                                        <td>@item.StartRfqdate</td>
-                                        <td>@item.ValidRfqdate</td>
+                                        <td>@item.Document.DocumentStatus.Name</td>
                                     </tr>
                                 }
                             }
@@ -57,7 +45,7 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="pagination pull-right" style="padding:10px;">
-@{
+                                @{
                                     int currentPage = Model.Result.CurrentPage;
                                     int totalPage = Model.Result.TotalPage;
                                     int previousPage = Model.Result.PreviousPage;
@@ -88,6 +76,39 @@
                                     }
                                 }
                             </div>
+
+                            <!-- pager -->
+                            @if (Model.Result.TotalPage > 1)
+                            {
+                                <ul class="pagination">
+                                    @if (Model.Result.CurrentPage > 1)
+                                    {
+                                        <li>
+                                            <a href="~/Home/Index">First</a>
+                                        </li>
+                                        <li>
+                                            <a href="~/Home/Index?page=@(Model.Result.CurrentPage - 1)">Previous</a>
+                                        </li>
+                                    }
+
+                                    @for (var page = Model.Result.StartPage; page <= Model.Result.EndPage; page++)
+                                    {
+                                        <li class="@(page == Model.Result.CurrentPage ? "active" : "")">
+                                            <a href="~/Home/Index?page=@page">@page</a>
+                                        </li>
+                                    }
+
+                                    @if (Model.Result.CurrentPage < Model.Result.TotalPage)
+                                    {
+                                        <li>
+                                            <a href="~/Home/Index?page=@(Model.Result.CurrentPage + 1)">Next</a>
+                                        </li>
+                                        <li>
+                                            <a href="~/Home/Index?page=@(Model.Result.TotalPages)">Last</a>
+                                        </li>
+                                    }
+                                </ul>
+                            }
                         </div>
                     </div>
                 </div>

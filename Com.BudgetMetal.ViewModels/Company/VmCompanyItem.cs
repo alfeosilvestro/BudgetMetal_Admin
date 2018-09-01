@@ -16,5 +16,7 @@ namespace Com.BudgetMetal.ViewModels.Company
         public decimal? BuyerAvgRating { get; set; }
         public int? AwardedQuotation { get; set; }
         public int? SubmittedQuotation { get; set; }
+        public int? MaxRFQPerWeek { get; set; }
+        public int? MaxQuotationPerWeek { get; set; }
     }
 }

@@ -4,15 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Com.BudgetMetal.DBEntities
 {
-    public class Quotation
+    public class Quotation : GenericEntity
     {
         //public Quotation()
         //{
         //    QuotationPriceSchedule = new HashSet<QuotationPriceSchedule>();
         //}
-
-        public int Id { get; set; }
-       
+        
         public decimal? QuotedFigure { get; set; }
         public DateTime? ValidToDate { get; set; }
         public string Comments { get; set; }
@@ -24,6 +22,8 @@ namespace Com.BudgetMetal.DBEntities
         [ForeignKey("Rfq")]
         public int Rfq_Id { get; set; }
         public virtual Rfq Rfq { get; set; }
-       // public ICollection<QuotationPriceSchedule> QuotationPriceSchedule { get; set; }
+
+
+        public virtual ICollection<QuotationPriceSchedule> QuotationPriceSchedule { get; set; }
     }
 }

@@ -80,11 +80,12 @@ namespace Com.GenericPlatform.WebApp.Controllers
                 var result = await rfqService.GetSingleRfqById(id);
 
                 return View(result);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return RedirectToAction("Index");
             }
-            
+
         }
         [HttpPost]
         public ActionResult Edit(VmRfqItem Rfq)
@@ -154,14 +155,14 @@ namespace Com.GenericPlatform.WebApp.Controllers
 
                 return RedirectToAction("Index");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return View();
             }
         }
 
-            // GET: Rfq/Create
-            public ActionResult Create()
+        // GET: Rfq/Create
+        public ActionResult Create()
         {
             HttpContext.Session.SetString("User_Id", "1");
             HttpContext.Session.SetString("Company_Id", "1");
@@ -201,7 +202,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
                             CreatedBy = Rfq.CreatedBy,
                             UpdatedBy = Rfq.UpdatedBy
                         };
-                        
+
                         listAttachment.Add(att);
 
                     }
@@ -224,12 +225,12 @@ namespace Com.GenericPlatform.WebApp.Controllers
                 var listDocumentUser = new List<VmDocumentUserItem>();
                 var arrUser = Request.Form["documentUserId[]"].ToArray();
                 var arrRole = Request.Form["documentUserRole[]"].ToArray();
-                for(int j=0; j<arrUser.Length; j++)
+                for (int j = 0; j < arrUser.Length; j++)
                 {
                     var userId = arrUser[j];
                     var rolesId = arrRole[j];
                     var roles = rolesId.Split(',');
-                    foreach(var item in roles)
+                    foreach (var item in roles)
                     {
                         var documentUser = new VmDocumentUserItem
                         {

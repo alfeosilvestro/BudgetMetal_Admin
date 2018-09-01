@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Com.BudgetMetal.DBEntities
+namespace Com.BudgetMetal.ViewModels.QuotationPriceSchedule
 {
-    public class QuotationPriceSchedule : GenericEntity
+    public class VmQuotationPriceScheduleItem : ViewModelItemBase
     {
               
         public string ItemName { get; set; }
@@ -14,8 +14,6 @@ namespace Com.BudgetMetal.DBEntities
         public decimal ItemAmount { get; set; }
         
         public int Quotation_Id { get; set; }
-
-        [ForeignKey("Quotation_Id")]
-        public virtual Quotation Quotation { get; set; }
+       
     }
 }

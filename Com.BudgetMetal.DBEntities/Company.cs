@@ -23,7 +23,9 @@ namespace Com.BudgetMetal.DBEntities
         public decimal? SupplierAvgRating { get; set; }
         public decimal? BuyerAvgRating { get; set; }
         public int? AwardedQuotation { get; set; }
-        public int? SubmittedQuotation { get; set; }       
+        public int? SubmittedQuotation { get; set; }
+        public int? MaxRFQPerWeek { get; set; }
+        public int? MaxQuotationPerWeek { get; set; }
 
         //public ICollection<Document> Document { get; set; }
         //public ICollection<InvitedSupplier> InvitedSupplier { get; set; }
