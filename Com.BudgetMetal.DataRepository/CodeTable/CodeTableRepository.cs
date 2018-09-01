@@ -27,28 +27,45 @@ namespace Com.BudgetMetal.DataRepository.Code_Table
                 //return await base.GetPage(keyword, page, totalRecords);
             }
 
+            //var records = entities
+            //    .Include(ct => ct.CodeCategory)
+            //    .Where(e =>
+            //      (e.IsActive == true) &&
+            //      (keyword == string.Empty || e.Name.Contains(keyword))
+            //    )
+            //    .OrderBy(e => new { e.Name, e.CreatedDate })
+            //    .Skip((totalRecords * page) - totalRecords)
+            //    .Take(totalRecords);
+
+            //var recordList = records
+            //.Select(r =>
+            //    new CodeTable()
+            //    {
+            //        Id = r.Id,
+            //        Name = r.Name,
+            //        CodeCategory_Id = r.CodeCategory_Id,
+            //        CodeCategory = r.CodeCategory
+            //    })
+            //.ToList();
+
+            //var count = await records.CountAsync();
+
             var records = entities
-                .Include(ct => ct.CodeCategory)
-                .Where(e =>
-                  (e.IsActive == true) &&
-                  (keyword == string.Empty || e.Name.Contains(keyword))
-                )
-                .OrderBy(e => new { e.Name, e.CreatedDate })
-                .Skip((totalRecords * page) - totalRecords)
-                .Take(totalRecords);
+               .Include(ct => ct.CodeCategory)
+               .Where(e =>
+                 (e.IsActive == true) &&
+                 (keyword == string.Empty || e.Name.Contains(keyword))
+               )
+               .OrderBy(e => new { e.Name, e.CreatedDate })
+               .Skip((totalRecords * page) - totalRecords)
+               .Take(totalRecords);
 
-            var recordList = records
-            .Select(r =>
-                new CodeTable()
-                {
-                    Id = r.Id,
-                    Name = r.Name,
-                    CodeCategory_Id = r.CodeCategory_Id,
-                    CodeCategory = r.CodeCategory
-                })
-            .ToList();
+            var recordList = records.ToList();
 
-            var count = await records.CountAsync();
+            var count = entities.Where(e =>
+                 (e.IsActive == true) &&
+                 (keyword == string.Empty || e.Name.Contains(keyword)))
+                 .ToList().Count();
 
             var nextPage = 0;
             var prePage = 0;

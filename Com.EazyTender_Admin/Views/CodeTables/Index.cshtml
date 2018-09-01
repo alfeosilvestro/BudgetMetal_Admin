@@ -9,13 +9,36 @@
 <h2>Code Table</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    
 </p>
+<div class="header">
+    <div class="row">
+        @using (Html.BeginForm("Index", "CodeTables", FormMethod.Get))
+        {
+            <div class="col-sm-5">
+                @Html.TextBox("keyword",
+                    null,
+                    new {
+                        id = "search_key",
+                        @class = "form-control"
+                    })
+            </div>
+            <div class="col-sm-1">
+                <input class="btn btn-info" type="submit" value="Search" />
+            </div>
+            <div class="col-sm-2 pull-right">
+                <a asp-action="Create">Create New</a>
+            </div>
+        }
+    </div>
+</div>
+<br />
 <table class="table">
     <thead>
         <tr>
             @*<th> ID </th>*@
             <th> Name </th>
+            <th> Value </th>
             <th> Code Category </th>
             <th></th>
             <th></th>
@@ -24,16 +47,17 @@
     <tbody>
         @foreach (var item in Model.Result.Records)
         {
-        <tr>
-            @*<td> @item.Id </td>*@
-            <td> @item.Name </td>
-            <td>@(item.CodeCategory == null ? "" : item.CodeCategory.Name)</td>
-            <td hidden="hidden"> @item.Id </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+            <tr>
+                @*<td> @item.Id </td>*@
+                <td> @item.Name </td>
+                <td> @item.Value </td>
+                <td>@(item.CodeCategory == null ? "" : item.CodeCategory.Name)</td>
+                <td hidden="hidden"> @item.Id </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
         }
 
     </tbody>

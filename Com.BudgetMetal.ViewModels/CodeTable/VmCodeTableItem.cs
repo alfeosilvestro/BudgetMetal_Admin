@@ -9,6 +9,7 @@ namespace Com.BudgetMetal.ViewModels.CodeTable
     {        
         public int CodeCategory_Id { get; set; }
         public string Name { get; set; }
+        public string Value { get; set; }
         public VmCodeCategoryItem CodeCategory { get; set; }
         public List<VmCodeCategoryItem> CodeCategoryList { get; set; }
     }
