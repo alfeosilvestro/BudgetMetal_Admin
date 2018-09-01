@@ -1,0 +1,120 @@
+﻿<!-- User Info -->
+<div class="user-info">
+    <div class="row clearfix">
+        <div class="col-sm-3">
+            <div class="image">
+                <img src="~/material_theme/images/user.png" width="48" height="48" alt="User" />
+            </div>
+        </div>
+        <div class="col-sm-9 info-container">
+            <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">John Doe</div>
+            <div class="email">john.doe@example.com</div>
+            <div class="btn-group user-helper-dropdown">
+                <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
+                <ul class="dropdown-menu pull-right">
+                    <li><a href="javascript:void(0);"><i class="material-icons">person</i>Profile</a></li>
+                    <li role="seperator" class="divider"></li>
+                    <li><a href="javascript:void(0);"><i class="material-icons">group</i>Followers</a></li>
+                    <li><a href="javascript:void(0);"><i class="material-icons">shopping_cart</i>Sales</a></li>
+                    <li><a href="javascript:void(0);"><i class="material-icons">favorite</i>Likes</a></li>
+                    <li role="seperator" class="divider"></li>
+                    <li><a href="javascript:void(0);"><i class="material-icons">input</i>Sign Out</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    @*<div class="image">
+        <img src="~/material_theme/images/user.png" width="48" height="48" alt="User" />
+    </div>
+    <div class="info-container">
+        <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">John Doe</div>
+        <div class="email">john.doe@example.com</div>
+        <div class="btn-group user-helper-dropdown">
+            <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
+            <ul class="dropdown-menu pull-right">
+                <li><a href="javascript:void(0);"><i class="material-icons">person</i>Profile</a></li>
+                <li role="seperator" class="divider"></li>
+                <li><a href="javascript:void(0);"><i class="material-icons">group</i>Followers</a></li>
+                <li><a href="javascript:void(0);"><i class="material-icons">shopping_cart</i>Sales</a></li>
+                <li><a href="javascript:void(0);"><i class="material-icons">favorite</i>Likes</a></li>
+                <li role="seperator" class="divider"></li>
+                <li><a href="javascript:void(0);"><i class="material-icons">input</i>Sign Out</a></li>
+            </ul>
+        </div>
+    </div>*@
+</div>
+<!-- #User Info -->
+<!-- Menu -->
+<div class="menu">
+    <ul class="list">
+        <li class="header">MAIN NAVIGATION</li>
+        <li class="active">
+            <a asp-area="" asp-controller="Home" asp-action="Index">
+                <i class="material-icons">home</i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+        <li class="header">Quick Access</li>
+        <li>
+            <a asp-area="" asp-controller="Rfq" asp-action="Create">
+                <i class="material-icons col-red">donut_large</i>
+                <span>New RFQ</span>
+            </a>
+        </li>
+        <li>
+            <a asp-area="" asp-controller="Quotation" asp-action="Create">
+                <i class="material-icons col-amber">donut_large</i>
+                <span>New Quotation</span>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:void(0);">
+                <i class="material-icons col-light-blue">donut_large</i>
+                <span>Notifications</span>
+            </a>
+        </li>
+        <li class="header">Workspace</li>
+        <li>
+            <a asp-area="" asp-controller="Rfq" asp-action="Index">
+                <i class="material-icons col-amber">donut_large</i>
+                <span>Request for Quotation</span>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:void(0);">
+                <i class="material-icons col-light-blue">donut_large</i>
+                <span>Quotation</span>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:void(0);" class="menu-toggle">
+                <i class="material-icons">settings</i>
+                <span>Settings</span>
+            </a>
+            <ul class="ml-menu">
+                <li>
+                    <a asp-area="" asp-controller="Home" asp-action="About">
+                        Company Profile
+                    </a>
+                </li>
+                <li>
+                    <a asp-area="" asp-controller="Home" asp-action="Contact">
+                        Account
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+    </ul>
+</div>
+<!-- #Menu -->
+<!-- Footer -->
+<div class="legal">
+    <div class="copyright">
+        &copy; 2018 <a href="javascript:void(0);">Stylar Digital</a>.
+    </div>
+    <div class="version">
+        <b>Version: </b> 1.0.5
+    </div>
+</div>
+<!-- #Footer -->

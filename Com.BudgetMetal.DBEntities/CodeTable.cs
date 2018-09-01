@@ -14,6 +14,7 @@ namespace Com.BudgetMetal.DBEntities
         //}
         
         public string Name { get; set; }
+        public string Value { get; set; }
 
         [ForeignKey("CodeCategory")]
         public int CodeCategory_Id { get; set; }

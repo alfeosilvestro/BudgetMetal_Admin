@@ -20,5 +20,7 @@ namespace Com.BudgetMetal.Services.Company
         Task Delete(int Id);
 
         Task<VmCompanyPage> GetSupplierByServiceTagsId(string serviceTagsId, int page);
+
+        Task<List<VmCompanyItem>> GetActiveCompanies();
     }
 }

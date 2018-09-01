@@ -41,7 +41,9 @@ namespace Com.BudgetMetal.DataRepository.Document
 
             var recordList = records.ToList();
 
-            var count = await records.CountAsync();
+            //var count = await records.CountAsync();
+
+            var count = entities.ToList().Count();
 
             var nextPage = 0;
             var prePage = 0;
