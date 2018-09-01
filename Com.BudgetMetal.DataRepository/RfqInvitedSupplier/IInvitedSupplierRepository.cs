@@ -7,7 +7,7 @@ namespace Com.BudgetMetal.DataRepository.InvitedSupplier
 {
     public interface IInvitedSupplierRepository : IGenericRepository<Com.BudgetMetal.DBEntities.InvitedSupplier>
     {
-
+        void InactiveByRFQId(int rfqId, string UpdatedBy);
     }
     
 }

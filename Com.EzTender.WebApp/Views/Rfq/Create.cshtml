@@ -26,7 +26,7 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <input type="text" asp-for="Document.DocumentNo" readonly class="form-control" placeholder="<Auto Generate by System>">
-                                    <input type="hidden" asp-for="Document.DocumentStatus_Id" value="100031">
+                                    <input type="hidden" asp-for="Document.DocumentStatus_Id" value="100032">
                                     <input type="hidden" asp-for="Document.DocumentType_Id" value="100021">
                                     <input type="hidden" asp-for="Document.Company_Id" value="@ViewBag.Company_Id">
                                     <input type="hidden" asp-for="Document.CreatedBy" value="@ViewBag.UserName">
@@ -550,7 +550,7 @@
     
         $.ajax({
             url: ajaxurl,
-            data: { CompanyId: @ViewBag.Company_Id},
+            data: { CompanyId: @ViewBag.Company_Id },
             dataType: 'json',
             success: function (response) {
                 //console.log(response);

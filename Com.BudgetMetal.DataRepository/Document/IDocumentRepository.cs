@@ -8,5 +8,7 @@ namespace Com.BudgetMetal.DataRepository.Document
     public interface IDocumentRepository: IGenericRepository<Com.BudgetMetal.DBEntities.Document>
     {
         int GetRfqCountByCompany(int companyId);
+
+        int GetQuotationCountByCompany(int companyId);
     }
 }

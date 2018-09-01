@@ -72,7 +72,13 @@ namespace Com.BudgetMetal.DataRepository.Document
 
         public int GetRfqCountByCompany(int companyId)
         {
-            var records = entities.Where(e => e.Company_Id == companyId).ToList().Count();
+            var records = entities.Where(e => e.Company_Id == companyId && e.DocumentType_Id == 100021).ToList().Count();
+            return records;
+        }
+
+        public int GetQuotationCountByCompany(int companyId)
+        {
+            var records = entities.Where(e => e.Company_Id == companyId && e.DocumentType_Id == 100022).ToList().Count();
             return records;
         }
     }

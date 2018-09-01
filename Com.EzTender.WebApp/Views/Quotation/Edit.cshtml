@@ -1,8 +1,8 @@
 ﻿@model Com.BudgetMetal.ViewModels.Quotation.VmQuotationItem
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
 }
-<form asp-controller="Quotation" asp-action="Create" method="post" enctype="multipart/form-data" id="frmCreateQuotation">
+<form asp-controller="Quotation" asp-action="Edit" method="post" enctype="multipart/form-data" id="frmCreateQuotation">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="block-header">
         <h2>Prepare Quotation</h2>
@@ -26,21 +26,27 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <input type="text" asp-for="Document.DocumentNo" readonly class="form-control" placeholder="<Auto Generate by System>">
-                                    <input type="hidden" asp-for="Document.DocumentStatus_Id" value="100032">
-                                    <input type="hidden" asp-for="Document.DocumentType_Id" value="100022">
-                                    <input type="hidden" asp-for="Document.Company_Id" value="@ViewBag.Company_Id">
-                                    <input type="hidden" asp-for="Document.CreatedBy" value="@ViewBag.UserName">
-                                    <input type="hidden" asp-for="Document.UpdatedBy" value="@ViewBag.UserName">
-                                    <input type="hidden" asp-for="CreatedBy" value="@ViewBag.UserName">
-                                    <input type="hidden" asp-for="UpdatedBy" value="@ViewBag.UserName">
-                                    <input type="hidden" asp-for="Rfq_Id" >
-                                    <input type="hidden" asp-for="Id" value="0"/>
+                                    <input type="hidden" asp-for="Document.DocumentStatus_Id">
+                                    <input type="hidden" asp-for="Document.DocumentType_Id">
+                                    <input type="hidden" asp-for="Document.Company_Id">
+                                    <input type="hidden" asp-for="Document.CreatedBy">
+                                    <input type="hidden" asp-for="Document.UpdatedBy">
+                                    <input type="hidden" asp-for="CreatedBy">
+                                    <input type="hidden" asp-for="CreatedDate">
+                                    <input type="hidden" asp-for="Document.CreatedDate">
+                                    <input type="hidden" asp-for="UpdatedBy">
+                                    <input type="hidden" name="Id" value="@Model.Id">
+                                    <input type="hidden" asp-for="Document_Id">
+                                    <input type="hidden" asp-for="Rfq_Id">
+                                    <input type="hidden" asp-for="Document.Id">
+                                    <input type="hidden" asp-for="IsActive" />
+                                    <input type="hidden" asp-for="Document.IsActive" />
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-2">
                             <label for="status">Status</label>
-                            <h4><span class="label label-info">New</span></h4>
+                            <h4><span class="label label-info">@Model.Document.DocumentStatus.Name</span></h4>
                         </div>
                         <div class="col-sm-6">
                             <label for="quote_no">RFQ Reference No</label>
@@ -96,7 +102,7 @@
                                     <label for="quote_no">Valid Until</label>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" asp-for="ValidToDate"  class="form-control datepicker" placeholder="Valid Until">
+                                            <input type="text" asp-for="ValidToDate" class="form-control datepicker" placeholder="Valid Until">
                                         </div>
                                     </div>
                                 </div>
@@ -107,7 +113,7 @@
                                     <div class="form-group">
                                         <div class="form-line">
                                             <textarea rows="3" class="form-control no-resize" asp-for="Comments"></textarea>
-                                            
+
                                         </div>
                                     </div>
                                 </div>
@@ -154,22 +160,7 @@
                         </div>
 
                         <div role="tabpanel" class="tab-pane fade" id="attachments">
-                            @*<div class="row clearfix">
-                                    <div class="col-sm-12">
-                                        <div action="/" id="frmFileUpload" class="dropzone" method="post" enctype="multipart/form-data">
-                                            <div class="dz-message">
-                                                <div class="drag-icon-cph">
-                                                    <i class="material-icons">touch_app</i>
-                                                </div>
-                                                <h3>Drop files here or click to upload.</h3>
-                                                <em>(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</em>
-                                            </div>
-                                            <div class="fallback">
-                                                <input name="file" type="file" multiple />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>*@
+
                             <table id="attachmentTable" class="table table-striped">
                                 <thead>
                                     <tr>
@@ -178,9 +169,32 @@
                                         <th width="*">&nbsp;</th>
                                     </tr>
                                 </thead>
-                                <tbody></tbody>
+                                <tbody>
+                                    @{
+                                        if (Model.Document.Attachment != null)
+                                        {
+                                            int i = 0;
+                                            foreach (var item in Model.Document.Attachment)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <input type="hidden" name="Document.Attachment[@i].Id" value="@item.Id" />
+
+                                                        <a href="#" class="btn_download" data-fileid="@item.Id">@item.FileName</a>
+                                                    </td>
+                                                    <td><input type="text" name="Document.Attachment[@i].Description" class="form-control" value="@item.Description" /></td>
+
+                                                    <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveAttachmentRFQRow(this)'>Remove</button></td>
+                                                </tr>
+                                                i++;
+                                            }
+                                        }
+                                    }
+
+                                </tbody>
 
                             </table>
+                            <iframe id="iframe_download_file" style="display:none" src=""></iframe>
                             <div class="row">
                                 <div class="form-group col-sm-12">
                                     <a class="btn btn-success" id="btnNewFile"> New </a>
@@ -209,15 +223,40 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>
-                                            <input type="hidden" name="documentUserId[]" value="@ViewBag.User_Id" />
-                                            <h5> @ViewBag.FullName </h5>
-                                            <input type="hidden" name="documentUserRole[]" value="1" />
-                                            <span class="label bg-deep-purple">Admin</span>
-                                        </td>
-                                        <td></td>
-                                    </tr>
+                                    @{
+                                        if (Model.Document.DocumentUserDisplay != null)
+                                        {
+                                            int i = 0;
+                                            foreach (var item in Model.Document.DocumentUserDisplay)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <input type="hidden" name='documentUserId[]' value="@item.User_Id" />
+                                                        <h5>@item.UserName</h5>
+                                                        <input type='hidden' name='documentUserRole[]' value='@item.Roles_Id' />
+                                                        @{
+                                                            foreach (string tmpRole in item.Roles)
+                                                            {
+
+                                                                <span class='label bg-deep-purple'>@tmpRole</span>
+                                                            }
+                                                        }
+
+                                                    </td>
+
+                                                    <td>
+                                                        @{
+                                                            if (i > 0)
+                                                            {
+                                                                <button type="button" class="btn btn-danger waves-effect" onclick='RemoveUserRow(this)'>Remove</button>
+                                                            }
+                                                        }
+                                                    </td>
+                                                </tr>
+                                                i++;
+                                            }
+                                        }
+                                    }
 
                                 </tbody>
                             </table>
@@ -237,27 +276,27 @@
             </div>
         </div>
     </div>
-    </form>
-    <!-- Editable Table Plugin Js -->
-    <script src="~/material_theme/plugins/editable-table/mindmup-editabletable.js"></script>
-    <script src="~/material_theme/js/pages/tables/editable-table.js"></script>
-    <!-- Moment Plugin Js -->
-    <script src="~/material_theme/plugins/momentjs/moment.js"></script>
-    <!-- Bootstrap Material Datetime Picker Plugin Js -->
-    <script src="~/material_theme/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
-    <!-- Input Mask Plugin Js -->
-    <script src="~/material_theme/plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
-    <!-- Autosize Plugin Js -->
-    <script src="~/material_theme/plugins/autosize/autosize.js"></script>
-    <!-- Custom Js -->
-    <script src="~/material_theme/js/pages/forms/basic-form-elements.js"></script>
-    <!-- Dropzone Css -->
-    <link href="~/material_theme/plugins/dropzone/dropzone.css" rel="stylesheet">
-    <!-- Dropzone Plugin Js -->
-    <script src="~/material_theme/plugins/dropzone/dropzone.js"></script>
-    <!-- Select Plugin Js -->
-    <script src="~/material_theme/plugins/bootstrap-select/js/bootstrap-select.js"></script>
-    <script>
+</form>
+<!-- Editable Table Plugin Js -->
+<script src="~/material_theme/plugins/editable-table/mindmup-editabletable.js"></script>
+<script src="~/material_theme/js/pages/tables/editable-table.js"></script>
+<!-- Moment Plugin Js -->
+<script src="~/material_theme/plugins/momentjs/moment.js"></script>
+<!-- Bootstrap Material Datetime Picker Plugin Js -->
+<script src="~/material_theme/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
+<!-- Input Mask Plugin Js -->
+<script src="~/material_theme/plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
+<!-- Autosize Plugin Js -->
+<script src="~/material_theme/plugins/autosize/autosize.js"></script>
+<!-- Custom Js -->
+<script src="~/material_theme/js/pages/forms/basic-form-elements.js"></script>
+<!-- Dropzone Css -->
+<link href="~/material_theme/plugins/dropzone/dropzone.css" rel="stylesheet">
+<!-- Dropzone Plugin Js -->
+<script src="~/material_theme/plugins/dropzone/dropzone.js"></script>
+<!-- Select Plugin Js -->
+<script src="~/material_theme/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+<script>
     $(function () {
         loadUser();
         loadRole();
@@ -372,7 +411,16 @@
         });
     }
 
-    </script>
+    $(".btn_download").on("click", function () {
 
-    <!-- Create RFQ Js -->
-    <script src="~/material_theme/js/Quotation/create.js"></script>
+        var fileId = $(this).data('fileid');
+         var ajaxurl = '@Url.Action("AttachmentDownload", "Rfq")';
+        var url = ajaxurl+ "?fileid=" + fileId;
+        $('#iframe_download_file').attr('src', url)
+        //alert('download - ' + $('#iframe_download_file').attr('src'));
+
+    });
+</script>
+
+<!-- Create RFQ Js -->
+<script src="~/material_theme/js/Quotation/create.js"></script>

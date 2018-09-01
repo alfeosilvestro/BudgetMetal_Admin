@@ -1,25 +1,25 @@
 ﻿using Com.BudgetMetal.Common;
 using Com.BudgetMetal.DataRepository.Base;
 using Com.BudgetMetal.DB;
+using Com.BudgetMetal.DBEntities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Com.BudgetMetal.DataRepository.RFQ
+namespace Com.BudgetMetal.DataRepository.Quotation
 {
-
-    public class RfqRepository : GenericRepository<Com.BudgetMetal.DBEntities.Rfq>, IRfqRepository
+    public class QuotationRepository : GenericRepository<Com.BudgetMetal.DBEntities.Quotation>, IQuotationRepository
     {
-        public RfqRepository(DataContext context, ILoggerFactory loggerFactory) :
-        base(context, loggerFactory, "RfqRepository")
+        public QuotationRepository(DataContext context, ILoggerFactory loggerFactory) :
+        base(context, loggerFactory, "QuotationRepository")
         {
 
         }
-        public async Task<PageResult<Com.BudgetMetal.DBEntities.Rfq>> GetRfqByPage(int documentOwner, int page, int totalRecords)
+
+        public async Task<PageResult<Com.BudgetMetal.DBEntities.Quotation>> GetQuotationByPage(int documentOwner, int page, int totalRecords)
         {
             var records = await this.entities
                             .Include(e => e.Document)
@@ -53,7 +53,7 @@ namespace Com.BudgetMetal.DataRepository.RFQ
                 nextPage = page + 1;
             }
 
-            var result = new PageResult<Com.BudgetMetal.DBEntities.Rfq>()
+            var result = new PageResult<Com.BudgetMetal.DBEntities.Quotation>()
             {
                 Records = recordList,
                 TotalPage = totalPage,
@@ -66,7 +66,7 @@ namespace Com.BudgetMetal.DataRepository.RFQ
             return result;
         }
 
-        public async Task<Com.BudgetMetal.DBEntities.Rfq> GetSingleRfqById(int id)
+        public async Task<Com.BudgetMetal.DBEntities.Quotation> GetSingleQuotationById(int id)
         {
             var record = await this.entities
                             .Include(e => e.Document)
@@ -74,13 +74,8 @@ namespace Com.BudgetMetal.DataRepository.RFQ
                             .Include(e => e.Document.DocumentType)
                             .Include(e => e.Document.Company)
                             .Include(e => e.Document.DocumentUser)
-                            .Include(e=>e.Document.Attachment)
-                            .Include(e=>e.Requirement)
-                            .Include(e => e.Penalty)
-                            .Include(e => e.Quotation)
-                            .Include(e => e.Sla)
-                            .Include(e => e.RfqPriceSchedule)
-                            .Include(e => e.InvitedSupplier)
+                            .Include(e => e.Document.Attachment)
+                            .Include(e => e.QuotationPriceSchedule)
                             .SingleOrDefaultAsync(e =>
                               (e.IsActive == true)
                               && (e.Id == id)

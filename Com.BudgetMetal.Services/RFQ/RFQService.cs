@@ -394,8 +394,8 @@ namespace Com.BudgetMetal.Services.RFQ
             }
 
 
-            repoRfqPriceSchedule.InactiveByRFQId(dbRFQ.Id, dbRFQ.UpdatedBy);
-            repoRfqPriceSchedule.Commit();
+            repoInvitedSupplier.InactiveByRFQId(dbRFQ.Id, dbRFQ.UpdatedBy);
+            repoInvitedSupplier.Commit();
             if (rfq.InvitedSupplier.Count > 0)
             {
                 foreach (var item in rfq.InvitedSupplier)
