@@ -37,5 +37,16 @@ namespace Com.BudgetMetal.DataRepository.Attachment
                 e.Description = dbAttachment.Description;
             });
         }
+
+        public void DeleteByDocumentId(int documentId)
+        {
+            var dbResult = this.entities.Where(e => e.IsActive == false && e.Document_Id == documentId).ToList();
+            foreach(var item in dbResult)
+            {
+                Delete(item);
+            }
+
+            Commit();
+        }
     }
 }

@@ -40,7 +40,7 @@ namespace Com.EzTender.WebApp.Controllers
             {
                 page = Convert.ToInt32(queryPage);
             }
-            var result = await quotationService.GetQuotationByPage(0, page, 10);
+            var result = await quotationService.GetQuotationByPage(0, page, 1);
             return View(result);
         }
 

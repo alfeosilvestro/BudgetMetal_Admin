@@ -118,12 +118,16 @@ namespace Com.BudgetMetal.Services.RFQ
             return resultObj;
         }
 
+
+
+
         public string SaveRFQ(VmRfqItem rfq)
         {
             var dbDocument = new Com.BudgetMetal.DBEntities.Document();
             string documentNo = "";
             documentNo = GenerateDocumentNo(rfq.Document.Company_Id);
             rfq.Document.DocumentNo = documentNo;
+            rfq.Document.WorkingPeriod = GetCurrentWeek();
             Copy<VmDocumentItem, Com.BudgetMetal.DBEntities.Document>(rfq.Document, dbDocument);
             repoDocument.Add(dbDocument);
             repoDocument.Commit();
@@ -292,6 +296,7 @@ namespace Com.BudgetMetal.Services.RFQ
                 }
                 repoAttachment.Commit();
             }
+            repoAttachment.DeleteByDocumentId(dbDocument.Id);
 
             repoDocumentUser.InactiveByDocumentId(dbDocument.Id, dbDocument.UpdatedBy);
             repoDocumentUser.Commit();

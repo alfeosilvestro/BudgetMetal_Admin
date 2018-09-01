@@ -10,6 +10,7 @@ namespace Com.BudgetMetal.DataRepository.Attachment
     {
         void InactiveByDocumentId(int documentId, string UpdatedBy);
         void UpdateDescription(DBEntities.Attachment dbAttachment);
+        void DeleteByDocumentId(int documentId);
     }
 
      

@@ -21,9 +21,9 @@ namespace Com.BudgetMetal.DBEntities
         public string ContactPersonName { get; set; }
         public string DocumentNo { get; set; }
         public DateTime? SubmissionDate { get; set; }
-       
+        public string WorkingPeriod { get; set; }
 
-        
+
         public int Company_Id { get; set; }
 
         [ForeignKey("Company_Id")]

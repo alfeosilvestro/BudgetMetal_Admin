@@ -164,6 +164,7 @@ namespace Com.BudgetMetal.Services.Quotation
             string documentNo = "";
             documentNo = GenerateDocumentNo(quotation.Document.Company_Id);
             quotation.Document.DocumentNo = documentNo;
+            quotation.Document.WorkingPeriod = GetCurrentWeek();
             Copy<VmDocumentItem, Com.BudgetMetal.DBEntities.Document>(quotation.Document, dbDocument);
             repoDocument.Add(dbDocument);
             repoDocument.Commit();
@@ -222,7 +223,11 @@ namespace Com.BudgetMetal.Services.Quotation
             return documentNo;
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="quotation"></param>
+        /// <returns></returns>
         public string UpdateQuotation(VmQuotationItem quotation)
         {
             var dbDocument = new Com.BudgetMetal.DBEntities.Document();
@@ -260,6 +265,7 @@ namespace Com.BudgetMetal.Services.Quotation
                 }
                 repoAttachment.Commit();
             }
+            repoAttachment.DeleteByDocumentId(dbDocument.Id);
 
             repoDocumentUser.InactiveByDocumentId(dbDocument.Id, dbDocument.UpdatedBy);
             repoDocumentUser.Commit();

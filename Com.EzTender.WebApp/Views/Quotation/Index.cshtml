@@ -44,12 +44,9 @@
                     </table>
                     <div class="row">
                         <div class="col-sm-12">
-                            <div class="pagination pull-right" style="padding:10px;">
+                            @*<div class="pagination pull-right" style="padding:10px;">
                                 @{
-                                    int currentPage = Model.Result.CurrentPage;
-                                    int totalPage = Model.Result.TotalPage;
-                                    int previousPage = Model.Result.PreviousPage;
-                                    int nextPage = Model.Result.NextPage;
+                                    
 
                                     if (previousPage > 0)
                                     {
@@ -75,36 +72,51 @@
                                         <a class='btn btn-md btn-default' href="?page=@nextPage"> > </a>
                                     }
                                 }
-                            </div>
+                            </div>*@
 
                             <!-- pager -->
                             @if (Model.Result.TotalPage > 1)
                             {
+                                int currentPage = Model.Result.CurrentPage;
+                                int totalPage = Model.Result.TotalPage;
+                                int previousPage = Model.Result.PreviousPage;
+                                int nextPage = Model.Result.NextPage;
+
+                                var startPage = currentPage - 5;
+                                var endPage = currentPage + 4;
+                                if(currentPage < 6)
+                                {
+                                    startPage = 1;
+                                }
+                                if(totalPage < endPage)
+                                {
+                                    endPage = totalPage;
+                                }
                                 <ul class="pagination">
                                     @if (Model.Result.CurrentPage > 1)
                                     {
                                         <li>
-                                            <a href="~/Home/Index">First</a>
+                                            <a href="?page=1">First</a>
                                         </li>
                                         <li>
-                                            <a href="~/Home/Index?page=@(Model.Result.CurrentPage - 1)">Previous</a>
+                                            <a href="?page=@(Model.Result.CurrentPage - 1)">Previous</a>
                                         </li>
                                     }
 
-                                    @for (var page = Model.Result.StartPage; page <= Model.Result.EndPage; page++)
+                                    @for (var page = startPage; page <= endPage; page++)
                                     {
-                                        <li class="@(page == Model.Result.CurrentPage ? "active" : "")">
-                                            <a href="~/Home/Index?page=@page">@page</a>
+                                        <li class="@(page == currentPage ? "active" : "")">
+                                            <a href="?page=@(page)"> @(page) </a>
                                         </li>
                                     }
 
-                                    @if (Model.Result.CurrentPage < Model.Result.TotalPage)
+                                    @if (currentPage < totalPage)
                                     {
                                         <li>
-                                            <a href="~/Home/Index?page=@(Model.Result.CurrentPage + 1)">Next</a>
+                                            <a href="?page=@(currentPage + 1)">Next</a>
                                         </li>
                                         <li>
-                                            <a href="~/Home/Index?page=@(Model.Result.TotalPages)">Last</a>
+                                            <a href="?page=@(totalPage)">Last</a>
                                         </li>
                                     }
                                 </ul>

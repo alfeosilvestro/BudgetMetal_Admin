@@ -56,38 +56,84 @@
                     </table>
                     <div class="row">
                         <div class="col-sm-12">
-                            <div class="pagination pull-right" style="padding:10px;">
-@{
-                                    int currentPage = Model.Result.CurrentPage;
-                                    int totalPage = Model.Result.TotalPage;
-                                    int previousPage = Model.Result.PreviousPage;
-                                    int nextPage = Model.Result.NextPage;
+                            @*<div class="pagination pull-right" style="padding:10px;">
+        @{
+                                            int currentPage = Model.Result.CurrentPage;
+                                            int totalPage = Model.Result.TotalPage;
+                                            int previousPage = Model.Result.PreviousPage;
+                                            int nextPage = Model.Result.NextPage;
 
-                                    if (previousPage > 0)
-                                    {
-                                        <a class='btn btn-md btn-default' href="?page=@previousPage"> < </a>
-                                    }
+                                            if (previousPage > 0)
+                                            {
+                                                <a class='btn btn-md btn-default' href="?page=@previousPage"> < </a>
+                                            }
 
-                                    for (int i = 1; i <= totalPage; i++)
-                                    {
-                                        if (i == currentPage)
-                                        {
-                                            <a class='btn btn-md btn-default'> @i </a>
+                                            for (int i = 1; i <= totalPage; i++)
+                                            {
+                                                if (i == currentPage)
+                                                {
+                                                    <a class='btn btn-md btn-default'> @i </a>
 
+                                                }
+                                                else
+                                                {
+                                                    <a class='btn btn-md btn-default' href="?page=@i"> @i </a>
+
+                                                }
+                                            }
+
+                                            if (nextPage > 0)
+                                            {
+                                                <a class='btn btn-md btn-default' href="?page=@nextPage"> > </a>
+                                            }
                                         }
-                                        else
-                                        {
-                                            <a class='btn btn-md btn-default' href="?page=@i"> @i </a>
+                                    </div>*@
+                            @if (Model.Result.TotalPage > 1)
+                            {
+                                int currentPage = Model.Result.CurrentPage;
+                                int totalPage = Model.Result.TotalPage;
+                                int previousPage = Model.Result.PreviousPage;
+                                int nextPage = Model.Result.NextPage;
 
-                                        }
-                                    }
-
-                                    if (nextPage > 0)
-                                    {
-                                        <a class='btn btn-md btn-default' href="?page=@nextPage"> > </a>
-                                    }
+                                var startPage = currentPage - 5;
+                                var endPage = currentPage + 4;
+                                if (currentPage < 6)
+                                {
+                                    startPage = 1;
                                 }
-                            </div>
+                                if (totalPage < endPage)
+                                {
+                                    endPage = totalPage;
+                                }
+                                <ul class="pagination">
+                                    @if (Model.Result.CurrentPage > 1)
+                                    {
+                                        <li>
+                                            <a href="?page=1">First</a>
+                                        </li>
+                                        <li>
+                                            <a href="?page=@(Model.Result.CurrentPage - 1)">Previous</a>
+                                        </li>
+                                    }
+
+                                    @for (var page = startPage; page <= endPage; page++)
+                                    {
+                                        <li class="@(page == currentPage ? "active" : "")">
+                                            <a href="?page=@(page)"> @(page) </a>
+                                        </li>
+                                    }
+
+                                    @if (currentPage < totalPage)
+                                    {
+                                        <li>
+                                            <a href="?page=@(currentPage + 1)">Next</a>
+                                        </li>
+                                        <li>
+                                            <a href="?page=@(totalPage)">Last</a>
+                                        </li>
+                                    }
+                                </ul>
+                            }
                         </div>
                     </div>
                 </div>
