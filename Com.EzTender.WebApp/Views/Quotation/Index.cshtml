@@ -76,6 +76,39 @@
                                     }
                                 }
                             </div>
+
+                            <!-- pager -->
+                            @if (Model.Result.TotalPage > 1)
+                            {
+                                <ul class="pagination">
+                                    @if (Model.Result.CurrentPage > 1)
+                                    {
+                                        <li>
+                                            <a href="~/Home/Index">First</a>
+                                        </li>
+                                        <li>
+                                            <a href="~/Home/Index?page=@(Model.Result.CurrentPage - 1)">Previous</a>
+                                        </li>
+                                    }
+
+                                    @for (var page = Model.Result.StartPage; page <= Model.Result.EndPage; page++)
+                                    {
+                                        <li class="@(page == Model.Result.CurrentPage ? "active" : "")">
+                                            <a href="~/Home/Index?page=@page">@page</a>
+                                        </li>
+                                    }
+
+                                    @if (Model.Result.CurrentPage < Model.Result.TotalPage)
+                                    {
+                                        <li>
+                                            <a href="~/Home/Index?page=@(Model.Result.CurrentPage + 1)">Next</a>
+                                        </li>
+                                        <li>
+                                            <a href="~/Home/Index?page=@(Model.Result.TotalPages)">Last</a>
+                                        </li>
+                                    }
+                                </ul>
+                            }
                         </div>
                     </div>
                 </div>
