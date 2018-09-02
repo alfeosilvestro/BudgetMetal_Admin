@@ -17,24 +17,20 @@ namespace Com.BudgetMetal.DBEntities
         //}
         
         public string Title { get; set; }
-       
         public string ContactPersonName { get; set; }
         public string DocumentNo { get; set; }
         public DateTime? SubmissionDate { get; set; }
         public string WorkingPeriod { get; set; }
 
-
         public int Company_Id { get; set; }
 
         [ForeignKey("Company_Id")]
         public virtual Company Company { get; set; }
-
         
         public int DocumentStatus_Id { get; set; }
 
         [ForeignKey("DocumentStatus_Id")]
         public virtual CodeTable DocumentStatus { get; set; }
-
        
         public int DocumentType_Id { get; set; }
 

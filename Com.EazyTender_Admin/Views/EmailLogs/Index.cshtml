@@ -6,9 +6,25 @@
 
 <h2>Email Log</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<div class="header">
+    <div class="row">
+        @using (Html.BeginForm("Index", "Emaillogs", FormMethod.Get))
+        {
+            <div class="col-sm-5">
+                @Html.TextBox("keyword",
+                    null,
+                    new {
+                        id = "search_key",
+                        @class = "form-control"
+                    })
+            </div>
+            <div class="col-sm-1">
+                <input class="btn btn-info" type="submit" value="Search" />
+            </div>
+        }
+    </div>
+</div>
+<br />
 <table class="table">
     <thead>
         <tr>
@@ -31,20 +47,20 @@
     <tbody>
         @foreach (var item in Model.Result.Records)
         {
-        <tr>
-            <td> @item.ToEmailAddress</td>
-            <td> @item.Message </td>
-            <td> @item.SentByUserId </td>
-            <td> @item.SentDate </td>
-            @*<td> @item.UpdatedBy </td>
-            <td> @item.UpdatedDate </td>*@
-            <td hidden="hidden"> @item.Id </td>
-            <td>
-                @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a>*@
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-                @*<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
-            </td>
-        </tr>
+            <tr>
+                <td> @item.ToEmailAddress</td>
+                <td> @item.Message </td>
+                <td> @item.SentByUserId </td>
+                <td> @item.SentDate </td>
+                @*<td> @item.UpdatedBy </td>
+                    <td> @item.UpdatedDate </td>*@
+                <td hidden="hidden"> @item.Id </td>
+                <td>
+                    @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a>*@
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    @*<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
+                </td>
+            </tr>
         }
     </tbody>
 </table>

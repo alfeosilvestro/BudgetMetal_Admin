@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Com.BudgetMetal.DBEntities
 {
@@ -10,7 +11,6 @@ namespace Com.BudgetMetal.DBEntities
         //    ServiceTags = new HashSet<ServiceTags>();
         //}
 
-        
         public string Name { get; set; }
 
         //public ICollection<ServiceTags> ServiceTags { get; set; }

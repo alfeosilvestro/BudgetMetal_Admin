@@ -14,7 +14,6 @@
             <div class="header">
                 <h2>
                     List
-
                 </h2>
 
             </div>
@@ -40,7 +39,7 @@
                                 foreach (var item in Model.Result.Records)
                                 {
                                     <tr>
-                                        <td> <button type="button" class="btn btn-warning">View</button> </td>
+                                        <td> <a type="button" class="btn btn-warning" href='@Url.Action("View","Rfqs",new { id= item.Document_Id })'>View</a> </td>
                                         <td>@item.Document.DocumentNo</td>
                                         <td>@item.Document.Company.Name</td>
                                         <td>@item.Document.DocumentStatus.Name</td>

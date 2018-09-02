@@ -6,15 +6,31 @@
 
 <h2>Company</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<div class="header">
+    <div class="row">
+        @using (Html.BeginForm("Index", "Companies", FormMethod.Get))
+        {
+            <div class="col-sm-5">
+                @Html.TextBox("keyword",
+                    null,
+                    new {
+                        id = "search_key",
+                        @class = "form-control"
+                    })
+            </div>
+            <div class="col-sm-1">
+                <input class="btn btn-info" type="submit" value="Search" />
+            </div>
+        }
+    </div>
+</div>
+<br />
 <table class="table">
     <thead>
         <tr>
-            <th>ID</th>
+            @*<th>ID</th>*@
             <th> Name </th>
-            <th>Address</th>
+            <th> Address </th>
             <th> Domain </th>
             <th> Registration No. </th>
             <th> About </th>
@@ -23,7 +39,7 @@
             <th> BuyerAvgRating </th>
             <th> AwardedQuotation </th>
             <th> SubmittedQuotation </th>
-            <th></th>
+            <th><a asp-action="Create">Create New</a></th>
             <th></th>
         </tr>
     </thead>
@@ -31,7 +47,7 @@
         @foreach (var item in Model.Result.Records)
         {
             <tr>
-                <td> @item.Id </td>
+                @*<td> @item.Id </td>*@
                 <td> @item.Name </td>
                 <td> @item.Address </td>
                 <td> @item.Domain </td>

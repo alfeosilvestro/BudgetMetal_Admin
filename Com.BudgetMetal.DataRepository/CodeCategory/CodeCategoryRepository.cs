@@ -16,7 +16,6 @@ namespace Com.BudgetMetal.DataRepository.Code_Category
         public CodeCategoryRepository(DataContext context, ILoggerFactory loggerFactory) :
         base(context, loggerFactory, "CodeCategoryRepository")
         {
-
         }
 
         public override async Task<PageResult<CodeCategory>> GetPage(string keyword, int page, int totalRecords = 10)
@@ -35,8 +34,6 @@ namespace Com.BudgetMetal.DataRepository.Code_Category
                .OrderBy(e => new { e.Name, e.CreatedDate })
                .Skip((totalRecords * page) - totalRecords)
                .Take(totalRecords);
-
-
 
             var recordList = records.ToList();
 

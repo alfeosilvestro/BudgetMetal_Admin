@@ -4,13 +4,8 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
-
 <h2>Code Table</h2>
 
-<p>
-    
-</p>
 <div class="header">
     <div class="row">
         @using (Html.BeginForm("Index", "CodeTables", FormMethod.Get))
@@ -26,9 +21,6 @@
             <div class="col-sm-1">
                 <input class="btn btn-info" type="submit" value="Search" />
             </div>
-            <div class="col-sm-2 pull-right">
-                <a asp-action="Create">Create New</a>
-            </div>
         }
     </div>
 </div>
@@ -40,7 +32,7 @@
             <th> Name </th>
             <th> Value </th>
             <th> Code Category </th>
-            <th></th>
+            <th><a asp-action="Create">Create New</a></th>
             <th></th>
         </tr>
     </thead>

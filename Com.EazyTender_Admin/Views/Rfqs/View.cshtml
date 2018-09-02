@@ -1,14 +1,14 @@
 ﻿@model Com.BudgetMetal.ViewModels.Rfq.VmRfqItem
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "View";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
 @{
     ViewData["Title"] = "Edit";
 }
-<form asp-controller="Rfqs" asp-action="Edit" method="post" enctype="multipart/form-data" id="frmCreateRFQ">
+<form asp-controller="Rfqs" asp-action="View" method="post" enctype="multipart/form-data" id="frmCreateRFQ">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="block-header">
         <h2>Prepare Request for Quotation</h2>
@@ -20,13 +20,29 @@
                 <div class="header">
                     <h2>
                         General Information
-
                     </h2>
-
                 </div>
                 <div class="body">
 
                     <div class="row clearfix">
+                        @*<div class="col-sm-6">
+                            <label for="Company">Company</label>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" asp-for="" class="form-control" placeholder="Internal Reference">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="Company">User</label>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" asp-for="InternalRefrenceNo" class="form-control" placeholder="Internal Reference">
+                                    <span asp-validation-for="InternalRefrenceNo" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>*@
                         <div class="col-sm-10">
                             <label for="quote_no">RFQ Reference</label>
                             <div class="form-group">
@@ -104,7 +120,7 @@
                                     <label for="StartRfqdate">Start RFQ Date</label>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" asp-for="StartRfqdate" class="form-control datepicker" placeholder="Start RFQ Date">
+                                            <input type="text" asp-for="StartRfqdate" class="form-control" placeholder="Start RFQ Date">
                                             <span asp-validation-for="StartRfqdate" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -113,7 +129,7 @@
                                     <label for="ValidRfqdate">Valid RFQ Date</label>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" asp-for="ValidRfqdate" class="form-control datepicker" placeholder="End RFQ Date">
+                                            <input type="text" asp-for="ValidRfqdate" class="form-control" placeholder="End RFQ Date">
                                             <span asp-validation-for="ValidRfqdate" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -122,7 +138,7 @@
                                     <label for="quote_no">Estimated Project Start Date</label>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" asp-for="EstimatedProjectStartDate" class="form-control datepicker" placeholder="Start of Project Delivery">
+                                            <input type="text" asp-for="EstimatedProjectStartDate" class="form-control" placeholder="Start of Project Delivery">
                                             <span asp-validation-for="EstimatedProjectStartDate" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -131,18 +147,18 @@
                                     <label for="EstimatedProjectEndDate">Estimated Project End Date</label>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" asp-for="EstimatedProjectEndDate" class="form-control datepicker" placeholder="End of Project Delivery">
+                                            <input type="text" asp-for="EstimatedProjectEndDate" class="form-control" placeholder="End of Project Delivery">
                                             <span asp-validation-for="EstimatedProjectEndDate" class="text-danger"></span>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="col-sm-3">
-                                    <input type="checkbox" asp-for="SupplierProvideMaterial" class="chk-col-red" />
+                                    <input type="checkbox" asp-for="SupplierProvideMaterial" class="chk-col-red" disabled />
                                     <label for="SupplierProvideMaterial">Supplier to Provide Materials</label>
                                 </div>
                                 <div class="col-sm-3">
-                                    <input type="checkbox" asp-for="SupplierProvideTransport" class="chk-col-red" />
+                                    <input type="checkbox" asp-for="SupplierProvideTransport" class="chk-col-red" disabled />
                                     <label for="SupplierProvideTransport">Supplier to Provide Transport</label>
                                 </div>
                                 <div class="col-sm-6">
@@ -150,12 +166,12 @@
                                 </div>
 
                                 <div class="col-sm-12">
-                                    <label for="quote_no">Messages to Suppliers</label>
+                                    <label>Messages to Suppliers</label>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <textarea rows="3" asp-for="MessageToSupplier" class="form-control no-resize"></textarea>
+                                            <textarea rows="3" asp-for="MessageToSupplier" class="form-control no-resize" readonly></textarea>
                                             <span asp-validation-for="MessageToSupplier" class="text-danger"></span>
-                                            <label class="form-label">Messages to Suppliers</label>
+
                                         </div>
                                     </div>
                                 </div>
@@ -164,36 +180,34 @@
 
                         </div>
                         <div role="tabpanel" class="tab-pane fade in" id="detailed_requirements">
-                            <input type="hidden" id="detailRequirementLastId" value="@Model.Requirement.Count" />
+
                             <table id="requirementsTable" class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th width="30%">Service Name</th>
                                         <th width="50%">Description</th>
                                         <th width="10%">Quantity</th>
-                                        <th>&nbsp;</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @{
                                         if (Model.Requirement != null)
                                         {
-                                            int i = 0;
                                             foreach (var item in Model.Requirement)
                                             {
                                                 <tr>
                                                     <td>
-                                                        <input type="text" name="Requirement[@i].ServiceName" class="form-control" value="@item.ServiceName" />
+                                                        @item.ServiceName
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="Requirement[@i].Description" class="form-control" value="@item.Description" />
+                                                        @item.Description
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="Requirement[@i].Quantity" class="form-control" value="@item.Quantity" />
+                                                        @item.Quantity
                                                     </td>
-                                                    <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveRequirementRow(this)'>Remove</button></td>
+
                                                 </tr>
-                                                i++;
                                             }
                                         }
                                     }
@@ -201,74 +215,61 @@
                                 </tbody>
 
                             </table>
-                            <div class="row">
-                                <div class="form-group col-sm-12">
-                                    <a class="btn btn-success" id="btnNewRequirement"> New Requirement </a>
-                                </div>
 
-                            </div>
                         </div>
                         <div role="tabpanel" class="tab-pane fade in" id="service_level_agreement">
-                            <input type="hidden" id="detailSLALastId" value="@Model.Sla.Count" />
                             <table id="slaTable" class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th width="30%">Requirement</th>
                                         <th width="65%">Description</th>
-                                        <th>&nbsp;</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @{
                                         if (Model.Sla != null)
                                         {
-                                            int i = 0;
                                             foreach (var item in Model.Sla)
                                             {
                                                 <tr>
-                                                    <td><input type="text" name="Sla[@i].Requirement" class="form-control" value="@item.Requirement" /></td>
-                                                    <td><input type="text" name="Sla[@i].Description" class="form-control" value="@item.Description" /></td>
-                                                    <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveSLARow(this)'>Remove</button></td>
+                                                    <td>@item.Requirement
+                                                    <td>@item.Description</td>
+
                                                 </tr>
-                                                i++;
+
                                             }
                                         }
                                     }
 
                                 </tbody>
                             </table>
-                            <div class="row">
-                                <div class="form-group col-sm-12">
-                                    <a class="btn btn-success" id="btnNewSLA"> New SLA </a>
-                                </div>
 
-                            </div>
                         </div>
                         <div role="tabpanel" class="tab-pane fade in" id="penalty">
-                            <input type="hidden" id="PenaltyLastId" value="@Model.Penalty.Count" />
+
                             <table id="penaltyTable" class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th width="30%">Breach of Service Definition</th>
                                         <th width="20%">Penalty</th>
                                         <th width="45%">Description</th>
-                                        <th>&nbsp;</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @{
                                         if (Model.Penalty != null)
                                         {
-                                            int i = 0;
+
                                             foreach (var item in Model.Penalty)
                                             {
                                                 <tr>
-                                                    <td><input type="text" name="Penalty[@i].BreachOfServiceDefinition" class="form-control" value="@item.BreachOfServiceDefinition" /></td>
-                                                    <td><input type="text" name="Penalty[@i].PenaltyAmount" class="form-control" value="@item.PenaltyAmount" /></td>
-                                                    <td><input type="text" name="Penalty[@i].Description" class="form-control" value="@item.Description" /></td>
-                                                    <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePenaltyRow(this)'>Remove</button></td>
+                                                    <td>@item.BreachOfServiceDefinition</td>
+                                                    <td>@item.PenaltyAmount</td>
+                                                    <td>@item.Description</td>
+
                                                 </tr>
-                                                i++;
+
                                             }
                                         }
                                     }
@@ -276,16 +277,11 @@
                                 </tbody>
 
                             </table>
-                            <div class="row">
-                                <div class="form-group col-sm-12">
-                                    <a class="btn btn-success" id="btnNewPenalty"> New Penalty </a>
-                                </div>
 
-                            </div>
                         </div>
 
                         <div role="tabpanel" class="tab-pane fade in" id="pricing">
-                            <input type="hidden" id="PricingLastId" value="@Model.RfqPriceSchedule.Count" />
+
                             <table id="pricingTable" class="table table-striped">
                                 <thead>
                                     <tr>
@@ -293,24 +289,23 @@
                                         <th width="35%">Item Description</th>
                                         <th width="20%">Internal Reference Code</th>
                                         <th width="10%">Quantity</th>
-                                        <th>&nbsp;</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @{
                                         if (Model.RfqPriceSchedule != null)
                                         {
-                                            int i = 0;
+
                                             foreach (var item in Model.RfqPriceSchedule)
                                             {
                                                 <tr>
-                                                    <td><input type="text" name="RfqPriceSchedule[@i].ItemName" class="form-control" value="@item.ItemName" /> </td>
-                                                    <td><input type="text" name="RfqPriceSchedule[@i].ItemDescription" class="form-control" value="@item.ItemDescription" /></td>
-                                                    <td><input type="text" name="RfqPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>
-                                                    <td><input type="text" name="RfqPriceSchedule[@i].QuantityRequired" class="form-control" value="@item.QuantityRequired" /></td>
-                                                    <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePricingRow(this)'>Remove</button></td>
+                                                    <td>@item.ItemName </td>
+                                                    <td>@item.ItemDescription</td>
+                                                    <td>@item.InternalRefrenceCode</td>
+                                                    <td>@item.QuantityRequired</td>
+
                                                 </tr>
-                                                i++;
+
                                             }
                                         }
                                     }
@@ -318,23 +313,18 @@
                                 </tbody>
 
                             </table>
-                            <div class="row">
-                                <div class="form-group col-sm-12">
-                                    <a class="btn btn-success" id="btnNewPricing"> New </a>
-                                </div>
 
-                            </div>
                         </div>
 
                         <div role="tabpanel" class="tab-pane fade" id="invited_suppliers">
                             <div class="row">
                                 <div class="col-sm-3">
-                                    <select id="ddlIndustry" class="form-control selectpicker"></select>
+                                    <select id="ddlIndustry" class="form-control selectpicker" disabled></select>
                                     <input type="hidden" asp-for="IndustryOfRfq" id="hdIndustry" />
                                 </div>
                                 <div class="col-sm-8">
                                     @*<select id="ddlServiceTags" class="form-control"></select>*@
-                                    <select asp-for="SelectedTags" class="form-control show-tick" id="ddlServiceTags" data-live-search="true" multiple></select>
+                                    <select asp-for="SelectedTags" class="form-control show-tick" id="ddlServiceTags" data-live-search="true" multiple disabled></select>
                                     <input type="hidden" value="@Model.SelectedTags" id="hdSelectedTags" />
                                 </div>
                                 <div class="col-sm-1">
@@ -347,7 +337,7 @@
                                         string selectedSuppliers = string.Join(",", Model.InvitedSupplier.Select(m => m.Company_Id).ToArray());
                                     }
                                     <input type="hidden" id="hdSelectedSuppliers" value="@selectedSuppliers" />
-                                    <a class="btn btn-success" id="btnLoadSupplier">Search Supplier</a>
+
                                 </div>
                             </div>
                             <table id="invitedSupplierTable" class="table table-striped">
@@ -373,27 +363,23 @@
                                     <tr>
                                         <th width="25%">File Name</th>
                                         <th width="70%">Description</th>
-                                        <th width="*">&nbsp;</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @{
                                         if (Model.Document.Attachment != null)
                                         {
-                                            int i = 0;
+
                                             foreach (var item in Model.Document.Attachment)
                                             {
                                                 <tr>
                                                     <td>
-                                                        <input type="hidden" name="Document.Attachment[@i].Id" value="@item.Id" />
-
                                                         <a href="#" class="btn_download" data-fileid="@item.Id">@item.FileName</a>
                                                     </td>
-                                                    <td><input type="text" name="Document.Attachment[@i].Description" class="form-control" value="@item.Description" /></td>
-
-                                                    <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveAttachmentRFQRow(this)'>Remove</button></td>
+                                                    <td>@item.Description</td>
                                                 </tr>
-                                                i++;
+
                                             }
                                         }
                                     }
@@ -401,38 +387,22 @@
 
                             </table>
                             <iframe id="iframe_download_file" style="display:none" src=""></iframe>
-                            <div class="row">
-                                <div class="form-group col-sm-12">
-                                    <a class="btn btn-success" id="btnNewFile"> New </a>
-                                </div>
-                            </div>
                         </div>
 
                         <div role="tabpanel" class="tab-pane fade" id="settings">
-                            <div class="row">
-                                <div class="col-sm-5">
-                                    <select id="ddlUser" class="form-control selectpicker"></select>
-                                </div>
-                                <div class="col-sm-5">
-                                    <select class="form-control show-tick" id="ddlRole" data-live-search="true" multiple></select>
-                                </div>
-                                <div class="col-sm-2">
-                                    <a id="btnAddUser" class="btn btn-success">Add</a>
-                                </div>
-                            </div>
+
 
                             <table id="userSettingTable" class="table table-hover">
                                 <thead>
                                     <tr>
                                         <th width="95%">Accessible User(s)</th>
-                                        <th width="*">&nbsp;</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @{
                                         if (Model.Document.DocumentUserDisplay != null)
                                         {
-                                            int i = 0;
                                             foreach (var item in Model.Document.DocumentUserDisplay)
                                             {
                                                 <tr>
@@ -450,16 +420,9 @@
 
                                                     </td>
 
-                                                    <td>
-                                                        @{
-                                                            if (i > 0)
-                                                            {
-                                                                <button type="button" class="btn btn-danger waves-effect" onclick='RemoveAttachmentRFQRow(this)'>Remove</button>
-                                                            }
-                                                        }
-                                                    </td>
+
                                                 </tr>
-                                                i++;
+
                                             }
                                         }
                                     }
@@ -477,7 +440,7 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
                 <div class="body">
-                    <button type="button" id="btnSubmit" class="btn btn-success">Submit</button>
+
                     <input type="hidden" id="loadinvitedsupplier" value="0" />
                 </div>
             </div>
@@ -520,15 +483,12 @@
 
         loadUser();
         loadRole()
+
+        $('#frmCreateRFQ input').attr('readonly', 'readonly');
        // $('#StartRfqdate').datepicker("setDate", new Date(2008, 9, 03));
     });
 
-    $("#tabinvited_suppliers").click(function () {
-        //alert($('#ddlIndustry').val());
 
-
-
-    });
 
     $("#btnSubmit").click(function () {
         //alert($('.supplier:checkbox:checked'));
@@ -693,7 +653,7 @@
                             "<tr>" +
                             "<td> <h5>" + item.Name + "</h5><span class='label label-success'>Verified</span>" +
                             " <p class='m-t-15 m-b-30'>" + item.About + "</p></td>" +
-                            "<td><input type='checkbox' class='filled-in supplier' id='chkSupplier_" + item.Id + "'  name='supplier_list[]' value='" + item.Id + "' " + selected + "> <button type='button' id='btnInvite_" + item.Id + "' class='btn " + selectedClass +"' onclick='checkSupplier(" + item.Id + ")'>"+invited+"</button></td>" +
+                            "<td><input type='checkbox' class='filled-in supplier' id='chkSupplier_" + item.Id + "'  name='supplier_list[]' value='" + item.Id + "' " + selected + "> <button type='button' id='btnInvite_" + item.Id + "' class='btn " + selectedClass +"' disabled>"+invited+"</button></td>" +
                             "</tr>");
 
                     }
@@ -834,5 +794,3 @@ function loadIndustry() {
     });
 </script>
 
-<!-- Create RFQ Js -->
-<script src="~/material_theme/js/RFQ/create.js"></script>

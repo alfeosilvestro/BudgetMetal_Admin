@@ -6,17 +6,32 @@
 
 <h2>Industry</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<div class="header">
+    <div class="row">
+        @using (Html.BeginForm("Index", "Industries", FormMethod.Get))
+        {
+            <div class="col-sm-5">
+                @Html.TextBox("keyword",
+                    null,
+                    new {
+                        id = "search_key",
+                        @class = "form-control"
+                    })
+            </div>
+            <div class="col-sm-1">
+                <input class="btn btn-info" type="submit" value="Search" />
+            </div>
+        }
+    </div>
+</div>
+<br />
 <table class="table">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Result.Records[0].Name)
             </th>
-            <th></th>
-            <th></th>
+            <th><a asp-action="Create">Create New</a></th>
         </tr>
     </thead>
     <tbody>
@@ -24,7 +39,6 @@
         {
             <tr>
                 <td> @item.Name </td>
-                <td hidden="hidden"> @item.Id </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
                     @*<a asp-action="Details" asp-route-id="@item.Id">Details</a>*@

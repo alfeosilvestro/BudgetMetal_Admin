@@ -5,10 +5,25 @@
 }
 
 <h2>Role</h2>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<div class="header">
+    <div class="row">
+        @using (Html.BeginForm("Index", "Roles", FormMethod.Get))
+        {
+            <div class="col-sm-5">
+                @Html.TextBox("keyword",
+                    null,
+                    new {
+                        id = "search_key",
+                        @class = "form-control"
+                    })
+            </div>
+            <div class="col-sm-1">
+                <input class="btn btn-info" type="submit" value="Search" />
+            </div>
+        }
+    </div>
+</div>
+<br />
 <table class="table">
     <thead>
         <tr>
@@ -18,7 +33,7 @@
             <th>
                 Code@*@Html.DisplayNameFor(model => model.Result.Records[0].RoleCode)*@
             </th>
-            <th></th>
+            <th><a asp-action="Create">Create New</a></th>
             <th></th>
         </tr>
     </thead>

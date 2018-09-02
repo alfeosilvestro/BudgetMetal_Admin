@@ -43,6 +43,11 @@ namespace Com.BudgetMetal.ViewModels.Rfq
         public string IndustryOfRfq { get; set; }
         public string SelectedTags { get; set; }
 
+        public DateTime? QuotationOpeningDate { get; set; }
+        public string ContractValue { get; set; }
+        public bool IsPublic { get; set; }
+        public bool SupplierProvideInstallationService { get; set; }
+
         public virtual VmDocumentItem Document { get; set; }
         public virtual List<VmInvitedSupplierItem> InvitedSupplier { get; set; }
         public virtual List<VmPenaltyItem> Penalty { get; set; }
