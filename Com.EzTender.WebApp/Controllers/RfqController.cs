@@ -164,15 +164,12 @@ namespace Com.GenericPlatform.WebApp.Controllers
         // GET: Rfq/Create
         public ActionResult Create()
         {
-            HttpContext.Session.SetString("User_Id", "1");
-            HttpContext.Session.SetString("Company_Id", "1");
-            HttpContext.Session.SetString("UserName", "Peter");
-            HttpContext.Session.SetString("FullName", "Peter");
+          
 
             ViewBag.User_Id = HttpContext.Session.GetString("User_Id");
             ViewBag.Company_Id = HttpContext.Session.GetString("Company_Id");
             ViewBag.UserName = HttpContext.Session.GetString("UserName");
-            ViewBag.FullName = HttpContext.Session.GetString("FullName");
+            ViewBag.FullName = HttpContext.Session.GetString("ContactName");
 
             return View();
         }

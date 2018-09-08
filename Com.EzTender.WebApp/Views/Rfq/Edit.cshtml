@@ -675,16 +675,16 @@
                     for (var k in obj) {
                         var item = obj[k];
                         var selected = "";
-                        var selectedClass = "btn-success";
-                        var invited = "Invite";
+                        var selectedClass = "btn-danger";
+                        var invited = "Select";
                         var invitedSupplier = $("#hdSelectedSuppliers").val();
                        
                         var array = invitedSupplier.split(',');
                         array.forEach(function (i) {
                             if (i == item.Id) {
                                 selected = "checked='checked'";
-                                selectedClass = "btn-danger";
-                                invited = "Invited";
+                                selectedClass = "btn-success";
+                                invited = "Selected";
                             }
                         });
                       

@@ -1,5 +1,6 @@
 ﻿using Com.BudgetMetal.Common;
 using Com.BudgetMetal.ViewModels;
+using Com.BudgetMetal.ViewModels.Sys_User;
 using Com.BudgetMetal.ViewModels.User;
 using System;
 using System.Collections.Generic;
@@ -22,5 +23,9 @@ namespace Com.BudgetMetal.Services.Users
         Task<VmUserItem> GetFormObject();
 
         Task<List<VmUserItem>> GetUserByCompany(int Id);
+
+        Task<VmUserItem> ValidateUser(VM_Sys_User_Sign_In user);
+
+
     }
 }

@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Com.BudgetMetal.Services.Users;
 using Com.BudgetMetal.ViewModels.Sys_User;
+using Com.BudgetMetal.ViewModels.User;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,15 +12,15 @@ namespace Com.GenericPlatform.WebApp.Controllers
 {
     public class UserController : Controller
     {
-        public const string SessionKeyName = "_Name";
-        public const string SessionKeyAge = "_Age";
-        const string SessionKeyTime = "_Time";
+      
 
-        public string SessionInfo_Name { get; private set; }
-        public string SessionInfo_Age { get; private set; }
-        public string SessionInfo_CurrentTime { get; private set; }
-        public string SessionInfo_SessionTime { get; private set; }
-        public string SessionInfo_MiddlewareValue { get; private set; }
+
+        private readonly IUserService userService;
+        public UserController(IUserService userService)
+        {
+            this.userService = userService;
+        }
+
         // GET: User
         public ActionResult SignIn()
         {
@@ -31,16 +33,27 @@ namespace Com.GenericPlatform.WebApp.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
-                if (string.IsNullOrEmpty(HttpContext.Session.GetString(SessionKeyName)))
+                var result = userService.ValidateUser(user);
+                var resultObj = result.Result;
+                if (resultObj.Id == 0)
                 {
-                    HttpContext.Session.SetString(SessionKeyName, "The Doctor");
-                    HttpContext.Session.SetInt32(SessionKeyAge, 773);
+                    ViewBag.ErrorMessage = "Email or Password is invalid!";
+                    return View(user);
+                }
+                else
+                {
+                    // TODO: Add insert logic here
+                    
+                    HttpContext.Session.SetString("User_Id", resultObj.Id.ToString());
+                    HttpContext.Session.SetString("EmailAddress", resultObj.EmailAddress.ToString());
+                    HttpContext.Session.SetString("Company_Id", resultObj.Company_Id.ToString());
+                    HttpContext.Session.SetString("UserType", resultObj.UserType.ToString());
+                    HttpContext.Session.SetString("ContactName", resultObj.ContactName.ToString());
+                    HttpContext.Session.SetString("UserName", resultObj.UserName.ToString());
+
+                    return RedirectToAction("Index", "Home");
                 }
 
-                var name = HttpContext.Session.GetString(SessionKeyName);
-                var age = HttpContext.Session.GetInt32(SessionKeyAge);
-                return RedirectToAction("Index", "Home");
             }
             catch
             {
@@ -54,79 +67,6 @@ namespace Com.GenericPlatform.WebApp.Controllers
             return View();
         }
 
-        // GET: User/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
 
-        // GET: User/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: User/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: User/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: User/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: User/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: User/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }

@@ -15,7 +15,7 @@ namespace Com.BudgetMetal.DataRepository.Users
         //User GetUserById(int Id );
 
         //Role GetRoleFileById(int Id);
-
+        Task<User> GetUser(string email, string password);
 
         Task<List<User>> GetUserByCompany(int Id);
     }

@@ -15,6 +15,7 @@ using Com.BudgetMetal.ViewModels.CodeTable;
 using Com.BudgetMetal.DataRepository.Roles;
 using Com.BudgetMetal.ViewModels.Role;
 using Com.BudgetMetal.DataRepository.UserRoles;
+using Com.BudgetMetal.ViewModels.Sys_User;
 
 namespace Com.BudgetMetal.Services.Users
 {
@@ -33,6 +34,24 @@ namespace Com.BudgetMetal.Services.Users
             CTrepo = _ctRepo;
             roleRepo = _roleRepo;
             userRolesRepo = _userRoleRepo;
+        }
+
+        public async Task<VmUserItem> ValidateUser(VM_Sys_User_Sign_In user)
+        {
+            var dbresult = await repo.GetUser(user.UserName, user.Password);
+           
+            if (dbresult == null)
+            {
+                return new VmUserItem();
+            }
+            else
+            {
+                var result = new VmUserItem();
+                Copy<Com.BudgetMetal.DBEntities.User, VmUserItem>(dbresult, result);
+
+                return result;
+            }
+
         }
 
         public async Task<VmUserPage> GetUserByPage(string keyword, int page, int totalRecords)
@@ -353,7 +372,7 @@ namespace Com.BudgetMetal.Services.Users
             var dbResult = await repo.GetUserByCompany(Id);
             var resultList = new List<VmUserItem>();
 
-            foreach(var item in dbResult)
+            foreach (var item in dbResult)
             {
                 var result = new VmUserItem();
 

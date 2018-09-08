@@ -671,7 +671,7 @@
                             "<tr>" +
                             "<td> <h5>" + item.Name + "</h5><span class='label label-success'>Verified</span>" +
                             " <p class='m-t-15 m-b-30'>" + item.About + "</p></td>" +
-                            "<td><input type='checkbox' class='filled-in supplier' id='chkSupplier_" + item.Id + "'  name='supplier_list[]' value='" + item.Id + "'> <button type='button' id='btnInvite_" + item.Id + "' class='btn btn-success' onclick='checkSupplier(" + item.Id + ")'>Invite</button></td>" +
+                            "<td><input type='checkbox' class='filled-in supplier' id='chkSupplier_" + item.Id + "'  name='supplier_list[]' value='" + item.Id + "'> <button type='button' id='btnInvite_" + item.Id + "' class='btn btn-danger' onclick='checkSupplier(" + item.Id + ")'>Select</button></td>" +
                             "</tr>");
 
                     }
@@ -699,12 +699,12 @@
         if ($("#chkSupplier_" + n).prop("checked")) {
 
             $("#chkSupplier_" + n).prop("checked", false);
-            $("#btnInvite_" + n).removeClass("btn btn-danger").addClass("btn btn-success");
-            $("#btnInvite_" + n).text("Invite");
+            $("#btnInvite_" + n).removeClass("btn btn-success").addClass("btn btn-danger");
+            $("#btnInvite_" + n).text("Select");
         } else {
             $("#chkSupplier_" + n).prop("checked", true);
-            $("#btnInvite_" + n).removeClass("btn btn-success").addClass("btn btn-danger");
-            $("#btnInvite_" + n).text("Invited");
+            $("#btnInvite_" + n).removeClass("btn btn-danger").addClass("btn btn-success");
+            $("#btnInvite_" + n).text("Selected");
         }
         
     }

@@ -29,6 +29,14 @@ namespace Com.BudgetMetal.DataRepository.Users
             return records;
         }
 
+        public async Task<User> GetUser(string email, string password)
+        {
+            var records = await entities.SingleOrDefaultAsync(e => e.IsActive == true && e.IsConfirmed == true
+           && e.EmailAddress == email && e.Password == password);
+
+            return records;
+        }
+
         //public PageResult<User> GetUsersByPage1(string keyword, int page, int totalRecords)
         //{
         //    if (string.IsNullOrEmpty(keyword))
