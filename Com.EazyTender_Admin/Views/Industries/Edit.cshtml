@@ -2,37 +2,39 @@
 
 @{
     ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
 }
-
-<h2>Edit</h2>
-
-<h4>Industry</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" class="form-control" readonly="readonly" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+<div class="container-fluid">
+    <div class="card">
+        <div class="row"></div>
+        <h3>Edit Industry</h3>
+        <hr />
+        <div class="row clearfix">
+            <div class="col-md-8">
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" class="form-control" readonly="readonly" />
+                    <div class="form-line col-md-8">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <br />
+                        <div class="checkbox">
+                            <input type="checkbox" class="chk-col-red" asp-for="IsActive" />
+                            <label for="IsActive"> Is Active</label>
+                        </div>
+                    </div>
+                    <input type="hidden" asp-for="UpdatedBy" class="form-control" />
+                    <div class="form-group col-md-8">
+                        <input type="submit" value="Save" class="btn btn-info" />
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
-                    </label>
-                </div>
-            </div>
-            <input type="hidden" asp-for="UpdatedBy" class="form-control" />
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
-
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
