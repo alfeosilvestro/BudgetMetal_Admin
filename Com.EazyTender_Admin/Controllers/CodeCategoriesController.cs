@@ -56,6 +56,7 @@ namespace Com.EazyTender_Admin.Controllers
             }
             else
             {
+                ViewData["Error"] = result.Error.Message;
                 return View(codeCategoryItem);
             }
         }

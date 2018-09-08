@@ -89,7 +89,17 @@ namespace Com.BudgetMetal.Services.Code_Category
             catch (Exception e)
             {
                 result.IsSuccess = false;
-                result.Error = e;
+                var repoEntity = repo.Get(vmCodeCategoryItem.Id);
+                if (repoEntity != null)
+                {
+                    Exception ee = new Exception("Id is already existed!");
+
+                    result.Error = ee;
+                }
+                else
+                {
+                    result.Error = e;
+                }
             }
 
             return result;

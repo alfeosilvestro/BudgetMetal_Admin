@@ -58,6 +58,8 @@ namespace Com.EazyTender_Admin.Controllers
             {
                 page = Convert.ToInt32(queryPage);
             }
+
+            //0 is for adminpanal
             var result = await svs.GetRfqByPage(0, page, 10);
             return View(result);
         }
@@ -66,6 +68,22 @@ namespace Com.EazyTender_Admin.Controllers
         public ActionResult Details(int id)
         {
             return View();
+        }
+
+        // GET: Rfq/Edit/5
+        [HttpGet]
+        public async Task<ActionResult> View(int id)
+        {
+            try
+            {
+                var result = await svs.GetSingleRfqById(id);
+
+                return View(result);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index");
+            }
         }
 
         // GET: Rfq/Create
@@ -157,31 +175,93 @@ namespace Com.EazyTender_Admin.Controllers
         }
 
         // GET: Rfqs/Edit/5
+        [HttpGet]
         public async Task<ActionResult> Edit(int id)
         {
-            var obj = await svs.GetRfqtById(id);
-            return View(obj);
+            try
+            {
+                var result = await svs.GetSingleRfqById(id);
+
+                return View(result);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index");
+            }
+
         }
 
         // POST: Rfqs/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int id, VmRfqItem vmItem)
+        public ActionResult Edit(VmRfqItem Rfq)
         {
-            if (id != vmItem.Id)
+            try
             {
-                return NotFound();
-            }
+                Rfq.SelectedTags = Request.Form["SelectedTags"].ToString();
+                //var listAttachment = new List<VmAttachmentItem>();
+                int i = 0;
+                foreach (var itemFile in Request.Form.Files)
+                {
+                    if (itemFile.Length > 0)
+                    {
+                        var tmpFileNameArr = itemFile.FileName.ToString().Split("\\");
+                        string tmpFileName = tmpFileNameArr.Last();
+                        var att = new VmAttachmentItem
+                        {
+                            FileName = tmpFileName,
+                            FileSize = itemFile.Length,
+                            FileBinary = Convert.ToBase64String(ConvertFiletoBytes(itemFile)),
+                            Description = Request.Form["fileDescriptionRFQ[]"].ToArray()[i].ToString(),
+                            CreatedBy = Rfq.CreatedBy,
+                            UpdatedBy = Rfq.UpdatedBy
+                        };
 
-            var result = await svs.Update(vmItem);
+                        Rfq.Document.Attachment.Add(att);
+                    }
+                    i++;
+                }
 
-            if (result.IsSuccess)
-            {
-                return RedirectToAction(nameof(Index));
+                //Rfq.Document.Attachment = listAttachment;
+
+                var listInvitedSupplier = new List<VmInvitedSupplierItem>();
+                var arrInvitedSupplier = Request.Form["supplier_list[]"].ToArray();
+                foreach (var itemSupplier in arrInvitedSupplier)
+                {
+                    var supplier = new VmInvitedSupplierItem();
+                    supplier.Company_Id = Convert.ToInt32(itemSupplier);
+
+                    listInvitedSupplier.Add(supplier);
+                }
+                Rfq.InvitedSupplier = listInvitedSupplier;
+
+                var listDocumentUser = new List<VmDocumentUserItem>();
+                var arrUser = Request.Form["documentUserId[]"].ToArray();
+                var arrRole = Request.Form["documentUserRole[]"].ToArray();
+                for (int j = 0; j < arrUser.Length; j++)
+                {
+                    var userId = arrUser[j];
+                    var rolesId = arrRole[j];
+                    var roles = rolesId.Split(',');
+                    foreach (var item in roles)
+                    {
+                        var documentUser = new VmDocumentUserItem
+                        {
+                            User_Id = Convert.ToInt32(userId),
+                            Role_Id = Convert.ToInt32(item)
+                        };
+                        listDocumentUser.Add(documentUser);
+                    }
+                }
+                Rfq.Document.DocumentUser = listDocumentUser;
+
+                string documentNo = svs.UpdateRFQ(Rfq);
+
+                return RedirectToAction("Index");
             }
-            else
+            catch (Exception ex)
             {
-                return View(vmItem);
+                return View();
             }
         }
 

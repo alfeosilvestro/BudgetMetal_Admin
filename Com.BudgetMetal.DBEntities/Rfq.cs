@@ -6,8 +6,7 @@ namespace Com.BudgetMetal.DBEntities
 {
     [Table("RFQ")]
     public class Rfq : GenericEntity
-    {
-              
+    {              
         public string InternalRefrenceNo { get; set; }
         public string InternalProjectName { get; set; }
         public DateTime? StartRfqdate { get; set; }
@@ -19,6 +18,10 @@ namespace Com.BudgetMetal.DBEntities
         public string MessageToSupplier { get; set; }
         public string IndustryOfRfq { get; set; }
         public string SelectedTags { get; set; }
+        public DateTime? QuotationOpeningDate { get; set; }
+        public string ContractValue { get; set; }
+        public bool IsPublic { get; set; }
+        public bool SupplierProvideInstallationService { get; set; }
 
         public int Document_Id { get; set; }
 

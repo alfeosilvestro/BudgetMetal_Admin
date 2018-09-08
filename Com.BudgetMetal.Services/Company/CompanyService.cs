@@ -1,4 +1,5 @@
 ﻿using Com.BudgetMetal.Common;
+using Com.BudgetMetal.DataRepository.Code_Table;
 using Com.BudgetMetal.DataRepository.Company;
 using Com.BudgetMetal.Services.Base;
 using Com.BudgetMetal.ViewModels;
@@ -13,10 +14,12 @@ namespace Com.BudgetMetal.Services.Company
     public class CompanyService : BaseService, ICompanyService
     {
         private readonly ICompanyRepository repo;
+        private readonly ICodeTableRepository companyRepo;
 
-        public CompanyService(ICompanyRepository repo)
+        public CompanyService(ICompanyRepository repo, ICodeTableRepository companyRepo)
         {
             this.repo = repo;
+            this.companyRepo = companyRepo;
         }
 
         public async Task<VmCompanyPage> GetCompanyByPage(string keyword, int page, int totalRecords)
@@ -84,6 +87,19 @@ namespace Com.BudgetMetal.Services.Company
                 r.SubmittedQuotation = 0;
                 r.BuyerAvgRating = 0;
                 r.SupplierAvgRating = 0;
+
+                //Max Default RFQ Per Week
+                var codeTableRepo = companyRepo.Get(10100001);
+
+                int maxQuotationPerWeek = Convert.ToInt32(codeTableRepo.Result.Value);
+
+                //Max Default Quote Per Week
+                codeTableRepo = companyRepo.Get(10100002);
+
+                int maxRFQPerWeek = Convert.ToInt32(codeTableRepo.Result.Value);
+
+                r.MaxQuotationPerWeek = maxQuotationPerWeek;
+                r.MaxRFQPerWeek = maxRFQPerWeek;
 
                 if (r.CreatedBy.IsNullOrEmpty())
                 {

@@ -47,6 +47,8 @@ namespace Com.BudgetMetal.DB
         public virtual DbSet<SupplierServiceTags> SupplierServiceTags { get; set; }
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<UserRoles> UserRoles { get; set; }
+        public virtual DbSet<QuotationRequirement> QuotationRequirement { get; set; }
+        public virtual DbSet<CompanySupplier> CompanySupplier { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -6,8 +6,7 @@ using Com.BudgetMetal.ViewModels.Rfq;
 namespace Com.BudgetMetal.ViewModels.Requirement
 {
     public class VmRequirementItem : ViewModelItemBase
-    {
-       
+    {       
         public int Rfq_Id { get; set; }
 
         [Required]
@@ -15,9 +14,6 @@ namespace Com.BudgetMetal.ViewModels.Requirement
 
         [Required]
         public string Description { get; set; }
-
-        [Required]
-        public int? Quantity { get; set; }
 
         public virtual VmRfqItem Rfq { get; set; }
     }

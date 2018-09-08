@@ -2,29 +2,36 @@
 
 @{
     ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
-<h2>Create</h2>
 
-<h4>Industery</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+<div class="container-fluid">
+    <div class="card">
+        <div class="row"></div>
+        <h3>Create Industery</h3>
+        <div class="row clearfix">
+            <div class="col-md-8">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-line col-md-8">
+                        <br />
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <input type="hidden" asp-for="CreatedBy" class="form-control" />
+                    <div class="form-group col-md-6">
+                        <br />
+                        <input type="submit" value="Create" class="btn btn-info" />
+                    </div>
+                    <br />
+                </form>
             </div>
-            <input type="hidden" asp-for="CreatedBy" class="form-control" />
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
-
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
