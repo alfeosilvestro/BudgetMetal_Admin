@@ -84,7 +84,6 @@ namespace Com.EazyTender_Admin.Controllers
             {
                 return RedirectToAction("Index");
             }
-
         }
 
         // GET: Rfq/Create

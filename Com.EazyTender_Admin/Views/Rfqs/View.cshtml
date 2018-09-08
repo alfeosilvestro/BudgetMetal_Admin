@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "View";
-    Layout = "~/Views/Shared/_Layout1.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @{
@@ -186,7 +186,7 @@
                                     <tr>
                                         <th width="30%">Service Name</th>
                                         <th width="50%">Description</th>
-                                        <th width="10%">Quantity</th>
+                                        @*<th width="10%">Quantity</th>*@
 
                                     </tr>
                                 </thead>
@@ -203,9 +203,9 @@
                                                     <td>
                                                         @item.Description
                                                     </td>
-                                                    <td>
+                                                    @*<td>
                                                         @item.Quantity
-                                                    </td>
+                                                    </td>*@
 
                                                 </tr>
                                             }

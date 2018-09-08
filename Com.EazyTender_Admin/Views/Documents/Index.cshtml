@@ -2,138 +2,148 @@
 
 @{
     ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
-<h2>Index</h2>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<div class="header">
-    <div class="row">
-        @using (Html.BeginForm("Index", "Documents", FormMethod.Get))
-        {
-            <div class="col-sm-5">
-                @Html.TextBox("Keyword",
-                    null,
-                    new {
-                        id = "search_key",
-                        @class = "form-control"
-                    })
-            </div>
-            <div class="col-sm-1">
-                <input class="btn btn-info" type="submit" value="Search" />
-            </div>
-        }
-    </div>
-</div>
-<br />
-<div class="body-content">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    Title
-                </th>
-                <th>
-                    Contact Person
-                </th>
-                <th>
-                    Document No.
-                </th>
-                <th>
-                    SubmissionDate
-                </th>
-                <th>
-                    Company
-                </th>
-                <th>
-                    Status
-                </th>
-                <th>
-                    Type
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Result.Records)
+<div class="card">
+    <div class="row"></div>
+    <h3>Document</h3>
+
+    <div class="header">
+        <div class="row">
+            @using (Html.BeginForm("Index", "Documents", FormMethod.Get))
             {
-                <tr>
-                    <td> @item.Title </td>
-                    <td> @item.ContactPersonName </td>
-                    <td> @item.DocumentNo </td>
-                    <td> @item.SubmissionDate </td>
-                    <td> @(item.Company == null ? "" : item.Company.Name)</td>
-                    <td> @(item.DocumentStatus == null ? "" : item.DocumentStatus.Name)</td>
-                    <td> @(item.DocumentType == null ? "" : item.DocumentType.Name)</td>
-                    <td hidden="hidden"> @item.Id </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
-                </tr>
+                <div class="col-sm-5">
+                    @Html.TextBox("Keyword",
+         null,
+         new {
+             id = "search_key",
+             @class = "form-control"
+         })
+                </div>
+                <div class="col-sm-1">
+                    <input class="btn btn-info" type="submit" value="Search" />
+                </div>
             }
-        </tbody>
-    </table>
-
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="pagination pull-right" style="padding:10px;">
+        </div>
+    </div>
+    <br />
+    <div class="body-content">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        #
+                    </th>
+                    <th>
+                        Title
+                    </th>
+                    <th>
+                        Contact Person
+                    </th>
+                    <th>
+                        Document No.
+                    </th>
+                    <th>
+                        SubmissionDate
+                    </th>
+                    <th>
+                        Company
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                    <th><a asp-action="Create">Create New</a></th>
+                </tr>
+            </thead>
+            <tbody>
                 @{
-                    int currentPage = Model.Result.CurrentPage;
-                    int totalPage = Model.Result.TotalPage;
-                    int previousPage = Model.Result.PreviousPage;
-                    int nextPage = Model.Result.NextPage;
-
-                    int startPage = currentPage - 5;
-                    int endPage = currentPage + 4;
-
-                    if (startPage <= 0)
+                    int counter = 1;
+                    foreach (var item in Model.Result.Records)
                     {
-                        endPage -= (startPage - 1);
-                        startPage = 1;
-                    }
-                    if (endPage > totalPage)
-                    {
-                        endPage = totalPage;
-                        if (endPage > 10)
-                        {
-                            startPage = endPage - 9;
-                        }
-                    }
-
-                    @if (endPage > 1)
-                    {
-                        <ul class="pagination">
-                            @if (currentPage > 1)
-                            {
-                                <li>
-                                    <a href="~/Documents">First</a>
-                                </li>
-                                <li>
-                                    <a href="?page=@(currentPage - 1)">Previous</a>
-                                </li>
-                            }
-
-                            @for (int page = startPage; page <= endPage; page++)
-                            {
-                                <li class="@(page == currentPage ? "active" : "")">
-                                    <a class='btn btn-md btn-default' href="?page=@(page)"> @(page) </a>
-                                </li>
-                            }
-
-                            @if (currentPage < totalPage)
-                            {
-                                <li>
-                                    <a href="?page=@(currentPage + 1)">Next</a>
-                                </li>
-                                <li>
-                                    <a href="?page=@(totalPage)">Last</a>
-                                </li>
-                            }
-                        </ul>
+                        <tr>
+                            <td> @counter </td>
+                            <td> @item.Title </td>
+                            <td> @item.ContactPersonName </td>
+                            <td> @item.DocumentNo </td>
+                            <td> @item.SubmissionDate </td>
+                            <td> @(item.Company == null ? "" : item.Company.Name)</td>
+                            <td> @(item.DocumentStatus == null ? "" : item.DocumentStatus.Name)</td>
+                            <td> @(item.DocumentType == null ? "" : item.DocumentType.Name)</td>
+                            <td hidden="hidden"> @item.Id </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                            </td>
+                        </tr>
+                        counter++;
                     }
                 }
+            </tbody>
+        </table>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="pagination pull-right" style="padding:10px;">
+                    @{
+                        int currentPage = Model.Result.CurrentPage;
+                        int totalPage = Model.Result.TotalPage;
+                        int previousPage = Model.Result.PreviousPage;
+                        int nextPage = Model.Result.NextPage;
+
+                        int startPage = currentPage - 5;
+                        int endPage = currentPage + 4;
+
+                        if (startPage <= 0)
+                        {
+                            endPage -= (startPage - 1);
+                            startPage = 1;
+                        }
+                        if (endPage > totalPage)
+                        {
+                            endPage = totalPage;
+                            if (endPage > 10)
+                            {
+                                startPage = endPage - 9;
+                            }
+                        }
+
+                        @if (endPage > 1)
+                        {
+                            <ul class="pagination">
+                                @if (currentPage > 1)
+                                {
+                                    <li>
+                                        <a class='btn btn-md btn-primary' href="~/Documents">First</a>
+                                    </li>
+                                    <li>
+                                        <a class='btn btn-md btn-primary' href="?page=@(currentPage - 1)">Previous</a>
+                                    </li>
+                                }
+
+                                @for (int page = startPage; page <= endPage; page++)
+                                {
+                                    <li class="@(page == currentPage ? "active" : "")">
+                                        <a class='btn btn-md btn-primary' href="?page=@(page)"> @(page) </a>
+                                    </li>
+                                }
+
+                                @if (currentPage < totalPage)
+                                {
+                                    <li>
+                                        <a class='btn btn-md btn-primary' href="?page=@(currentPage + 1)">Next</a>
+                                    </li>
+                                    <li>
+                                        <a class='btn btn-md btn-primary' href="?page=@(totalPage)">Last</a>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    }
+                </div>
             </div>
         </div>
     </div>

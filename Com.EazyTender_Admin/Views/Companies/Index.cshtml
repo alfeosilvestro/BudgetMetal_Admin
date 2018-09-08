@@ -2,128 +2,137 @@
 @model Com.BudgetMetal.ViewModels.Company.VmCompanyPage
 @{
     ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
 }
+<div class="card">
+    <div class="row"></div>
+    <h2>Company</h2>
 
-<h2>Company</h2>
-
-<div class="header">
-    <div class="row">
-        @using (Html.BeginForm("Index", "Companies", FormMethod.Get))
-        {
-            <div class="col-sm-5">
-                @Html.TextBox("keyword",
-                    null,
-                    new {
-                        id = "search_key",
-                        @class = "form-control"
-                    })
-            </div>
-            <div class="col-sm-1">
-                <input class="btn btn-info" type="submit" value="Search" />
-            </div>
-        }
+    <div class="header">
+        <div class="row">
+            @using (Html.BeginForm("Index", "Companies", FormMethod.Get))
+            {
+                <div class="col-sm-5">
+                    @Html.TextBox("keyword",
+         null,
+         new {
+             id = "search_key",
+             @class = "form-control"
+         })
+                </div>
+                <div class="col-sm-1">
+                    <input class="btn btn-info" type="submit" value="Search" />
+                </div>
+            }
+        </div>
     </div>
-</div>
-<br />
-<table class="table">
-    <thead>
-        <tr>
-            @*<th>ID</th>*@
-            <th> Name </th>
-            <th> Address </th>
-            <th> Domain </th>
-            <th> Registration No. </th>
-            <th> About </th>
-            <th> IsVerified </th>
-            <th> SupplierAvgRating </th>
-            <th> BuyerAvgRating </th>
-            <th> AwardedQuotation </th>
-            <th> SubmittedQuotation </th>
-            <th><a asp-action="Create">Create New</a></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Result.Records)
-        {
+    <br />
+    <table class="table table-hover">
+        <thead>
             <tr>
-                @*<td> @item.Id </td>*@
-                <td> @item.Name </td>
-                <td> @item.Address </td>
-                <td> @item.Domain </td>
-                <td> @item.RegNo </td>
-                <td> @item.About </td>
-                <td> @item.IsVerified </td>
-                <td> @item.SupplierAvgRating </td>
-                <td> @item.BuyerAvgRating </td>
-                <td> @item.AwardedQuotation </td>
-                <td> @item.SubmittedQuotation </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
+                @*<th>ID</th>*@
+                <th> # </th>
+                <th> Name </th>
+                <th> Address </th>
+                <th> Domain </th>
+                <th> Registration No. </th>
+                <th> About </th>
+                <th> IsVerified </th>
+                <th> SupplierAvgRating </th>
+                <th> BuyerAvgRating </th>
+                <th> AwardedQuotation </th>
+                <th> SubmittedQuotation </th>
+                <th><a asp-action="Create">Create New</a></th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
-<div class="row">
-    <div class="col-sm-12">
-        <div class="pagination pull-right" style="padding:10px;">
+        </thead>
+        <tbody>
             @{
-                int currentPage = Model.Result.CurrentPage;
-                int totalPage = Model.Result.TotalPage;
-                int previousPage = Model.Result.PreviousPage;
-                int nextPage = Model.Result.NextPage;
-
-                int startPage = currentPage - 5;
-                int endPage = currentPage + 4;
-
-                if (startPage <= 0)
+                int counter = 1;
+                foreach (var item in Model.Result.Records)
                 {
-                    endPage -= (startPage - 1);
-                    startPage = 1;
-                }
-                if (endPage > totalPage)
-                {
-                    endPage = totalPage;
-                    if (endPage > 10)
-                    {
-                        startPage = endPage - 9;
-                    }
-                }
-
-                @if (endPage > 1)
-                {
-                    <ul class="pagination">
-                        @if (currentPage > 1)
-                        {
-                            <li>
-                                <a href="~/Documents">First</a>
-                            </li>
-                            <li>
-                                <a href="?page=@(currentPage - 1)">Previous</a>
-                            </li>
-                        }
-
-                        @for (int page = startPage; page <= endPage; page++)
-                        {
-                            <li class="@(page == currentPage ? "active" : "")">
-                                <a class='btn btn-md btn-default' href="?page=@(page)"> @(page) </a>
-                            </li>
-                        }
-
-                        @if (currentPage < totalPage)
-                        {
-                            <li>
-                                <a href="?page=@(currentPage + 1)">Next</a>
-                            </li>
-                            <li>
-                                <a href="?page=@(totalPage)">Last</a>
-                            </li>
-                        }
-                    </ul>
+                    <tr>
+                        @*<td> @item.Id </td>*@
+                        <td> @counter </td>
+                        <td> @item.Name </td>
+                        <td> @item.Address </td>
+                        <td> @item.Domain </td>
+                        <td> @item.RegNo </td>
+                        <td> @item.About </td>
+                        <td> @item.IsVerified </td>
+                        <td> @item.SupplierAvgRating </td>
+                        <td> @item.BuyerAvgRating </td>
+                        <td> @item.AwardedQuotation </td>
+                        <td> @item.SubmittedQuotation </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                    counter = counter + 1;
                 }
             }
+        </tbody>
+    </table>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="pagination pull-right" style="padding:10px;">
+                @{
+                    int currentPage = Model.Result.CurrentPage;
+                    int totalPage = Model.Result.TotalPage;
+                    int previousPage = Model.Result.PreviousPage;
+                    int nextPage = Model.Result.NextPage;
+
+                    int startPage = currentPage - 5;
+                    int endPage = currentPage + 4;
+
+                    if (startPage <= 0)
+                    {
+                        endPage -= (startPage - 1);
+                        startPage = 1;
+                    }
+                    if (endPage > totalPage)
+                    {
+                        endPage = totalPage;
+                        if (endPage > 10)
+                        {
+                            startPage = endPage - 9;
+                        }
+                    }
+
+                    @if (endPage > 1)
+                    {
+                        <ul class="pagination">
+                            @if (currentPage > 1)
+                            {
+                                <li>
+                                    <a class='btn btn-md btn-primary' href="~/Documents">First</a>
+                                </li>
+                                <li>
+                                    <a class='btn btn-md btn-primary' href="?page=@(currentPage - 1)">Previous</a>
+                                </li>
+                            }
+
+                            @for (int page = startPage; page <= endPage; page++)
+                            {
+                                <li class="@(page == currentPage ? "active" : "")">
+                                    <a class='btn btn-md btn-primary' href="?page=@(page)"> @(page) </a>
+                                </li>
+                            }
+
+                            @if (currentPage < totalPage)
+                            {
+                                <li>
+                                    <a class='btn btn-md btn-primary' href="?page=@(currentPage + 1)">Next</a>
+                                </li>
+                                <li>
+                                    <a class='btn btn-md btn-primary' href="?page=@(totalPage)">Last</a>
+                                </li>
+                            }
+                        </ul>
+                    }
+                }
+            </div>
         </div>
     </div>
 </div>

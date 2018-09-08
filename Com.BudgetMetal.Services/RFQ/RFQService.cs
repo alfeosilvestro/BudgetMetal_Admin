@@ -172,7 +172,7 @@ namespace Com.BudgetMetal.Services.RFQ
             {
                 foreach (var item in rfq.Requirement)
                 {
-                    if (item.ServiceName != null && item.Quantity != null && item.Description != null)
+                    if (item.ServiceName != null && item.Description != null)
                     {
                         var dbRequirement = new Com.BudgetMetal.DBEntities.Requirement();
 
@@ -323,7 +323,7 @@ namespace Com.BudgetMetal.Services.RFQ
             {
                 foreach (var item in rfq.Requirement)
                 {
-                    if (item.ServiceName != null && item.Quantity != null && item.Description != null)
+                    if (item.ServiceName != null && item.Description != null)
                     {
                         var dbRequirement = new Com.BudgetMetal.DBEntities.Requirement();
 
