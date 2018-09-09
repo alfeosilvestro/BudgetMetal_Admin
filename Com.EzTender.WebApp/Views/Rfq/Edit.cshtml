@@ -20,9 +20,7 @@
                 <div class="header">
                     <h2>
                         General Information
-
                     </h2>
-
                 </div>
                 <div class="body">
 
@@ -45,7 +43,7 @@
                                     <input type="hidden" asp-for="Document_Id">
                                     <input type="hidden" asp-for="Document.Id">
                                     <input type="hidden" asp-for="IsActive" />
-                                           <input type="hidden" asp-for="Document.IsActive" />
+                                    <input type="hidden" asp-for="Document.IsActive" />
                                 </div>
                             </div>
                         </div>
@@ -138,12 +136,39 @@
                                 </div>
 
                                 <div class="col-sm-3">
+                                    <label for="QuotationOpeningDate">Quotation Opening Date</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" asp-for="QuotationOpeningDate" class="form-control datepicker" placeholder="Quotation Opening Date">
+                                            <span asp-validation-for="QuotationOpeningDate" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <label for="quote_no">Contract Value</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" asp-for="ContractValue" class="form-control" placeholder="Contract Value">
+                                            <span asp-validation-for="ContractValue" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
                                     <input type="checkbox" asp-for="SupplierProvideMaterial" class="chk-col-red" />
                                     <label for="SupplierProvideMaterial">Supplier to Provide Materials</label>
                                 </div>
                                 <div class="col-sm-3">
                                     <input type="checkbox" asp-for="SupplierProvideTransport" class="chk-col-red" />
                                     <label for="SupplierProvideTransport">Supplier to Provide Transport</label>
+                                </div>
+                                <div class="col-sm-3">
+                                    <input type="checkbox" asp-for="IsPublic" class="chk-col-red" />
+                                    <label for="IsPublic">Public</label>
+                                </div>
+                                <div class="col-sm-3">
+                                    <input type="checkbox" asp-for="SupplierProvideInstallationService" class="chk-col-red" />
+                                    <label for="SupplierProvideInstallationService">Supplier Provide Installation Service</label>
                                 </div>
                                 <div class="col-sm-6">
                                     &nbsp;
@@ -153,9 +178,8 @@
                                     <label for="quote_no">Messages to Suppliers</label>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <textarea rows="3" asp-for="MessageToSupplier" class="form-control no-resize"></textarea>
+                                            <textarea rows="3" asp-for="MessageToSupplier" placeholder="Messages to Suppliers" class="form-control no-resize"></textarea>
                                             <span asp-validation-for="MessageToSupplier" class="text-danger"></span>
-                                            <label class="form-label">Messages to Suppliers</label>
                                         </div>
                                     </div>
                                 </div>
@@ -187,7 +211,7 @@
                                                     <td>
                                                         <input type="text" name="Requirement[@i].Description" class="form-control" value="@item.Description" />
                                                     </td>
-                                                    
+
                                                     <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveRequirementRow(this)'>Remove</button></td>
                                                 </tr>
                                                 i++;
@@ -223,8 +247,8 @@
                                             foreach (var item in Model.Sla)
                                             {
                                                 <tr>
-                                                    <td><input type="text" name="Sla[@i].Requirement" class="form-control"  value="@item.Requirement"/></td>
-                                                    <td><input type="text" name="Sla[@i].Description" class="form-control"  value="@item.Description"/></td>
+                                                    <td><input type="text" name="Sla[@i].Requirement" class="form-control" value="@item.Requirement" /></td>
+                                                    <td><input type="text" name="Sla[@i].Description" class="form-control" value="@item.Description" /></td>
                                                     <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveSLARow(this)'>Remove</button></td>
                                                 </tr>
                                                 i++;
@@ -260,9 +284,9 @@
                                             foreach (var item in Model.Penalty)
                                             {
                                                 <tr>
-                                                    <td><input type="text" name="Penalty[@i].BreachOfServiceDefinition" class="form-control" value="@item.BreachOfServiceDefinition"/></td>
-                                                    <td><input type="text" name="Penalty[@i].PenaltyAmount" class="form-control" value="@item.PenaltyAmount"/></td>
-                                                    <td><input type="text" name="Penalty[@i].Description" class="form-control" value="@item.Description"/></td>
+                                                    <td><input type="text" name="Penalty[@i].BreachOfServiceDefinition" class="form-control" value="@item.BreachOfServiceDefinition" /></td>
+                                                    <td><input type="text" name="Penalty[@i].PenaltyAmount" class="form-control" value="@item.PenaltyAmount" /></td>
+                                                    <td><input type="text" name="Penalty[@i].Description" class="form-control" value="@item.Description" /></td>
                                                     <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePenaltyRow(this)'>Remove</button></td>
                                                 </tr>
                                                 i++;
@@ -302,9 +326,9 @@
                                             {
                                                 <tr>
                                                     <td><input type="text" name="RfqPriceSchedule[@i].ItemName" class="form-control" value="@item.ItemName" /> </td>
-                                                    <td><input type="text" name="RfqPriceSchedule[@i].ItemDescription" class="form-control" value="@item.ItemDescription"/></td>
-                                                    <td><input type="text" name="RfqPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode"/></td>
-                                                    <td><input type="text" name="RfqPriceSchedule[@i].QuantityRequired" class="form-control" value="@item.QuantityRequired"/></td>
+                                                    <td><input type="text" name="RfqPriceSchedule[@i].ItemDescription" class="form-control" value="@item.ItemDescription" /></td>
+                                                    <td><input type="text" name="RfqPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>
+                                                    <td><input type="text" name="RfqPriceSchedule[@i].QuantityRequired" class="form-control" value="@item.QuantityRequired" /></td>
                                                     <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePricingRow(this)'>Remove</button></td>
                                                 </tr>
                                                 i++;
@@ -340,10 +364,10 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-3">
-                                    @{ 
+                                    @{
                                         string selectedSuppliers = string.Join(",", Model.InvitedSupplier.Select(m => m.Company_Id).ToArray());
                                     }
-                                    <input type="hidden" id="hdSelectedSuppliers" value="@selectedSuppliers"/>
+                                    <input type="hidden" id="hdSelectedSuppliers" value="@selectedSuppliers" />
                                     <a class="btn btn-success" id="btnLoadSupplier">Search Supplier</a>
                                 </div>
                             </div>
@@ -441,12 +465,12 @@
                                                             foreach (string tmpRole in item.Roles)
                                                             {
 
-                                                                <span class='label bg-deep-purple'>@tmpRole</span> 
+                                                                <span class='label bg-deep-purple'>@tmpRole</span>
                                                             }
                                                         }
 
                                                     </td>
-                                                   
+
                                                     <td>
                                                         @{
                                                             if (i > 0)
@@ -480,7 +504,7 @@
             </div>
         </div>
     </div>
-   
+
 </form>
 
 <!-- Editable Table Plugin Js -->
@@ -514,7 +538,7 @@
     $(function () {
 
         loadIndustry();
-        
+
         loadUser();
         loadRole()
        // $('#StartRfqdate').datepicker("setDate", new Date(2008, 9, 03));
@@ -522,9 +546,9 @@
 
     $("#tabinvited_suppliers").click(function () {
         //alert($('#ddlIndustry').val());
-        
-        
-        
+
+
+
     });
 
     $("#btnSubmit").click(function () {
@@ -675,7 +699,7 @@
                         var selectedClass = "btn-danger";
                         var invited = "Select";
                         var invitedSupplier = $("#hdSelectedSuppliers").val();
-                       
+
                         var array = invitedSupplier.split(',');
                         array.forEach(function (i) {
                             if (i == item.Id) {
@@ -684,7 +708,7 @@
                                 invited = "Selected";
                             }
                         });
-                      
+
 
                         $('#invitedSupplierTable > tbody').append(
                             "<tr>" +
@@ -800,12 +824,12 @@ function loadIndustry() {
                                 selected = "selected";
                             }
                         });
-                        
+
 
                         var tmpstring = "<option value='" + item.Id + "' " + selected + ">" + item.Name + "</option>"
                         $('#ddlServiceTags').append(tmpstring);
                     }
-                    
+
                     $("#ddlServiceTags").selectpicker('refresh');
                     $("#hdSelectedTags").val("0");
                     if ($("#loadinvitedsupplier").val() == "0") {

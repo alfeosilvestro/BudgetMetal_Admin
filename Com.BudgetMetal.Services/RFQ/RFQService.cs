@@ -680,7 +680,6 @@ namespace Com.BudgetMetal.Services.RFQ
             }
             resultObject.Sla = listSla;
 
-
             var listPenalty = new List<VmPenaltyItem>();
             if (dbResult.Penalty != null)
             {
