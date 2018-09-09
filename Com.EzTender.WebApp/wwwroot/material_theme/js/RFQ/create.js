@@ -10,9 +10,6 @@ $("#btnNewRequirement").click(function () {
         "<td> " +
         "<input type='text' name='Requirement[" + detailRequirementLastId + "].Description' class='form-control' />" +
         "</td> " +
-        "<td>" +
-        "<input type='text' name='Requirement[" + detailRequirementLastId + "].Quantity' class='form-control' />" +
-        "</td> " +
         "<td> " +
         "<button type='button' class='btn btn-danger waves-effect' onclick='RemoveRequirementRow(this)'> Remove</button >" +
         "</td> " +

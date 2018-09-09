@@ -13,8 +13,6 @@ namespace Com.GenericPlatform.WebApp.Controllers
     public class UserController : Controller
     {
       
-
-
         private readonly IUserService userService;
         public UserController(IUserService userService)
         {

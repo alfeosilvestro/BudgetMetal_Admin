@@ -50,7 +50,8 @@ namespace Com.GenericPlatform.WebApp.Controllers
             {
                 page = Convert.ToInt32(queryPage);
             }
-            var result = await rfqService.GetRfqByPage(0, page, 10);
+            var Company_Id = HttpContext.Session.GetString("Company_Id");
+            var result = await rfqService.GetRfqByPage(Convert.ToInt32(Company_Id), page, 10);
             return View(result);
         }
 

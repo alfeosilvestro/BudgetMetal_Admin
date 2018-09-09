@@ -9,7 +9,7 @@ namespace Com.BudgetMetal.DataRepository.RFQ
 {
     public interface IRfqRepository : IGenericRepository<Com.BudgetMetal.DBEntities.Rfq>
     {
-        Task<PageResult<Com.BudgetMetal.DBEntities.Rfq>> GetRfqByPage(int documentOwner, int page, int totalRecords);
+        Task<PageResult<Com.BudgetMetal.DBEntities.Rfq>> GetRfqByPage(int documentOwner, int page, int totalRecords, int statusId, string keyword);
 
         Task<Com.BudgetMetal.DBEntities.Rfq> GetSingleRfqById(int id);
     }

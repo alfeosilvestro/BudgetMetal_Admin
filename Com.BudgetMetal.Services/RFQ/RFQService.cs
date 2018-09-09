@@ -62,11 +62,11 @@ namespace Com.BudgetMetal.Services.RFQ
             this.repoUser = repoUser;
         }
 
-        public async Task<VmRfqPage> GetRfqByPage(int documentOwner, int page,int totalRecords)
+        public async Task<VmRfqPage> GetRfqByPage(int documentOwner, int page,int totalRecords, int statusId = 0, string keyword = "")
         {
             var dbPageResult = await repoRfq.GetRfqByPage(documentOwner,
                 (page == 0 ? Constants.app_firstPage : page),
-                (totalRecords == 0 ? Constants.app_totalRecords : totalRecords));
+                (totalRecords == 0 ? Constants.app_totalRecords : totalRecords),statusId, keyword);
 
             //var dbPageResult = repo.GetCodeTableByPage(keyword,
             //    (page == 0 ? Constants.app_firstPage : page),
