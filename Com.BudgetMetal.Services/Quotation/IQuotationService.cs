@@ -20,5 +20,7 @@ namespace Com.BudgetMetal.Services.Quotation
         Task<VmQuotationItem> GetSingleQuotationById(int id);
 
         string UpdateQuotation(VmQuotationItem quotationItem);
+
+        bool CheckQuotationLimit(int companyId);
     }
 }

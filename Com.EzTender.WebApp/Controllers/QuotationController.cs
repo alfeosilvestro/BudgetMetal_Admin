@@ -150,7 +150,11 @@ namespace Com.EzTender.WebApp.Controllers
                 ViewBag.Company_Id = HttpContext.Session.GetString("Company_Id");
                 ViewBag.UserName = HttpContext.Session.GetString("UserName");
                 ViewBag.FullName = HttpContext.Session.GetString("ContactName");
-
+                if (quotationService.CheckQuotationLimit(Convert.ToInt32(HttpContext.Session.GetString("Company_Id"))) == false)
+                {
+                    TempData["message"] = "Quotation Limitation per week is exceed. please contact admin to upgrade your account.";
+                    return RedirectToAction("Index");
+                }
                 var result = await quotationService.InitialLoadByRfqId(id);
 
                 return View(result);

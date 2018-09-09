@@ -19,6 +19,15 @@
 
             </div>
             <div class="body">
+                @{
+                    if (TempData["message"] != null)
+                    {
+                        <div class="alert alert-warning alert-dismissible" role="alert">
+                            <button class="close" aria-label="Close" type="button" data-dismiss="alert"><span aria-hidden="true">×</span></button>
+                           @TempData["message"]
+                        </div>
+                    }
+                }
 
                 <div class="row clearfix">
                     <table class="table table-striped">
@@ -43,7 +52,7 @@
                                         <td> <a type="button" class="btn btn-warning" href='@Url.Action("View","Rfq",new { id= item.Id })'>View</a>  <a type="button" class="btn btn-success" href='@Url.Action("Edit","Rfq",new { id= item.Id })'>Edit</a>  <a type="button" class="btn btn-danger" href='@Url.Action("Create","Quotation",new { id= item.Id })'>Create Quotation</a>  </td>
                                         <td>@item.Document.DocumentNo</td>
                                         <td>@item.Document.Company.Name</td>
-                                        <td>@item.Document.DocumentStatus.Name</td> 
+                                        <td>@item.Document.DocumentStatus.Name</td>
                                         <td>@item.InternalRefrenceNo</td>
                                         <td>@item.InternalProjectName</td>
                                         <td>@item.IndustryOfRfq</td>
@@ -57,37 +66,37 @@
                     <div class="row">
                         <div class="col-sm-12">
                             @*<div class="pagination pull-right" style="padding:10px;">
-        @{
-                                            int currentPage = Model.Result.CurrentPage;
-                                            int totalPage = Model.Result.TotalPage;
-                                            int previousPage = Model.Result.PreviousPage;
-                                            int nextPage = Model.Result.NextPage;
+                    @{
+                                                        int currentPage = Model.Result.CurrentPage;
+                                                        int totalPage = Model.Result.TotalPage;
+                                                        int previousPage = Model.Result.PreviousPage;
+                                                        int nextPage = Model.Result.NextPage;
 
-                                            if (previousPage > 0)
-                                            {
-                                                <a class='btn btn-md btn-default' href="?page=@previousPage"> < </a>
-                                            }
+                                                        if (previousPage > 0)
+                                                        {
+                                                            <a class='btn btn-md btn-default' href="?page=@previousPage"> < </a>
+                                                        }
 
-                                            for (int i = 1; i <= totalPage; i++)
-                                            {
-                                                if (i == currentPage)
-                                                {
-                                                    <a class='btn btn-md btn-default'> @i </a>
+                                                        for (int i = 1; i <= totalPage; i++)
+                                                        {
+                                                            if (i == currentPage)
+                                                            {
+                                                                <a class='btn btn-md btn-default'> @i </a>
 
-                                                }
-                                                else
-                                                {
-                                                    <a class='btn btn-md btn-default' href="?page=@i"> @i </a>
+                                                            }
+                                                            else
+                                                            {
+                                                                <a class='btn btn-md btn-default' href="?page=@i"> @i </a>
 
-                                                }
-                                            }
+                                                            }
+                                                        }
 
-                                            if (nextPage > 0)
-                                            {
-                                                <a class='btn btn-md btn-default' href="?page=@nextPage"> > </a>
-                                            }
-                                        }
-                                    </div>*@
+                                                        if (nextPage > 0)
+                                                        {
+                                                            <a class='btn btn-md btn-default' href="?page=@nextPage"> > </a>
+                                                        }
+                                                    }
+                                                </div>*@
                             @if (Model.Result.TotalPage > 1)
                             {
                                 int currentPage = Model.Result.CurrentPage;

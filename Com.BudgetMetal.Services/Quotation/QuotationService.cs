@@ -34,6 +34,7 @@ using Com.BudgetMetal.ViewModels.Quotation;
 using Com.BudgetMetal.ViewModels.QuotationPriceSchedule;
 using Com.BudgetMetal.DataRepository.Quotation;
 using Com.BudgetMetal.DataRepository.QuotationPriceSchedule;
+using Com.BudgetMetal.DataRepository.Company;
 
 namespace Com.BudgetMetal.Services.Quotation
 {
@@ -46,11 +47,11 @@ namespace Com.BudgetMetal.Services.Quotation
         private readonly IAttachmentRepository repoAttachment;
         private readonly IDocumentUserRepository repoDocumentUser;
         private readonly IQuotationPriceScheduleRepository repoPriceSchedule;
-
+        private readonly ICompanyRepository repoCompany;
         private readonly IUserRepository repoUser;
         private readonly IRoleRepository repoRole;
 
-        public QuotationService(IRfqRepository repoRfq, IDocumentRepository repoDocument, IQuotationRepository repoQuotation, IAttachmentRepository repoAttachment, IDocumentUserRepository repoDocumentUser, IQuotationPriceScheduleRepository repoPriceSchedule, IUserRepository repoUser, IRoleRepository repoRole)
+        public QuotationService(IRfqRepository repoRfq, IDocumentRepository repoDocument, IQuotationRepository repoQuotation, IAttachmentRepository repoAttachment, IDocumentUserRepository repoDocumentUser, IQuotationPriceScheduleRepository repoPriceSchedule, IUserRepository repoUser, IRoleRepository repoRole, ICompanyRepository repoCompany)
         {
             this.repoRfq = repoRfq;
             this.repoDocument = repoDocument;
@@ -60,6 +61,7 @@ namespace Com.BudgetMetal.Services.Quotation
             this.repoPriceSchedule = repoPriceSchedule;
             this.repoRole = repoRole;
             this.repoUser = repoUser;
+            this.repoCompany = repoCompany;
         }
 
         public async Task<VmQuotationPage> GetQuotationByPage(int documentOwner, int page, int totalRecords)
@@ -316,6 +318,26 @@ namespace Com.BudgetMetal.Services.Quotation
             return documentNo;
         }
 
+
+        public bool CheckQuotationLimit(int companyId)
+        {
+            string currentWeek = GetCurrentWeek();
+            int documentCount = repoDocument.GetQuotationCountByCompanyAndWorkingPeriod(companyId, currentWeek);
+
+
+            var dbResult = repoCompany.Get(companyId);
+
+            int QuoLimitPerWeek = (dbResult.Result.MaxQuotationPerWeek == null) ? 0 : Convert.ToInt32(dbResult.Result.MaxQuotationPerWeek);
+
+            bool QuotationLimit = true;
+
+            if (documentCount >= QuoLimitPerWeek)
+            {
+                QuotationLimit = false;
+            }
+
+            return QuotationLimit;
+        }
 
         public async Task<VmQuotationItem> GetSingleQuotationById(int id)
         {

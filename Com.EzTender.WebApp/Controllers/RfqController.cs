@@ -50,6 +50,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
             {
                 page = Convert.ToInt32(queryPage);
             }
+            
             var Company_Id = HttpContext.Session.GetString("Company_Id");
             var result = await rfqService.GetRfqByPage(Convert.ToInt32(Company_Id), page, 10);
             return View(result);
@@ -171,6 +172,11 @@ namespace Com.GenericPlatform.WebApp.Controllers
             ViewBag.Company_Id = HttpContext.Session.GetString("Company_Id");
             ViewBag.UserName = HttpContext.Session.GetString("UserName");
             ViewBag.FullName = HttpContext.Session.GetString("ContactName");
+
+            if (rfqService.CheckRFQLimit(Convert.ToInt32(HttpContext.Session.GetString("Company_Id"))) ==  false){
+                TempData["message"] = "RFQ Limitation per week is exceed. please contact admin to upgrade your account.";
+                return RedirectToAction("Index");
+            }
 
             return View();
         }

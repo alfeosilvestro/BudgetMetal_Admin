@@ -10,5 +10,11 @@ namespace Com.BudgetMetal.DataRepository.Document
         int GetRfqCountByCompany(int companyId);
 
         int GetQuotationCountByCompany(int companyId);
+
+        int GetRfqCountByCompanyAndWorkingPeriod(int companyId, string workingPeriod);
+
+        int GetQuotationCountByCompanyAndWorkingPeriod(int companyId, string workingPeriod);
+
+
     }
 }

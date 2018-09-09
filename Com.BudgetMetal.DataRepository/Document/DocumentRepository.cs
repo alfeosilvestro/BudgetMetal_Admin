@@ -78,9 +78,23 @@ namespace Com.BudgetMetal.DataRepository.Document
             return records;
         }
 
+
+
+        public int GetRfqCountByCompanyAndWorkingPeriod(int companyId, string workingPeriod)
+        {
+            var records = entities.Where(e => e.Company_Id == companyId && e.DocumentType_Id == 100021 && e.IsActive== true && e.WorkingPeriod == workingPeriod).ToList().Count();
+            return records;
+        }
+
         public int GetQuotationCountByCompany(int companyId)
         {
             var records = entities.Where(e => e.Company_Id == companyId && e.DocumentType_Id == 100022).ToList().Count();
+            return records;
+        }
+
+        public int GetQuotationCountByCompanyAndWorkingPeriod(int companyId, string workingPeriod)
+        {
+            var records = entities.Where(e => e.Company_Id == companyId && e.DocumentType_Id == 100022 && e.IsActive == true && e.WorkingPeriod == workingPeriod).ToList().Count();
             return records;
         }
     }

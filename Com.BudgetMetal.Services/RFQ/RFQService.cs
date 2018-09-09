@@ -30,6 +30,7 @@ using Com.BudgetMetal.ViewModels.Role;
 using System.Linq;
 using Com.BudgetMetal.DataRepository.Users;
 using Com.BudgetMetal.DataRepository.Roles;
+using Com.BudgetMetal.DataRepository.Company;
 
 namespace Com.BudgetMetal.Services.RFQ
 {
@@ -46,8 +47,9 @@ namespace Com.BudgetMetal.Services.RFQ
         private readonly IDocumentUserRepository repoDocumentUser;
         private readonly IUserRepository repoUser;
         private readonly IRoleRepository repoRole;
+        private readonly ICompanyRepository repoCompany;
         
-        public RFQService(IDocumentRepository repoDocument, IRfqRepository repoRfq, IAttachmentRepository repoAttachment, IRequirementRepository repoRequirement, ISlaRepository repoSla, IRfqPriceScheduleRepository repoRfqPriceSchedule, IPenaltyRepository repoPenalty, IInvitedSupplierRepository repoInvitedSupplier, IDocumentUserRepository repoDocumentUser, IUserRepository repoUser, IRoleRepository repoRole)
+        public RFQService(IDocumentRepository repoDocument, IRfqRepository repoRfq, IAttachmentRepository repoAttachment, IRequirementRepository repoRequirement, ISlaRepository repoSla, IRfqPriceScheduleRepository repoRfqPriceSchedule, IPenaltyRepository repoPenalty, IInvitedSupplierRepository repoInvitedSupplier, IDocumentUserRepository repoDocumentUser, IUserRepository repoUser, IRoleRepository repoRole, ICompanyRepository repoCompany)
         {
             this.repoDocument = repoDocument;
             this.repoRfq = repoRfq;
@@ -60,6 +62,7 @@ namespace Com.BudgetMetal.Services.RFQ
             this.repoDocumentUser = repoDocumentUser;
             this.repoRole = repoRole;
             this.repoUser = repoUser;
+            this.repoCompany =  repoCompany;
         }
 
         public async Task<VmRfqPage> GetRfqByPage(int documentOwner, int page,int totalRecords, int statusId = 0, string keyword = "")
@@ -118,7 +121,25 @@ namespace Com.BudgetMetal.Services.RFQ
             return resultObj;
         }
 
+        public bool CheckRFQLimit(int companyId)
+        {
+            string currentWeek = GetCurrentWeek();
+            int documentCount = repoDocument.GetRfqCountByCompanyAndWorkingPeriod(companyId, currentWeek);
 
+
+            var dbResult = repoCompany.Get(companyId);
+
+            int RFQLimitPerWeek = (dbResult.Result.MaxRFQPerWeek == null)? 0: Convert.ToInt32( dbResult.Result.MaxRFQPerWeek);
+
+            bool RFQLimit = true;
+
+            if(documentCount >= RFQLimitPerWeek)
+            {
+                RFQLimit = false;
+            }
+
+            return RFQLimit;
+        }
 
 
         public string SaveRFQ(VmRfqItem rfq)

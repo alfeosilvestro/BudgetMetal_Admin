@@ -28,5 +28,7 @@ namespace Com.BudgetMetal.Services.RFQ
         Task<VmRfqItem> GetFormObject();
 
         Task<VmRfqItem> GetSingleRfqById(int documentId);
+
+        bool CheckRFQLimit(int companyId);
     }
 }
