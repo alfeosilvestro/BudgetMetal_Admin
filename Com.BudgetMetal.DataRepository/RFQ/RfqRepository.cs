@@ -19,7 +19,7 @@ namespace Com.BudgetMetal.DataRepository.RFQ
         {
 
         }
-        public async Task<PageResult<Com.BudgetMetal.DBEntities.Rfq>> GetRfqByPage(int documentOwner, int page, int totalRecords)
+        public async Task<PageResult<Com.BudgetMetal.DBEntities.Rfq>> GetRfqByPage(int documentOwner, int page, int totalRecords, int statusId, string keyword)
         {
             var records = await this.entities
                             .Include(e => e.Document)
@@ -29,6 +29,9 @@ namespace Com.BudgetMetal.DataRepository.RFQ
                             .Where(e =>
                               (e.IsActive == true)
                               && (e.Document.IsActive == true)
+                              && e.Document.Company_Id == documentOwner
+                              && (statusId == 0 || e.Document.DocumentStatus_Id == statusId)
+                              && (keyword == "" || e.Document.DocumentNo.Contains(keyword))
                             )
                             .OrderByDescending(e => e.CreatedDate)
                             .ToListAsync();

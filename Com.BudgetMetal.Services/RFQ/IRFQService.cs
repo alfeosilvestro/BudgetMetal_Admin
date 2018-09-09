@@ -9,8 +9,8 @@ namespace Com.BudgetMetal.Services.RFQ
 {
     public interface IRFQService
     {
-        Task<VmRfqPage> GetRfqByPage(int documentOwner, int page, int totalRecords);
-
+        Task<VmRfqPage> GetRfqByPage(int documentOwner, int page, int totalRecords, int statusId = 0, string keyword = "");
+        
         string SaveRFQ(VmRfqItem rfq);
 
         string UpdateRFQ(VmRfqItem rfq);
