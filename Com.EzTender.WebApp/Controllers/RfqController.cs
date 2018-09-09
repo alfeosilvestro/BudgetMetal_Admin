@@ -164,8 +164,6 @@ namespace Com.GenericPlatform.WebApp.Controllers
         // GET: Rfq/Create
         public ActionResult Create()
         {
-          
-
             ViewBag.User_Id = HttpContext.Session.GetString("User_Id");
             ViewBag.Company_Id = HttpContext.Session.GetString("Company_Id");
             ViewBag.UserName = HttpContext.Session.GetString("UserName");
@@ -180,7 +178,6 @@ namespace Com.GenericPlatform.WebApp.Controllers
         {
             try
             {
-
                 Rfq.SelectedTags = Request.Form["SelectedTags"].ToString();
                 var listAttachment = new List<VmAttachmentItem>();
                 int i = 0;

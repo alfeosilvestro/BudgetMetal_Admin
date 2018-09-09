@@ -118,9 +118,6 @@ namespace Com.BudgetMetal.Services.RFQ
             return resultObj;
         }
 
-
-
-
         public string SaveRFQ(VmRfqItem rfq)
         {
             var dbDocument = new Com.BudgetMetal.DBEntities.Document();
@@ -138,7 +135,6 @@ namespace Com.BudgetMetal.Services.RFQ
             Copy<VmRfqItem, Com.BudgetMetal.DBEntities.Rfq>(rfq, dbRFQ);
             repoRfq.Add(dbRFQ);
             repoRfq.Commit();
-
 
             if (rfq.Document.Attachment.Count > 0)
             {
@@ -204,7 +200,6 @@ namespace Com.BudgetMetal.Services.RFQ
                 repoSla.Commit();
             }
 
-
             if (rfq.Penalty.Count > 0)
             {
                 foreach (var item in rfq.Penalty)
@@ -254,7 +249,6 @@ namespace Com.BudgetMetal.Services.RFQ
                 }
                 repoInvitedSupplier.Commit();
             }
-
 
             return documentNo;
         }

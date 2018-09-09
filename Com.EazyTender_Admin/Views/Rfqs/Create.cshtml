@@ -815,8 +815,10 @@
     $("#ddlCompany").change(function () {
         var companyId = $('#ddlCompany').val();
         $('#Document_Company_Id').val(companyId);
+
         loadUser();
         loadUserByAdmin(companyId);
+        $('#userNameByAdmin').text('');
     });
 
     function loadUserByAdmin(companyId) {
