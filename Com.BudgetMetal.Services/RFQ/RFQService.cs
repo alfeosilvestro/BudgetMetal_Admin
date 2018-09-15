@@ -33,6 +33,7 @@ using Com.BudgetMetal.DataRepository.Roles;
 using Com.BudgetMetal.DataRepository.Company;
 using Com.BudgetMetal.DataRepository.DocumentActivity;
 using Com.BudgetMetal.ViewModels.DocumentActivity;
+using Com.BudgetMetal.DataRepository.Quotation;
 
 namespace Com.BudgetMetal.Services.RFQ
 {
@@ -50,8 +51,10 @@ namespace Com.BudgetMetal.Services.RFQ
         private readonly IUserRepository repoUser;
         private readonly IRoleRepository repoRole;
         private readonly ICompanyRepository repoCompany;
+        private readonly IDocumentActivityRepository repoDocumentActivity;
+        private readonly IQuotationRepository repoQuotation;
         
-        public RFQService(IDocumentRepository repoDocument, IRfqRepository repoRfq, IAttachmentRepository repoAttachment, IRequirementRepository repoRequirement, ISlaRepository repoSla, IRfqPriceScheduleRepository repoRfqPriceSchedule, IPenaltyRepository repoPenalty, IInvitedSupplierRepository repoInvitedSupplier, IDocumentUserRepository repoDocumentUser, IUserRepository repoUser, IRoleRepository repoRole, ICompanyRepository repoCompany)
+        public RFQService(IDocumentRepository repoDocument, IRfqRepository repoRfq, IAttachmentRepository repoAttachment, IRequirementRepository repoRequirement, ISlaRepository repoSla, IRfqPriceScheduleRepository repoRfqPriceSchedule, IPenaltyRepository repoPenalty, IInvitedSupplierRepository repoInvitedSupplier, IDocumentUserRepository repoDocumentUser, IUserRepository repoUser, IRoleRepository repoRole, ICompanyRepository repoCompany, IDocumentActivityRepository repoDocumentActivity, IQuotationRepository repoQuotation)
         {
             this.repoDocument = repoDocument;
             this.repoRfq = repoRfq;
@@ -65,7 +68,8 @@ namespace Com.BudgetMetal.Services.RFQ
             this.repoRole = repoRole;
             this.repoUser = repoUser;
             this.repoCompany =  repoCompany;
-            this.repoDocumentActivity = repoDocmentActivity;
+            this.repoDocumentActivity = repoDocumentActivity;
+            this.repoQuotation = repoQuotation;
         }
 
         public async Task<VmRfqPage> GetRfqByPage(int documentOwner, int page,int totalRecords, int statusId = 0, string keyword = "")
@@ -905,6 +909,32 @@ namespace Com.BudgetMetal.Services.RFQ
             //        listInvitedSupplier.Add(itemInvitedSupplier);
             //    }
             //}
+
+            var dbResultQuotationList = repoQuotation.GetQuotationByRfqId(documentId);
+            
+            List<List<string>> requirementComparisonList = new List<List<string>>();
+            List<List<string>> priceComparisonList = new List<List<string>>();
+            foreach (var item in dbResultQuotationList.Result)
+            {
+                List<string> requirementComparison = new List<string>();
+                requirementComparison.Add(item.Document.Company.Name); 
+                foreach(var requirementItem in item.QuotationRequirement)
+                {
+                    requirementComparison.Add(requirementItem.Compliance);
+                }
+                requirementComparisonList.Add(requirementComparison);
+
+                List<string> priceComparison = new List<string>();
+                priceComparison.Add(item.Document.Company.Name);
+                foreach (var priceItem in item.QuotationPriceSchedule)
+                {
+                    priceComparison.Add(priceItem.ItemAmount.ToString());
+                }
+                requirementComparisonList.Add(requirementComparison);
+            }
+
+            resultObject.RequirementComparison = requirementComparisonList;
+            resultObject.PriceComparison = priceComparisonList;
 
             return resultObject;
         }

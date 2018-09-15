@@ -323,7 +323,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
         [HttpGet]
         public async Task<JsonResult> GetQuotationByRfqId(int RfqId, int page, string keyword)
         {
-            var result = await quotationService.GetQuotationByRfqId(RfqId, page, 10,100042,keyword);
+            var result = await quotationService.GetQuotationByRfqId(RfqId, page, 10, 0, (keyword == null ? "": keyword));
 
             return new JsonResult(result, new JsonSerializerSettings()
             {

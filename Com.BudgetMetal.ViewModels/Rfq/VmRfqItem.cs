@@ -1,6 +1,7 @@
 ﻿using Com.BudgetMetal.ViewModels.Document;
 using Com.BudgetMetal.ViewModels.DocumentActivity;
 using Com.BudgetMetal.ViewModels.InvitedSupplier;
+using Com.BudgetMetal.ViewModels.Quotation;
 using Com.BudgetMetal.ViewModels.Requirement;
 using Com.BudgetMetal.ViewModels.RfqPenalty;
 using Com.BudgetMetal.ViewModels.RfqPriceSchedule;
@@ -54,12 +55,15 @@ namespace Com.BudgetMetal.ViewModels.Rfq
         public virtual VmDocumentItem Document { get; set; }
         public virtual List<VmInvitedSupplierItem> InvitedSupplier { get; set; }
         public virtual List<VmPenaltyItem> Penalty { get; set; }
-        //public virtual ICollection<VmQuotationItem> Quotation { get; set; }
         public virtual List<VmRequirementItem> Requirement { get; set; }
         public virtual List<VmRfqPriceScheduleItem> RfqPriceSchedule { get; set; }
         public virtual List<VmSlaItem> Sla { get; set; }
         
         public List<VmDocumentItem> DocumentList { get; set; }
         public List<VmDocumentActivityItem> DocumentActivityList { get; set; }
+        public virtual List<VmQuotationItem> Quotation { get; set; }
+
+        public List<List<string>> RequirementComparison { get; set; }
+        public List<List<string>> PriceComparison { get; set; }
     }
 }

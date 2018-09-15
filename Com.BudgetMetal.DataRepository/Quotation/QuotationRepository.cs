@@ -126,6 +126,7 @@ namespace Com.BudgetMetal.DataRepository.Quotation
                             .Include(e => e.Document.DocumentType)
                             .Include(e => e.Document.Company)
                             .Include(e => e.QuotationPriceSchedule)
+                            .Include(e => e.QuotationRequirement)
                             .Where(e =>
                               (e.IsActive == true)
                               && (e.Document.IsActive == true)

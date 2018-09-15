@@ -237,7 +237,26 @@
                                                                 }
                                                             }
                                                         </tr>
+                                                        
                                                     </thead>
+                                                    <tbody>
+                                                        @{
+                                                            if (Model.RequirementComparison != null)
+                                                            {
+                                                                foreach (var item in Model.RequirementComparison)
+                                                                {
+                                                                    <tr>
+                                                                        @{
+                                                                            foreach (var subitem in item)
+                                                                            {
+                                                                                <td>@subitem</td>
+                                                                            }
+                                                                        }
+                                                                    </tr>
+                                                                }
+                                                            }
+                                                        }
+                                                    </tbody>
                                                 </table>
                                             </div>
 
@@ -371,6 +390,23 @@
                                                             }
                                                         </tr>
                                                     </thead>
+                                                    <tbody>
+                                                        @{
+                                                            if (Model.PriceComparison != null)
+                                                            {
+                                                                foreach (var item in Model.PriceComparison)
+                                                                {
+                                                                    <tr>
+                                                                        @{
+                                                                            foreach (var subitem in item)
+                                                                            {
+                                                                                <td>@subitem</td>
+                                                                            }
+                                                                        }
+                                                                    </tr>
+                                                                }
+                                                            }
+                                                        }
                                                 </table>
                                             </div>
                                         </div>
@@ -926,6 +962,7 @@ function loadIndustry() {
     function loadQuotation(p) {
         var _keyword = "";
         var _rfqId = parseInt($('#RfqId').val());
+        alert(_rfqId);
         var ajaxurl = '@Url.Action("GetQuotationByRfqId", "Rfq")';
         $.ajax({
             url: ajaxurl,
