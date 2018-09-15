@@ -945,7 +945,7 @@ namespace Com.BudgetMetal.Services.RFQ
                 {
                     priceComparison.Add(priceItem.ItemAmount.ToString());
                 }
-                requirementComparisonList.Add(requirementComparison);
+                priceComparisonList.Add(priceComparison);
             }
 
             resultObject.RequirementComparison = requirementComparisonList;
