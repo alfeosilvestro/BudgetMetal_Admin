@@ -166,7 +166,8 @@ namespace Com.GenericPlatform.WebApp.Controllers
 
                 };
                 listDocumentActivity.Add(DocumentActivity);
-                Rfq.DocumentActivityList = listDocumentActivity;
+                //Rfq.DocumentActivityList = listDocumentActivity;
+                Rfq.Document.DocumentActivityList = listDocumentActivity;
 
                 string documentNo = rfqService.UpdateRFQ(Rfq);
 
@@ -267,7 +268,8 @@ namespace Com.GenericPlatform.WebApp.Controllers
 
                 };
                 listDocumentActivity.Add(DocumentActivity);
-                Rfq.DocumentActivityList = listDocumentActivity;  
+                //Rfq.DocumentActivityList = listDocumentActivity;
+                Rfq.Document.DocumentActivityList = listDocumentActivity;
 
                 string documentNo = rfqService.SaveRFQ(Rfq);
 

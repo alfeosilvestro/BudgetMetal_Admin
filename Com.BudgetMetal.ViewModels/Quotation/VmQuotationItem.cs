@@ -28,6 +28,6 @@ namespace Com.BudgetMetal.ViewModels.Quotation
         public virtual List<VmQuotationPriceScheduleItem> QuotationPriceSchedule { get; set; }
 
         public virtual List<VmQuotationRequirementItem> QuotationRequirement { get; set; }
-        public List<VmDocumentActivityItem> DocumentActivityList { get; set; }
+        //public List<VmDocumentActivityItem> DocumentActivityList { get; set; }
     }
 }

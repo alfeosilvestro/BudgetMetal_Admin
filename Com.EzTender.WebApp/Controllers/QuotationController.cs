@@ -141,7 +141,7 @@ namespace Com.EzTender.WebApp.Controllers
                     Action = "Update",
                 };
                 listDocumentActivity.Add(DocumentActivity);
-                quotationItem.DocumentActivityList = listDocumentActivity;
+                quotationItem.Document.DocumentActivityList = listDocumentActivity;
 
                 string documentNo = quotationService.UpdateQuotation(quotationItem);
 
@@ -240,7 +240,7 @@ namespace Com.EzTender.WebApp.Controllers
 
                 };
                 listDocumentActivity.Add(DocumentActivity);
-                quotationItem.DocumentActivityList = listDocumentActivity;
+                quotationItem.Document.DocumentActivityList = listDocumentActivity;
 
                 string documentNo = quotationService.SaveQuotation(quotationItem);
 

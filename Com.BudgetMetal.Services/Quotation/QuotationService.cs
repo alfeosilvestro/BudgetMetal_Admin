@@ -57,8 +57,9 @@ namespace Com.BudgetMetal.Services.Quotation
         private readonly ICompanyRepository repoCompany;
         private readonly IUserRepository repoUser;
         private readonly IRoleRepository repoRole;
+        
 
-        public QuotationService(IRfqRepository repoRfq, IDocumentRepository repoDocument, IQuotationRepository repoQuotation, IAttachmentRepository repoAttachment, IDocumentUserRepository repoDocumentUser, IQuotationPriceScheduleRepository repoPriceSchedule, IUserRepository repoUser, IRoleRepository repoRole, IQuotationRequirementRepository repoQuotationRequirement, IDocumentActivityRepository repoDocumentActivity)
+        public QuotationService(IRfqRepository repoRfq, IDocumentRepository repoDocument, IQuotationRepository repoQuotation, IAttachmentRepository repoAttachment, IDocumentUserRepository repoDocumentUser, IQuotationPriceScheduleRepository repoPriceSchedule, IUserRepository repoUser, IRoleRepository repoRole, IQuotationRequirementRepository repoQuotationRequirement, IDocumentActivityRepository repoDocumentActivity, ICompanyRepository repoCompany)
         {
             this.repoRfq = repoRfq;
             this.repoDocument = repoDocument;
@@ -335,11 +336,11 @@ namespace Com.BudgetMetal.Services.Quotation
             //    repoDocumentActivity.Commit();
             //}
 
-            if (quotation.DocumentActivityList != null)
+            if (quotation.Document.DocumentActivityList != null)
             {
-                if (quotation.DocumentActivityList.Count > 0)
+                if (quotation.Document.DocumentActivityList.Count > 0)
                 {
-                    foreach (var item in quotation.DocumentActivityList)
+                    foreach (var item in quotation.Document.DocumentActivityList)
                     {
                         var dbDocumentActivity = new Com.BudgetMetal.DBEntities.DocumentActivity();
 
@@ -465,16 +466,16 @@ namespace Com.BudgetMetal.Services.Quotation
                 }
             }
 
-            if (quotation.DocumentActivityList != null)
+            if (quotation.Document.DocumentActivityList != null)
             {
-                if (quotation.DocumentActivityList.Count > 0)
+                if (quotation.Document.DocumentActivityList.Count > 0)
                 {
-                    foreach (var item in quotation.DocumentActivityList)
+                    foreach (var item in quotation.Document.DocumentActivityList)
                     {
                         var dbDocumentActivity = new Com.BudgetMetal.DBEntities.DocumentActivity();
 
                         Copy<VmDocumentActivityItem, Com.BudgetMetal.DBEntities.DocumentActivity>(item, dbDocumentActivity);
-                        dbDocumentActivity.Document_Id = dbDocument.Id;
+                        dbDocumentActivity.Document_Id = quotation.Document_Id;
                         dbDocumentActivity.CreatedBy = dbDocumentActivity.UpdatedBy = quotation.CreatedBy;
                         repoDocumentActivity.Add(dbDocumentActivity);
                     }
@@ -623,9 +624,25 @@ namespace Com.BudgetMetal.Services.Quotation
             resultObject.Rfq = resultRfq;
 
             var documentActivityEntity = repoDocumentActivity.GetDocumentActivityWithDocumentId(resultObject.Document_Id, false);
-            var listDocumentActivity = new List<VmDocumentActivityItem>();
-            if (documentActivityEntity != null)
+
+            //var listDocumentActivity = new List<VmDocumentActivityItem>();
+            //if (documentActivityEntity != null)
+            //{
+            //    foreach (var item in documentActivityEntity.Result.Records)
+            //    {
+            //        var newItem = new VmDocumentActivityItem();
+            //        newItem.Action = item.Action;
+            //        newItem.CreatedBy = item.CreatedBy;
+            //        newItem.CreatedDate = item.CreatedDate;
+            //        newItem.Document_Id = item.Document_Id;
+            //        listDocumentActivity.Add(newItem);
+            //    }
+            //}
+            //resultObject.DocumentActivityList = listDocumentActivity;
+
+            if(documentActivityEntity != null)
             {
+                var listDocumentActivity = new List<VmDocumentActivityItem>();
                 foreach (var item in documentActivityEntity.Result.Records)
                 {
                     var newItem = new VmDocumentActivityItem();
@@ -635,8 +652,8 @@ namespace Com.BudgetMetal.Services.Quotation
                     newItem.Document_Id = item.Document_Id;
                     listDocumentActivity.Add(newItem);
                 }
+                resultObject.Document.DocumentActivityList = listDocumentActivity;
             }
-            resultObject.DocumentActivityList = listDocumentActivity;
 
             return resultObject;
         }

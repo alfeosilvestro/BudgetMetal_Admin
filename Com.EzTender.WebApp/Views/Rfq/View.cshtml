@@ -545,10 +545,10 @@
                                 </thead>
                                 <tbody>
                                     @{
-                                        if (Model.DocumentActivityList != null)
+                                        if (Model.Document.DocumentActivityList != null)
                                         {
 
-                                            foreach (var item in Model.DocumentActivityList)
+                                            foreach (var item in Model.Document.DocumentActivityList)
                                             {
                                                 <tr>
                                                     <td>@item.Action </td>
