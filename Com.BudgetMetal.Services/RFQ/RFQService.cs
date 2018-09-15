@@ -883,7 +883,7 @@ namespace Com.BudgetMetal.Services.RFQ
             resultObject.InvitedSupplier = listInvitedSupplier;
 
 
-            var documentActivityEntity = repoDocumentActivity.GetDocumentActivityWithDocumentId(dbResult.Document_Id, true);
+            //var documentActivityEntity = repoDocumentActivity.GetDocumentActivityWithDocumentId(dbResult.Document_Id, true);
             //var listDocumentActivity = new List<VmDocumentActivityItem>();
             //if (documentActivityEntity != null)
             //{
@@ -899,10 +899,25 @@ namespace Com.BudgetMetal.Services.RFQ
             //}
             //resultObject.DocumentActivityList = listDocumentActivity;
 
-            if (documentActivityEntity != null)
+            //if (documentActivityEntity != null)
+            //{
+            //    var listDocumentActivity = new List<VmDocumentActivityItem>();
+            //    foreach (var item in documentActivityEntity.Result.Records)
+            //    {
+            //        var newItem = new VmDocumentActivityItem();
+            //        newItem.Action = item.Action;
+            //        newItem.CreatedBy = item.CreatedBy;
+            //        newItem.CreatedDate = item.CreatedDate;
+            //        newItem.Document_Id = item.Document_Id;
+            //        listDocumentActivity.Add(newItem);
+            //    }
+            //    resultObject.Document.DocumentActivityList = listDocumentActivity;
+            //}
+
+            if (dbResult.Document.DocumentActivity != null)
             {
                 var listDocumentActivity = new List<VmDocumentActivityItem>();
-                foreach (var item in documentActivityEntity.Result.Records)
+                foreach (var item in dbResult.Document.DocumentActivity)
                 {
                     var newItem = new VmDocumentActivityItem();
                     newItem.Action = item.Action;

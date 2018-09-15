@@ -134,6 +134,7 @@ namespace Com.BudgetMetal.DataRepository.RFQ
                             .Include(e => e.Sla)
                             .Include(e => e.RfqPriceSchedule)
                             .Include(e => e.InvitedSupplier)
+                            .Include(e => e.Document.DocumentActivity)
                             .SingleOrDefaultAsync(e =>
                               (e.IsActive == true)
                               && (e.Id == id)

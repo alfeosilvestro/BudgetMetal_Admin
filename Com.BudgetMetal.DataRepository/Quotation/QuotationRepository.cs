@@ -74,6 +74,7 @@ namespace Com.BudgetMetal.DataRepository.Quotation
                             .Include(e => e.Document.DocumentStatus)
                             .Include(e => e.Document.DocumentType)
                             .Include(e => e.Document.Company)
+                            .Include(e=> e.Document.DocumentActivity)
                             .Where(e =>
                               (e.IsActive == true)
                               && (e.Document.IsActive == true)
@@ -149,6 +150,7 @@ namespace Com.BudgetMetal.DataRepository.Quotation
                             .Include(e => e.Document.Attachment)
                             .Include(e => e.QuotationRequirement)
                             .Include(e => e.QuotationPriceSchedule)
+                            .Include(e => e.Document.DocumentActivity)
                             .SingleOrDefaultAsync(e =>
                               (e.IsActive == true)
                               && (e.Id == id)
