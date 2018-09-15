@@ -34,6 +34,7 @@ using Com.BudgetMetal.ViewModels.Quotation;
 using Com.BudgetMetal.ViewModels.QuotationPriceSchedule;
 using Com.BudgetMetal.DataRepository.Quotation;
 using Com.BudgetMetal.DataRepository.QuotationPriceSchedule;
+using Com.BudgetMetal.DataRepository.Company;
 using Com.BudgetMetal.DataRepository.QuotationRequirement;
 using Com.BudgetMetal.ViewModels.QuotationRequirement;
 using Com.BudgetMetal.DataRepository.DocumentActivity;
@@ -53,6 +54,7 @@ namespace Com.BudgetMetal.Services.Quotation
         private readonly IQuotationRequirementRepository repoRequirement;
         private readonly IDocumentActivityRepository repoDocumentActivity;
 
+        private readonly ICompanyRepository repoCompany;
         private readonly IUserRepository repoUser;
         private readonly IRoleRepository repoRole;
 
@@ -66,6 +68,7 @@ namespace Com.BudgetMetal.Services.Quotation
             this.repoPriceSchedule = repoPriceSchedule;
             this.repoRole = repoRole;
             this.repoUser = repoUser;
+            this.repoCompany = repoCompany;
             this.repoRequirement = repoQuotationRequirement;
             this.repoDocumentActivity = repoDocumentActivity;
         }
@@ -126,6 +129,61 @@ namespace Com.BudgetMetal.Services.Quotation
             return resultObj;
         }
 
+        public async Task<VmQuotationPage> GetQuotationByRfqId(int RfqId, int page, int totalRecords, int statusId = 0 , string keyword = "")
+        {
+            var dbPageResult = await repoQuotation.GetQuotationByRfqId(RfqId,
+                (page == 0 ? Constants.app_firstPage : page),
+                (totalRecords == 0 ? Constants.app_totalRecords : totalRecords), statusId, keyword);
+
+            //var dbPageResult = repo.GetCodeTableByPage(keyword,
+            //    (page == 0 ? Constants.app_firstPage : page),
+            //    (totalRecords == 0 ? Constants.app_totalRecords : totalRecords));
+
+            if (dbPageResult == null)
+            {
+                return new VmQuotationPage();
+            }
+
+            var resultObj = new VmQuotationPage();
+            resultObj.RequestId = DateTime.Now.ToString("yyyyMMddHHmmss");
+            resultObj.RequestDate = DateTime.Now;
+            resultObj.Result = new PageResult<VmQuotationItem>();
+            resultObj.Result.Records = new List<VmQuotationItem>();
+
+            Copy<PageResult<Com.BudgetMetal.DBEntities.Quotation>, PageResult<VmQuotationItem>>(dbPageResult, resultObj.Result, new string[] { "Records" });
+
+            foreach (var dbItem in dbPageResult.Records)
+            {
+                var resultItem = new VmQuotationItem();
+
+                Copy<Com.BudgetMetal.DBEntities.Quotation, VmQuotationItem>(dbItem, resultItem);
+
+                if (dbItem.Document != null)
+                {
+                    resultItem.Document = new ViewModels.Document.VmDocumentItem()
+                    {
+                        DocumentNo = dbItem.Document.DocumentNo,
+                        DocumentStatus = new ViewModels.CodeTable.VmCodeTableItem()
+                        {
+                            Name = dbItem.Document.DocumentStatus.Name
+                        },
+                        DocumentType = new ViewModels.CodeTable.VmCodeTableItem()
+                        {
+                            Name = dbItem.Document.DocumentStatus.Name
+                        },
+                        Company = new ViewModels.Company.VmCompanyItem()
+                        {
+                            Name = dbItem.Document.Company.Name
+                        }
+                    };
+
+                }
+
+                resultObj.Result.Records.Add(resultItem);
+            }
+
+            return resultObj;
+        }
 
         public async Task<VmQuotationItem> InitialLoadByRfqId(int RfqId)
         {
@@ -435,6 +493,26 @@ namespace Com.BudgetMetal.Services.Quotation
             return documentNo;
         }
 
+
+        public bool CheckQuotationLimit(int companyId)
+        {
+            string currentWeek = GetCurrentWeek();
+            int documentCount = repoDocument.GetQuotationCountByCompanyAndWorkingPeriod(companyId, currentWeek);
+
+
+            var dbResult = repoCompany.Get(companyId);
+
+            int QuoLimitPerWeek = (dbResult.Result.MaxQuotationPerWeek == null) ? 0 : Convert.ToInt32(dbResult.Result.MaxQuotationPerWeek);
+
+            bool QuotationLimit = true;
+
+            if (documentCount >= QuoLimitPerWeek)
+            {
+                QuotationLimit = false;
+            }
+
+            return QuotationLimit;
+        }
 
         public async Task<VmQuotationItem> GetSingleQuotationById(int id)
         {

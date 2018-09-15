@@ -10,7 +10,10 @@ namespace Com.BudgetMetal.Services.RFQ
     public interface IRFQService
     {
         Task<VmRfqPage> GetRfqByPage(int documentOwner, int page, int totalRecords, int statusId = 0, string keyword = "");
-        
+
+        Task<VmRfqPage> GetPublicRfqByPage(int page, int totalRecords, int statusId = 0, string keyword = "");
+
+
         string SaveRFQ(VmRfqItem rfq);
 
         string UpdateRFQ(VmRfqItem rfq);
@@ -28,5 +31,7 @@ namespace Com.BudgetMetal.Services.RFQ
         Task<VmRfqItem> GetFormObject();
 
         Task<VmRfqItem> GetSingleRfqById(int documentId);
+
+        bool CheckRFQLimit(int companyId);
     }
 }

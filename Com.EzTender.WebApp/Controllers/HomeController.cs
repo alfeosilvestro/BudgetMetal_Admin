@@ -27,6 +27,13 @@ namespace Com.GenericPlatform.WebApp.Controllers
             return View();
         }
 
+        public async Task<IActionResult> PublicRFQ()
+        {
+            ViewBag.Company_Id = HttpContext.Session.GetString("Company_Id");
+
+            return View();
+        }
+
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
@@ -52,6 +59,18 @@ namespace Com.GenericPlatform.WebApp.Controllers
            
             var result = await rfqService.GetRfqByPage(Convert.ToInt32(Company_Id), page, 2,Convert.ToInt32(status), 
                 skeyword == null ? "": skeyword);
+
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetPublicRFQ(int page, string status, string skeyword)
+        {
+            var result = await rfqService.GetPublicRfqByPage(page, 2, Convert.ToInt32(status),
+                skeyword == null ? "" : skeyword);
 
             return new JsonResult(result, new JsonSerializerSettings()
             {

@@ -85,7 +85,7 @@ namespace Com.EzTender.WebApp
 
 
             services.AddDistributedMemoryCache();
-
+            services.AddMvc().AddSessionStateTempDataProvider();
             services.AddSession(options =>
             {
                 // Set a short timeout for easy testing.
@@ -93,7 +93,7 @@ namespace Com.EzTender.WebApp
                 options.Cookie.HttpOnly = true;
             });
 
-            services.AddMvc();
+            //services.AddMvc();
             services.AddMvc(options => options.MaxModelValidationErrors = 50);
             RegisterForDependencyInjection(services);
         }

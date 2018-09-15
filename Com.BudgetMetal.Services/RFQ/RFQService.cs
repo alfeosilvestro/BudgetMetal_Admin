@@ -30,6 +30,7 @@ using Com.BudgetMetal.ViewModels.Role;
 using System.Linq;
 using Com.BudgetMetal.DataRepository.Users;
 using Com.BudgetMetal.DataRepository.Roles;
+using Com.BudgetMetal.DataRepository.Company;
 using Com.BudgetMetal.DataRepository.DocumentActivity;
 using Com.BudgetMetal.ViewModels.DocumentActivity;
 
@@ -48,9 +49,9 @@ namespace Com.BudgetMetal.Services.RFQ
         private readonly IDocumentUserRepository repoDocumentUser;
         private readonly IUserRepository repoUser;
         private readonly IRoleRepository repoRole;
-        private readonly IDocumentActivityRepository repoDocumentActivity;
-
-        public RFQService(IDocumentRepository repoDocument, IRfqRepository repoRfq, IAttachmentRepository repoAttachment, IRequirementRepository repoRequirement, ISlaRepository repoSla, IRfqPriceScheduleRepository repoRfqPriceSchedule, IPenaltyRepository repoPenalty, IInvitedSupplierRepository repoInvitedSupplier, IDocumentUserRepository repoDocumentUser, IUserRepository repoUser, IRoleRepository repoRole, IDocumentActivityRepository repoDocmentActivity)
+        private readonly ICompanyRepository repoCompany;
+        
+        public RFQService(IDocumentRepository repoDocument, IRfqRepository repoRfq, IAttachmentRepository repoAttachment, IRequirementRepository repoRequirement, ISlaRepository repoSla, IRfqPriceScheduleRepository repoRfqPriceSchedule, IPenaltyRepository repoPenalty, IInvitedSupplierRepository repoInvitedSupplier, IDocumentUserRepository repoDocumentUser, IUserRepository repoUser, IRoleRepository repoRole, ICompanyRepository repoCompany)
         {
             this.repoDocument = repoDocument;
             this.repoRfq = repoRfq;
@@ -63,6 +64,7 @@ namespace Com.BudgetMetal.Services.RFQ
             this.repoDocumentUser = repoDocumentUser;
             this.repoRole = repoRole;
             this.repoUser = repoUser;
+            this.repoCompany =  repoCompany;
             this.repoDocumentActivity = repoDocmentActivity;
         }
 
@@ -121,6 +123,82 @@ namespace Com.BudgetMetal.Services.RFQ
 
             return resultObj;
         }
+
+        public async Task<VmRfqPage> GetPublicRfqByPage(int page, int totalRecords, int statusId = 0, string keyword = "")
+        {
+            var dbPageResult = await repoRfq.GetPublicRfqByPage((page == 0 ? Constants.app_firstPage : page),
+                (totalRecords == 0 ? Constants.app_totalRecords : totalRecords), statusId, keyword);
+
+            //var dbPageResult = repo.GetCodeTableByPage(keyword,
+            //    (page == 0 ? Constants.app_firstPage : page),
+            //    (totalRecords == 0 ? Constants.app_totalRecords : totalRecords));
+
+            if (dbPageResult == null)
+            {
+                return new VmRfqPage();
+            }
+
+            var resultObj = new VmRfqPage();
+            resultObj.RequestId = DateTime.Now.ToString("yyyyMMddHHmmss");
+            resultObj.RequestDate = DateTime.Now;
+            resultObj.Result = new PageResult<VmRfqItem>();
+            resultObj.Result.Records = new List<VmRfqItem>();
+
+            Copy<PageResult<Rfq>, PageResult<VmRfqItem>>(dbPageResult, resultObj.Result, new string[] { "Records" });
+
+            foreach (var dbItem in dbPageResult.Records)
+            {
+                var resultItem = new VmRfqItem();
+
+                Copy<Rfq, VmRfqItem>(dbItem, resultItem);
+
+                if (dbItem.Document != null)
+                {
+                    resultItem.Document = new ViewModels.Document.VmDocumentItem()
+                    {
+                        DocumentNo = dbItem.Document.DocumentNo,
+                        DocumentStatus = new ViewModels.CodeTable.VmCodeTableItem()
+                        {
+                            Name = dbItem.Document.DocumentStatus.Name
+                        },
+                        DocumentType = new ViewModels.CodeTable.VmCodeTableItem()
+                        {
+                            Name = dbItem.Document.DocumentStatus.Name
+                        },
+                        Company = new ViewModels.Company.VmCompanyItem()
+                        {
+                            Name = dbItem.Document.Company.Name
+                        }
+                    };
+
+                }
+
+                resultObj.Result.Records.Add(resultItem);
+            }
+
+            return resultObj;
+        }
+
+        public bool CheckRFQLimit(int companyId)
+        {
+            string currentWeek = GetCurrentWeek();
+            int documentCount = repoDocument.GetRfqCountByCompanyAndWorkingPeriod(companyId, currentWeek);
+
+
+            var dbResult = repoCompany.Get(companyId);
+
+            int RFQLimitPerWeek = (dbResult.Result.MaxRFQPerWeek == null)? 0: Convert.ToInt32( dbResult.Result.MaxRFQPerWeek);
+
+            bool RFQLimit = true;
+
+            if(documentCount >= RFQLimitPerWeek)
+            {
+                RFQLimit = false;
+            }
+
+            return RFQLimit;
+        }
+
 
         public string SaveRFQ(VmRfqItem rfq)
         {
