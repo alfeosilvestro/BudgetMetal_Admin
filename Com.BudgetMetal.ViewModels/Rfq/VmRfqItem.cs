@@ -1,4 +1,5 @@
 ﻿using Com.BudgetMetal.ViewModels.Document;
+using Com.BudgetMetal.ViewModels.DocumentActivity;
 using Com.BudgetMetal.ViewModels.InvitedSupplier;
 using Com.BudgetMetal.ViewModels.Requirement;
 using Com.BudgetMetal.ViewModels.RfqPenalty;
@@ -59,5 +60,6 @@ namespace Com.BudgetMetal.ViewModels.Rfq
         public virtual List<VmSlaItem> Sla { get; set; }
         
         public List<VmDocumentItem> DocumentList { get; set; }
+        public List<VmDocumentActivityItem> DocumentActivityList { get; set; }
     }
 }

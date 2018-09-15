@@ -91,6 +91,7 @@
                         <li role="presentation" id="tabinvited_suppliers"><a href="#invited_suppliers" data-toggle="tab">Invited Suppliers</a></li>
                         <li role="presentation"><a href="#attachments" data-toggle="tab">Files</a></li>
                         <li role="presentation"><a href="#settings" data-toggle="tab">Users</a></li>
+                        <li role="presentation"><a href="#DocumentActivity" data-toggle="tab">Activity</a></li>
                     </ul>
                     <!-- Tab panes -->
                     <div class="tab-content">
@@ -427,6 +428,37 @@
 
                                 </tbody>
                             </table>
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade in" id="DocumentActivity">
+
+                            <table id="pricingTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="25%">Action</th>
+                                        <th width="35%">Created By</th>
+                                        <th width="20%">Created Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (Model.DocumentActivityList != null)
+                                        {
+
+                                            foreach (var item in Model.DocumentActivityList)
+                                            {
+                                                <tr>
+                                                    <td>@item.Action </td>
+                                                    <td>@item.CreatedBy</td>
+                                                    <td>@item.CreatedDate</td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+
+                                </tbody>
+
+                            </table>
+
                         </div>
                     </div>
                 </div>

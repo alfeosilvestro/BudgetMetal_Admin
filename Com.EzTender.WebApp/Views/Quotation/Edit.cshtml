@@ -73,6 +73,7 @@
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs tab-nav-right" role="tablist">
                         <li role="presentation" class="active"><a href="#basic_information" data-toggle="tab">Basic Information</a></li>
+                        <li role="presentation"><a href="#detailed_requirements" data-toggle="tab">Requirements</a></li>
                         <li role="presentation"><a href="#pricing" data-toggle="tab">Pricing Table</a></li>
                         <li role="presentation"><a href="#attachments" data-toggle="tab">Attachments</a></li>
                         <li role="presentation"><a href="#settings" data-toggle="tab">User Settings</a></li>
@@ -120,6 +121,40 @@
 
                             </div>
 
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane fade in" id="detailed_requirements">
+                            <input type="hidden" id="detailRequirementLastId" value="1" />
+                            <table id="requirementsTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="20%">Service Name</th>
+                                        <th width="30%">Description</th>
+                                        <th width="30%">Compliance</th>
+                                        <th width="40%">Supplier Description</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody data-test="abc">
+                                <tbody>
+                                    @{
+                                        if (Model.QuotationRequirement != null)
+                                        {
+                                            int i = 0;
+                                            foreach (var item in Model.QuotationRequirement)
+                                            {
+                                                <tr>
+                                                    <td>@item.ServiceName <input type="hidden" name="QuotationRequirement[@i].ServiceName" class="form-control" value="@item.ServiceName" /></td>
+                                                    <td>@item.Description <input type="hidden" name="QuotationRequirement[@i].Description" class="form-control" value="@item.Description" /></td>
+                                                    <td><input type="text" name="QuotationRequirement[@i].Compliance" class="form-control" value="@item.Compliance" /></td>
+                                                    <td><input type="text" name="QuotationRequirement[@i].SupplierDescription" class="form-control" value="@item.SupplierDescription" /></td>
+                                                </tr>
+                                                i++;
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
                         </div>
 
                         <div role="tabpanel" class="tab-pane fade in" id="pricing">
@@ -316,7 +351,7 @@
 
         $.ajax({
             url: ajaxurl,
-            data: { CompanyId: @ViewBag.Company_Id},
+            data: { CompanyId: @Model.Document.Company_Id},
             dataType: 'json',
             success: function (response) {
                 console.log(response);

@@ -23,7 +23,7 @@ namespace Com.BudgetMetal.DBEntities
         public int Rfq_Id { get; set; }
         public virtual Rfq Rfq { get; set; }
 
-
         public virtual ICollection<QuotationPriceSchedule> QuotationPriceSchedule { get; set; }
+        public virtual ICollection<QuotationRequirement> QuotationRequirement { get; set; }
     }
 }

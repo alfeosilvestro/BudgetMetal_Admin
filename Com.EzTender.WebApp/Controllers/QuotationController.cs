@@ -8,26 +8,31 @@ using Com.BudgetMetal.Services.Quotation;
 using Com.BudgetMetal.Services.Roles;
 using Com.BudgetMetal.Services.Users;
 using Com.BudgetMetal.ViewModels.Attachment;
+using Com.BudgetMetal.ViewModels.DocumentActivity;
 using Com.BudgetMetal.ViewModels.DocumentUser;
 using Com.BudgetMetal.ViewModels.Quotation;
+using Com.EazyTender.WebApp.Configurations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace Com.EzTender.WebApp.Controllers
 {
     public class QuotationController : Controller
     {
+        private readonly AppSettings _appSettings;
         private readonly IUserService userService;
-       private readonly IRoleService roleService;
+        private readonly IRoleService roleService;
         private readonly IAttachmentService attachmentService;
         private readonly IQuotationService quotationService;
 
-        public QuotationController( IQuotationService quotationService, IUserService userService, IRoleService roleService, IAttachmentService attachmentService)
+        public QuotationController(IQuotationService quotationService, IUserService userService, IRoleService roleService, IAttachmentService attachmentService, IOptions<AppSettings> appSettings)
         {
             this.quotationService = quotationService;
             this.userService = userService;
             this.roleService = roleService;
             this.attachmentService = attachmentService;
+            this._appSettings = appSettings.Value;
         }
 
         // GET: Quotation
@@ -40,7 +45,7 @@ namespace Com.EzTender.WebApp.Controllers
             {
                 page = Convert.ToInt32(queryPage);
             }
-            var result = await quotationService.GetQuotationByPage(0, page, 1);
+            var result = await quotationService.GetQuotationByPage(0, page, _appSettings.TotalRecordPerPage);
             return View(result);
         }
 
@@ -83,7 +88,6 @@ namespace Com.EzTender.WebApp.Controllers
         {
             try
             {
-
                 var listAttachment = new List<VmAttachmentItem>();
                 int i = 0;
                 foreach (var itemFile in Request.Form.Files)
@@ -101,9 +105,7 @@ namespace Com.EzTender.WebApp.Controllers
                             CreatedBy = quotationItem.CreatedBy,
                             UpdatedBy = quotationItem.UpdatedBy
                         };
-
                         listAttachment.Add(att);
-
                     }
                     i++;
                 }
@@ -129,6 +131,16 @@ namespace Com.EzTender.WebApp.Controllers
                     }
                 }
                 quotationItem.Document.DocumentUser = listDocumentUser;
+
+                var listDocumentActivity = new List<VmDocumentActivityItem>();
+                var DocumentActivity = new VmDocumentActivityItem()
+                {
+                    User_Id = Convert.ToInt32(HttpContext.Session.GetString("User_Id")),
+                    IsRfq = true,
+                    Action = "Update",
+                };
+                listDocumentActivity.Add(DocumentActivity);
+                quotationItem.DocumentActivityList = listDocumentActivity;
 
                 string documentNo = quotationService.UpdateQuotation(quotationItem);
 
@@ -167,7 +179,7 @@ namespace Com.EzTender.WebApp.Controllers
         {
             try
             {
-                
+
                 var listAttachment = new List<VmAttachmentItem>();
                 int i = 0;
                 foreach (var itemFile in Request.Form.Files)
@@ -193,7 +205,7 @@ namespace Com.EzTender.WebApp.Controllers
                 }
 
                 quotationItem.Document.Attachment = listAttachment;
-                
+
                 var listDocumentUser = new List<VmDocumentUserItem>();
                 var arrUser = Request.Form["documentUserId[]"].ToArray();
                 var arrRole = Request.Form["documentUserRole[]"].ToArray();
@@ -214,11 +226,22 @@ namespace Com.EzTender.WebApp.Controllers
                 }
                 quotationItem.Document.DocumentUser = listDocumentUser;
 
+                var listDocumentActivity = new List<VmDocumentActivityItem>();
+                var DocumentActivity = new VmDocumentActivityItem()
+                {
+                    User_Id = Convert.ToInt32(HttpContext.Session.GetString("User_Id")),
+                    IsRfq = true,
+                    Action = "Create",
+
+                };
+                listDocumentActivity.Add(DocumentActivity);
+                quotationItem.DocumentActivityList = listDocumentActivity;
+
                 string documentNo = quotationService.SaveQuotation(quotationItem);
 
                 return RedirectToAction("Index");
             }
-            catch 
+            catch
             {
                 return View();
             }

@@ -3,21 +3,20 @@
 @{
     ViewData["Title"] = "Index"; Layout = "~/Views/Shared/_Layout1.cshtml";
 }
+<h3>Email Log</h3>
 <div class="card">
     <div class="row"></div>
-    <h2>Email Log</h2>
-
     <div class="header">
         <div class="row">
             @using (Html.BeginForm("Index", "Emaillogs", FormMethod.Get))
             {
                 <div class="col-sm-5">
                     @Html.TextBox("keyword",
-         null,
-         new {
-             id = "search_key",
-             @class = "form-control"
-         })
+             null,
+             new {
+                 id = "search_key",
+                 @class = "form-control"
+             })
                 </div>
                 <div class="col-sm-1">
                     <input class="btn btn-info" type="submit" value="Search" />

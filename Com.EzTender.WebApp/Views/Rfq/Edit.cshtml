@@ -578,7 +578,7 @@
 
         $.ajax({
             url: ajaxurl,
-            data: { CompanyId: 1 },
+            data: { CompanyId: @Model.Document.Company_Id },
             dataType: 'json',
             success: function (response) {
                 //console.log(response);

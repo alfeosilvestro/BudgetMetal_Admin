@@ -7,6 +7,7 @@ using Com.BudgetMetal.DataRepository.Code_Category;
 using Com.BudgetMetal.DataRepository.Code_Table;
 using Com.BudgetMetal.DataRepository.Company;
 using Com.BudgetMetal.DataRepository.Document;
+using Com.BudgetMetal.DataRepository.DocumentActivity;
 using Com.BudgetMetal.DataRepository.DocumentUser;
 using Com.BudgetMetal.DataRepository.EmailLog;
 using Com.BudgetMetal.DataRepository.Industries;
@@ -14,6 +15,7 @@ using Com.BudgetMetal.DataRepository.InvitedSupplier;
 using Com.BudgetMetal.DataRepository.Penalty;
 using Com.BudgetMetal.DataRepository.Quotation;
 using Com.BudgetMetal.DataRepository.QuotationPriceSchedule;
+using Com.BudgetMetal.DataRepository.QuotationRequirement;
 using Com.BudgetMetal.DataRepository.Requirement;
 using Com.BudgetMetal.DataRepository.RFQ;
 using Com.BudgetMetal.DataRepository.RfqPriceSchedule;
@@ -116,6 +118,7 @@ namespace Com.EzTender.WebApp
             services.AddScoped<IInvitedSupplierRepository, InvitedSupplierRepository>();
             services.AddScoped<IRfqPriceScheduleRepository, RfqPriceScheduleRepository>();
             services.AddScoped<IDocumentUserRepository, DocumentUserRepository>();
+            services.AddScoped<IDocumentActivityRepository, DocumentActivityRepository>();
 
             services.AddScoped<IRFQService, RFQService>();
             services.AddScoped<IRfqRepository, RfqRepository>();
@@ -124,6 +127,7 @@ namespace Com.EzTender.WebApp
             services.AddScoped<IQuotationRepository, QuotationRepository>();
             
             services.AddScoped<IQuotationPriceScheduleRepository, QuotationPriceScheduleRepository>();
+            services.AddScoped<IQuotationRequirementRepository, QuotationRequiremetRepository>();
 
             services.AddScoped<IAttachmentRepository, AttachmentRepository>();
             services.AddScoped<IAttachmentService, AttachmentService>();

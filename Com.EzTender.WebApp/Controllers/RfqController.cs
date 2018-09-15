@@ -11,6 +11,7 @@ using Com.BudgetMetal.Services.Roles;
 using Com.BudgetMetal.Services.ServiceTags;
 using Com.BudgetMetal.Services.Users;
 using Com.BudgetMetal.ViewModels.Attachment;
+using Com.BudgetMetal.ViewModels.DocumentActivity;
 using Com.BudgetMetal.ViewModels.DocumentUser;
 using Com.BudgetMetal.ViewModels.InvitedSupplier;
 using Com.BudgetMetal.ViewModels.Rfq;
@@ -152,6 +153,17 @@ namespace Com.GenericPlatform.WebApp.Controllers
                 }
                 Rfq.Document.DocumentUser = listDocumentUser;
 
+                var listDocumentActivity = new List<VmDocumentActivityItem>();
+                var DocumentActivity = new VmDocumentActivityItem()
+                {
+                    User_Id = Convert.ToInt32(HttpContext.Session.GetString("User_Id")),
+                    IsRfq = true,
+                    Action = "Update",
+
+                };
+                listDocumentActivity.Add(DocumentActivity);
+                Rfq.DocumentActivityList = listDocumentActivity;
+
                 string documentNo = rfqService.UpdateRFQ(Rfq);
 
                 return RedirectToAction("Index");
@@ -236,6 +248,17 @@ namespace Com.GenericPlatform.WebApp.Controllers
                     }
                 }
                 Rfq.Document.DocumentUser = listDocumentUser;
+
+                var listDocumentActivity = new List<VmDocumentActivityItem>();
+                var DocumentActivity = new VmDocumentActivityItem()
+                {
+                    User_Id = Convert.ToInt32(HttpContext.Session.GetString("User_Id")),
+                    IsRfq = true,
+                    Action = "Create",
+
+                };
+                listDocumentActivity.Add(DocumentActivity);
+                Rfq.DocumentActivityList = listDocumentActivity;  
 
                 string documentNo = rfqService.SaveRFQ(Rfq);
 
