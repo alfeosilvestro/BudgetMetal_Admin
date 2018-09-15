@@ -962,7 +962,7 @@ function loadIndustry() {
     function loadQuotation(p) {
         var _keyword = "";
         var _rfqId = parseInt($('#RfqId').val());
-        alert(_rfqId);
+        //alert(_rfqId);
         var ajaxurl = '@Url.Action("GetQuotationByRfqId", "Rfq")';
         $.ajax({
             url: ajaxurl,

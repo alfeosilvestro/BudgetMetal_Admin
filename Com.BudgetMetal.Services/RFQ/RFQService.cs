@@ -782,7 +782,7 @@ namespace Com.BudgetMetal.Services.RFQ
             var listAttachment = new List<VmAttachmentItem>();
             if(dbResult.Document.Attachment != null)
             {
-                foreach(var item in dbResult.Document.Attachment)
+                foreach(var item in dbResult.Document.Attachment.Where(e => e.IsActive == true).ToList())
                 {
                     var itemAttachment = new VmAttachmentItem();
                     Copy<Com.BudgetMetal.DBEntities.Attachment, VmAttachmentItem>(item, itemAttachment, new string[] { "Document" , "FileBinary" });
@@ -795,7 +795,7 @@ namespace Com.BudgetMetal.Services.RFQ
             if (dbResult.Document.DocumentUser != null)
             {
                 List<int> UserList = new List<int>();
-                UserList = dbResult.Document.DocumentUser.Select(e => e.User_Id).Distinct().ToList();
+                UserList = dbResult.Document.DocumentUser.Where(e=>e.IsActive ==  true).Select(e => e.User_Id).Distinct().ToList();
                 foreach(var itemUser in UserList)
                 {
                     var documentUser = new VmDocumentUserDisplay();
@@ -805,10 +805,10 @@ namespace Com.BudgetMetal.Services.RFQ
                     user = await repoUser.Get(itemUser);
                     documentUser.UserName = user.ContactName;
 
-                    documentUser.Roles_Id = string.Join(",", dbResult.Document.DocumentUser.Where(e => e.User_Id == itemUser).Select(e => e.Role_Id).ToArray());
+                    documentUser.Roles_Id = string.Join(",", dbResult.Document.DocumentUser.Where(e => e.User_Id == itemUser && e.IsActive == true).Select(e => e.Role_Id).ToArray());
 
                     var roles = new List<string>();
-                    foreach (var roleId in dbResult.Document.DocumentUser.Where(e => e.User_Id == itemUser).Select(e => e.Role_Id).ToList())
+                    foreach (var roleId in dbResult.Document.DocumentUser.Where(e => e.User_Id == itemUser && e.IsActive == true).Select(e => e.Role_Id).ToList())
                     {
                         var role = new Role();
                         role = await repoRole.Get(roleId);
@@ -825,7 +825,7 @@ namespace Com.BudgetMetal.Services.RFQ
             var listRequirement = new List<VmRequirementItem>();
             if (dbResult.Requirement != null)
             {
-                foreach (var item in dbResult.Requirement)
+                foreach (var item in dbResult.Requirement.Where(e => e.IsActive == true).ToList())
                 {
                     var itemRequirement = new VmRequirementItem();
                     Copy<Com.BudgetMetal.DBEntities.Requirement, VmRequirementItem>(item, itemRequirement, new string[] { "Rfq" });
@@ -837,7 +837,7 @@ namespace Com.BudgetMetal.Services.RFQ
             var listSla = new List<VmSlaItem>();
             if (dbResult.Sla != null)
             {
-                foreach (var item in dbResult.Sla)
+                foreach (var item in dbResult.Sla.Where(e => e.IsActive == true).ToList())
                 {
                     var itemSla = new VmSlaItem();
                     Copy<Com.BudgetMetal.DBEntities.Sla, VmSlaItem>(item, itemSla, new string[] { "Rfq" });
@@ -849,7 +849,7 @@ namespace Com.BudgetMetal.Services.RFQ
             var listPenalty = new List<VmPenaltyItem>();
             if (dbResult.Penalty != null)
             {
-                foreach (var item in dbResult.Penalty)
+                foreach (var item in dbResult.Penalty.Where(e => e.IsActive == true).ToList())
                 {
                     var itemPenalty = new VmPenaltyItem();
                     Copy<Com.BudgetMetal.DBEntities.Penalty, VmPenaltyItem>(item, itemPenalty, new string[] { "Rfq" });
@@ -861,7 +861,7 @@ namespace Com.BudgetMetal.Services.RFQ
             var listRfqPriceSchedule = new List<VmRfqPriceScheduleItem>();
             if (dbResult.RfqPriceSchedule != null)
             {
-                foreach (var item in dbResult.RfqPriceSchedule)
+                foreach (var item in dbResult.RfqPriceSchedule.Where(e => e.IsActive == true).ToList())
                 {
                     var itemRfqPriceSchedule = new VmRfqPriceScheduleItem();
                     Copy<Com.BudgetMetal.DBEntities.RfqPriceSchedule, VmRfqPriceScheduleItem>(item, itemRfqPriceSchedule, new string[] { "Rfq" });
@@ -873,7 +873,7 @@ namespace Com.BudgetMetal.Services.RFQ
             var listInvitedSupplier = new List<VmInvitedSupplierItem>();
             if (dbResult.InvitedSupplier != null)
             {
-                foreach (var item in dbResult.InvitedSupplier)
+                foreach (var item in dbResult.InvitedSupplier.Where(e => e.IsActive == true).ToList())
                 {
                     var itemInvitedSupplier = new VmInvitedSupplierItem();
                     Copy<Com.BudgetMetal.DBEntities.InvitedSupplier, VmInvitedSupplierItem>(item, itemInvitedSupplier, new string[] { "Rfq" });
@@ -948,7 +948,7 @@ namespace Com.BudgetMetal.Services.RFQ
             {
                 List<string> requirementComparison = new List<string>();
                 requirementComparison.Add(item.Document.Company.Name); 
-                foreach(var requirementItem in item.QuotationRequirement)
+                foreach(var requirementItem in item.QuotationRequirement.Where(e => e.IsActive == true).ToList())
                 {
                     requirementComparison.Add(requirementItem.Compliance);
                 }
@@ -956,11 +956,11 @@ namespace Com.BudgetMetal.Services.RFQ
 
                 List<string> priceComparison = new List<string>();
                 priceComparison.Add(item.Document.Company.Name);
-                foreach (var priceItem in item.QuotationPriceSchedule)
+                foreach (var priceItem in item.QuotationPriceSchedule.Where(e => e.IsActive == true).ToList())
                 {
                     priceComparison.Add(priceItem.ItemAmount.ToString());
                 }
-                requirementComparisonList.Add(requirementComparison);
+                priceComparisonList.Add(priceComparison);
             }
 
             resultObject.RequirementComparison = requirementComparisonList;
