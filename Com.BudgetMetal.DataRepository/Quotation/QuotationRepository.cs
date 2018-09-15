@@ -117,6 +117,26 @@ namespace Com.BudgetMetal.DataRepository.Quotation
             return result;
         }
 
+
+        public async Task<List<Com.BudgetMetal.DBEntities.Quotation>> GetQuotationByRfqId(int RfqId)
+        {
+            var records = await this.entities
+                            .Include(e => e.Document)
+                            .Include(e => e.Document.DocumentStatus)
+                            .Include(e => e.Document.DocumentType)
+                            .Include(e => e.Document.Company)
+                            .Include(e => e.QuotationPriceSchedule)
+                            .Where(e =>
+                              (e.IsActive == true)
+                              && (e.Document.IsActive == true)
+                              && (e.Rfq_Id == RfqId)
+                            )
+                            .OrderByDescending(e => e.CreatedDate)
+                            .ToListAsync();
+            
+            return records;
+        }
+
         public async Task<Com.BudgetMetal.DBEntities.Quotation> GetSingleQuotationById(int id)
         {
             var record = await this.entities
