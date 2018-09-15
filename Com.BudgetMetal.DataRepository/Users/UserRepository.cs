@@ -186,14 +186,14 @@ namespace Com.BudgetMetal.DataRepository.Users
         //                Id = r.Id,
         //                UserName = r.UserName,
         //                Password = r.Password
-        //            //Title = r.Title,
-        //            //RoleId = r.RoleId,
-        //            //SiteAdmin = r.SiteAdmin,
-        //            //UserTypeId = r.UserTypeId,
-        //            //Email = r.Email,
-        //            //Confirmed = r.Confirmed,
-        //            //Status = r.Status
-        //        })
+        //                //Title = r.Title,
+        //                //RoleId = r.RoleId,
+        //                //SiteAdmin = r.SiteAdmin,
+        //                //UserTypeId = r.UserTypeId,
+        //                //Email = r.Email,
+        //                //Confirmed = r.Confirmed,
+        //                //Status = r.Status
+        //            })
         //        .Single(e =>
         //        e.Id == Id);
 
@@ -215,6 +215,15 @@ namespace Com.BudgetMetal.DataRepository.Users
         //    return records;
         //}
 
-
+        public async Task<Com.BudgetMetal.DBEntities.User> GetUserById(int id)
+        {
+            var record = await this.entities
+                            .Include(e=>e.UserRoles)
+                            .SingleOrDefaultAsync(e =>
+                              (e.IsActive == true)
+                              && (e.Id == id)
+                            );
+            return record;
+        }
     }
 }
