@@ -59,6 +59,14 @@ namespace Com.GenericPlatform.WebApp.Controllers
             }
         }
 
+
+        // GET: User
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+
         // GET: User
         public ActionResult Index()
         {
