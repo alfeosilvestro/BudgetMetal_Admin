@@ -40,7 +40,8 @@ namespace Com.EzTender.WebApp.Controllers
             {
                 page = Convert.ToInt32(queryPage);
             }
-            var result = await quotationService.GetQuotationByPage(0, page, 1);
+            int companyId = Convert.ToInt32(HttpContext.Session.GetString("Company_Id"));
+            var result = await quotationService.GetQuotationByPage(companyId, page, 10);
             return View(result);
         }
 

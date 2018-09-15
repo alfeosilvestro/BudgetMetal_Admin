@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Com.BudgetMetal.Services.Attachment;
 using Com.BudgetMetal.Services.Company;
 using Com.BudgetMetal.Services.Industries;
+using Com.BudgetMetal.Services.Quotation;
 using Com.BudgetMetal.Services.RFQ;
 using Com.BudgetMetal.Services.Roles;
 using Com.BudgetMetal.Services.ServiceTags;
@@ -29,8 +30,9 @@ namespace Com.GenericPlatform.WebApp.Controllers
         private readonly IUserService userService;
         private readonly IRoleService roleService;
         private readonly IAttachmentService attachmentService;
+        private readonly IQuotationService quotationService;
 
-        public RfqController(IIndustryService industryService, IServiceTagsService serviceTagsService, ICompanyService companyService, IRFQService rfqService, IUserService userService, IRoleService roleService, IAttachmentService attachmentService)
+        public RfqController(IIndustryService industryService, IServiceTagsService serviceTagsService, ICompanyService companyService, IRFQService rfqService, IUserService userService, IRoleService roleService, IAttachmentService attachmentService, IQuotationService quotationService)
         {
             this.industryService = industryService;
             this.serviceTagsService = serviceTagsService;
@@ -39,6 +41,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
             this.userService = userService;
             this.roleService = roleService;
             this.attachmentService = attachmentService;
+            this.quotationService = quotationService;
         }
 
         // GET: Rfq
@@ -290,6 +293,17 @@ namespace Com.GenericPlatform.WebApp.Controllers
         public async Task<JsonResult> GetServiceTagByIndustry(int Id)
         {
             var result = await serviceTagsService.GetVmServiceTagsByIndustry(Id);
+
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetQuotationByRfqId(int RfqId, int page, string keyword)
+        {
+            var result = await quotationService.GetQuotationByRfqId(RfqId, page, 10,100042,keyword);
 
             return new JsonResult(result, new JsonSerializerSettings()
             {

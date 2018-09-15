@@ -13,6 +13,8 @@ namespace Com.BudgetMetal.Services.Quotation
 
         Task<VmQuotationPage> GetQuotationByPage(int documentOwner, int page, int totalRecords);
 
+        Task<VmQuotationPage> GetQuotationByRfqId(int RfqId, int page, int totalRecords, int statusId = 0, string keyword = "");
+
         Task<VmQuotationItem> InitialLoadByRfqId(int RfqId);
 
         string SaveQuotation(VmQuotationItem quotation);

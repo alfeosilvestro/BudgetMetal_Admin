@@ -11,6 +11,8 @@ namespace Com.BudgetMetal.DataRepository.RFQ
     {
         Task<PageResult<Com.BudgetMetal.DBEntities.Rfq>> GetRfqByPage(int documentOwner, int page, int totalRecords, int statusId, string keyword);
 
+        Task<PageResult<Com.BudgetMetal.DBEntities.Rfq>> GetPublicRfqByPage(int page, int totalRecords, int statusId, string keyword);
+
         Task<Com.BudgetMetal.DBEntities.Rfq> GetSingleRfqById(int id);
     }
     

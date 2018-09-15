@@ -22,4 +22,10 @@
     <ProjectReference Include="..\Com.BudgetMetal.ViewModels\Com.BudgetMetal.ViewModels.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Views\Home\PublicRFQ.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+
 </Project>

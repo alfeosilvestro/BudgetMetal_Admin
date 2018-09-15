@@ -12,6 +12,8 @@ namespace Com.BudgetMetal.DataRepository.Quotation
     {
         Task<PageResult<Com.BudgetMetal.DBEntities.Quotation>> GetQuotationByPage(int documentOwner, int page, int totalRecords);
 
+        Task<PageResult<Com.BudgetMetal.DBEntities.Quotation>> GetQuotationByRfqId(int RfqId, int page, int totalRecords, int statusId, string keyword);
+
         Task<Com.BudgetMetal.DBEntities.Quotation> GetSingleQuotationById(int id);
     }
 }

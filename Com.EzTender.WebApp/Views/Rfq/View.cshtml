@@ -5,9 +5,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@{
-    ViewData["Title"] = "Edit";
-}
 <form asp-controller="Rfq" asp-action="View" method="post" enctype="multipart/form-data" id="frmCreateRFQ">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="block-header">
@@ -41,7 +38,7 @@
                                     <input type="hidden" asp-for="CreatedDate">
                                     <input type="hidden" asp-for="Document.CreatedDate">
                                     <input type="hidden" asp-for="UpdatedBy">
-                                    <input type="hidden" name="Id" value="@Model.Id">
+                                    <input type="hidden" name="Id" id="RfqId" value="@Model.Id">
                                     <input type="hidden" asp-for="Document_Id">
                                     <input type="hidden" asp-for="Document.Id">
                                     <input type="hidden" asp-for="IsActive" />
@@ -138,11 +135,11 @@
                                 </div>
 
                                 <div class="col-sm-3">
-                                    <input type="checkbox" asp-for="SupplierProvideMaterial" class="chk-col-red"  disabled />
+                                    <input type="checkbox" asp-for="SupplierProvideMaterial" class="chk-col-red" disabled />
                                     <label for="SupplierProvideMaterial">Supplier to Provide Materials</label>
                                 </div>
                                 <div class="col-sm-3">
-                                    <input type="checkbox" asp-for="SupplierProvideTransport" class="chk-col-red"  disabled />
+                                    <input type="checkbox" asp-for="SupplierProvideTransport" class="chk-col-red" disabled />
                                     <label for="SupplierProvideTransport">Supplier to Provide Transport</label>
                                 </div>
                                 <div class="col-sm-6">
@@ -155,7 +152,7 @@
                                         <div class="form-line">
                                             <textarea rows="3" asp-for="MessageToSupplier" class="form-control no-resize" readonly></textarea>
                                             <span asp-validation-for="MessageToSupplier" class="text-danger"></span>
-                                           
+
                                         </div>
                                     </div>
                                 </div>
@@ -164,14 +161,13 @@
 
                         </div>
                         <div role="tabpanel" class="tab-pane fade in" id="detailed_requirements">
-                          
+
                             <table id="requirementsTable" class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th width="30%">Service Name</th>
                                         <th width="50%">Description</th>
-                                        <th width="10%">Quantity</th>
-                                        
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -187,10 +183,7 @@
                                                     <td>
                                                         @item.Description
                                                     </td>
-                                                    <td>
-                                                        @item.Quantity
-                                                    </td>
-                                                    
+
                                                 </tr>
                                             }
                                         }
@@ -199,7 +192,40 @@
                                 </tbody>
 
                             </table>
-                            
+                            <button class="btn btn-default waves-effect m-r-20" type="button" data-target="#requirementCompareModal" data-toggle="modal" >Requirement Comparison</button>
+                            <div tabindex="-1" class="modal fade in" id="requirementCompareModal"  role="dialog" aria-labelledby="requirementCompareModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" id="largeModalLabel">Requirement Comparison</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <td></td>
+                                                            @{
+                                                                if (Model.Requirement != null)
+                                                                {
+                                                                    foreach (var item in Model.Requirement)
+                                                                    {
+                                                                        <td>@item.ServiceName</td>
+                                                                    }
+                                                                }
+                                                            }
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-link waves-effect" type="button" data-dismiss="modal">CLOSE</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div role="tabpanel" class="tab-pane fade in" id="service_level_agreement">
                             <table id="slaTable" class="table table-striped">
@@ -213,47 +239,47 @@
                                     @{
                                         if (Model.Sla != null)
                                         {
-                                             foreach (var item in Model.Sla)
+                                            foreach (var item in Model.Sla)
                                             {
                                                 <tr>
                                                     <td>@item.Requirement
                                                     <td>@item.Description</td>
-                                                    
+
                                                 </tr>
-                                              
+
                                             }
                                         }
                                     }
 
                                 </tbody>
                             </table>
-                            
+                          
                         </div>
                         <div role="tabpanel" class="tab-pane fade in" id="penalty">
-                            
+
                             <table id="penaltyTable" class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th width="30%">Breach of Service Definition</th>
                                         <th width="20%">Penalty</th>
                                         <th width="45%">Description</th>
-                                       
+
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @{
                                         if (Model.Penalty != null)
                                         {
-                                           
+
                                             foreach (var item in Model.Penalty)
                                             {
                                                 <tr>
                                                     <td>@item.BreachOfServiceDefinition</td>
                                                     <td>@item.PenaltyAmount</td>
                                                     <td>@item.Description</td>
-                                                    
+
                                                 </tr>
-                                                
+
                                             }
                                         }
                                     }
@@ -261,11 +287,11 @@
                                 </tbody>
 
                             </table>
-                            
+
                         </div>
 
                         <div role="tabpanel" class="tab-pane fade in" id="pricing">
-                            
+
                             <table id="pricingTable" class="table table-striped">
                                 <thead>
                                     <tr>
@@ -279,7 +305,7 @@
                                     @{
                                         if (Model.RfqPriceSchedule != null)
                                         {
-                                            
+
                                             foreach (var item in Model.RfqPriceSchedule)
                                             {
                                                 <tr>
@@ -287,9 +313,9 @@
                                                     <td>@item.ItemDescription</td>
                                                     <td>@item.InternalRefrenceCode</td>
                                                     <td>@item.QuantityRequired</td>
-                                                   
+
                                                 </tr>
-                                                
+
                                             }
                                         }
                                     }
@@ -297,7 +323,42 @@
                                 </tbody>
 
                             </table>
-                            
+                            <button class="btn btn-default waves-effect m-r-20" type="button" data-target="#priceCompareModal" data-toggle="modal">Price Comparison</button>
+
+                            <div tabindex="-1" class="modal fade in" id="priceCompareModal" role="dialog" aria-labelledby="priceCompareModalLabel" aria-hidden="true">
+
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" id="largeModalLabel">Price Comparison</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <td></td>
+                                                            @{
+                                                                if (Model.RfqPriceSchedule != null)
+                                                                {
+                                                                    foreach (var item in Model.RfqPriceSchedule)
+                                                                    {
+                                                                        <td>@item.ItemName</td>
+                                                                    }
+                                                                }
+                                                            }
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-link waves-effect" type="button" data-dismiss="modal">CLOSE</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
 
                         <div role="tabpanel" class="tab-pane fade" id="invited_suppliers">
@@ -308,7 +369,7 @@
                                 </div>
                                 <div class="col-sm-8">
                                     @*<select id="ddlServiceTags" class="form-control"></select>*@
-                                    <select asp-for="SelectedTags" class="form-control show-tick" id="ddlServiceTags" data-live-search="true" multiple  disabled></select>
+                                    <select asp-for="SelectedTags" class="form-control show-tick" id="ddlServiceTags" data-live-search="true" multiple disabled></select>
                                     <input type="hidden" value="@Model.SelectedTags" id="hdSelectedTags" />
                                 </div>
                                 <div class="col-sm-1">
@@ -321,7 +382,7 @@
                                         string selectedSuppliers = string.Join(",", Model.InvitedSupplier.Select(m => m.Company_Id).ToArray());
                                     }
                                     <input type="hidden" id="hdSelectedSuppliers" value="@selectedSuppliers" />
-                                   
+
                                 </div>
                             </div>
                             <table id="invitedSupplierTable" class="table table-striped">
@@ -347,14 +408,14 @@
                                     <tr>
                                         <th width="25%">File Name</th>
                                         <th width="70%">Description</th>
-                                        
+
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @{
                                         if (Model.Document.Attachment != null)
                                         {
-                                           
+
                                             foreach (var item in Model.Document.Attachment)
                                             {
                                                 <tr>
@@ -363,7 +424,7 @@
                                                     </td>
                                                     <td>@item.Description</td>
                                                 </tr>
-                                               
+
                                             }
                                         }
                                     }
@@ -374,13 +435,13 @@
                         </div>
 
                         <div role="tabpanel" class="tab-pane fade" id="settings">
-                            
+
 
                             <table id="userSettingTable" class="table table-hover">
                                 <thead>
                                     <tr>
                                         <th width="95%">Accessible User(s)</th>
-                                        
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -404,9 +465,9 @@
 
                                                     </td>
 
-                                                    
+
                                                 </tr>
-                                               
+
                                             }
                                         }
                                     }
@@ -419,12 +480,43 @@
             </div>
         </div>
     </div>
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        Quotation List
+                    </h2>
+                </div>
+                <div class="body">
 
+                    <div class="row clearfix">
+                        <table class="table table-striped" id="tbQuotation">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Document No</th>
+                                    <th>Company</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        <div class="row" id="pagination">
+                            <div class="col-sm-12" id="divPagination">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
                 <div class="body">
-                   
+                    <a type="button" class="btn btn-danger" href='@Url.Action("Create","Quotation",new { id= Model.Id })'>Create Quotation</a>
                     <input type="hidden" id="loadinvitedsupplier" value="0" />
                 </div>
             </div>
@@ -432,6 +524,7 @@
     </div>
 
 </form>
+
 
 <!-- Editable Table Plugin Js -->
 <script src="~/material_theme/plugins/editable-table/mindmup-editabletable.js"></script>
@@ -466,8 +559,8 @@
         loadIndustry();
 
         loadUser();
-        loadRole()
-
+        loadRole();
+        loadQuotation(1);
         $('#frmCreateRFQ input').attr('readonly', 'readonly');
        // $('#StartRfqdate').datepicker("setDate", new Date(2008, 9, 03));
     });
@@ -607,7 +700,7 @@
      var stringServiceTagsId = serviceTagsId.toString();
 
      if (serviceTagsId == null) {
-            alert("Please select the service tags!")
+         alert("Please select the service tags!");
         } else {
             var ajaxurl = '@Url.Action("GetSupplierByServiceTagsId", "Rfq")';
             $.ajax({
@@ -776,5 +869,46 @@ function loadIndustry() {
         //alert('download - ' + $('#iframe_download_file').attr('src'));
 
     });
+
+    function loadQuotation(p) {
+        var _keyword = "";
+        var _rfqId = parseInt($('#RfqId').val());
+        var ajaxurl = '@Url.Action("GetQuotationByRfqId", "Rfq")';
+        $.ajax({
+            url: ajaxurl,
+            data: { RfqId: _rfqId, page: p, keyword: _keyword},
+            dataType: 'json',
+            success: function (response) {
+                var obj = response.Result.Records;
+                console.log(obj);
+                for (var k in obj) {
+                    var item = obj[k];
+                    var url = '@Url.Action("View", "Quotation")';
+                    $('#tbQuotation > tbody').append(
+                        "<tr>" +
+                        "<td> <a type='button' class='btn btn-warning' href='" + url+"/"+item.Id+"' target='_blank'>View</a>  </td>" +
+                        "<td>" + item.Document.DocumentNo + "</td>" +
+                        "<td>" + item.Document.Company.Name+ "</td>" +
+                        "<td>" + item.Document.DocumentStatus.Name + "</td>" +
+                        "</tr>"
+                    );
+
+                }
+                var totalpage = response.Result.TotalPage;
+                var currentpage = response.Result.CurrentPage;
+                if (totalpage > currentpage) {
+                    $("#divPagination").empty();
+                    $("#divPagination").append(" <a class='btn btn-md btn-default' OnClick='loadQuotation(" + response.Result.NextPage + ")'> Load More </a> ");
+                } else {
+                    $("#divPagination").empty();
+
+                }
+
+            },
+            error: function (response) {
+                alert(response)
+            }
+        });
+    }
 </script>
 

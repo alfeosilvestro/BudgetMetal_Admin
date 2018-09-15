@@ -29,6 +29,57 @@ namespace Com.BudgetMetal.DataRepository.Quotation
                             .Where(e =>
                               (e.IsActive == true)
                               && (e.Document.IsActive == true)
+                              && (e.Document.Company_Id == documentOwner)
+                            )
+                            .OrderByDescending(e => e.CreatedDate)
+                            .ToListAsync();
+
+
+            var recordList = records
+                .Skip((totalRecords * page) - totalRecords)
+                .Take(totalRecords).ToList();
+
+            var count = records.Count();
+
+            var nextPage = 0;
+            var prePage = 0;
+            if (page > 1)
+            {
+                prePage = page - 1;
+            }
+
+            var totalPage = (count + totalRecords - 1) / totalRecords;
+            if (page < totalPage)
+            {
+                nextPage = page + 1;
+            }
+
+            var result = new PageResult<Com.BudgetMetal.DBEntities.Quotation>()
+            {
+                Records = recordList,
+                TotalPage = totalPage,
+                CurrentPage = page,
+                PreviousPage = prePage,
+                NextPage = nextPage,
+                TotalRecords = count
+            };
+
+            return result;
+        }
+
+        public async Task<PageResult<Com.BudgetMetal.DBEntities.Quotation>> GetQuotationByRfqId(int RfqId, int page, int totalRecords, int statusId, string keyword)
+        {
+            var records = await this.entities
+                            .Include(e => e.Document)
+                            .Include(e => e.Document.DocumentStatus)
+                            .Include(e => e.Document.DocumentType)
+                            .Include(e => e.Document.Company)
+                            .Where(e =>
+                              (e.IsActive == true)
+                              && (e.Document.IsActive == true)
+                              && (e.Rfq_Id == RfqId)
+                              && (statusId == 0 || e.Document.DocumentStatus_Id == statusId)
+                              && (keyword == "" || e.Document.DocumentNo == keyword)
                             )
                             .OrderByDescending(e => e.CreatedDate)
                             .ToListAsync();
