@@ -146,6 +146,7 @@ namespace Com.BudgetMetal.DataRepository.Quotation
                             .Include(e => e.Document.Company)
                             .Include(e => e.Document.DocumentUser)
                             .Include(e => e.Document.Attachment)
+                            .Include(e => e.QuotationRequirement)
                             .Include(e => e.QuotationPriceSchedule)
                             .SingleOrDefaultAsync(e =>
                               (e.IsActive == true)

@@ -4,11 +4,10 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
+<h2>Company</h2>
 <div class="card">
-    <div class="row"></div>
-    <h2>Company</h2>
-
     <div class="header">
+        <br />
         <div class="row">
             @using (Html.BeginForm("Index", "Companies", FormMethod.Get))
             {

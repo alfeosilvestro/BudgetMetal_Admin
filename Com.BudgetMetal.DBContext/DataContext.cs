@@ -31,6 +31,7 @@ namespace Com.BudgetMetal.DB
         public virtual DbSet<Company> Company { get; set; }
         public virtual DbSet<Document> Document { get; set; }
         public virtual DbSet<DocumentUser> DocumentUser { get; set; }
+        public virtual DbSet<DocumentActivity> DocumentActivity { get; set; }
         public virtual DbSet<EmailLog> EmailLog { get; set; }
         public virtual DbSet<Industry> Industry { get; set; }
         public virtual DbSet<InvitedSupplier> InvitedSupplier { get; set; }

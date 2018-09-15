@@ -17,12 +17,9 @@
                 <div class="header">
                     <h2>
                         General Information
-
                     </h2>
-
                 </div>
                 <div class="body">
-
                     <div class="row clearfix">
                         <div class="col-sm-10">
                             <label for="quote_no">RFQ Reference</label>
@@ -91,6 +88,7 @@
                         <li role="presentation" id="tabinvited_suppliers"><a href="#invited_suppliers" data-toggle="tab">Invited Suppliers</a></li>
                         <li role="presentation"><a href="#attachments" data-toggle="tab">Files</a></li>
                         <li role="presentation"><a href="#settings" data-toggle="tab">Users</a></li>
+                        <li role="presentation"><a href="#DocumentActivity" data-toggle="tab">Activity</a></li>
                     </ul>
                     <!-- Tab panes -->
                     <div class="tab-content">
@@ -135,6 +133,25 @@
                                 </div>
 
                                 <div class="col-sm-3">
+                                    <label for="QuotationOpeningDate">Quotation Opening Date</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" asp-for="QuotationOpeningDate" class="form-control datepicker" placeholder="Quotation Opening Date">
+                                            <span asp-validation-for="QuotationOpeningDate" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <label for="quote_no">Contract Value</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" asp-for="ContractValue" class="form-control" placeholder="Contract Value">
+                                            <span asp-validation-for="ContractValue" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
                                     <input type="checkbox" asp-for="SupplierProvideMaterial" class="chk-col-red" disabled />
                                     <label for="SupplierProvideMaterial">Supplier to Provide Materials</label>
                                 </div>
@@ -142,23 +159,28 @@
                                     <input type="checkbox" asp-for="SupplierProvideTransport" class="chk-col-red" disabled />
                                     <label for="SupplierProvideTransport">Supplier to Provide Transport</label>
                                 </div>
+                                <div class="col-sm-3">
+                                    <input type="checkbox" asp-for="IsPublic" class="chk-col-red" />
+                                    <label for="IsPublic">Public</label>
+                                </div>
+                                <div class="col-sm-3">
+                                    <input type="checkbox" asp-for="SupplierProvideInstallationService" class="chk-col-red" />
+                                    <label for="SupplierProvideInstallationService">Supplier Provide Installation Service</label>
+                                </div>
                                 <div class="col-sm-6">
                                     &nbsp;
                                 </div>
-
                                 <div class="col-sm-12">
                                     <label>Messages to Suppliers</label>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <textarea rows="3" asp-for="MessageToSupplier" class="form-control no-resize" readonly></textarea>
+                                            <textarea rows="3" asp-for="MessageToSupplier" class="form-control no-resize" placeholder="Messages to Suppliers" readonly></textarea>
                                             <span asp-validation-for="MessageToSupplier" class="text-danger"></span>
 
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
-
                         </div>
                         <div role="tabpanel" class="tab-pane fade in" id="detailed_requirements">
 
@@ -475,6 +497,37 @@
                                 </tbody>
                             </table>
                         </div>
+                        <div role="tabpanel" class="tab-pane fade in" id="DocumentActivity">
+
+                            <table id="pricingTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="25%">Action</th>
+                                        <th width="35%">Created By</th>
+                                        <th width="20%">Created Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (Model.DocumentActivityList != null)
+                                        {
+
+                                            foreach (var item in Model.DocumentActivityList)
+                                            {
+                                                <tr>
+                                                    <td>@item.Action </td>
+                                                    <td>@item.CreatedBy</td>
+                                                    <td>@item.CreatedDate</td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -565,7 +618,7 @@
        // $('#StartRfqdate').datepicker("setDate", new Date(2008, 9, 03));
     });
 
-   
+
 
     $("#btnSubmit").click(function () {
         //alert($('.supplier:checkbox:checked'));

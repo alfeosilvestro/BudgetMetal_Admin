@@ -14,9 +14,7 @@
                 <div class="header">
                     <h2>
                         General Information
-
                     </h2>
-
                 </div>
                 <div class="body">
 
@@ -85,13 +83,12 @@
                     <!-- Tab panes -->
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane fade in active" id="basic_requirements">
-
                             <div class="row clearfix">
                                 <div class="col-sm-3">
                                     <label for="StartRfqdate">Start RFQ Date</label>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" asp-for="StartRfqdate" class="form-control datepicker" placeholder="Start RFQ Date" > 
+                                            <input type="text" asp-for="StartRfqdate" class="form-control datepicker" placeholder="Start RFQ Date">
                                             <span asp-validation-for="StartRfqdate" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -125,12 +122,39 @@
                                 </div>
 
                                 <div class="col-sm-3">
+                                    <label for="QuotationOpeningDate">Quotation Opening Date</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" asp-for="QuotationOpeningDate" class="form-control datepicker" placeholder="Quotation Opening Date">
+                                            <span asp-validation-for="QuotationOpeningDate" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <label for="quote_no">Contract Value</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" asp-for="ContractValue" class="form-control" placeholder="Contract Value">
+                                            <span asp-validation-for="ContractValue" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
                                     <input type="checkbox" asp-for="SupplierProvideMaterial" class="chk-col-red" />
                                     <label for="SupplierProvideMaterial">Supplier to Provide Materials</label>
                                 </div>
                                 <div class="col-sm-3">
                                     <input type="checkbox" asp-for="SupplierProvideTransport" class="chk-col-red" />
                                     <label for="SupplierProvideTransport">Supplier to Provide Transport</label>
+                                </div>
+                                <div class="col-sm-3">
+                                    <input type="checkbox" asp-for="IsPublic" class="chk-col-red" />
+                                    <label for="IsPublic">IsPublic</label>
+                                </div>
+                                <div class="col-sm-3">
+                                    <input type="checkbox" asp-for="SupplierProvideInstallationService" class="chk-col-red" />
+                                    <label for="SupplierProvideInstallationService">Supplier Provide Installation Service</label>
                                 </div>
                                 <div class="col-sm-6">
                                     &nbsp;
@@ -140,9 +164,8 @@
                                     <label for="quote_no">Messages to Suppliers</label>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <textarea rows="3" asp-for="MessageToSupplier" class="form-control no-resize"></textarea>
+                                            <textarea rows="3" asp-for="MessageToSupplier" class="form-control no-resize" placeholder="Messages to Suppliers"></textarea>
                                             <span asp-validation-for="MessageToSupplier" class="text-danger"></span>
-                                            <label class="form-label">Messages to Suppliers</label>
                                         </div>
                                     </div>
                                 </div>
@@ -166,10 +189,14 @@
                                             <input type="text" asp-for="Requirement[0].ServiceName" class="form-control" />
                                             <span asp-validation-for="Requirement[0].ServiceName" class="text-danger"></span>
                                         </td>
-                                        <td><input type="text" asp-for="Requirement[0].Description" class="form-control" />
+                                        <td>
+                                            <input type="text" asp-for="Requirement[0].Description" class="form-control" />
                                             <span asp-validation-for="Requirement[0].Description" class="text-danger"></span>
                                         </td>
-                                       
+                                        @*<td>
+                                            <input type="text" asp-for="Requirement[0].Quantity" class="form-control" />
+                                            <span asp-validation-for="Requirement[0].Quantity" class="text-danger"></span>
+                                        </td>*@
                                         <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveRequirementRow(this)'>Remove</button></td>
                                     </tr>
                                 </tbody>
@@ -517,8 +544,8 @@
         loadIndustry();
         loadUser();
         loadRole();
-        
-       
+
+
     });
 
     $("#btnSubmit").click(function () {
@@ -540,12 +567,12 @@
 
     function loadUser() {
         var ajaxurl = '@Url.Action("GetActiveUserByCompany", "Rfq")';
-    
+
         $('#ddlUser').append($('<option>', {
             value: 0,
             text: '--Select User--'
         }));
-    
+
         $.ajax({
             url: ajaxurl,
             data: { CompanyId: @ViewBag.Company_Id },
@@ -574,7 +601,7 @@
         var userId = $("#ddlUser").val();
         var userName = $("#ddlUser option:selected").text();
         var roleId = $("#ddlRole").val();
-       
+
         if (userId == 0 ) {
             alert("Please select the user");
         } else {
@@ -609,7 +636,7 @@
                     $("#ddlRole").selectpicker('refresh');
                 }
             }
-        } 
+        }
     });
 
     function RemoveUserRow(item) {
@@ -618,7 +645,7 @@
 
     function loadRole() {
         var ajaxurl = '@Url.Action("GetActiveRoles", "Rfq")';
-    
+
          $.ajax({
             url: ajaxurl,
             dataType: 'json',
@@ -631,7 +658,7 @@
                         value: item.Id,
                         text: item.Name
                     }));
-                    
+
                 }
                 $("#ddlRole").selectpicker('refresh');
 
@@ -648,7 +675,8 @@
         loadSupplier(1);
     });
 
- function loadSupplier(page) {
+    function loadSupplier(page) {
+       
      var serviceTagsId = $('#ddlServiceTags').val();
 
      var stringServiceTagsId = serviceTagsId.toString();
@@ -693,7 +721,7 @@
     }
 
     function checkSupplier(n) {
-        
+
         if ($("#chkSupplier_" + n).prop("checked")) {
 
             $("#chkSupplier_" + n).prop("checked", false);
@@ -704,7 +732,7 @@
             $("#btnInvite_" + n).removeClass("btn btn-danger").addClass("btn btn-success");
             $("#btnInvite_" + n).text("Selected");
         }
-        
+
     }
 function loadIndustry() {
     var ajaxurl = '@Url.Action("GetActiveIndustries", "Rfq")';
@@ -740,7 +768,7 @@ function loadIndustry() {
 
     $("#ddlIndustry").change(function () {
         var industryId = $('#ddlIndustry').val();
-        
+
         loadServiceTags(industryId);
     });
 

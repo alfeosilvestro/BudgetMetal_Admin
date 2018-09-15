@@ -73,9 +73,11 @@
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs tab-nav-right" role="tablist">
                         <li role="presentation" class="active"><a href="#basic_information" data-toggle="tab">Basic Information</a></li>
+                        <li role="presentation"><a href="#detailed_requirements" data-toggle="tab">Requirements</a></li>
                         <li role="presentation"><a href="#pricing" data-toggle="tab">Pricing Table</a></li>
                         <li role="presentation"><a href="#attachments" data-toggle="tab">Attachments</a></li>
                         <li role="presentation"><a href="#settings" data-toggle="tab">User Settings</a></li>
+                        <li role="presentation"><a href="#DocumentActivity" data-toggle="tab">Activity</a></li>
                     </ul>
                     <!-- Tab panes -->
                     <div class="tab-content">
@@ -122,6 +124,40 @@
 
                         </div>
 
+                        <div role="tabpanel" class="tab-pane fade in" id="detailed_requirements">
+                            <input type="hidden" id="detailRequirementLastId" value="1" />
+                            <table id="requirementsTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="20%">Service Name</th>
+                                        <th width="30%">Description</th>
+                                        <th width="30%">Compliance</th>
+                                        <th width="40%">Supplier Description</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody data-test="abc">
+                                <tbody>
+                                    @{
+                                        if (Model.QuotationRequirement != null)
+                                        {
+                                            int i = 0;
+                                            foreach (var item in Model.QuotationRequirement)
+                                            {
+                                                <tr>
+                                                    <td>@item.ServiceName <input type="hidden" name="QuotationRequirement[@i].ServiceName" class="form-control" value="@item.ServiceName" /></td>
+                                                    <td>@item.Description <input type="hidden" name="QuotationRequirement[@i].Description" class="form-control" value="@item.Description" /></td>
+                                                    <td>@item.Compliance<input type="hidden" name="QuotationRequirement[@i].Compliance" class="form-control" value="@item.Compliance" /></td>
+                                                    <td>@item.SupplierDescription<input type="hidden" name="QuotationRequirement[@i].SupplierDescription" class="form-control" value="@item.SupplierDescription" /></td>
+                                                </tr>
+                                                i++;
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
                         <div role="tabpanel" class="tab-pane fade in" id="pricing">
                             <input type="hidden" id="PricingLastId" value="1" />
                             <table id="pricingTable" class="table table-striped">
@@ -166,7 +202,7 @@
                                     <tr>
                                         <th width="25%">File Name</th>
                                         <th width="70%">Description</th>
-                                       
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -184,7 +220,7 @@
                                                     </td>
                                                     <td>@item.Description"</td>
 
-                                                    
+
                                                 </tr>
                                                 i++;
                                             }
@@ -195,17 +231,17 @@
 
                             </table>
                             <iframe id="iframe_download_file" style="display:none" src=""></iframe>
-                            
+
                         </div>
 
                         <div role="tabpanel" class="tab-pane fade" id="settings">
-                            
+
 
                             <table id="userSettingTable" class="table table-hover">
                                 <thead>
                                     <tr>
                                         <th width="95%">Accessible User(s)</th>
-                                        
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -230,7 +266,7 @@
 
                                                     </td>
 
-                                                  
+
                                                 </tr>
                                                 i++;
                                             }
@@ -239,6 +275,38 @@
 
                                 </tbody>
                             </table>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane fade in" id="DocumentActivity">
+
+                            <table id="pricingTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="25%">Action</th>
+                                        <th width="35%">Created By</th>
+                                        <th width="20%">Created Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (Model.DocumentActivityList != null)
+                                        {
+
+                                            foreach (var item in Model.DocumentActivityList)
+                                            {
+                                                <tr>
+                                                    <td>@item.Action </td>
+                                                    <td>@item.CreatedBy</td>
+                                                    <td>@item.CreatedDate</td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+
+                                </tbody>
+
+                            </table>
+
                         </div>
                     </div>
                 </div>

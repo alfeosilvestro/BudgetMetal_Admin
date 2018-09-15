@@ -12,6 +12,7 @@ using Com.BudgetMetal.Services.Roles;
 using Com.BudgetMetal.Services.ServiceTags;
 using Com.BudgetMetal.Services.Users;
 using Com.BudgetMetal.ViewModels.Attachment;
+using Com.BudgetMetal.ViewModels.DocumentActivity;
 using Com.BudgetMetal.ViewModels.DocumentUser;
 using Com.BudgetMetal.ViewModels.InvitedSupplier;
 using Com.BudgetMetal.ViewModels.Rfq;
@@ -156,6 +157,17 @@ namespace Com.GenericPlatform.WebApp.Controllers
                 }
                 Rfq.Document.DocumentUser = listDocumentUser;
 
+                var listDocumentActivity = new List<VmDocumentActivityItem>();
+                var DocumentActivity = new VmDocumentActivityItem()
+                {
+                    User_Id = Convert.ToInt32(HttpContext.Session.GetString("User_Id")),
+                    IsRfq = true,
+                    Action = "Update",
+
+                };
+                listDocumentActivity.Add(DocumentActivity);
+                Rfq.DocumentActivityList = listDocumentActivity;
+
                 string documentNo = rfqService.UpdateRFQ(Rfq);
 
                 return RedirectToAction("Index");
@@ -169,8 +181,6 @@ namespace Com.GenericPlatform.WebApp.Controllers
         // GET: Rfq/Create
         public ActionResult Create()
         {
-          
-
             ViewBag.User_Id = HttpContext.Session.GetString("User_Id");
             ViewBag.Company_Id = HttpContext.Session.GetString("Company_Id");
             ViewBag.UserName = HttpContext.Session.GetString("UserName");
@@ -190,7 +200,6 @@ namespace Com.GenericPlatform.WebApp.Controllers
         {
             try
             {
-
                 Rfq.SelectedTags = Request.Form["SelectedTags"].ToString();
                 var listAttachment = new List<VmAttachmentItem>();
                 int i = 0;
@@ -248,6 +257,17 @@ namespace Com.GenericPlatform.WebApp.Controllers
                     }
                 }
                 Rfq.Document.DocumentUser = listDocumentUser;
+
+                var listDocumentActivity = new List<VmDocumentActivityItem>();
+                var DocumentActivity = new VmDocumentActivityItem()
+                {
+                    User_Id = Convert.ToInt32(HttpContext.Session.GetString("User_Id")),
+                    IsRfq = true,
+                    Action = "Create",
+
+                };
+                listDocumentActivity.Add(DocumentActivity);
+                Rfq.DocumentActivityList = listDocumentActivity;  
 
                 string documentNo = rfqService.SaveRFQ(Rfq);
 

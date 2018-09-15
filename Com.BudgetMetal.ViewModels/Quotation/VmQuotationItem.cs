@@ -1,5 +1,7 @@
 ﻿using Com.BudgetMetal.ViewModels.Document;
+using Com.BudgetMetal.ViewModels.DocumentActivity;
 using Com.BudgetMetal.ViewModels.QuotationPriceSchedule;
+using Com.BudgetMetal.ViewModels.QuotationRequirement;
 using Com.BudgetMetal.ViewModels.Rfq;
 using System;
 using System.Collections.Generic;
@@ -16,13 +18,16 @@ namespace Com.BudgetMetal.ViewModels.Quotation
         public DateTime? ValidToDate { get; set; }
 
         public string Comments { get; set; }
-        
+
         public int Document_Id { get; set; }
         public virtual VmDocumentItem Document { get; set; }
-        
+
         public int Rfq_Id { get; set; }
         public virtual VmRfqItem Rfq { get; set; }
-        
-       public virtual List<VmQuotationPriceScheduleItem> QuotationPriceSchedule { get; set; }
+
+        public virtual List<VmQuotationPriceScheduleItem> QuotationPriceSchedule { get; set; }
+
+        public virtual List<VmQuotationRequirementItem> QuotationRequirement { get; set; }
+        public List<VmDocumentActivityItem> DocumentActivityList { get; set; }
     }
 }

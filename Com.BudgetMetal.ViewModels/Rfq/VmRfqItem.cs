@@ -1,4 +1,5 @@
 ﻿using Com.BudgetMetal.ViewModels.Document;
+using Com.BudgetMetal.ViewModels.DocumentActivity;
 using Com.BudgetMetal.ViewModels.InvitedSupplier;
 using Com.BudgetMetal.ViewModels.Requirement;
 using Com.BudgetMetal.ViewModels.RfqPenalty;
@@ -43,6 +44,8 @@ namespace Com.BudgetMetal.ViewModels.Rfq
         public string IndustryOfRfq { get; set; }
         public string SelectedTags { get; set; }
 
+        [Required]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dddd dd MMMM yyyy}")]
         public DateTime? QuotationOpeningDate { get; set; }
         public string ContractValue { get; set; }
         public bool IsPublic { get; set; }
@@ -57,5 +60,6 @@ namespace Com.BudgetMetal.ViewModels.Rfq
         public virtual List<VmSlaItem> Sla { get; set; }
         
         public List<VmDocumentItem> DocumentList { get; set; }
+        public List<VmDocumentActivityItem> DocumentActivityList { get; set; }
     }
 }

@@ -2,94 +2,106 @@
 
 @{
     ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
-<h2>Edit</h2>
+<div class="container-fluid">
+    <h3>Edit Company</h3>
+    <div class="card">
+        <div class="row"></div>
+        <hr />
+        <div class="row clearfix">
+            <div class="col-md-8">
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-line col-md-8">
+                        <br />
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-line col-md-8">
+                        <br />
+                        <label asp-for="Address" class="control-label"></label>
+                        <input asp-for="Address" class="form-control" />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                    <div class="form-line col-md-8">
+                        <br />
+                        <label asp-for="Domain" class="control-label"></label>
+                        <input asp-for="Domain" class="form-control" />
+                        <span asp-validation-for="Domain" class="text-danger"></span>
+                    </div>
+                    <div class="form-line col-md-8">
+                        <br />
+                        <label asp-for="RegNo" class="control-label"></label>
+                        <input asp-for="RegNo" class="form-control" />
+                        <span asp-validation-for="RegNo" class="text-danger"></span>
+                    </div>
+                    <div class="form-line col-md-8">
+                        <br />
+                        <label asp-for="About" class="control-label"></label>
+                        <input asp-for="About" class="form-control" />
+                        <span asp-validation-for="About" class="text-danger"></span>
+                    </div>
+                    <div class="form-line col-md-8">
+                        <br />
+                        <label asp-for="SupplierAvgRating" class="control-label"></label>
+                        <input asp-for="SupplierAvgRating" class="form-control" />
+                        <span asp-validation-for="SupplierAvgRating" class="text-danger"></span>
+                    </div>
+                    <div class="form-line col-md-8">
+                        <br />
+                        <label asp-for="BuyerAvgRating" class="control-label"></label>
+                        <input asp-for="BuyerAvgRating" class="form-control" />
+                        <span asp-validation-for="BuyerAvgRating" class="text-danger"></span>
+                    </div>
+                    <div class="form-line col-md-8">
+                        <br />
+                        <label asp-for="AwardedQuotation" class="control-label"></label>
+                        <input asp-for="AwardedQuotation" class="form-control" />
+                        <span asp-validation-for="AwardedQuotation" class="text-danger"></span>
+                    </div>
+                    <div class="form-line col-md-8">
+                        <br />
+                        <label asp-for="SubmittedQuotation" class="control-label"></label>
+                        <input asp-for="SubmittedQuotation" class="form-control" />
+                        <span asp-validation-for="SubmittedQuotation" class="text-danger"></span>
+                    </div>
+                    @*<div class="form-group">
+                        <label asp-for="IsVerified" class="control-label"></label>
+                        <input asp-for="IsVerified" class="form-control" />
+                        <span asp-validation-for="IsVerified" class="text-danger"></span>
+                        </div>*@
 
-<h4>Company</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                    <div class="form-group col-md-8">
+                        <div class="checkbox">
+                            <br />
+                            <input type="checkbox" class="chk-col-red" asp-for="IsVerified" />
+                            <label for="IsVerified"> Is Verified</label>
+                        </div>
+                        <br />
+                        <div class="checkbox">
+                            <input type="checkbox" class="chk-col-red" asp-for="IsActive" />
+                            <label for="IsActive"> Is Active</label>
+                        </div>
+                    </div>
+                    <div class="form-line col-md-8" hidden="hidden">
+                        <label asp-for="Id" class="control-label"></label>
+                        <input asp-for="Id" class="form-control" />
+                        <span asp-validation-for="Id" class="text-danger"></span>
+                    </div>
+                    <br />
+                    <input type="hidden" asp-for="UpdatedBy" class="form-control" />
+                    <div class="form-group col-md-8">
+                        <input type="submit" value="Save" class="btn btn-info" />
+                    </div>
+                    <br />
+                </form>
             </div>
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Domain" class="control-label"></label>
-                <input asp-for="Domain" class="form-control" />
-                <span asp-validation-for="Domain" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RegNo" class="control-label"></label>
-                <input asp-for="RegNo" class="form-control" />
-                <span asp-validation-for="RegNo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="About" class="control-label"></label>
-                <input asp-for="About" class="form-control" />
-                <span asp-validation-for="About" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SupplierAvgRating" class="control-label"></label>
-                <input asp-for="SupplierAvgRating" class="form-control" />
-                <span asp-validation-for="SupplierAvgRating" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BuyerAvgRating" class="control-label"></label>
-                <input asp-for="BuyerAvgRating" class="form-control" />
-                <span asp-validation-for="BuyerAvgRating" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AwardedQuotation" class="control-label"></label>
-                <input asp-for="AwardedQuotation" class="form-control" />
-                <span asp-validation-for="AwardedQuotation" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SubmittedQuotation" class="control-label"></label>
-                <input asp-for="SubmittedQuotation" class="form-control" />
-                <span asp-validation-for="SubmittedQuotation" class="text-danger"></span>
-            </div>
-
-            @*<div class="form-group">
-            <label asp-for="IsVerified" class="control-label"></label>
-            <input asp-for="IsVerified" class="form-control" />
-            <span asp-validation-for="IsVerified" class="text-danger"></span>
-            </div>*@
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input asp-for="IsVerified" /> @Html.DisplayNameFor(model => model.IsVerified)
-                    </label>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
-                    </label>
-                </div>
-            </div>
-            <div class="form-group" hidden="hidden">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
-            <input type="hidden" asp-for="UpdatedBy" class="form-control" />
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
-
 <div>
     <a asp-action="Index">Back to List</a>
 </div>

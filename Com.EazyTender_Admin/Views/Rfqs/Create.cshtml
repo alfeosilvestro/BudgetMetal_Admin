@@ -135,7 +135,24 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                <div class="col-sm-3">
+                                    <label for="QuotationOpeningDate">Quotation Opening Date</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" asp-for="QuotationOpeningDate" class="form-control datepicker" placeholder="Quotation Opening Date">
+                                            <span asp-validation-for="QuotationOpeningDate" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <label for="quote_no">Contract Value</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" asp-for="ContractValue" class="form-control" placeholder="Contract Value">
+                                            <span asp-validation-for="ContractValue" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="col-sm-3">
                                     <input type="checkbox" asp-for="SupplierProvideMaterial" class="chk-col-red" />
                                     <label for="SupplierProvideMaterial">Supplier to Provide Materials</label>
@@ -143,6 +160,14 @@
                                 <div class="col-sm-3">
                                     <input type="checkbox" asp-for="SupplierProvideTransport" class="chk-col-red" />
                                     <label for="SupplierProvideTransport">Supplier to Provide Transport</label>
+                                </div>
+                                <div class="col-sm-3">
+                                    <input type="checkbox" asp-for="IsPublic" class="chk-col-red" />
+                                    <label for="IsPublic">Public</label>
+                                </div>
+                                <div class="col-sm-3">
+                                    <input type="checkbox" asp-for="SupplierProvideInstallationService" class="chk-col-red" />
+                                    <label for="SupplierProvideInstallationService">Supplier Provide Installation Service</label>
                                 </div>
                                 <div class="col-sm-6">
                                     &nbsp;
@@ -154,7 +179,6 @@
                                         <div class="form-line">
                                             <textarea rows="3" asp-for="MessageToSupplier" class="form-control no-resize"></textarea>
                                             <span asp-validation-for="MessageToSupplier" class="text-danger"></span>
-                                            <label class="form-label">Messages to Suppliers</label>
                                         </div>
                                     </div>
                                 </div>
@@ -800,10 +824,8 @@
                         value: item.Id,
                         text: item.Name
                     }));
-
                 }
                 $("#ddlCompany").selectpicker('refresh');
-
             },
             error: function (response) {
                 alert(response)
@@ -815,8 +837,10 @@
     $("#ddlCompany").change(function () {
         var companyId = $('#ddlCompany').val();
         $('#Document_Company_Id').val(companyId);
+
         loadUser();
         loadUserByAdmin(companyId);
+        $('#userNameByAdmin').text('');
     });
 
     function loadUserByAdmin(companyId) {
