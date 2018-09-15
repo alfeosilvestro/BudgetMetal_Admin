@@ -60,7 +60,7 @@ namespace Com.BudgetMetal.ViewModels.Rfq
         public virtual List<VmSlaItem> Sla { get; set; }
         
         public List<VmDocumentItem> DocumentList { get; set; }
-        public List<VmDocumentActivityItem> DocumentActivityList { get; set; }
+        //public List<VmDocumentActivityItem> DocumentActivityList { get; set; }
         public virtual List<VmQuotationItem> Quotation { get; set; }
 
         public List<List<string>> RequirementComparison { get; set; }
