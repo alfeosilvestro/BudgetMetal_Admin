@@ -130,7 +130,6 @@ namespace Com.BudgetMetal.DataRepository.RFQ
                             .Include(e=>e.Document.Attachment)
                             .Include(e=>e.Requirement)
                             .Include(e => e.Penalty)
-                            .Include(e => e.Quotation)
                             .Include(e => e.Sla)
                             .Include(e => e.RfqPriceSchedule)
                             .Include(e => e.InvitedSupplier)

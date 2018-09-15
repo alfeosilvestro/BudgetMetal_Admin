@@ -544,7 +544,7 @@ namespace Com.BudgetMetal.Services.Quotation
             var listAttachment = new List<VmAttachmentItem>();
             if (dbResult.Document.Attachment != null)
             {
-                foreach (var item in dbResult.Document.Attachment)
+                foreach (var item in dbResult.Document.Attachment.Where(e => e.IsActive == true).ToList())
                 {
                     var itemAttachment = new VmAttachmentItem();
                     Copy<Com.BudgetMetal.DBEntities.Attachment, VmAttachmentItem>(item, itemAttachment, new string[] { "Document", "FileBinary" });
@@ -557,7 +557,7 @@ namespace Com.BudgetMetal.Services.Quotation
             if (dbResult.Document.DocumentUser != null)
             {
                 List<int> UserList = new List<int>();
-                UserList = dbResult.Document.DocumentUser.Select(e => e.User_Id).Distinct().ToList();
+                UserList = dbResult.Document.DocumentUser.Where(e => e.IsActive == true).Select(e => e.User_Id).Distinct().ToList();
                 foreach (var itemUser in UserList)
                 {
                     var documentUser = new VmDocumentUserDisplay();
@@ -567,10 +567,10 @@ namespace Com.BudgetMetal.Services.Quotation
                     user = await repoUser.Get(itemUser);
                     documentUser.UserName = user.ContactName;
 
-                    documentUser.Roles_Id = string.Join(",", dbResult.Document.DocumentUser.Where(e => e.User_Id == itemUser).Select(e => e.Role_Id).ToArray());
+                    documentUser.Roles_Id = string.Join(",", dbResult.Document.DocumentUser.Where(e => e.User_Id == itemUser && e.IsActive == true).Select(e => e.Role_Id).ToArray());
 
                     var roles = new List<string>();
-                    foreach (var roleId in dbResult.Document.DocumentUser.Where(e => e.User_Id == itemUser).Select(e => e.Role_Id).ToList())
+                    foreach (var roleId in dbResult.Document.DocumentUser.Where(e => e.User_Id == itemUser && e.IsActive == true).Select(e => e.Role_Id).ToList())
                     {
                         var role = new Role();
                         role = await repoRole.Get(roleId);
@@ -587,7 +587,7 @@ namespace Com.BudgetMetal.Services.Quotation
             var listQuotationPriceSchedule = new List<VmQuotationPriceScheduleItem>();
             if (dbResult.QuotationPriceSchedule != null)
             {
-                foreach (var item in dbResult.QuotationPriceSchedule)
+                foreach (var item in dbResult.QuotationPriceSchedule.Where(e => e.IsActive == true).ToList())
                 {
                     var itemQuotationPriceSchedule = new VmQuotationPriceScheduleItem();
                     Copy<Com.BudgetMetal.DBEntities.QuotationPriceSchedule, VmQuotationPriceScheduleItem>(item, itemQuotationPriceSchedule, new string[] { "Quotation" });
@@ -599,7 +599,7 @@ namespace Com.BudgetMetal.Services.Quotation
             var listQuotationRequirement= new List<VmQuotationRequirementItem>();
             if (dbResult.QuotationRequirement != null)
             {
-                foreach (var item in dbResult.QuotationRequirement)
+                foreach (var item in dbResult.QuotationRequirement.Where(e => e.IsActive == true).ToList())
                 {
                     var itemQuotationRequirement = new VmQuotationRequirementItem();                    
                     Copy<Com.BudgetMetal.DBEntities.QuotationRequirement, VmQuotationRequirementItem>(item, itemQuotationRequirement, new string[] { "Quotation" });
