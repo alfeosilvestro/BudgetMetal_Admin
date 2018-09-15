@@ -351,11 +351,11 @@ namespace Com.BudgetMetal.Services.RFQ
                 }
             }
 
-            if(rfq.DocumentActivityList != null)
+            if(rfq.Document.DocumentActivityList != null)
             {
-                if (rfq.DocumentActivityList.Count > 0)
+                if (rfq.Document.DocumentActivityList.Count > 0)
                 {
-                    foreach (var item in rfq.DocumentActivityList)
+                    foreach (var item in rfq.Document.DocumentActivityList)
                     {
                         var dbDocumentActivity = new Com.BudgetMetal.DBEntities.DocumentActivity();
 
@@ -556,11 +556,11 @@ namespace Com.BudgetMetal.Services.RFQ
             //    repoDocumentActivity.Add(dbDocumentActivity);
             //    repoDocumentActivity.Commit();
             //}
-            if (rfq.DocumentActivityList != null)
+            if (rfq.Document.DocumentActivityList != null)
             {
-                if (rfq.DocumentActivityList.Count > 0)
+                if (rfq.Document.DocumentActivityList.Count > 0)
                 {
-                    foreach (var item in rfq.DocumentActivityList)
+                    foreach (var item in rfq.Document.DocumentActivityList)
                     {
                         var dbDocumentActivity = new Com.BudgetMetal.DBEntities.DocumentActivity();
 
@@ -880,10 +880,25 @@ namespace Com.BudgetMetal.Services.RFQ
             resultObject.InvitedSupplier = listInvitedSupplier;
 
 
-            var documentActivityEntity = repoDocumentActivity.GetDocumentActivityWithDocumentId(documentId, true);
-            var listDocumentActivity = new List<VmDocumentActivityItem>();
+            var documentActivityEntity = repoDocumentActivity.GetDocumentActivityWithDocumentId(dbResult.Document_Id, true);
+            //var listDocumentActivity = new List<VmDocumentActivityItem>();
+            //if (documentActivityEntity != null)
+            //{
+            //    foreach (var item in documentActivityEntity.Result.Records)
+            //    {
+            //        var newItem = new VmDocumentActivityItem();
+            //        newItem.Action = item.Action;
+            //        newItem.CreatedBy = item.CreatedBy;
+            //        newItem.CreatedDate = item.CreatedDate;
+            //        newItem.Document_Id = item.Document_Id;
+            //        listDocumentActivity.Add(newItem);
+            //    }
+            //}
+            //resultObject.DocumentActivityList = listDocumentActivity;
+
             if (documentActivityEntity != null)
             {
+                var listDocumentActivity = new List<VmDocumentActivityItem>();
                 foreach (var item in documentActivityEntity.Result.Records)
                 {
                     var newItem = new VmDocumentActivityItem();
@@ -893,8 +908,8 @@ namespace Com.BudgetMetal.Services.RFQ
                     newItem.Document_Id = item.Document_Id;
                     listDocumentActivity.Add(newItem);
                 }
+                resultObject.Document.DocumentActivityList = listDocumentActivity;
             }
-            resultObject.DocumentActivityList = listDocumentActivity;
 
             //var listInvitedSupplier = new List<VmInvitedSupplierItem>();
             //if (dbResult.InvitedSupplier != null)

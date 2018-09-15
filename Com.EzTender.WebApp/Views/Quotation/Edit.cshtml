@@ -57,7 +57,6 @@
                             </div>
                         </div>
 
-
                     </div>
 
                 </div>
@@ -77,6 +76,7 @@
                         <li role="presentation"><a href="#pricing" data-toggle="tab">Pricing Table</a></li>
                         <li role="presentation"><a href="#attachments" data-toggle="tab">Attachments</a></li>
                         <li role="presentation"><a href="#settings" data-toggle="tab">User Settings</a></li>
+                        <li role="presentation"><a href="#DocumentActivity" data-toggle="tab">Activity</a></li>
                     </ul>
                     <!-- Tab panes -->
                     <div class="tab-content">
@@ -295,6 +295,38 @@
 
                                 </tbody>
                             </table>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane fade in" id="DocumentActivity">
+
+                            <table id="pricingTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="25%">Action</th>
+                                        <th width="35%">Created By</th>
+                                        <th width="20%">Created Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (Model.Document.DocumentActivityList != null)
+                                        {
+
+                                            foreach (var item in Model.Document.DocumentActivityList)
+                                            {
+                                                <tr>
+                                                    <td>@item.Action </td>
+                                                    <td>@item.CreatedBy</td>
+                                                    <td>@item.CreatedDate</td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+
+                                </tbody>
+
+                            </table>
+
                         </div>
                     </div>
                 </div>
