@@ -103,13 +103,13 @@ namespace Com.BudgetMetal.Services.Users
 
         public async Task<VmUserItem> GetUserById(int Id)
         {
-            var dbPageResult = await repo.Get(Id);
+            var dbPageResult = await repo.GetUserById(Id);
 
             if (dbPageResult == null)
             {
                 return new VmUserItem();
             }
-
+           
             var result = new VmUserItem();
 
             Copy<Com.BudgetMetal.DBEntities.User, VmUserItem>(dbPageResult, result);
@@ -166,6 +166,26 @@ namespace Com.BudgetMetal.Services.Users
                     };
 
                     result.RoleList.Add(_roleItem);
+                }
+            }
+
+            if(dbPageResult.UserRoles != null)
+            {
+                if (dbPageResult.UserRoles.Count > 0)
+                {
+                    result.SelectedRoleId = new List<int>();
+                    foreach (var item in dbPageResult.UserRoles)
+                    {
+                        int roleId = item.Role_Id;
+                        result.SelectedRoleId.Add(roleId);
+                    }
+
+                }
+                else
+                {
+                    //Add zero
+                    result.SelectedRoleId = new List<int>();
+                    result.SelectedRoleId.Add(0);
                 }
             }
 

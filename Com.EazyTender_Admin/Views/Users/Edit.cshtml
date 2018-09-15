@@ -89,7 +89,10 @@
                     <div class="form-line col-md-8">
                         <br />
                         <label asp-for="RoleList" class="control-label">Roles</label>
-                        <select asp-for="RoleList" multiple="multiple" id="RoleList" name="RoleList" asp-items="@(new SelectList(Model.RoleList, "Id", "Name"))" class="form-control">
+                        @*<select multiple="multiple" id="RoleList" name="RoleList" asp-items="@(new MultiSelectList(Model.RoleList, "Id", "Name", new[] { 1, 2}))" class="form-control">
+                                <option>Please select</option>
+                            </select>*@
+                        <select multiple="multiple" id="RoleList" name="RoleList" asp-items="@(new MultiSelectList(Model.RoleList, "Id", "Name", Model.SelectedRoleId.ToArray()))" class="form-control">
                             <option>Please select</option>
                         </select>
                         <span asp-validation-for="RoleList" class="text-danger"></span>
@@ -123,3 +126,9 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<!-- Select Plugin Js -->
+<script src="~/material_theme/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
+<!-- Multi Select Plugin Js -->
+<script src="~/material_theme/plugins/multi-select/js/jquery.multi-select.js"></script>
