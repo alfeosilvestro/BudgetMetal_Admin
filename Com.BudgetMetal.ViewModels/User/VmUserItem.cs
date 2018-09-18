@@ -3,6 +3,7 @@ using Com.BudgetMetal.ViewModels.Company;
 using Com.BudgetMetal.ViewModels.Role;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Com.BudgetMetal.ViewModels.User
@@ -24,11 +25,16 @@ namespace Com.BudgetMetal.ViewModels.User
         //public bool Status { get; set; }
 
         //public bool Confirmed { get; set; }
-
+        [Required(ErrorMessage = "Email is required!")]        
+        [RegularExpression("^[a-zA-Z0-9_\\.-]+@([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", ErrorMessage = "Email is not valid")]
         public string EmailAddress { get; set; }
+        [Required(ErrorMessage = "Password is required!")]
         public string Password { get; set; }
+        [Required(ErrorMessage = "User name is required!")]
         public string UserName { get; set; }
+        [Required(ErrorMessage = "Contact name is required!")]
         public string ContactName { get; set; }
+        [Required(ErrorMessage = "Job title is required!")]
         public string JobTitle { get; set; }
         public string ContactNumber { get; set; }
         public bool IsConfirmed { get; set; }
