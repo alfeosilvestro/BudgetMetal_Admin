@@ -1,0 +1,255 @@
+﻿@model Com.BudgetMetal.DBEntities.User
+@{
+    ViewData["Title"] = "Register";
+    Layout = "";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>EzyTender - @ViewData["Title"]</title>
+    <!-- Favicon-->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+    <!-- Bootstrap Core Css -->
+    <link href="~/material_theme/plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <!-- Waves Effect Css -->
+    <link href="~/material_theme/plugins/node-waves/waves.css" rel="stylesheet" />
+    <!-- Animation Css -->
+    <link href="~/material_theme/plugins/animate-css/animate.css" rel="stylesheet" />
+    <!-- Morris Chart Css-->
+    <link href="~/material_theme/plugins/morrisjs/morris.css" rel="stylesheet" />
+    <!-- Bootstrap Material Datetime Picker Css -->
+    <link href="~/material_theme/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+    <!-- Custom Css -->
+    <link href="~/material_theme/css/style.css" rel="stylesheet">
+    <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
+    <link href="~/material_theme/css/themes/all-themes.css" rel="stylesheet" />
+    <!-- Multi Select Css -->
+    <link href="~/material_theme/plugins/multi-select/css/multi-select.css" rel="stylesheet">
+    <!-- Bootstrap Select Css -->
+    <link href="~/material_theme/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+    <!-- Colorpicker Css -->
+    <link href="~/material_theme/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.css" rel="stylesheet" />
+    <!-- Jquery Core Js -->
+    <script src="~/material_theme/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap Core Js -->
+    <script src="~/material_theme/plugins/bootstrap/js/bootstrap.js"></script>
+
+
+
+
+
+</head>
+<body class="theme-red">
+   
+    
+    <section class="body-content">
+        <div class="container-fluid" style="padding:100px;">
+
+            
+                <h2 class="text-center">Registration</h2>
+           
+
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>
+                                Company Information
+                            </h2>
+                        </div>
+                        <div class="body">
+
+                            <div class="row clearfix">
+                                <div class="col-sm-6">
+                                    <label for="quote_no">Company Registration No. (UEN) <a href="https://www.uen.gov.sg/" target="_blank">?</a></label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" asp-for="Company.RegNo" class="form-control" placeholder="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-sm-6">
+                                    <label for="quote_no">Company Name</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" asp-for="Company.Name" class="form-control" placeholder="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-sm-6">
+                                    <label for="quote_no">Company Address</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <textarea rows="3" asp-for="Company.Address" class="form-control no-resize" placeholder=""></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>
+                                User Information
+                            </h2>
+                        </div>
+                        <div class="body">
+
+                            <div class="row clearfix">
+                                <div class="col-sm-6">
+                                    <label for="quote_no">Email Address</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="email" asp-for="EmailAddress" class="form-control" placeholder="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-sm-6">
+                                    <label for="quote_no">Password</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="password" asp-for="Password" class="form-control" placeholder="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-sm-6">
+                                    <label for="quote_no">Full Name</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" asp-for="ContactName" class="form-control" placeholder="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-sm-6">
+                                    <label for="quote_no">Full Name</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" asp-for="ContactNumber" class="form-control" placeholder="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-sm-12">
+
+                                    <input type="checkbox" id="IsSupplier" name="IsSupplier" class="chk-col-red" />
+                                    <label for="IsSupplier">Register as a supplier</label>
+                                </div>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-sm-6">
+                                    <label for="Industry">Industry</label>
+                                    <select id="ddlIndustry" class="form-control selectpicker"></select>
+                                </div>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-sm-6">
+                                    <label for="Industry">Service Tags</label>
+                                    <select class="form-control show-tick" id="ddlServiceTags" data-live-search="true" multiple></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header"> <h2>Terms &amp; Conditions</h2> </div>
+                        <div class="body">
+                            <div class="row clearfix">
+                                <div class="col-sm-12">
+                                    <input type="checkbox" id="accepttnc" name="accepttnc" class="chk-col-red" />
+                                    <label for="accepttnc">I accept T n C</label>
+                                </div>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-sm-12">
+                                    <button type="button" id="btnSubmit" class="btn btn-success">Register</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Moment Plugin Js -->
+            <script src="~/material_theme/plugins/momentjs/moment.js"></script>
+            <!-- Bootstrap Material Datetime Picker Plugin Js -->
+            <script src="~/material_theme/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
+            <!-- Input Mask Plugin Js -->
+            <script src="~/material_theme/plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
+            <!-- Autosize Plugin Js -->
+            <script src="~/material_theme/plugins/autosize/autosize.js"></script>
+            <!-- Custom Js -->
+            <script src="~/material_theme/js/pages/forms/basic-form-elements.js"></script>
+            <!-- Dropzone Css -->
+            <link href="~/material_theme/plugins/dropzone/dropzone.css" rel="stylesheet">
+            <!-- Dropzone Plugin Js -->
+            <script src="~/material_theme/plugins/dropzone/dropzone.js"></script>
+            <!-- Bootstrap Colorpicker Js -->
+            <script src="~/material_theme/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+
+            <!-- Select Plugin Js -->
+            <script src="~/material_theme/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
+            <!-- Multi Select Plugin Js -->
+            <script src="~/material_theme/plugins/multi-select/js/jquery.multi-select.js"></script>
+
+        </div>
+    </section>
+
+    <!-- Slimscroll Plugin Js -->
+    <script src="~/material_theme/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+    <!-- Waves Effect Plugin Js -->
+    <script src="~/material_theme/plugins/node-waves/waves.js"></script>
+    <!-- Jquery CountTo Plugin Js -->
+    <script src="~/material_theme/plugins/jquery-countto/jquery.countTo.js"></script>
+    <!-- Morris Plugin Js -->
+    <script src="~/material_theme/plugins/raphael/raphael.min.js"></script>
+    <script src="~/material_theme/plugins/morrisjs/morris.js"></script>
+    <!-- ChartJs -->
+    <script src="~/material_theme/plugins/chartjs/Chart.bundle.js"></script>
+
+    <!-- Sparkline Chart Plugin Js -->
+    <script src="~/material_theme/plugins/jquery-sparkline/jquery.sparkline.js"></script>
+
+    <!-- Custom Js -->
+    <script src="~/material_theme/js/admin.js"></script>
+
+    <script src="~/material_theme/js/pages/ui/modals.js"></script>
+
+    @*<script src="~/material_theme/js/pages/index.js"></script>*@
+    <!-- Demo Js -->
+    <script src="~/material_theme/js/demo.js"></script>
+
+
+
+</body>
+</html>
