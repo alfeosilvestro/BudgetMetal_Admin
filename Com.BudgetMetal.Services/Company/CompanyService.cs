@@ -1,9 +1,12 @@
 ﻿using Com.BudgetMetal.Common;
 using Com.BudgetMetal.DataRepository.Code_Table;
 using Com.BudgetMetal.DataRepository.Company;
+using Com.BudgetMetal.DataRepository.Users;
 using Com.BudgetMetal.Services.Base;
 using Com.BudgetMetal.ViewModels;
 using Com.BudgetMetal.ViewModels.Company;
+using Com.BudgetMetal.ViewModels.Role;
+using Com.BudgetMetal.ViewModels.User;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,12 +17,14 @@ namespace Com.BudgetMetal.Services.Company
     public class CompanyService : BaseService, ICompanyService
     {
         private readonly ICompanyRepository repo;
+        private readonly IUserRepository repoUser;
         private readonly ICodeTableRepository companyRepo;
 
-        public CompanyService(ICompanyRepository repo, ICodeTableRepository companyRepo)
+        public CompanyService(ICompanyRepository repo, ICodeTableRepository companyRepo, IUserRepository repoUser)
         {
             this.repo = repo;
             this.companyRepo = companyRepo;
+            this.repoUser = repoUser;
         }
 
         public async Task<VmCompanyPage> GetCompanyByPage(string keyword, int page, int totalRecords)
@@ -46,7 +51,7 @@ namespace Com.BudgetMetal.Services.Company
                 var resultItem = new VmCompanyItem();
 
                 Copy<Com.BudgetMetal.DBEntities.Company, VmCompanyItem>(dbItem, resultItem);
-                resultItem.IsVerified = (dbItem.IsVerified == null) ? false : (bool)dbItem.IsVerified ;
+                resultItem.IsVerified = (dbItem.IsVerified == null) ? false : (bool)dbItem.IsVerified;
                 resultObj.Result.Records.Add(resultItem);
             }
 
@@ -62,12 +67,46 @@ namespace Com.BudgetMetal.Services.Company
                 return new VmCompanyItem();
             }
 
-
             var resultObj = new VmCompanyItem();
 
             Copy<Com.BudgetMetal.DBEntities.Company, VmCompanyItem>(dbPageResult, resultObj);
 
-            resultObj.IsVerified = (dbPageResult.IsVerified == null) ? false : (bool)dbPageResult.IsVerified; ;
+            resultObj.IsVerified = (dbPageResult.IsVerified == null) ? false : (bool)dbPageResult.IsVerified;
+                        
+            var dbUserList = await repoUser.GetUserByCompany(Id);
+
+            if (dbUserList == null) return resultObj;
+
+            resultObj.UserList = new List<VmUserItem>();
+
+            foreach (var dbUser in dbUserList)
+            {   
+                List<VmRoleItem> rListItem = new List<VmRoleItem>();
+                if (dbUser.UserRoles != null)
+                {
+                    foreach (var dbRoleItem in dbUser.UserRoles)
+                    {
+                        VmRoleItem rItem = new VmRoleItem()
+                        {
+                            Name = dbRoleItem.Role.Name,
+                            Code = dbRoleItem.Role.Code
+                        };
+                        rListItem.Add(rItem);
+                    }
+                }
+                VmUserItem user = new VmUserItem()
+                {
+                    Id = dbUser.Id,
+                    UserName = dbUser.UserName,
+                    EmailAddress = dbUser.EmailAddress,
+                    JobTitle = dbUser.JobTitle,
+                    UserType = dbUser.UserType,
+                    RoleList = rListItem
+                };
+
+                resultObj.UserList.Add(user);
+            }
+
 
             return resultObj;
         }
