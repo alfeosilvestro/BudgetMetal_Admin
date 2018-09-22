@@ -49,11 +49,17 @@
             </div>
         </div>
     </div>
-</div>
-<div>
-    <a asp-action="Index">Back to List</a>
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+    <br />
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+<!-- Select Plugin Js -->
+<script src="~/material_theme/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
+<!-- Multi Select Plugin Js -->
+<script src="~/material_theme/plugins/multi-select/js/jquery.multi-select.js"></script>

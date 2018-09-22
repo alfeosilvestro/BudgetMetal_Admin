@@ -4,7 +4,6 @@
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
-
 <div class="container-fluid">
     <h3>Create Users</h3>
     <div class="card">
@@ -118,11 +117,16 @@
             </div>
         </div>
     </div>
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+    <br />
 </div>
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+<!-- Select Plugin Js -->
+<script src="~/material_theme/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
+<!-- Multi Select Plugin Js -->
+<script src="~/material_theme/plugins/multi-select/js/jquery.multi-select.js"></script>
