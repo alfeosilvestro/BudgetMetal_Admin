@@ -1,0 +1,128 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="block-header">
+    <h2>DASHBOARD - OPEN TENDERS</h2>
+</div>
+
+<!-- Basic Alerts -->
+<div class="row">
+    <div class="col-sm-6">
+        <div class="btn-group" role="group" aria-label="Justified button group">
+            <button class="btn btn-default waves-effect btnStatus" data-item-id="0" type="button">All</button>
+            <button class="btn btn-primary waves-effect btnStatus" data-item-id="100031" type="button">Draft</button>
+            <button class="btn btn-primary waves-effect btnStatus" data-item-id="100032" type="button">Open</button>
+            <button class="btn btn-primary waves-effect btnStatus" data-item-id="100033" type="button">Closed</button>
+        </div>
+    </div>
+    <div class="col-sm-6"></div>
+
+</div>
+<div class="row clearfix">
+
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+
+            <div class="body">
+                <div class="row">
+                    <div class="col-sm-10">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="text" id="keyword" name="keyword" class="form-control" placeholder="<RFQ No, Company Name, Estimate Project Value>" value="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="hidden" name="statusId" id="statusId" value="0" />
+                        <input type="hidden" name="Company_Id" id="Company_Id" value="@(ViewBag.Company_Id)" />
+                        <button type="button" class="btn btn-success" id="btnSearch"> Search </button>
+                    </div>
+                </div>
+
+
+                <ul class="list-group" id="RFQList"></ul>
+                <div class="row">
+                    <div class="pagination" style="padding:10px;">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+
+        loadRFQ(1);
+
+    });
+
+    $("button.btnStatus").on({
+        click: function () {
+            $('.btnStatus').removeClass("btn-default").removeClass("btn-primary").addClass("btn-primary");
+            $(this).removeClass("btn-default").removeClass("btn-primary").addClass("btn-default");
+            var statusId = $(this).data("item-id");
+            $('#statusId').val(statusId);
+            $('#RFQList').empty();
+            loadRFQ(1);
+        }
+    });
+
+    $("#btnSearch").on({
+        click: function () {
+            $('#RFQList').empty();
+            loadRFQ(1);
+        }
+    });
+
+    function loadRFQ(page) {
+        var keyword = $('#keyword').val();
+        var statusId = $('#statusId').val();
+        var company = $('#Company_Id').val();
+        var ajaxurl = '@Url.Action("GetRFQForDashboard", "Home")';
+        $.ajax({
+            url: ajaxurl,
+            data: { page: page, status: statusId, Company_Id: company, skeyword: keyword},
+            dataType: 'json',
+            success: function (response) {
+                var obj = response.Result.Records;
+                //console.log(obj);
+                for (var k in obj) {
+                    var item = obj[k];
+                    $('#RFQList').append(
+                        "<li class='list-group-item clearfix'> " +
+                            "<div class='row'> " +
+                                "<div class='col-sm-12'>RFQ No. "+ item.Document.DocumentNo +"</div> " +
+                            "</div> " +
+                        "<div class='row'> " +
+                        "<div class='col-sm-4'>Company : " + item.Document.Company.Name + "</div> " +
+                        "<div class='col-sm-4'>Estimated Project Value : $" + item.ContractValue+"</div> " +
+                                "<div class='col-sm-4'></div> " +
+                            "</div> " +
+                            "<div class='row'> " +
+                        "<div class='col-sm-4'>Open RFQ Date: " + item.StartRfqdate +"</div> " +
+                                "<div class='col-sm-4'></div> " +
+                                "<div class='col-sm-4'>Status : "+ item.Document.DocumentStatus.Name+"</div> " +
+                            " </div> " +
+                        " </li> "
+                    );
+
+                }
+                var totalpage = response.Result.TotalPage;
+                var currentpage = response.Result.CurrentPage;
+                if (totalpage > currentpage) {
+                    $(".pagination").empty();
+                    $(".pagination").append(" <a class='btn btn-md btn-default' OnClick='loadRFQ(" + response.Result.NextPage + ")'> Load More </a> ");
+                } else {
+                    $(".pagination").empty();
+
+                }
+
+            },
+            error: function (response) {
+                alert(response)
+            }
+        });
+    }
+</script>
