@@ -8,16 +8,35 @@ namespace Com.BudgetMetal.Common
     {
         #region Code Category
 
-        public static readonly int CodeCat_User = 1000010;
+        public static readonly int CodeCat_User = 100010;
+        public static readonly int CodeCat_Doc = 100020;
+        public static readonly int CodeCat_RFQStatus = 100030;
+        public static readonly int CodeCat_QuotationStatus = 100040;
 
         #endregion
 
         #region Code Table
 
-        public static readonly int Code_Supplier = 1000011;
-        public static readonly int Code_Buyer = 1000012;
-        public static readonly int Code_System = 1000013;
-        
+        public static readonly int Code_Buyer = 100011;
+        public static readonly int Code_Supplier = 100012;
+        public static readonly int Code_System = 100013;
+
+        public static readonly int Code_RFQ = 100021;
+        public static readonly int Code_Quotation = 100022;
+
+
+
+        public static readonly int Code_RFQ_Draft = 100031;
+        public static readonly int Code_RFQ_Submitted = 100032;
+        public static readonly int Code_RFQ_Closed = 100033;
+
+
+        public static readonly int Code_Quotation_Draft = 100041;
+        public static readonly int Code_Quotation_Submitted = 100042;
+        public static readonly int Code_Quotation_Accepted = 100043;
+        public static readonly int Code_Quotation_Rejected = 100044;
+        public static readonly int Code_Quotation_Cancelled = 100045;
+
         #endregion
     }
 }

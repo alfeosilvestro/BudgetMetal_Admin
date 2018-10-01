@@ -36,8 +36,6 @@ namespace Com.GenericPlatform.WebApp.Controllers
 
         public async Task<IActionResult> Timeline()
         {
-            
-
             return View();
         }
 
