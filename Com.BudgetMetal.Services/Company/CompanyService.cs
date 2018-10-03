@@ -1,10 +1,12 @@
 ﻿using Com.BudgetMetal.Common;
 using Com.BudgetMetal.DataRepository.Code_Table;
 using Com.BudgetMetal.DataRepository.Company;
+using Com.BudgetMetal.DataRepository.Rating;
 using Com.BudgetMetal.DataRepository.Users;
 using Com.BudgetMetal.Services.Base;
 using Com.BudgetMetal.ViewModels;
 using Com.BudgetMetal.ViewModels.Company;
+using Com.BudgetMetal.ViewModels.Rating;
 using Com.BudgetMetal.ViewModels.Role;
 using Com.BudgetMetal.ViewModels.User;
 using System;
@@ -19,12 +21,14 @@ namespace Com.BudgetMetal.Services.Company
         private readonly ICompanyRepository repo;
         private readonly IUserRepository repoUser;
         private readonly ICodeTableRepository companyRepo;
+        private readonly IRatingRepository ratingRepo;
 
-        public CompanyService(ICompanyRepository repo, ICodeTableRepository companyRepo, IUserRepository repoUser)
+        public CompanyService(ICompanyRepository repo, ICodeTableRepository companyRepo, IUserRepository repoUser, IRatingRepository ratingRepo)
         {
             this.repo = repo;
             this.companyRepo = companyRepo;
             this.repoUser = repoUser;
+            this.ratingRepo = ratingRepo;
         }
 
         public async Task<VmCompanyPage> GetCompanyByPage(string keyword, int page, int totalRecords)
@@ -72,7 +76,7 @@ namespace Com.BudgetMetal.Services.Company
             Copy<Com.BudgetMetal.DBEntities.Company, VmCompanyItem>(dbPageResult, resultObj);
 
             resultObj.IsVerified = (dbPageResult.IsVerified == null) ? false : (bool)dbPageResult.IsVerified;
-                        
+
             var dbUserList = await repoUser.GetUserByCompany(Id);
 
             if (dbUserList == null) return resultObj;
@@ -80,7 +84,7 @@ namespace Com.BudgetMetal.Services.Company
             resultObj.UserList = new List<VmUserItem>();
 
             foreach (var dbUser in dbUserList)
-            {   
+            {
                 List<VmRoleItem> rListItem = new List<VmRoleItem>();
                 if (dbUser.UserRoles != null)
                 {
@@ -107,6 +111,29 @@ namespace Com.BudgetMetal.Services.Company
                 resultObj.UserList.Add(user);
             }
 
+            var dbRepoList = await ratingRepo.GetRagintByCompany(Id);
+            if (dbRepoList == null) return resultObj;
+
+            resultObj.RatingList = new List<VmRatingItem>();
+            foreach (var dbRating in dbRepoList)
+            {
+                VmRatingItem rating = new VmRatingItem()
+                {
+                    SpeedOfQuotation = dbRating.SpeedOfQuotation,
+                    SpeedofDelivery = dbRating.SpeedofDelivery,
+                    ServiceQuality = dbRating.ServiceQuality,
+                    Price = dbRating.Price,
+                    SpeedofProcessing = dbRating.SpeedofProcessing,
+                    Payment = dbRating.Payment,
+                    Title = dbRating.Title,
+                    Description = dbRating.Description,
+                    Ratingcol = dbRating.Ratingcol,
+                    UserName = dbRating.User.ContactName
+                };
+                //var rating = new VmRatingItem();
+                //Copy<Com.BudgetMetal.DBEntities.Rating, VmRatingItem>(dbRating, rating);
+                resultObj.RatingList.Add(rating);
+            }
 
             return resultObj;
         }

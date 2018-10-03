@@ -20,10 +20,15 @@ namespace Com.EzTender.PublicPortal.Controllers
             this.rfqService = rfqService;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            ViewBag.Company_Id = 2;// HttpContext.Session.GetString("Company_Id");
+            ViewBag.Company_Id = 1;// HttpContext.Session.GetString("Company_Id");
 
+            return View();
+        }
+
+        public IActionResult Detail()
+        {
             return View();
         }
 

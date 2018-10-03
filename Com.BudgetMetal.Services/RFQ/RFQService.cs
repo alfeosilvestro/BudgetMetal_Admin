@@ -105,6 +105,7 @@ namespace Com.BudgetMetal.Services.RFQ
                 {
                     resultItem.Document = new ViewModels.Document.VmDocumentItem()
                     {
+                        Id = dbItem.Document.Id,
                         DocumentNo = dbItem.Document.DocumentNo,
                         DocumentStatus = new ViewModels.CodeTable.VmCodeTableItem()
                         {
@@ -121,7 +122,7 @@ namespace Com.BudgetMetal.Services.RFQ
                     };
 
                 }
-
+                
                 resultObj.Result.Records.Add(resultItem);
             }
 

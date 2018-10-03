@@ -16,6 +16,7 @@ using Com.BudgetMetal.DataRepository.Penalty;
 using Com.BudgetMetal.DataRepository.Quotation;
 using Com.BudgetMetal.DataRepository.QuotationPriceSchedule;
 using Com.BudgetMetal.DataRepository.QuotationRequirement;
+using Com.BudgetMetal.DataRepository.Rating;
 using Com.BudgetMetal.DataRepository.Requirement;
 using Com.BudgetMetal.DataRepository.RFQ;
 using Com.BudgetMetal.DataRepository.RfqPriceSchedule;
@@ -109,8 +110,7 @@ namespace Com.EzTender.WebApp
             //// Register for logic classes
             services.AddScoped<IGalleryService, GalleryService>();
 
-            services.AddScoped<IDocumentRepository, DocumentRepository>();
-           
+            services.AddScoped<IDocumentRepository, DocumentRepository>();           
             
             services.AddScoped<IRequirementRepository, RequirementRepository>();
             services.AddScoped<ISlaRepository, SlaRepository>();
@@ -160,7 +160,8 @@ namespace Com.EzTender.WebApp
             services.AddScoped<IEmailLogRepository, EmailLogRepository>();
             services.AddScoped<IEmailLogService, EmailLogService>();
 
-
+            //Rating
+            services.AddScoped<IRatingRepository, RatingRepository>();
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
