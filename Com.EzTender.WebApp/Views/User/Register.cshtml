@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>Form Wizard | Bootstrap Based Admin Template - Material Design</title>
+    <title>Registration - EzyTender</title>
     <!-- Favicon-->
     <link rel="icon" href="~/material_theme/favicon.ico" type="image/x-icon">
     <!-- Google Fonts -->
@@ -24,6 +24,9 @@
     <link href="~/material_theme/css/style.css" rel="stylesheet">
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="~/material_theme/css/themes/all-themes.css" rel="stylesheet" />
+
+    <!-- Multi Select Css -->
+    <link href="~/material_theme/plugins/multi-select/css/multi-select.css" rel="stylesheet">
 </head>
 <body class="theme-red">
     <!-- Page Loader -->
@@ -59,39 +62,7 @@
     <!-- #END# Search Bar -->
     <!-- Top Bar -->
     <!-- #Top Bar -->
-    <section>
-        <!-- Left Sidebar -->
-        @*<aside id="leftsidebar" class="sidebar">
-            <!-- User Info -->
-            <!-- #User Info -->
-            <!-- Menu -->
-            <div class="menu">
-                <ul class="list">
-                    <li>
-                        <a href="javascript:void(0);" class="menu-toggle">
-                            <i class="material-icons">swap_calls</i>
-                            <span>User Interface (UI)</span>
-                        </a>
-                        <ul class="ml-menu">
-
-                            <li class="active">
-                                <a href="javascript:void(0);" class="menu-toggle">
-                                    <i class="material-icons">assignment</i>
-                                    <span>Forms</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-            <!-- #Menu -->
-            <!-- Footer -->
-            <!-- #Footer -->
-        </aside>*@
-        <!-- #END# Left Sidebar -->
-        <!-- Right Sidebar -->
-        <!-- #END# Right Sidebar -->
-    </section>
+    <section></section>
     <section class="content">
         <div class="container-fluid">
 
@@ -100,81 +71,153 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
                         <div class="header">
-                            <h2>ADVANCED FORM EXAMPLE WITH VALIDATION</h2>
-                            <ul class="header-dropdown m-r--5">
-                                <li class="dropdown">
-                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                        <i class="material-icons">more_vert</i>
-                                    </a>
-                                    <ul class="dropdown-menu pull-right">
-                                        <li><a href="javascript:void(0);">Action</a></li>
-                                        <li><a href="javascript:void(0);">Another action</a></li>
-                                        <li><a href="javascript:void(0);">Something else here</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
+                            <h2>Registration</h2>
                         </div>
                         <div class="body">
                             <form id="wizard_with_validation" method="POST">
                                 <h3>Company Information</h3>
                                 <fieldset>
                                     <div class="form-group form-float">
+                                        <label for="quote_no">Company Registration No. (UEN) <a href="https://www.uen.gov.sg/" target="_blank">?</a></label>
                                         <div class="form-line">
                                             <input type="text" asp-for="Company.RegNo" class="form-control" placeholder="">
-                                            <label class="form-label">Company Registration No.</label>
+
                                         </div>
                                     </div>
                                     <div class="form-group form-float">
+                                        <label for="quote_no">Company Name</label>
                                         <div class="form-line">
-                                            <input type="password" class="form-control" name="password" id="password" required>
-                                            <label class="form-label">Password*</label>
+                                            <input type="text" asp-for="Company.Name" class="form-control" placeholder="">
+
                                         </div>
                                     </div>
                                     <div class="form-group form-float">
+                                        <label for="quote_no">Company Address</label>
                                         <div class="form-line">
-                                            <input type="password" class="form-control" name="confirm" required>
-                                            <label class="form-label">Confirm Password*</label>
+                                            <textarea rows="3" asp-for="Company.Address" class="form-control no-resize" placeholder=""></textarea>
                                         </div>
                                     </div>
                                 </fieldset>
-                                <h3>Profile Information</h3>
+                                <h3>User Information</h3>
                                 <fieldset>
                                     <div class="form-group form-float">
+                                        <label for="quote_no">Email Address</label>
                                         <div class="form-line">
-                                            <input type="text" name="name" class="form-control" required>
-                                            <label class="form-label">First Name*</label>
+                                            <input type="email" asp-for="EmailAddress" class="form-control" placeholder="">
+
                                         </div>
                                     </div>
                                     <div class="form-group form-float">
+                                        <label for="quote_no">Password</label>
                                         <div class="form-line">
-                                            <input type="text" name="surname" class="form-control" required>
-                                            <label class="form-label">Last Name*</label>
+                                            <input type="password" asp-for="Password" class="form-control" placeholder="">
+
                                         </div>
                                     </div>
                                     <div class="form-group form-float">
+                                        <label for="quote_no">Full Name</label>
                                         <div class="form-line">
-                                            <input type="email" name="email" class="form-control" required>
-                                            <label class="form-label">Email*</label>
+                                            <input type="text" asp-for="ContactName" class="form-control" placeholder="">
+
                                         </div>
                                     </div>
                                     <div class="form-group form-float">
+                                        <label for="quote_no">Contact Number</label>
                                         <div class="form-line">
-                                            <textarea name="address" cols="30" rows="3" class="form-control no-resize" required></textarea>
-                                            <label class="form-label">Address*</label>
+                                            <input type="text" asp-for="ContactNumber" class="form-control" placeholder="">
+
                                         </div>
                                     </div>
                                     <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input min="18" type="number" name="age" class="form-control" required>
-                                            <label class="form-label">Age*</label>
+                                        <input type="checkbox" id="IsSupplier" name="IsSupplier" class="chk-col-red" />
+                                        <label for="IsSupplier">Register as a supplier</label>
+                                    </div>
+                                    <div class="form-group" id="divServiceTags">
+                                        <label for="quote_no">Please Select Service Tags</label>
+                                        <div class="body">
+                                            <select id="optgroup" class="ms" multiple="multiple">
+                                                <optgroup label="Alaskan/Hawaiian Time Zone">
+                                                    <option value="AK">Alaska</option>
+                                                    <option value="HI">Hawaii</option>
+                                                </optgroup>
+                                                <optgroup label="Pacific Time Zone">
+                                                    <option value="CA">California</option>
+                                                    <option value="NV">Nevada</option>
+                                                    <option value="OR">Oregon</option>
+                                                    <option value="WA">Washington</option>
+                                                </optgroup>
+                                                <optgroup label="Mountain Time Zone">
+                                                    <option value="AZ">Arizona</option>
+                                                    <option value="CO">Colorado</option>
+                                                    <option value="ID">Idaho</option>
+                                                    <option value="MT">Montana</option>
+                                                    <option value="NE">Nebraska</option>
+                                                    <option value="NM">New Mexico</option>
+                                                    <option value="ND">North Dakota</option>
+                                                    <option value="UT">Utah</option>
+                                                    <option value="WY">Wyoming</option>
+                                                </optgroup>
+                                                <optgroup label="Central Time Zone">
+                                                    <option value="AL">Alabama</option>
+                                                    <option value="AR">Arkansas</option>
+                                                    <option value="IL">Illinois</option>
+                                                    <option value="IA">Iowa</option>
+                                                    <option value="KS">Kansas</option>
+                                                    <option value="KY">Kentucky</option>
+                                                    <option value="LA">Louisiana</option>
+                                                    <option value="MN">Minnesota</option>
+                                                    <option value="MS">Mississippi</option>
+                                                    <option value="MO">Missouri</option>
+                                                    <option value="OK">Oklahoma</option>
+                                                    <option value="SD">South Dakota</option>
+                                                    <option value="TX">Texas</option>
+                                                    <option value="TN">Tennessee</option>
+                                                    <option value="WI">Wisconsin</option>
+                                                </optgroup>
+                                                <optgroup label="Eastern Time Zone">
+                                                    <option value="CT">Connecticut</option>
+                                                    <option value="DE">Delaware</option>
+                                                    <option value="FL">Florida</option>
+                                                    <option value="GA">Georgia</option>
+                                                    <option value="IN">Indiana</option>
+                                                    <option value="ME">Maine</option>
+                                                    <option value="MD">Maryland</option>
+                                                    <option value="MA">Massachusetts</option>
+                                                    <option value="MI">Michigan</option>
+                                                    <option value="NH">New Hampshire</option>
+                                                    <option value="NJ">New Jersey</option>
+                                                    <option value="NY">New York</option>
+                                                    <option value="NC">North Carolina</option>
+                                                    <option value="OH">Ohio</option>
+                                                    <option value="PA">Pennsylvania</option>
+                                                    <option value="RI">Rhode Island</option>
+                                                    <option value="SC">South Carolina</option>
+                                                    <option value="VT">Vermont</option>
+                                                    <option value="VA">Virginia</option>
+                                                    <option value="WV">West Virginia</option>
+                                                </optgroup>
+                                            </select>
                                         </div>
-                                        <div class="help-info">The warning step will show up if age is less than 18</div>
                                     </div>
                                 </fieldset>
                                 <h3>Terms & Conditions - Finish</h3>
                                 <fieldset>
-                                    <input id="acceptTerms-2" name="acceptTerms" type="checkbox" required>
-                                    <label for="acceptTerms-2">I agree with the Terms and Conditions.</label>
+
+                                    <p>
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi in bibendum neque. Proin arcu metus, finibus ac nulla ac, cursus sodales tortor. Nullam eros ex, porttitor ut fermentum sit amet, faucibus id ipsum. Duis vitae mauris odio. Curabitur feugiat turpis vitae tincidunt aliquet. Integer mattis felis quis luctus tincidunt. Donec tristique ex mollis est vulputate faucibus. Suspendisse porttitor auctor luctus. Donec volutpat erat lorem, quis elementum nulla aliquet at.
+
+                                        Integer feugiat lobortis ipsum, sit amet efficitur arcu elementum ac. Curabitur lacinia venenatis venenatis. Sed maximus dolor vel tellus feugiat varius. Suspendisse vitae nibh elit. Pellentesque nisl enim, fermentum eget congue non, porttitor sit amet nisl. Vestibulum elementum odio eu tortor volutpat, in egestas ante sagittis. Nulla iaculis vehicula turpis vitae tincidunt. Praesent pretium hendrerit viverra. Pellentesque accumsan libero et risus molestie tincidunt. Duis turpis velit, tristique sit amet erat non, pellentesque dignissim quam. Ut vitae metus dolor. Curabitur sit amet mollis nisi, sed viverra diam.
+
+                                        Pellentesque id sollicitudin purus. Nullam convallis tempus rhoncus. Donec id nisi dui. Nulla vel sollicitudin odio. Donec molestie tincidunt dui, ut hendrerit nisi pellentesque a. Integer massa mauris, tempus sit amet urna at, imperdiet mattis turpis. Pellentesque iaculis metus non lacinia suscipit. Ut at sapien eget nunc porta lacinia vel at libero. Suspendisse semper est eget velit mollis lacinia eget non purus. Sed suscipit nec sem ac sodales.
+
+                                        Phasellus rutrum viverra tincidunt. Vivamus eget consequat neque. In fermentum tincidunt iaculis. Aenean quis leo sed nibh mattis ullamcorper. Aenean sit amet elit suscipit velit egestas cursus eu sit amet neque. Mauris vitae mauris quis velit vehicula convallis. Cras pulvinar elit eu nisi pulvinar lobortis. Donec velit ante, convallis eu sagittis sit amet, cursus a ex. Proin maximus dui non porta tempus. In malesuada tempus elit at malesuada. Quisque aliquet volutpat mauris, vel sodales augue vehicula eget.
+
+                                        Integer efficitur quam tincidunt diam interdum pulvinar. Mauris non eros non augue venenatis mollis. Nunc velit lacus, dapibus a suscipit ut, placerat eu ligula. Aenean vestibulum ultrices mattis. Donec pellentesque euismod sapien eget porttitor. Cras ac lacus a ipsum feugiat varius. Nulla sit amet diam vitae quam bibendum feugiat. Sed tincidunt dui ut fermentum euismod. Vestibulum at nibh ultrices, porttitor lorem ac, rutrum ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec est mauris, gravida ac rhoncus euismod, euismod vitae sapien. Nunc tempor lectus vitae semper hendrerit. Pellentesque vitae magna elementum, congue ex non, commodo lectus. Maecenas non urna egestas dui semper tincidunt.
+                                    </p>
+                                    <div class="row pull-right">
+                                        <input id="acceptTerms-2" name="acceptTerms" type="checkbox" required>
+                                        <label for="acceptTerms-2">I agree with the Terms and Conditions.</label>
+                                    </div>
                                 </fieldset>
                             </form>
                         </div>
@@ -184,6 +227,7 @@
             <!-- #END# Advanced Form Example With Validation -->
         </div>
     </section>
+
     <!-- Jquery Core Js -->
     <script src="~/material_theme/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap Core Js -->
@@ -203,7 +247,19 @@
     <!-- Custom Js -->
     <script src="~/material_theme/js/admin.js"></script>
     <script src="~/material_theme/js/pages/forms/form-wizard.js"></script>
+
+    <!-- Multi Select Plugin Js -->
+    <script src="~/material_theme/plugins/multi-select/js/jquery.multi-select.js"></script>
     <!-- Demo Js -->
-    @*<script src="~/material_theme/js/demo.js"></script>*@
+    <script src="~/material_theme/js/demo.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#optgroup').multiSelect();
+            
+        });
+
+        
+    </script>
 </body>
 </html>

@@ -66,6 +66,13 @@ namespace Com.GenericPlatform.WebApp.Controllers
             return View();
         }
 
+        // GET: User
+        public ActionResult Profile()
+        {
+            return View();
+        }
+
+
 
         // GET: User
         public ActionResult Index()
