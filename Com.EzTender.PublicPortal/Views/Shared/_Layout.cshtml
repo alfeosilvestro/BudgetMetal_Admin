@@ -30,14 +30,15 @@
     <link href="~/material_theme/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
     <!-- Colorpicker Css -->
     <link href="~/material_theme/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.css" rel="stylesheet" />
+
+
+    <!-- Multi Select Css -->
+    <link href="~/material_theme/plugins/multi-select/css/multi-select.css" rel="stylesheet">
     <!-- Jquery Core Js -->
     <script src="~/material_theme/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap Core Js -->
     <script src="~/material_theme/plugins/bootstrap/js/bootstrap.js"></script>
 
-
-
-  
 
 </head>
 <body class="theme-red">
@@ -76,20 +77,24 @@
     @await Html.PartialAsync("_PageHeader")
     <!-- #Top Bar -->
     @*<section>
-        <!-- Left Sidebar -->
-        <aside id="leftsidebar" class="sidebar">
-            @await Html.PartialAsync("_Menu")
-        </aside>
-        <!-- #END# Left Sidebar -->
-        <!-- Right Sidebar -->
-    </section>*@
+            <!-- Left Sidebar -->
+            <aside id="leftsidebar" class="sidebar">
+                @await Html.PartialAsync("_Menu")
+            </aside>
+            <!-- #END# Left Sidebar -->
+            <!-- Right Sidebar -->
+        </section>*@
     <section class="content_middle" style="padding: 100px;">
         <div class="" style="Margin: auto; width: 80%;">
             @RenderBody()
         </div>
     </section>
 
-    @await Html.PartialAsync("_ValidationScriptsPartial")
+    @*@await Html.PartialAsync("_ValidationScriptsPartial")*@
+
+
+
+
     <!-- Slimscroll Plugin Js -->
     <script src="~/material_theme/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
     <!-- Waves Effect Plugin Js -->
@@ -111,8 +116,17 @@
     <script src="~/material_theme/js/pages/ui/modals.js"></script>
 
     @*<script src="~/material_theme/js/pages/index.js"></script>*@
+    <!-- Jquery Validation Plugin Css -->
+    <script src="~/material_theme/plugins/jquery-validation/jquery.validate.js"></script>
     <!-- Demo Js -->
     <script src="~/material_theme/js/demo.js"></script>
+    <!-- JQuery Steps Plugin Js -->
+    <script src="~/material_theme/plugins/jquery-steps/jquery.steps.js"></script>
+
+    <script src="~/material_theme/js/pages/forms/form-wizard.js"></script>
+
+    <!-- Multi Select Plugin Js -->
+    <script src="~/material_theme/plugins/multi-select/js/jquery.multi-select.js"></script>
 
 
 

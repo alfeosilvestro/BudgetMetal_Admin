@@ -31,6 +31,11 @@ namespace Com.EzTender.PublicPortal.Controllers
             return View();
         }
 
+        public IActionResult Register()
+        {
+            return View();
+        }
+
         // GET: Rfq/Edit/5
         [HttpGet]
         public async Task<ActionResult> Detail(int id)
