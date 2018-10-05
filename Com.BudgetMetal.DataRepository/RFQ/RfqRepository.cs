@@ -31,7 +31,7 @@ namespace Com.BudgetMetal.DataRepository.RFQ
                               && (e.Document.IsActive == true)
                               && e.Document.Company_Id == documentOwner
                               && (statusId == 0 || e.Document.DocumentStatus_Id == statusId)
-                              && (keyword == "" || e.Document.DocumentNo.Contains(keyword))
+                              && (keyword == "" || e.Document.Title.ToLower().Contains(keyword.ToLower()) || e.Document.DocumentNo.ToLower().Contains(keyword.ToLower()) || e.Document.Company.Name.ToLower().Contains(keyword.ToLower()))
                             )
                             .OrderByDescending(e => e.CreatedDate)
                             .ToListAsync();

@@ -10,7 +10,7 @@ using Com.BudgetMetal.DataRepository.Document;
 using Com.BudgetMetal.DataRepository.DocumentActivity;
 using Com.BudgetMetal.DataRepository.DocumentUser;
 using Com.BudgetMetal.DataRepository.EmailLog;
-using Com.BudgetMetal.DataRepository.Gallery;
+using Com.BudgetMetal.DataRepository.Roles;
 using Com.BudgetMetal.DataRepository.Industries;
 using Com.BudgetMetal.DataRepository.InvitedSupplier;
 using Com.BudgetMetal.DataRepository.Penalty;
@@ -21,6 +21,7 @@ using Com.BudgetMetal.DataRepository.Requirement;
 using Com.BudgetMetal.DataRepository.RFQ;
 using Com.BudgetMetal.DataRepository.RfqPriceSchedule;
 using Com.BudgetMetal.DataRepository.ServiceTags;
+using Com.BudgetMetal.DataRepository.Single_Sign_On;
 using Com.BudgetMetal.DataRepository.Sla;
 using Com.BudgetMetal.DataRepository.UserRoles;
 using Com.BudgetMetal.DataRepository.Users;
@@ -30,6 +31,7 @@ using Com.BudgetMetal.Services.Code_Category;
 using Com.BudgetMetal.Services.Code_Table;
 using Com.BudgetMetal.Services.Company;
 using Com.BudgetMetal.Services.EmailLog;
+using Com.BudgetMetal.Services.Gallery;
 using Com.BudgetMetal.Services.Industries;
 using Com.BudgetMetal.Services.Quotation;
 using Com.BudgetMetal.Services.RFQ;
@@ -101,6 +103,11 @@ namespace Com.EzTender.PublicPortal
             //// Register for repository classes
 
             //// Register for logic classes
+            //// Register for repository classes
+            services.AddScoped<ISingle_Sign_OnRepository, Single_Sign_OnRepository>();
+
+            //// Register for logic classes
+            services.AddScoped<IGalleryService, GalleryService>();
 
             services.AddScoped<IDocumentRepository, DocumentRepository>();
 

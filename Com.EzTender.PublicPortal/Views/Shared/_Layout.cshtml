@@ -75,16 +75,16 @@
     <!-- Top Bar -->
     @await Html.PartialAsync("_PageHeader")
     <!-- #Top Bar -->
-    <section>
+    @*<section>
         <!-- Left Sidebar -->
         <aside id="leftsidebar" class="sidebar">
             @await Html.PartialAsync("_Menu")
         </aside>
         <!-- #END# Left Sidebar -->
         <!-- Right Sidebar -->
-    </section>
-    <section class="content">
-        <div class="container-fluid">
+    </section>*@
+    <section class="content_middle" style="padding: 100px;">
+        <div class="" style="Margin: auto; width: 80%;">
             @RenderBody()
         </div>
     </section>

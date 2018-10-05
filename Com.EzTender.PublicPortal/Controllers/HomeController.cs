@@ -8,23 +8,44 @@ using Com.EzTender.PublicPortal.Models;
 using Com.BudgetMetal.Services.RFQ;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
+using Com.BudgetMetal.Services.Industries;
+using Com.BudgetMetal.Services.Quotation;
 
 namespace Com.EzTender.PublicPortal.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IIndustryService industryService;
         private readonly IRFQService rfqService;
+        private readonly IQuotationService quotationService;
 
-        public HomeController(IRFQService rfqService)
+        public HomeController(IRFQService rfqService, IIndustryService industryService, IQuotationService quotationService)
         {
             this.rfqService = rfqService;
+            this.industryService = industryService;
+            this.quotationService = quotationService;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            ViewBag.Company_Id = 2;// HttpContext.Session.GetString("Company_Id");
-
             return View();
+        }
+
+        // GET: Rfq/Edit/5
+        [HttpGet]
+        public async Task<ActionResult> Detail(int id)
+        {
+            try
+            {
+                var result = await rfqService.GetPublicPortalSingleRfqById(id);
+
+                return View(result);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index");
+            }
+
         }
 
         public async Task<IActionResult> PublicRFQ()
@@ -71,6 +92,28 @@ namespace Com.EzTender.PublicPortal.Controllers
         {
             var result = await rfqService.GetPublicRfqByPage(page, 2, Convert.ToInt32(status),
                 skeyword == null ? "" : skeyword);
+
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetActiveIndustries()
+        {
+            var result = await industryService.GetActiveIndustries();
+
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetQuotationByRfqId(int RfqId, int page, string keyword)
+        {
+            var result = await quotationService.GetQuotationByRfqId(RfqId, page, 10, 0, (keyword == null ? "" : keyword));
 
             return new JsonResult(result, new JsonSerializerSettings()
             {

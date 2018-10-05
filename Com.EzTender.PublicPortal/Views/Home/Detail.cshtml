@@ -1,0 +1,885 @@
+﻿@model Com.BudgetMetal.ViewModels.Rfq.VmRfqItem
+
+@{
+    ViewData["Title"] = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form asp-controller="Rfq" asp-action="View" method="post" enctype="multipart/form-data" id="frmCreateRFQ">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="block-header">
+        <h2>RFQ Detail</h2>
+    </div>
+    <!-- Input -->
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        General Information
+                    </h2>
+                </div>
+                <div class="body">
+                    <div class="row clearfix">
+                        <div class="col-sm-4">
+                            <label for="quote_no">RFQ Reference</label>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" asp-for="Document.DocumentNo" readonly class="form-control" placeholder="<Auto Generate by System>" />
+                                    <input type="hidden" asp-for="Document.DocumentStatus_Id">
+                                    <input type="hidden" asp-for="Document.DocumentType_Id">
+                                    <input type="hidden" asp-for="Document.Company_Id">
+                                    <input type="hidden" asp-for="Document.CreatedBy">
+                                    <input type="hidden" asp-for="Document.UpdatedBy">
+                                    <input type="hidden" asp-for="CreatedBy">
+                                    <input type="hidden" asp-for="CreatedDate">
+                                    <input type="hidden" asp-for="Document.CreatedDate">
+                                    <input type="hidden" asp-for="UpdatedBy">
+                                    <input type="hidden" name="Id" id="RfqId" value="@Model.Id">
+                                    <input type="hidden" asp-for="Document_Id">
+                                    <input type="hidden" asp-for="Document.Id">
+                                    <input type="hidden" asp-for="IsActive" />
+                                    <input type="hidden" asp-for="Document.IsActive" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="quote_no">Title</label>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" asp-for="Document.Title" readonly class="form-control" placeholder="<Auto Generate by System>" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <label for="status">Status</label>
+                            <h4><span class="label label-info">@Model.Document.DocumentStatus.Name</span></h4>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="quote_no">Internal Reference No</label>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" asp-for="InternalRefrenceNo" class="form-control" placeholder="Internal Reference">
+                                    <span asp-validation-for="InternalRefrenceNo" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="quote_no">Internal Project Name</label>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" asp-for="InternalProjectName" class="form-control" placeholder="Internal Project Name">
+                                    <span asp-validation-for="InternalProjectName" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- #END# Input -->
+    <!-- Tabs -->
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="body">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs tab-nav-right" role="tablist">
+                        <li role="presentation" class="active"><a href="#basic_requirements" data-toggle="tab">Info</a></li>
+                        <li role="presentation"><a href="#detailed_requirements" data-toggle="tab">Requirements</a></li>
+                        <li role="presentation"><a href="#service_level_agreement" data-toggle="tab">SLA</a></li>
+                        <li role="presentation"><a href="#penalty" data-toggle="tab">Penalty / LD</a></li>
+                        <li role="presentation"><a href="#pricing" data-toggle="tab">Pricing Table</a></li>
+                        <li role="presentation"><a href="#attachments" data-toggle="tab">Files</a></li>
+                    </ul>
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane fade in active" id="basic_requirements">
+
+                            <div class="row clearfix">
+                                <div class="col-sm-3">
+                                    <label for="StartRfqdate">Start RFQ Date</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" asp-for="StartRfqdate" class="form-control" placeholder="Start RFQ Date">
+                                            <span asp-validation-for="StartRfqdate" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="ValidRfqdate">Valid RFQ Date</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" asp-for="ValidRfqdate" class="form-control" placeholder="End RFQ Date">
+                                            <span asp-validation-for="ValidRfqdate" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="quote_no">Estimated Project Start Date</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" asp-for="EstimatedProjectStartDate" class="form-control" placeholder="Start of Project Delivery">
+                                            <span asp-validation-for="EstimatedProjectStartDate" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="EstimatedProjectEndDate">Estimated Project End Date</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" asp-for="EstimatedProjectEndDate" class="form-control" placeholder="End of Project Delivery">
+                                            <span asp-validation-for="EstimatedProjectEndDate" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <label for="QuotationOpeningDate">Quotation Opening Date</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" asp-for="QuotationOpeningDate" class="form-control datepicker" placeholder="Quotation Opening Date">
+                                            <span asp-validation-for="QuotationOpeningDate" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <label for="quote_no">Contract Value</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" asp-for="ContractValue" class="form-control" placeholder="Contract Value">
+                                            <span asp-validation-for="ContractValue" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <input type="checkbox" asp-for="SupplierProvideMaterial" class="chk-col-red" disabled />
+                                    <label for="SupplierProvideMaterial">Supplier to Provide Materials</label>
+                                </div>
+                                <div class="col-sm-3">
+                                    <input type="checkbox" asp-for="SupplierProvideTransport" class="chk-col-red" disabled />
+                                    <label for="SupplierProvideTransport">Supplier to Provide Transport</label>
+                                </div>
+                                <div class="col-sm-3">
+                                    <input type="checkbox" asp-for="IsPublic" class="chk-col-red" />
+                                    <label for="IsPublic">Public</label>
+                                </div>
+                                <div class="col-sm-3">
+                                    <input type="checkbox" asp-for="SupplierProvideInstallationService" class="chk-col-red" />
+                                    <label for="SupplierProvideInstallationService">Supplier Provide Installation Service</label>
+                                </div>
+                                <div class="col-sm-6">
+                                    &nbsp;
+                                </div>
+                                <div class="col-sm-12">
+                                    <label>Messages to Suppliers</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <textarea rows="3" asp-for="MessageToSupplier" class="form-control no-resize" placeholder="Messages to Suppliers" readonly></textarea>
+                                            <span asp-validation-for="MessageToSupplier" class="text-danger"></span>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade in" id="detailed_requirements">
+
+                            <table id="requirementsTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="30%">Service Name</th>
+                                        <th width="50%">Description</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (Model.Requirement != null)
+                                        {
+                                            foreach (var item in Model.Requirement)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @item.ServiceName
+                                                    </td>
+                                                    <td>
+                                                        @item.Description
+                                                    </td>
+
+                                                </tr>
+                                            }
+                                        }
+                                    }
+
+                                </tbody>
+
+                            </table>
+                            <button class="btn btn-default waves-effect m-r-20" type="button" data-target="#requirementCompareModal" data-toggle="modal">Requirement Comparison</button>
+                            <div tabindex="-1" class="modal fade in" id="requirementCompareModal" role="dialog" aria-labelledby="requirementCompareModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" id="largeModalLabel">Requirement Comparison</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <td></td>
+                                                            @{
+                                                                if (Model.Requirement != null)
+                                                                {
+                                                                    foreach (var item in Model.Requirement)
+                                                                    {
+                                                                        <td>@item.ServiceName</td>
+                                                                    }
+                                                                }
+                                                            }
+                                                        </tr>
+
+                                                    </thead>
+                                                    <tbody>
+                                                        @{
+                                                            if (Model.RequirementComparison != null)
+                                                            {
+                                                                foreach (var item in Model.RequirementComparison)
+                                                                {
+                                                                    <tr>
+                                                                        @{
+                                                                            foreach (var subitem in item)
+                                                                            {
+                                                                                <td>@subitem</td>
+                                                                            }
+                                                                        }
+                                                                    </tr>
+                                                                }
+                                                            }
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-link waves-effect" type="button" data-dismiss="modal">CLOSE</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade in" id="service_level_agreement">
+                            <table id="slaTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="30%">Requirement</th>
+                                        <th width="65%">Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (Model.Sla != null)
+                                        {
+                                            foreach (var item in Model.Sla)
+                                            {
+                                                <tr>
+                                                    <td>@item.Requirement
+                                                    <td>@item.Description</td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade in" id="penalty">
+
+                            <table id="penaltyTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="30%">Breach of Service Definition</th>
+                                        <th width="20%">Penalty</th>
+                                        <th width="45%">Description</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (Model.Penalty != null)
+                                        {
+                                            foreach (var item in Model.Penalty)
+                                            {
+                                                <tr>
+                                                    <td>@item.BreachOfServiceDefinition</td>
+                                                    <td>@item.PenaltyAmount</td>
+                                                    <td>@item.Description</td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane fade in" id="pricing">
+
+                            <table id="pricingTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="25%">Item Name</th>
+                                        <th width="35%">Item Description</th>
+                                        <th width="20%">Internal Reference Code</th>
+                                        <th width="10%">Quantity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (Model.RfqPriceSchedule != null)
+                                        {
+                                            foreach (var item in Model.RfqPriceSchedule)
+                                            {
+                                                <tr>
+                                                    <td>@item.ItemName </td>
+                                                    <td>@item.ItemDescription</td>
+                                                    <td>@item.InternalRefrenceCode</td>
+                                                    <td>@item.QuantityRequired</td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                            <button class="btn btn-default waves-effect m-r-20" type="button" data-target="#priceCompareModal" data-toggle="modal">Price Comparison</button>
+
+                            <div tabindex="-1" class="modal fade in" id="priceCompareModal" role="dialog" aria-labelledby="priceCompareModalLabel" aria-hidden="true">
+
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" id="largeModalLabel">Price Comparison</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <td></td>
+                                                            @{
+                                                                if (Model.RfqPriceSchedule != null)
+                                                                {
+                                                                    foreach (var item in Model.RfqPriceSchedule)
+                                                                    {
+                                                                        <td>@item.ItemName</td>
+                                                                    }
+                                                                }
+                                                            }
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @{
+                                                            if (Model.PriceComparison != null)
+                                                            {
+                                                                foreach (var item in Model.PriceComparison)
+                                                                {
+                                                                    <tr>
+                                                                        @{
+                                                                            foreach (var subitem in item)
+                                                                            {
+                                                                                <td>@subitem</td>
+                                                                            }
+                                                                        }
+                                                                    </tr>
+                                                                }
+                                                            }
+                                                        }
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-link waves-effect" type="button" data-dismiss="modal">CLOSE</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane fade" id="attachments">
+
+                            <table id="attachmentTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="25%">File Name</th>
+                                        <th width="70%">Description</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (Model.Document.Attachment != null)
+                                        {
+
+                                            foreach (var item in Model.Document.Attachment)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <a href="#" class="btn_download" data-fileid="@item.Id">@item.FileName</a>
+                                                    </td>
+                                                    <td>@item.Description</td>
+                                                </tr>
+
+                                            }
+                                        }
+                                    }
+                                </tbody>
+
+                            </table>
+                            <iframe id="iframe_download_file" style="display:none" src=""></iframe>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*<div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>
+                            Quotation List
+                        </h2>
+                    </div>
+                    <div class="body">
+
+                        <div class="row clearfix">
+                            <table class="table table-striped" id="tbQuotation">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Document No</th>
+                                        <th>Company</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                            <div class="row" id="pagination">
+                                <div class="col-sm-12" id="divPagination">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="body">
+                    <a type="button" class="btn btn-danger" href='http://localhost:60735/user/signIn'>Register Interest</a>
+                    <input type="hidden" id="loadinvitedsupplier" value="0" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+
+<!-- Editable Table Plugin Js -->
+<script src="~/material_theme/plugins/editable-table/mindmup-editabletable.js"></script>
+<script src="~/material_theme/js/pages/tables/editable-table.js"></script>
+<!-- Moment Plugin Js -->
+<script src="~/material_theme/plugins/momentjs/moment.js"></script>
+<!-- Bootstrap Material Datetime Picker Plugin Js -->
+<script src="~/material_theme/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
+<!-- Input Mask Plugin Js -->
+<script src="~/material_theme/plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
+<!-- Autosize Plugin Js -->
+<script src="~/material_theme/plugins/autosize/autosize.js"></script>
+<!-- Custom Js -->
+<script src="~/material_theme/js/pages/forms/basic-form-elements.js"></script>
+<!-- Dropzone Css -->
+<link href="~/material_theme/plugins/dropzone/dropzone.css" rel="stylesheet">
+<!-- Dropzone Plugin Js -->
+<script src="~/material_theme/plugins/dropzone/dropzone.js"></script>
+<!-- Bootstrap Colorpicker Js -->
+<script src="~/material_theme/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+
+<!-- Select Plugin Js -->
+<script src="~/material_theme/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
+<!-- Multi Select Plugin Js -->
+<script src="~/material_theme/plugins/multi-select/js/jquery.multi-select.js"></script>
+
+
+<script>
+    $(function () {
+
+        //loadIndustry();
+
+        //loadUser();
+        //loadRole();
+        //loadQuotation(1);
+        $('#frmCreateRFQ input').attr('readonly', 'readonly');
+       // $('#StartRfqdate').datepicker("setDate", new Date(2008, 9, 03));
+    });
+
+
+
+    $("#btnSubmit").click(function () {
+        //alert($('.supplier:checkbox:checked'));
+        var haveInvitedSupplier = false;
+        $('input:checkbox.supplier').each(function () {
+            var sThisVal = (this.checked ? $(this).val() : "");
+            if (sThisVal != "") {
+                haveInvitedSupplier = true;
+            }
+        });
+
+        if (haveInvitedSupplier) {
+            $("#frmCreateRFQ").submit();
+        } else {
+            alert("Please invite at least one supplier.");
+        }
+    });
+
+    function loadUser() {
+        var ajaxurl = '@Url.Action("GetActiveUserByCompany", "Rfq")';
+
+        $('#ddlUser').append($('<option>', {
+            value: 0,
+            text: '--Select User--'
+        }));
+
+        $.ajax({
+            url: ajaxurl,
+            data: { CompanyId: 1 },
+            dataType: 'json',
+            success: function (response) {
+                //console.log(response);
+                var obj = response;
+                for (var k in obj) {
+                    var item = obj[k];
+                    $('#ddlUser').append($('<option>', {
+                        value: item.Id,
+                        text: item.ContactName
+                    }));
+                }
+                $("#ddlUser").selectpicker('refresh');
+
+            },
+            error: function (response) {
+                alert(response)
+            }
+
+        });
+    }
+
+    $("#btnAddUser").click(function () {
+        var userId = $("#ddlUser").val();
+        var userName = $("#ddlUser option:selected").text();
+        var roleId = $("#ddlRole").val();
+
+        if (userId == 0 ) {
+            alert("Please select the user");
+        } else {
+            var isExistingUser = false;
+            $('#userSettingTable > tbody  > tr > td > input[name="documentUserId[]"]').each(function () {
+                if (userId == $(this).val()) {
+                    alert("User is already exist in list.");
+                    isExistingUser = true;
+                }
+            });
+            if (isExistingUser == false) {
+                if (roleId == null) {
+                    alert("Please select the role(s)");
+                } else {
+                    var tmptag = "<tr><td>" +
+                        "<input type='hidden' name='documentUserId[]' value='" + userId + "' />" +
+                        "<h5> " + userName + " </h5>" +
+                        "<input type='hidden' name='documentUserRole[]' value='" + roleId + "' />";
+                    $("#ddlRole option:selected").each(function () {
+                        var $this = $(this);
+                        if ($this.length) {
+                            var selText = $this.text();
+                            tmptag = tmptag + "<span class='label bg-deep-purple'> " + selText +" </span>&nbsp;  ";
+                        }
+                    });
+                    tmptag = tmptag + "</td><td><button type='button' class='btn btn-danger waves-effect'  onclick='RemoveUserRow(this)'>Remove</button></td>";
+                    tmptag = tmptag + "</tr>";
+                    $("#userSettingTable > tbody").append(tmptag);
+                    $("#ddlUser").val(0);
+                    $("#ddlUser").selectpicker('refresh');
+                    $("#ddlRole").val(0);
+                    $("#ddlRole").selectpicker('refresh');
+                }
+            }
+        }
+    });
+
+    function RemoveUserRow(item) {
+        $(item).parent().parent().remove();
+    }
+
+    function loadRole() {
+        var ajaxurl = '@Url.Action("GetActiveRoles", "Rfq")';
+
+         $.ajax({
+            url: ajaxurl,
+            dataType: 'json',
+            success: function (response) {
+                //console.log(response);
+                var obj = response;
+                for (var k in obj) {
+                    var item = obj[k];
+                    $('#ddlRole').append($('<option>', {
+                        value: item.Id,
+                        text: item.Name
+                    }));
+
+                }
+                $("#ddlRole").selectpicker('refresh');
+
+            },
+             error: function (response) {
+                 var abc = "GetActiveRoles";
+                 alert(response + abc)
+            }
+
+        });
+    }
+
+    $("#btnLoadSupplier").click(function () {
+        $('#invitedSupplierTable > tbody').empty();
+        loadSupplier(1);
+    });
+
+ function loadSupplier(page) {
+     var serviceTagsId = $('#ddlServiceTags').val();
+
+     var stringServiceTagsId = serviceTagsId.toString();
+
+     if (serviceTagsId == null) {
+         alert("Please select the service tags!");
+        } else {
+            var ajaxurl = '@Url.Action("GetSupplierByServiceTagsId", "Rfq")';
+            $.ajax({
+                url: ajaxurl,
+                data: { serviceTagsId: stringServiceTagsId, page:page},
+                dataType: 'json',
+                success: function (response) {
+                    var obj = response.Result.Records;
+                    for (var k in obj) {
+                        var item = obj[k];
+                        var selected = "";
+                        var selectedClass = "btn-success";
+                        var invited = "Invite";
+                        var invitedSupplier = $("#hdSelectedSuppliers").val();
+
+                        var array = invitedSupplier.split(',');
+                        array.forEach(function (i) {
+                            if (i == item.Id) {
+                                selected = "checked='checked'";
+                                selectedClass = "btn-danger";
+                                invited = "Invited";
+                            }
+                        });
+
+
+                        $('#invitedSupplierTable > tbody').append(
+                            "<tr>" +
+                            "<td> <h5>" + item.Name + "</h5><span class='label label-success'>Verified</span>" +
+                            " <p class='m-t-15 m-b-30'>" + item.About + "</p></td>" +
+                            "<td><input type='checkbox' class='filled-in supplier' id='chkSupplier_" + item.Id + "'  name='supplier_list[]' value='" + item.Id + "' " + selected + "> <button type='button' id='btnInvite_" + item.Id + "' class='btn " + selectedClass +"' disabled>"+invited+"</button></td>" +
+                            "</tr>");
+
+                    }
+                    $("#hdSelectedSuppliers").val("0");
+                    var totalpage = response.Result.TotalPage;
+                    var currentpage = response.Result.CurrentPage;
+                    if (totalpage > currentpage) {
+                        $(".pagination").empty();
+                        $(".pagination").append(" <a class='btn btn-md btn-default' OnClick='loadSupplier(" + response.Result.NextPage + ")'> Load More </a> ");
+                    } else {
+                        $(".pagination").empty();
+
+                    }
+
+                },
+                error: function (response) {
+                    var abc = "GetSupplierByServiceTagsId";
+                    alert(response + abc)
+                }
+            });
+     }
+
+    }
+
+    function checkSupplier(n) {
+
+        if ($("#chkSupplier_" + n).prop("checked")) {
+
+            $("#chkSupplier_" + n).prop("checked", false);
+            $("#btnInvite_" + n).removeClass("btn btn-danger").addClass("btn btn-success");
+            $("#btnInvite_" + n).text("Invite");
+        } else {
+            $("#chkSupplier_" + n).prop("checked", true);
+            $("#btnInvite_" + n).removeClass("btn btn-success").addClass("btn btn-danger");
+            $("#btnInvite_" + n).text("Invited");
+        }
+
+    }
+function loadIndustry() {
+    var ajaxurl = '@Url.Action("GetActiveIndustries", "Rfq")';
+
+    $('#ddlIndustry').append($('<option>', {
+        value: 0,
+        text: '--Select Industry--'
+    }));
+
+    $.ajax({
+        url: ajaxurl,
+        dataType: 'json',
+        success: function (response) {
+            //console.log(response);
+            var obj = response;
+            for (var k in obj) {
+                var item = obj[k];
+                $('#ddlIndustry').append($('<option>', {
+                    value: item.Id,
+                    text: item.Name
+                }));
+            }
+            $("#ddlIndustry").val($("#hdIndustry").val());
+            $("#ddlIndustry").selectpicker('refresh');
+            if ($("#loadinvitedsupplier").val() == "0") {
+
+                loadServiceTags($('#ddlIndustry').val());
+            }
+        },
+        error: function (response) {
+            var abc = "GetActiveIndustries";
+            alert(response + abc)
+        }
+
+    });
+
+    }
+
+    $("#ddlIndustry").change(function () {
+        var industryId = $('#ddlIndustry').val();
+
+        loadServiceTags(industryId);
+    });
+
+    function loadServiceTags(industryId) {
+        //var industryId = $('#ddlIndustry').val();
+        //alert(industryId);
+        $('#ddlServiceTags').empty();
+        if (industryId == "0") {
+
+            $("#ddlServiceTags").selectpicker('refresh');
+        } else {
+            $('#hdIndustry').val($("#ddlIndustry option:selected").val());
+            //alert($('#hdIndustry').val())
+            var ajaxurl = '@Url.Action("GetServiceTagByIndustry", "Rfq")';
+
+            $.ajax({
+                url: ajaxurl,
+                data: {Id: industryId},
+                dataType: 'json',
+                success: function (response) {
+                    //console.log(response);
+                    var obj = response;
+                    for (var k in obj) {
+                        var item = obj[k];
+                        var selected = "";
+                        var selectedTags = $("#hdSelectedTags").val();
+                        //alert(selectedTags);
+                        var array = selectedTags.split(',');
+                        array.forEach(function (i) {
+                            if (i == item.Id) {
+                                selected = "selected";
+                            }
+                        });
+                        var tmpstring = "<option value='" + item.Id + "' " + selected + ">" + item.Name + "</option>"
+                        $('#ddlServiceTags').append(tmpstring);
+                    }
+
+                    $("#ddlServiceTags").selectpicker('refresh');
+                    $("#hdSelectedTags").val("0");
+                    if ($("#loadinvitedsupplier").val() == "0") {
+                        loadSupplier(1);
+                        $("#loadinvitedsupplier").val("1");
+                    }
+                },
+                error: function (response) {
+                    var abc = "GetServiceTagByIndustry";
+                    alert(response + abc)
+                }
+            });
+        }
+    }
+
+    $(".btn_download").on("click", function () {
+
+        var fileId = $(this).data('fileid');
+         var ajaxurl = '@Url.Action("AttachmentDownload", "Rfq")';
+        var url = ajaxurl+ "?fileid=" + fileId;
+        $('#iframe_download_file').attr('src', url)
+        //alert('download - ' + $('#iframe_download_file').attr('src'));
+
+    });
+
+    function loadQuotation(p) {
+        var _keyword = "";
+        var _rfqId = parseInt($('#RfqId').val());
+        //alert(_rfqId);
+        var ajaxurl = '@Url.Action("GetQuotationByRfqId", "Rfq")';
+        $.ajax({
+            url: ajaxurl,
+            data: { RfqId: _rfqId, page: p, keyword: _keyword},
+            dataType: 'json',
+            success: function (response) {
+                var obj = response.Result.Records;
+                console.log(obj);
+                for (var k in obj) {
+                    var item = obj[k];
+                    var url = '@Url.Action("View", "Quotation")';
+                    $('#tbQuotation > tbody').append(
+                        "<tr>" +
+                        "<td> <a type='button' class='btn btn-warning' href='" + url+"/"+item.Id+"' target='_blank'>View</a>  </td>" +
+                        "<td>" + item.Document.DocumentNo + "</td>" +
+                        "<td>" + item.Document.Company.Name+ "</td>" +
+                        "<td>" + item.Document.DocumentStatus.Name + "</td>" +
+                        "</tr>"
+                    );
+                }
+                var totalpage = response.Result.TotalPage;
+                var currentpage = response.Result.CurrentPage;
+                if (totalpage > currentpage) {
+                    $("#divPagination").empty();
+                    $("#divPagination").append(" <a class='btn btn-md btn-default' OnClick='loadQuotation(" + response.Result.NextPage + ")'> Load More </a> ");
+                } else {
+                    $("#divPagination").empty();
+
+                }
+            },
+            error: function (response) {
+                var abc = "GetQuotationByRfqId";
+                alert(response + abc)
+            }
+        });
+    }
+</script>
+

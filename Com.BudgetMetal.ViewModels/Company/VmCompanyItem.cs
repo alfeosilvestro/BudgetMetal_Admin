@@ -1,4 +1,5 @@
-﻿using Com.BudgetMetal.ViewModels.User;
+﻿using Com.BudgetMetal.ViewModels.Rating;
+using Com.BudgetMetal.ViewModels.User;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -24,5 +25,6 @@ namespace Com.BudgetMetal.ViewModels.Company
         public int? MaxRFQPerWeek { get; set; }
         public int? MaxQuotationPerWeek { get; set; }
         public List<VmUserItem> UserList { get; set; }
+        public List<VmRatingItem> RatingList { get; set; }
     }
 }
