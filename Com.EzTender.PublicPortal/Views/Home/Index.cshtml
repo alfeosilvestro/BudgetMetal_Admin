@@ -33,7 +33,7 @@
                     </div>
                     <div class="col-sm-1">
                         <input type="hidden" name="statusId" id="statusId" value="0" />
-                        <input type="hidden" name="Company_Id" id="Company_Id" value="@(ViewBag.Company_Id)" />
+                        @*<input type="hidden" name="Company_Id" id="Company_Id" value="@(ViewBag.Company_Id)" />*@
                         <button type="button" class="btn bg-indigo pull-right" id="btnSearch"> Search </button>
                     </div>
                 </div>
@@ -82,9 +82,8 @@
     function loadRFQ(page) {
         var keyword = $('#keyword').val();
         var statusId = $('#statusId').val();
-        var company = $('#Company_Id').val();
-        //var ajaxurl = '@Url.Action("GetRFQForDashboard", "Home", new { page = 1, status = "100032", Company_Id = "", skeyword = ""}, null)';
-        var ajaxurl = "/Home/GetRFQForDashboard?page="+ page +"&status=100032&Company_Id=1&skeyword="
+        var company = $('#Company_Id').val();        
+        var ajaxurl = "/Home/GetRFQForDashboard?page=" + page + "&status=100032&Company_Id=1&skeyword=" + encodeURIComponent(keyword);
         $.ajax({
             url: ajaxurl,
             data: { page: page, status: statusId, Company_Id: company, skeyword: keyword},
@@ -117,6 +116,8 @@
                     //    "</div>";
                     //$('#RFQList').append(rfqItem);
                     //item.Document.Id
+                    //
+                    var rfqUrl = '@Url.Action("Detail", "Home")';
                     $('#RFQList').append(
                         "<div class='clearfix' style='padding-left: 20px; padding-right: 20px;'> " +
                             "<div class='row'> " +
@@ -124,7 +125,8 @@
                                 "<div class='col-sm-6'><span class='btn btn-success pull-right'>" + item.Document.DocumentStatus.Name + "</span></div> " +
                             "</div> " +
                         "<div class='row'> " +
-                            "<div class='col-sm-12'><b>Title. <a href='/" + item.Id + "'>" + item.Document.Title + "</a></b></div> " +
+                        "<div class='col-sm-12'><b>Title. <a href='" + rfqUrl + "/"+ item.Id + "'>" + item.Document.Title + "</a></b></div> " +
+
                             "</div> " +
                             "<div class='row'> " +
                                 "<div class='col-sm-4'>Company: " + item.Document.Company.Name + "</div> " +

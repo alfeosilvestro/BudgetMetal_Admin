@@ -33,5 +33,7 @@ namespace Com.BudgetMetal.Services.RFQ
         Task<VmRfqItem> GetSingleRfqById(int documentId);
 
         bool CheckRFQLimit(int companyId);
+
+        Task<VmRfqItem> GetPublicPortalSingleRfqById(int documentId);
     }
 }

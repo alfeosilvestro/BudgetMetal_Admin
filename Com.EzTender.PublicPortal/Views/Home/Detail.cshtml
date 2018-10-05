@@ -8,7 +8,7 @@
 <form asp-controller="Rfq" asp-action="View" method="post" enctype="multipart/form-data" id="frmCreateRFQ">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="block-header">
-        <h2>Prepare Request for Quotation</h2>
+        <h2>RFQ Detail</h2>
     </div>
     <!-- Input -->
     <div class="row clearfix">
@@ -21,11 +21,11 @@
                 </div>
                 <div class="body">
                     <div class="row clearfix">
-                        <div class="col-sm-10">
+                        <div class="col-sm-4">
                             <label for="quote_no">RFQ Reference</label>
                             <div class="form-group">
                                 <div class="form-line">
-                                    <input type="text" asp-for="Document.DocumentNo" readonly class="form-control" placeholder="<Auto Generate by System>">
+                                    <input type="text" asp-for="Document.DocumentNo" readonly class="form-control" placeholder="<Auto Generate by System>" />
                                     <input type="hidden" asp-for="Document.DocumentStatus_Id">
                                     <input type="hidden" asp-for="Document.DocumentType_Id">
                                     <input type="hidden" asp-for="Document.Company_Id">
@@ -43,32 +43,40 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-2">
-                            <label for="status">Status</label>
-                            <h4><span class="label label-info">@Model.Document.DocumentStatus.Name</span></h4>
-                        </div>
                         <div class="col-sm-6">
-                            <label for="quote_no">Internal Reference No</label>
+                            <label for="quote_no">Title</label>
                             <div class="form-group">
                                 <div class="form-line">
-                                    <input type="text" asp-for="InternalRefrenceNo" class="form-control" placeholder="Internal Reference">
-                                    <span asp-validation-for="InternalRefrenceNo" class="text-danger"></span>
+                                    <input type="text" asp-for="Document.Title" readonly class="form-control" placeholder="<Auto Generate by System>" />
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <label for="quote_no">Internal Project Name</label>
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <input type="text" asp-for="InternalProjectName" class="form-control" placeholder="Internal Project Name">
-                                    <span asp-validation-for="InternalProjectName" class="text-danger"></span>
+                            <div class="col-sm-2">
+                                <label for="status">Status</label>
+                                <h4><span class="label label-info">@Model.Document.DocumentStatus.Name</span></h4>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="quote_no">Internal Reference No</label>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="text" asp-for="InternalRefrenceNo" class="form-control" placeholder="Internal Reference">
+                                        <span asp-validation-for="InternalRefrenceNo" class="text-danger"></span>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="col-sm-6">
+                                <label for="quote_no">Internal Project Name</label>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="text" asp-for="InternalProjectName" class="form-control" placeholder="Internal Project Name">
+                                        <span asp-validation-for="InternalProjectName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
 
                     </div>
-
-                </div>
             </div>
         </div>
     </div>
@@ -85,10 +93,7 @@
                         <li role="presentation"><a href="#service_level_agreement" data-toggle="tab">SLA</a></li>
                         <li role="presentation"><a href="#penalty" data-toggle="tab">Penalty / LD</a></li>
                         <li role="presentation"><a href="#pricing" data-toggle="tab">Pricing Table</a></li>
-                        <li role="presentation" id="tabinvited_suppliers"><a href="#invited_suppliers" data-toggle="tab">Invited Suppliers</a></li>
                         <li role="presentation"><a href="#attachments" data-toggle="tab">Files</a></li>
-                        <li role="presentation"><a href="#settings" data-toggle="tab">Users</a></li>
-                        <li role="presentation"><a href="#DocumentActivity" data-toggle="tab">Activity</a></li>
                     </ul>
                     <!-- Tab panes -->
                     <div class="tab-content">
@@ -285,9 +290,7 @@
                                                 <tr>
                                                     <td>@item.Requirement
                                                     <td>@item.Description</td>
-
                                                 </tr>
-
                                             }
                                         }
                                     }
@@ -311,24 +314,18 @@
                                     @{
                                         if (Model.Penalty != null)
                                         {
-
                                             foreach (var item in Model.Penalty)
                                             {
                                                 <tr>
                                                     <td>@item.BreachOfServiceDefinition</td>
                                                     <td>@item.PenaltyAmount</td>
                                                     <td>@item.Description</td>
-
                                                 </tr>
-
                                             }
                                         }
                                     }
-
                                 </tbody>
-
                             </table>
-
                         </div>
 
                         <div role="tabpanel" class="tab-pane fade in" id="pricing">
@@ -346,7 +343,6 @@
                                     @{
                                         if (Model.RfqPriceSchedule != null)
                                         {
-
                                             foreach (var item in Model.RfqPriceSchedule)
                                             {
                                                 <tr>
@@ -354,15 +350,11 @@
                                                     <td>@item.ItemDescription</td>
                                                     <td>@item.InternalRefrenceCode</td>
                                                     <td>@item.QuantityRequired</td>
-
                                                 </tr>
-
                                             }
                                         }
                                     }
-
                                 </tbody>
-
                             </table>
                             <button class="btn btn-default waves-effect m-r-20" type="button" data-target="#priceCompareModal" data-toggle="modal">Price Comparison</button>
 
@@ -419,46 +411,6 @@
 
                         </div>
 
-                        <div role="tabpanel" class="tab-pane fade" id="invited_suppliers">
-                            <div class="row">
-                                <div class="col-sm-3">
-                                    <select id="ddlIndustry" class="form-control selectpicker" disabled></select>
-                                    <input type="hidden" asp-for="IndustryOfRfq" id="hdIndustry" />
-                                </div>
-                                <div class="col-sm-8">
-                                    @*<select id="ddlServiceTags" class="form-control"></select>*@
-                                    <select asp-for="SelectedTags" class="form-control show-tick" id="ddlServiceTags" data-live-search="true" multiple disabled></select>
-                                    <input type="hidden" value="@Model.SelectedTags" id="hdSelectedTags" />
-                                </div>
-                                <div class="col-sm-1">
-
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-3">
-                                    @{
-                                        string selectedSuppliers = string.Join(",", Model.InvitedSupplier.Select(m => m.Company_Id).ToArray());
-                                    }
-                                    <input type="hidden" id="hdSelectedSuppliers" value="@selectedSuppliers" />
-
-                                </div>
-                            </div>
-                            <table id="invitedSupplierTable" class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th width="95%">Supplier Information</th>
-                                        <th width="*">&nbsp;</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                            <div class="row">
-                                <div class="pagination" style="padding:10px;">
-
-                                </div>
-                            </div>
-                        </div>
-
                         <div role="tabpanel" class="tab-pane fade" id="attachments">
 
                             <table id="attachmentTable" class="table table-striped">
@@ -492,84 +444,12 @@
                             <iframe id="iframe_download_file" style="display:none" src=""></iframe>
                         </div>
 
-                        <div role="tabpanel" class="tab-pane fade" id="settings">
-
-
-                            <table id="userSettingTable" class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th width="95%">Accessible User(s)</th>
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @{
-                                        if (Model.Document.DocumentUserDisplay != null)
-                                        {
-                                            foreach (var item in Model.Document.DocumentUserDisplay)
-                                            {
-                                                <tr>
-                                                    <td>
-                                                        <input type="hidden" name='documentUserId[]' value="@item.User_Id" />
-                                                        <h5>@item.UserName</h5>
-                                                        <input type='hidden' name='documentUserRole[]' value='@item.Roles_Id' />
-                                                        @{
-                                                            foreach (string tmpRole in item.Roles)
-                                                            {
-
-                                                                <span class='label bg-deep-purple'>@tmpRole</span>
-                                                            }
-                                                        }
-
-                                                    </td>
-
-
-                                                </tr>
-
-                                            }
-                                        }
-                                    }
-
-                                </tbody>
-                            </table>
-                        </div>
-                        <div role="tabpanel" class="tab-pane fade in" id="DocumentActivity">
-
-                            <table id="pricingTable" class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th width="25%">Action</th>
-                                        <th width="35%">Created By</th>
-                                        <th width="20%">Created Date</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @{
-                                        if (Model.Document.DocumentActivityList != null)
-                                        {
-
-                                            foreach (var item in Model.Document.DocumentActivityList)
-                                            {
-                                                <tr>
-                                                    <td>@item.Action </td>
-                                                    <td>@item.CreatedBy</td>
-                                                    <td>@item.CreatedDate</td>
-                                                </tr>
-                                            }
-                                        }
-                                    }
-
-                                </tbody>
-
-                            </table>
-
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row clearfix">
+    @*<div class="row clearfix">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
                 <div class="header">
@@ -610,7 +490,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>*@
 
 </form>
 
@@ -645,11 +525,11 @@
 <script>
     $(function () {
 
-        loadIndustry();
+        //loadIndustry();
 
-        loadUser();
-        loadRole();
-        loadQuotation(1);
+        //loadUser();
+        //loadRole();
+        //loadQuotation(1);
         $('#frmCreateRFQ input').attr('readonly', 'readonly');
        // $('#StartRfqdate').datepicker("setDate", new Date(2008, 9, 03));
     });
@@ -771,8 +651,9 @@
                 $("#ddlRole").selectpicker('refresh');
 
             },
-            error: function (response) {
-                alert(response)
+             error: function (response) {
+                 var abc = "GetActiveRoles";
+                 alert(response + abc)
             }
 
         });
@@ -836,7 +717,8 @@
 
                 },
                 error: function (response) {
-                    alert(response)
+                    var abc = "GetSupplierByServiceTagsId";
+                    alert(response + abc)
                 }
             });
      }
@@ -886,7 +768,8 @@ function loadIndustry() {
             }
         },
         error: function (response) {
-            alert(response)
+            var abc = "GetActiveIndustries";
+            alert(response + abc)
         }
 
     });
@@ -929,8 +812,6 @@ function loadIndustry() {
                                 selected = "selected";
                             }
                         });
-
-
                         var tmpstring = "<option value='" + item.Id + "' " + selected + ">" + item.Name + "</option>"
                         $('#ddlServiceTags').append(tmpstring);
                     }
@@ -943,7 +824,8 @@ function loadIndustry() {
                     }
                 },
                 error: function (response) {
-                    alert(response)
+                    var abc = "GetServiceTagByIndustry";
+                    alert(response + abc)
                 }
             });
         }
@@ -982,7 +864,6 @@ function loadIndustry() {
                         "<td>" + item.Document.DocumentStatus.Name + "</td>" +
                         "</tr>"
                     );
-
                 }
                 var totalpage = response.Result.TotalPage;
                 var currentpage = response.Result.CurrentPage;
@@ -993,10 +874,10 @@ function loadIndustry() {
                     $("#divPagination").empty();
 
                 }
-
             },
             error: function (response) {
-                alert(response)
+                var abc = "GetQuotationByRfqId";
+                alert(response + abc)
             }
         });
     }
