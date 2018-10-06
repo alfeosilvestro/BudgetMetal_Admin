@@ -79,6 +79,12 @@
         }
     });
 
+    $("#keyword").keyup(function (event) {
+        if (event.keyCode === 13) {
+            $("#btnSearch").click();
+        }
+    });
+
     function loadRFQ(page) {
         var keyword = $('#keyword').val();
         var statusId = $('#statusId').val();
