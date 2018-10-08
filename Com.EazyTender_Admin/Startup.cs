@@ -40,6 +40,7 @@ using Com.BudgetMetal.DataRepository.Penalty;
 using Com.BudgetMetal.DataRepository.InvitedSupplier;
 using Com.BudgetMetal.DataRepository.RfqPriceSchedule;
 using Com.BudgetMetal.DataRepository.DocumentUser;
+using Com.BudgetMetal.DataRepository.Rating;
 
 namespace Com.EazyTender_Admin
 {
@@ -152,6 +153,8 @@ namespace Com.EazyTender_Admin
             services.AddScoped<IInvitedSupplierRepository, InvitedSupplierRepository>();
             services.AddScoped<IRfqPriceScheduleRepository, RfqPriceScheduleRepository>();
             services.AddScoped<IDocumentUserRepository, DocumentUserRepository>();
+
+            services.AddScoped<IRatingRepository, RatingRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

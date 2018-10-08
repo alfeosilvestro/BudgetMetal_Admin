@@ -17,6 +17,8 @@ namespace Com.BudgetMetal.ViewModels.Company
         [Required(ErrorMessage = "Registration number is required!")]
         public string RegNo { get; set; }
         public bool IsVerified { get; set; }
+        public bool IsSupplier { get; set; }
+        public bool IsBuyer { get; set; }
         public string About { get; set; }
         public decimal? SupplierAvgRating { get; set; }
         public decimal? BuyerAvgRating { get; set; }

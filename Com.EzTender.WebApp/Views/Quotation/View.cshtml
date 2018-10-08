@@ -132,7 +132,7 @@
                                         <th width="20%">Service Name</th>
                                         <th width="30%">Description</th>
                                         <th width="30%">Compliance</th>
-                                        <th width="40%">Supplier Description</th>
+                                        <th width="40%">Supplier Comments</th>
                                         <th>&nbsp;</th>
                                     </tr>
                                 </thead>
@@ -147,7 +147,12 @@
                                                 <tr>
                                                     <td>@item.ServiceName <input type="hidden" name="QuotationRequirement[@i].ServiceName" class="form-control" value="@item.ServiceName" /></td>
                                                     <td>@item.Description <input type="hidden" name="QuotationRequirement[@i].Description" class="form-control" value="@item.Description" /></td>
-                                                    <td>@item.Compliance<input type="hidden" name="QuotationRequirement[@i].Compliance" class="form-control" value="@item.Compliance" /></td>
+                                                    @*<td>@item.Compliance<input type="hidden" name="QuotationRequirement[@i].Compliance" class="form-control" value="@item.Compliance" /></td>*@
+                                                    <td class="demo-radio-button">
+                                                        <input id="QuotationRequirement[@i]_Compliance1" name="QuotationRequirement[@i].Compliance" type="radio" class="with-gap radio-col-red" value="QuotationRequirement[@i].Compliance" readonly="readonly"><label for="QuotationRequirement[@i]_Compliance1">Comply</label>
+                                                        <input id="QuotationRequirement[@i]_Compliance2" name="QuotationRequirement[@i].Compliance" type="radio" class="with-gap radio-col-red" value="QuotationRequirement[@i].Compliance" readonly="readonly"><label for="QuotationRequirement[@i]_Compliance2">Not Comply</label>
+                                                        <input id="QuotationRequirement[@i]_Compliance3" name="QuotationRequirement[@i].Compliance" type="radio" class="with-gap radio-col-red" value="QuotationRequirement[@i].Compliance" readonly="readonly"><label for="QuotationRequirement[@i]_Compliance3">Partial Comply</label>
+                                                    </td>
                                                     <td>@item.SupplierDescription<input type="hidden" name="QuotationRequirement[@i].SupplierDescription" class="form-control" value="@item.SupplierDescription" /></td>
                                                 </tr>
                                                 i++;
@@ -314,7 +319,7 @@
         </div>
     </div>
 
-    
+
 </form>
 <!-- Editable Table Plugin Js -->
 <script src="~/material_theme/plugins/editable-table/mindmup-editabletable.js"></script>
@@ -343,7 +348,7 @@
         $('#frmCreateQuotation input').attr('readonly', 'readonly');
     });
 
-     
+
 
     function loadUser() {
         var ajaxurl = '@Url.Action("GetActiveUserByCompany", "Rfq")';

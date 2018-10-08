@@ -10,6 +10,8 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
 using Com.BudgetMetal.Services.Industries;
 using Com.BudgetMetal.Services.Quotation;
+using Com.BudgetMetal.Services.Attachment;
+using System.IO;
 
 namespace Com.EzTender.PublicPortal.Controllers
 {
@@ -18,12 +20,14 @@ namespace Com.EzTender.PublicPortal.Controllers
         private readonly IIndustryService industryService;
         private readonly IRFQService rfqService;
         private readonly IQuotationService quotationService;
+        private readonly IAttachmentService attachmentService;
 
-        public HomeController(IRFQService rfqService, IIndustryService industryService, IQuotationService quotationService)
+        public HomeController(IRFQService rfqService, IIndustryService industryService, IQuotationService quotationService, IAttachmentService attachmentService)
         {
             this.rfqService = rfqService;
             this.industryService = industryService;
             this.quotationService = quotationService;
+            this.attachmentService = attachmentService;
         }
 
         public IActionResult Index()
@@ -124,6 +128,17 @@ namespace Com.EzTender.PublicPortal.Controllers
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             });
+        }
+
+        public async Task<FileResult> AttachmentDownload(int fileid)
+        {
+            var result = await attachmentService.GetAttachmentById(fileid);
+
+            var fileByeArray = result.FileBinary;
+            string fileName = result.FileName;
+            var readStream = new MemoryStream(Convert.FromBase64String(fileByeArray));
+            var mimeType = "application/zip";
+            return File(readStream, mimeType, fileName);
         }
     }
 }
