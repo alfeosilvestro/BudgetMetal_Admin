@@ -16,6 +16,8 @@ using Com.BudgetMetal.DataRepository.Roles;
 using Com.BudgetMetal.ViewModels.Role;
 using Com.BudgetMetal.DataRepository.UserRoles;
 using Com.BudgetMetal.ViewModels.Sys_User;
+using Com.BudgetMetal.DataRepository.ServiceTags;
+using Com.BudgetMetal.DataRepository.SupplierServiceTags;
 
 namespace Com.BudgetMetal.Services.Users
 {
@@ -26,14 +28,34 @@ namespace Com.BudgetMetal.Services.Users
         private readonly ICodeTableRepository CTrepo;
         private readonly IRoleRepository roleRepo;
         private readonly IUserRolesRepository userRolesRepo;
+        private readonly ISupplierServiceTagsRepository supplierServiceTagsRepo;
 
-        public UserService(IUserRepository repo, ICompanyRepository _cRepo, ICodeTableRepository _ctRepo, IRoleRepository _roleRepo, IUserRolesRepository _userRoleRepo)
+        public UserService(IUserRepository repo, ICompanyRepository _cRepo, ICodeTableRepository _ctRepo, IRoleRepository _roleRepo, IUserRolesRepository _userRoleRepo, ISupplierServiceTagsRepository _supplierServiceTagsRepo)
         {
             this.repo = repo;
             cRepo = _cRepo;
             CTrepo = _ctRepo;
             roleRepo = _roleRepo;
             userRolesRepo = _userRoleRepo;
+            supplierServiceTagsRepo = _supplierServiceTagsRepo;
+        }
+
+
+        public async Task<bool> CheckEmail(string email)
+        {
+            var dbresult = await repo.GetUserByEmail(email);
+
+            if (dbresult == null)
+            {
+                return false;
+            }
+            else
+            {
+                var result = new VmUserItem();
+                Copy<Com.BudgetMetal.DBEntities.User, VmUserItem>(dbresult, result);
+
+                return true;
+            }
         }
 
         public async Task<VmUserItem> ValidateUser(VM_Sys_User_Sign_In user)
@@ -403,6 +425,76 @@ namespace Com.BudgetMetal.Services.Users
 
 
             return resultList;
+        }
+
+        public async Task<VmGenericServiceResult> Register(VmUserItem user, string[] serviceTags)
+        {
+            var result = new VmGenericServiceResult();
+
+            try
+            {
+                int companyId = 0;
+                if (user.Company.Id > 0)
+                {
+                    companyId = user.Company.Id;
+                }
+                else
+                {
+                    var dbCompany = new Com.BudgetMetal.DBEntities.Company();
+                    Copy<VmCompanyItem, Com.BudgetMetal.DBEntities.Company>(user.Company, dbCompany);
+
+                    var dbMaxDefaultRFQ = await CTrepo.Get(Constants_CodeTable.Code_MaxDefaultRFQPerWeek);
+                    dbCompany.MaxRFQPerWeek = Convert.ToInt32(dbMaxDefaultRFQ.Value);
+
+                    var dbMaxDefaultQuote = await CTrepo.Get(Constants_CodeTable.Code_MaxDefaultQuotePerWeek);
+                    dbCompany.MaxQuotationPerWeek = Convert.ToInt32(dbMaxDefaultQuote.Value);
+
+                    dbCompany.IsVerified = false;
+                    dbCompany.SupplierAvgRating = dbCompany.BuyerAvgRating = dbCompany.AwardedQuotation = dbCompany.SubmittedQuotation = 0;
+
+                    dbCompany.CreatedBy = dbCompany.UpdatedBy = user.EmailAddress;
+                    var dbResultCompany = cRepo.Add(dbCompany);
+                    cRepo.Commit();
+                    companyId = dbResultCompany.Id;
+
+                    if (serviceTags != null)
+                    {
+                        foreach (var item in serviceTags)
+                        {
+                            var dbSupplierServicTags = new SupplierServiceTags();
+                            dbSupplierServicTags.Company_Id = companyId;
+                            dbSupplierServicTags.ServiceTags_Id = Convert.ToInt32(item);
+                            dbSupplierServicTags.CreatedBy = dbSupplierServicTags.UpdatedBy = user.EmailAddress;
+
+                            supplierServiceTagsRepo.Add(dbSupplierServicTags);
+
+                        }
+                        supplierServiceTagsRepo.Commit();
+                    }
+                }
+
+                var dbUser = new User();
+                Copy<VmUserItem, Com.BudgetMetal.DBEntities.User>(user, dbUser, new string[] { "Company" });
+                dbUser.Company_Id = companyId;
+                dbUser.CreatedBy = dbUser.UpdatedBy = user.EmailAddress;
+                dbUser.UserName = user.ContactName;
+                dbUser.IsConfirmed = false;
+                dbUser.UserType = Constants_CodeTable.Code_Supplier;
+
+                var dbResultUser = repo.Add(dbUser);
+                repo.Commit();
+
+                result.IsSuccess = true;
+                result.MessageToUser = user.EmailAddress;
+            }
+            catch(Exception ex)
+            {
+                result.IsSuccess = false;
+                result.MessageToUser = ex.Message;
+                result.Error = ex;
+            }
+            
+            return result;
         }
     }
 }

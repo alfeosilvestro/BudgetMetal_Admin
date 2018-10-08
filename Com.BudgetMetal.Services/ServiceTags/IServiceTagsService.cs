@@ -22,5 +22,7 @@ namespace Com.BudgetMetal.Services.ServiceTags
         Task<VmServiceTagsItem> GetFormObject();
 
         Task<List<VmServiceTagsItem>> GetVmServiceTagsByIndustry(int Id);
+
+        Task<List<VmServiceTagsItem>> GetActiveVmServiceTags();
     }
 }

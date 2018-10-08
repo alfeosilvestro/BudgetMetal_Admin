@@ -225,5 +225,15 @@ namespace Com.BudgetMetal.DataRepository.Users
                             );
             return record;
         }
+
+        public async Task<Com.BudgetMetal.DBEntities.User> GetUserByEmail(string Email)
+        {
+            var record = await this.entities
+                            .SingleOrDefaultAsync(e =>
+                              (e.IsActive == true)
+                              && (e.EmailAddress.ToLower().Trim() == Email.ToLower().Trim())
+                            );
+            return record;
+        }
     }
 }

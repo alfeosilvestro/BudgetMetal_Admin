@@ -271,5 +271,22 @@ namespace Com.BudgetMetal.Services.Company
             return resultList;
 
         }
+
+        public async Task<VmCompanyItem> GetCompanyByUEN(string RegNo)
+        {
+            var dbPageResult = await repo.GetCompanyByUEN(RegNo);
+
+            if (dbPageResult == null)
+            {
+                return new VmCompanyItem();
+            }
+
+            var resultObj = new VmCompanyItem();
+
+            Copy<Com.BudgetMetal.DBEntities.Company, VmCompanyItem>(dbPageResult, resultObj);
+
+           
+            return resultObj;
+        }
     }
 }

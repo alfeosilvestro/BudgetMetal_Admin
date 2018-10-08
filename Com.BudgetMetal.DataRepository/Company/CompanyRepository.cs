@@ -116,5 +116,11 @@ namespace Com.BudgetMetal.DataRepository.Company
 
             return result;
         }
+
+       public async Task<Com.BudgetMetal.DBEntities.Company> GetCompanyByUEN(string RegNo)
+        {
+           return await this.entities.Where(e => e.RegNo.ToLower() == RegNo.ToLower()).FirstOrDefaultAsync();
+
+        }
     }
 }

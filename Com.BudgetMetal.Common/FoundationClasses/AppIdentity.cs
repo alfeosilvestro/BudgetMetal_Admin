@@ -17,5 +17,23 @@ namespace Com.BudgetMetal.Common.FoundationClasses
             get;
             set;
         }
+
+        public string MailServer
+        {
+            get;
+            set;
+        }
+
+        public string fromMail
+        {
+            get;
+            set;
+        }
+
+        public string fromMailPassword
+        {
+            get;
+            set;
+        }
     }
 }

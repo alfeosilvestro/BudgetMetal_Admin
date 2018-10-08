@@ -11,11 +11,15 @@ namespace Com.BudgetMetal.ViewModels.Company
     {
         [Required(ErrorMessage = "Name is required!")]
         public string Name { get; set; }
+
         public string Address { get; set; }
+
         [Required(ErrorMessage = "Domain is required!")]
         public string Domain { get; set; }
+
         [Required(ErrorMessage = "Registration number is required!")]
         public string RegNo { get; set; }
+
         public bool IsVerified { get; set; }
         public string About { get; set; }
         public decimal? SupplierAvgRating { get; set; }
@@ -24,7 +28,7 @@ namespace Com.BudgetMetal.ViewModels.Company
         public int? SubmittedQuotation { get; set; }
         public int? MaxRFQPerWeek { get; set; }
         public int? MaxQuotationPerWeek { get; set; }
-        public List<VmUserItem> UserList { get; set; }
-        public List<VmRatingItem> RatingList { get; set; }
+        public virtual List<VmUserItem> UserList { get; set; }
+        public virtual List<VmRatingItem> RatingList { get; set; }
     }
 }

@@ -207,5 +207,22 @@ namespace Com.BudgetMetal.Services.ServiceTags
 
             return resultList;
         }
+
+        public async Task<List<VmServiceTagsItem>> GetActiveVmServiceTags()
+        {
+            var dbResult = await repo.GetAll();
+
+            var resultList = new List<VmServiceTagsItem>();
+            foreach (var item in dbResult)
+            {
+                var resultItem = new VmServiceTagsItem();
+
+                Copy<Com.BudgetMetal.DBEntities.ServiceTags, VmServiceTagsItem>(item, resultItem);
+
+                resultList.Add(resultItem);
+            }
+
+            return resultList;
+        }
     }
 }

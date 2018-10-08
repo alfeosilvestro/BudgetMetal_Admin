@@ -10,5 +10,7 @@ namespace Com.BudgetMetal.DataRepository.Company
     public interface ICompanyRepository : IGenericRepository<Com.BudgetMetal.DBEntities.Company>
     {
         PageResult<Com.BudgetMetal.DBEntities.Company> GetSupplierByServiceTagsId(string serviceTagsId, int page, int totalRecord);
+
+        Task<Com.BudgetMetal.DBEntities.Company> GetCompanyByUEN(string RegNo);
     }
 }

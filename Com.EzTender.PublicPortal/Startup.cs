@@ -43,6 +43,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Com.BudgetMetal.DataRepository.Rating;
+using Com.BudgetMetal.DataRepository.SupplierServiceTags;
 
 namespace Com.EzTender.PublicPortal
 {
@@ -159,6 +161,10 @@ namespace Com.EzTender.PublicPortal
             //EmailLog
             services.AddScoped<IEmailLogRepository, EmailLogRepository>();
             services.AddScoped<IEmailLogService, EmailLogService>();
+
+            //Rating
+            services.AddScoped<IRatingRepository, RatingRepository>();
+            services.AddScoped<ISupplierServiceTagsRepository, SupplierServiceTagsRepository>(); 
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
