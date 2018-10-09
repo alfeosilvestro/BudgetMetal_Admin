@@ -12,7 +12,7 @@ namespace Com.BudgetMetal.DBEntities
         public string InternalRefrenceCode { get; set; }
         public string QuantityRequired { get; set; }
         public decimal ItemAmount { get; set; }
-        
+        public decimal UnitPrice { get; set; }
         public int Quotation_Id { get; set; }
 
         [ForeignKey("Quotation_Id")]

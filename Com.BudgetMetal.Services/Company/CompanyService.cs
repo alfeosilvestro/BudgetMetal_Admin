@@ -257,11 +257,11 @@ namespace Com.BudgetMetal.Services.Company
             repo.Commit();
         }
 
-        public async Task<VmCompanyPage> GetSupplierByServiceTagsId(string serviceTagsId, int page)
+        public async Task<VmCompanyPage> GetSupplierByServiceTagsId(string serviceTagsId, int page, string searchKeyword)
         {
             var dbPageResult = repo.GetSupplierByServiceTagsId(serviceTagsId,
                 (page == 0 ? Constants.app_firstPage : page),
-                Constants.app_totalRecords);
+                Constants.app_totalRecords, searchKeyword);
 
             if (dbPageResult == null)
             {

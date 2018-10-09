@@ -12,7 +12,7 @@ namespace Com.BudgetMetal.ViewModels.QuotationPriceSchedule
         public string InternalRefrenceCode { get; set; }
         public string QuantityRequired { get; set; }
         public decimal ItemAmount { get; set; }
-        
+        public decimal UnitPrice { get; set; }
         public int Quotation_Id { get; set; }
        
     }

@@ -372,6 +372,14 @@
                                 </div>
                             </div>
                             <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" name="txtSearchSupplier" id="txtSearchSupplier" class="form-control" placeholder="Supplier Name, UEN">
+
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="col-sm-3">
                                     @{
                                         string selectedSuppliers = string.Join(",", Model.InvitedSupplier.Select(m => m.Company_Id).ToArray());
@@ -548,9 +556,9 @@
 
 </form>
 
-<!-- Editable Table Plugin Js -->
+<!-- Editable Table Plugin Js
 <script src="~/material_theme/plugins/editable-table/mindmup-editabletable.js"></script>
-<script src="~/material_theme/js/pages/tables/editable-table.js"></script>
+<script src="~/material_theme/js/pages/tables/editable-table.js"></script> -->
 <!-- Moment Plugin Js -->
 <script src="~/material_theme/plugins/momentjs/moment.js"></script>
 <!-- Bootstrap Material Datetime Picker Plugin Js -->
@@ -719,9 +727,10 @@
         loadSupplier(1);
     });
 
- function loadSupplier(page) {
-     var serviceTagsId = $('#ddlServiceTags').val();
+    function loadSupplier(page) {
 
+     var serviceTagsId = $('#ddlServiceTags').val();
+        var searchSupplier = $('#txtSearchSupplier').val();
      var stringServiceTagsId = serviceTagsId.toString();
 
      if (serviceTagsId == null) {
@@ -730,7 +739,7 @@
             var ajaxurl = '@Url.Action("GetSupplierByServiceTagsId", "Rfq")';
             $.ajax({
                 url: ajaxurl,
-                data: { serviceTagsId: stringServiceTagsId, page:page},
+                data: { serviceTagsId: stringServiceTagsId, page: page, searchKeyword: searchSupplier },
                 dataType: 'json',
                 success: function (response) {
                     var obj = response.Result.Records;
