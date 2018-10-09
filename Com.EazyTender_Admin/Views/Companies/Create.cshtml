@@ -50,17 +50,11 @@
                             <input asp-for="About" class="form-control" />
                             <span asp-validation-for="About" class="text-danger"></span>
                         </div>
-                        <div class="form-group col-md-8">
-                            <div class="checkbox">
-                                <br />
-                                <input type="checkbox" class="chk-col-red" asp-for="IsSupplier" />
-                                <label for="IsSupplier"> Is Supplier</label>
-                            </div>
+                        <div class="form-line col-md-8">
                             <br />
-                            <div class="checkbox">
-                                <input type="checkbox" class="chk-col-red" asp-for="IsBuyer" />
-                                <label for="IsBuyer"> Is Buyer</label>
-                            </div>
+                            <label asp-for="C_BusinessType" class="control-label"></label>
+                            <input asp-for="C_BusinessType" class="form-control" />
+                            <span asp-validation-for="C_BusinessType" class="text-danger"></span>
                         </div>
                         <input type="hidden" asp-for="CreatedBy" class="form-control" />
                         <div class="form-group col-md-8">

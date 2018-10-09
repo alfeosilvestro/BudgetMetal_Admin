@@ -11,6 +11,8 @@ namespace Com.BudgetMetal.Services.Company
     {
         Task<VmCompanyPage> GetCompanyByPage(string keyword, int page, int totalRecords);
 
+        Task<VmCompanyPage> GetCompanySupplierList(string keyword, int page, int totalRecords);
+
         Task<VmCompanyItem> GetCompanyById(int Id);
 
         VmGenericServiceResult Insert(VmCompanyItem vmCodeTableItem);

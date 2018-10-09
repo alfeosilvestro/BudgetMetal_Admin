@@ -26,8 +26,7 @@ namespace Com.BudgetMetal.DBEntities
         public int? SubmittedQuotation { get; set; }
         public int? MaxRFQPerWeek { get; set; }
         public int? MaxQuotationPerWeek { get; set; }
-        public bool IsSupplier { get; set; }
-        public bool IsBuyer { get; set; }
+        public int C_BusinessType { get; set; }
 
         //public ICollection<Document> Document { get; set; }
         //public ICollection<InvitedSupplier> InvitedSupplier { get; set; }
