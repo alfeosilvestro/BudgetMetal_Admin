@@ -24,6 +24,7 @@ using Com.BudgetMetal.DataRepository.Roles;
 using Com.BudgetMetal.DataRepository.ServiceTags;
 using Com.BudgetMetal.DataRepository.Single_Sign_On;
 using Com.BudgetMetal.DataRepository.Sla;
+using Com.BudgetMetal.DataRepository.SupplierServiceTags;
 using Com.BudgetMetal.DataRepository.UserRoles;
 using Com.BudgetMetal.DataRepository.Users;
 using Com.BudgetMetal.DB;
@@ -151,6 +152,9 @@ namespace Com.EzTender.WebApp
 
             services.AddScoped<IServiceTagsRepository, ServiceTagsRepository>();
             services.AddScoped<IServiceTagsService, ServiceTagsService>();
+
+            
+                services.AddScoped<ISupplierServiceTagsRepository, SupplierServiceTagsRepository>();
 
             //CodeTable
             services.AddScoped<ICodeTableRepository, CodeTableRepository>();

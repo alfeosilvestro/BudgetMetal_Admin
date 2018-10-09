@@ -18,6 +18,23 @@ namespace Com.BudgetMetal.Common.FoundationClasses
             set;
         }
 
+        public string AdminSiteUrl
+        {
+            get;
+            set;
+        }
+
+        public string WebAppUrl
+        {
+            get;
+            set;
+        }
+        public string PublicSiteUrl
+        {
+            get;
+            set;
+        }
+       
         public string MailServer
         {
             get;

@@ -29,5 +29,9 @@ namespace Com.BudgetMetal.Services.Users
         Task<bool> CheckEmail(string email);
 
         Task<VmGenericServiceResult> Register(VmUserItem user, string[] serviceTags);
+
+        Task<VmGenericServiceResult> ConfirmEmail(string email);
+
+        Task<VmGenericServiceResult> ResetPassword(string email, string newPassword);
     }
 }

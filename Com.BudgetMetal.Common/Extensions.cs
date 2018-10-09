@@ -34,5 +34,15 @@ namespace Com.BudgetMetal.Common
 
             return value.ToString("dd/MM/yyyy HH:mm:ss");
         }
+
+        public static string EncodeString(this string value)
+        {
+            return Convert.ToBase64String(Encoding.UTF8.GetBytes(value));
+        }
+
+        public static string DecodeString(this string value)
+        {
+            return Encoding.UTF8.GetString(Convert.FromBase64String(value));
+        }
     }
 }

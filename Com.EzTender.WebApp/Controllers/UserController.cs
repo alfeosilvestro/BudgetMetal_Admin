@@ -5,25 +5,47 @@ using System.Threading.Tasks;
 using Com.BudgetMetal.Services.Users;
 using Com.BudgetMetal.ViewModels.Sys_User;
 using Com.BudgetMetal.ViewModels.User;
+using Com.EazyTender.WebApp.Configurations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace Com.GenericPlatform.WebApp.Controllers
 {
     public class UserController : Controller
     {
-      
+        private readonly AppSettings _appSettings;
         private readonly IUserService userService;
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IOptions<AppSettings> appSettings)
         {
             this.userService = userService;
+            this._appSettings = appSettings.Value;
+        }
+
+        // GET: User
+        public ActionResult SignOut()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("SignIn", "User");
         }
 
         // GET: User
         public ActionResult SignIn()
         {
+            TempData["ForgotPasswordUrl"] = _appSettings.App_Identity.PublicSiteUrl + "Home/ForgotPassword";
+            TempData["RegisterUrl"] = _appSettings.App_Identity.PublicSiteUrl + "Home/Register";
+            TempData["PublicSiteUrl"] = _appSettings.App_Identity.PublicSiteUrl ;
+
+
+            var user_Id = HttpContext.Session.GetString("User_Id");
+            if (user_Id != null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View();
         }
+
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -31,6 +53,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
         {
             try
             {
+               
                 var result = userService.ValidateUser(user);
                 var resultObj = result.Result;
                 if (resultObj.Id == 0)

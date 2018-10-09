@@ -451,7 +451,7 @@ namespace Com.BudgetMetal.Services.Users
 
                     dbCompany.IsVerified = false;
                     dbCompany.SupplierAvgRating = dbCompany.BuyerAvgRating = dbCompany.AwardedQuotation = dbCompany.SubmittedQuotation = 0;
-
+                    dbCompany.C_BusinessType = Constants_CodeTable.Code_Supplier;
                     dbCompany.CreatedBy = dbCompany.UpdatedBy = user.EmailAddress;
                     var dbResultCompany = cRepo.Add(dbCompany);
                     cRepo.Commit();
@@ -494,6 +494,61 @@ namespace Com.BudgetMetal.Services.Users
                 result.Error = ex;
             }
             
+            return result;
+        }
+
+        public async Task<VmGenericServiceResult> ConfirmEmail(string email)
+        {
+            var result = new VmGenericServiceResult();
+
+            var dbresult = await repo.GetUserByEmail(email);
+
+            if (dbresult == null)
+            {
+                result.IsSuccess = false;
+                result.MessageToUser = "This email is not registered.";
+            }
+            else
+            {
+                if (dbresult.IsConfirmed)
+                {
+                    result.IsSuccess = false;
+                    result.MessageToUser = "This email is already confirmed.";
+                }
+                else
+                {
+                    dbresult.IsConfirmed = true;
+                    repo.Update(dbresult);
+                    repo.Commit();
+                    result.IsSuccess = true;
+                    result.MessageToUser = "Successful";
+                }
+                
+            }
+
+            return result;
+        }
+
+        public async Task<VmGenericServiceResult> ResetPassword(string email, string newPassword)
+        {
+            var result = new VmGenericServiceResult();
+
+            var dbresult = await repo.GetUserByEmail(email);
+
+            if (dbresult == null)
+            {
+                result.IsSuccess = false;
+                result.MessageToUser = "This email is not registered.";
+            }
+            else
+            {
+                dbresult.Password = newPassword;
+                repo.Update(dbresult);
+                repo.Commit();
+                result.IsSuccess = true;
+                result.MessageToUser = "Successful";
+            }
+
             return result;
         }
     }
