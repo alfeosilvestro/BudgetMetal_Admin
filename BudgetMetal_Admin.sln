@@ -37,7 +37,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Com.EzTender.WebApp", "Com.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Com.BudgetMetal.DBEntities", "Com.BudgetMetal.DBEntities\Com.BudgetMetal.DBEntities.csproj", "{AC8AB1F2-A3B9-4747-8998-21370AF120B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Com.EzTender.PublicPortal", "Com.EzTender.PublicPortal\Com.EzTender.PublicPortal.csproj", "{DA3A9608-31A9-4170-A7F3-B3B1A4FDE610}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Com.EzTender.PublicPortal", "Com.EzTender.PublicPortal\Com.EzTender.PublicPortal.csproj", "{DA3A9608-31A9-4170-A7F3-B3B1A4FDE610}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

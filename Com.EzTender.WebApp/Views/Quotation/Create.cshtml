@@ -122,8 +122,8 @@
                                     <tr>
                                         <th width="20%">Service Name</th>
                                         <th width="30%">Description</th>
-                                        <th width="30%">Compliance</th>
-                                        <th width="40%">Supplier Description</th>
+                                        <th width="30%">Compliance</th>                                        
+                                        <th width="40%">Supplier Comments</th>
                                         <th>&nbsp;</th>
                                     </tr>
                                 </thead>
@@ -140,7 +140,12 @@
                                                     <td>@item.Description <input type="hidden" name="QuotationRequirement[@i].Description" class="form-control" value="@item.Description" /></td>
                                                     @*<td>@item.Compliance <input type="hidden" name="QuotationRequirement[@i].InternalRefrenceCode" class="form-control" value="@item.Compliance" /></td>
                                                         <td>@item.SupplierDescription <input type="hidden" name="QuotationRequirement[@i].QuantityRequired" class="form-control" value="@item.SupplierDescription" /></td>*@
-                                                    <td><input type="text" name="QuotationRequirement[@i].Compliance" class="form-control" value="@item.Compliance" /></td>
+                                                    <td class="demo-radio-button">
+                                                    <input id="QuotationRequirement[@i]_Compliance1" name="QuotationRequirement[@i].Compliance" type="radio" class="with-gap radio-col-red" value="Comply" checked=""><label for="QuotationRequirement[@i]_Compliance1">Comply</label>
+                                                    <input id="QuotationRequirement[@i]_Compliance2" name="QuotationRequirement[@i].Compliance" type="radio" class="with-gap radio-col-red" value="NotComply"><label for="QuotationRequirement[@i]_Compliance2">Not Comply</label>
+                                                    <input id="QuotationRequirement[@i]_Compliance3" name="QuotationRequirement[@i].Compliance" type="radio" class="with-gap radio-col-red" value="PertialComply"><label for="QuotationRequirement[@i]_Compliance3">Partial Comply</label>
+                                                    </td>
+                                                    @*<<td><input type="text" name="QuotationRequirement[@i].Compliance" class="form-control" value="@item.Compliance" /></td>*@
                                                     <td><input type="text" name="QuotationRequirement[@i].SupplierDescription" class="form-control" value="@item.SupplierDescription" /></td>
                                                 </tr>
                                                 i++;
@@ -260,6 +265,47 @@
                     </div>
                 </div>
             </div>
+        </div><div class="demo-radio-button">
+            <input name="group5" type="radio" id="radio_30" class="with-gap radio-col-red" checked="">
+            <label for="radio_30">RED</label>
+            <input name="group5" type="radio" id="radio_31" class="with-gap radio-col-pink">
+            <label for="radio_31">PINK</label>
+            <input name="group5" type="radio" id="radio_32" class="with-gap radio-col-purple">
+            <label for="radio_32">PURPLE</label>
+            <input name="group5" type="radio" id="radio_33" class="with-gap radio-col-deep-purple">
+            <label for="radio_33">DEEP PURPLE</label>
+            <input name="group5" type="radio" id="radio_34" class="with-gap radio-col-indigo">
+            <label for="radio_34">INDIGO</label>
+            <input name="group5" type="radio" id="radio_35" class="with-gap radio-col-blue">
+            <label for="radio_35">BLUE</label>
+            <input name="group5" type="radio" id="radio_36" class="with-gap radio-col-light-blue">
+            <label for="radio_36">LIGHT BLUE</label>
+            <input name="group5" type="radio" id="radio_37" class="with-gap radio-col-cyan">
+            <label for="radio_37">CYAN</label>
+            <input name="group5" type="radio" id="radio_38" class="with-gap radio-col-teal">
+            <label for="radio_38">TEAL</label>
+            <input name="group5" type="radio" id="radio_39" class="with-gap radio-col-green">
+            <label for="radio_39">GREEN</label>
+            <input name="group5" type="radio" id="radio_40" class="with-gap radio-col-light-green">
+            <label for="radio_40">LIGHT GREEN</label>
+            <input name="group5" type="radio" id="radio_41" class="with-gap radio-col-lime">
+            <label for="radio_41">LIME</label>
+            <input name="group5" type="radio" id="radio_42" class="with-gap radio-col-yellow">
+            <label for="radio_42">YELLOW</label>
+            <input name="group5" type="radio" id="radio_43" class="with-gap radio-col-amber">
+            <label for="radio_43">AMBER</label>
+            <input name="group5" type="radio" id="radio_44" class="with-gap radio-col-orange">
+            <label for="radio_44">ORANGE</label>
+            <input name="group5" type="radio" id="radio_45" class="with-gap radio-col-deep-orange">
+            <label for="radio_45">DEEP ORANGE</label>
+            <input name="group5" type="radio" id="radio_46" class="with-gap radio-col-brown">
+            <label for="radio_46">BROWN</label>
+            <input name="group5" type="radio" id="radio_47" class="with-gap radio-col-grey">
+            <label for="radio_47">GREY</label>
+            <input name="group5" type="radio" id="radio_48" class="with-gap radio-col-blue-grey">
+            <label for="radio_48">BLUE GREY</label>
+            <input name="group5" type="radio" id="radio_49" class="with-gap radio-col-black">
+            <label for="radio_49">BLACK</label>
         </div>
     </div>
 

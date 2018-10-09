@@ -21,13 +21,14 @@ namespace Com.EzTender.WebApp.Controllers
             this.svs = svs;
             this._appSettings = appSettings.Value;
         }
-
+        
         // GET: Companies
-        public ActionResult Index()
+        public async Task<ActionResult> Index(string keyword, int page, int totalRecords)
         {
-            return View();
-        }
+            var result = await svs.GetCompanySupplierList(keyword, page, _appSettings.TotalRecordPerPage);
 
+            return View(result);
+        }
 
         // GET: Companies/Details/5
         public async Task<IActionResult> Details(int id)

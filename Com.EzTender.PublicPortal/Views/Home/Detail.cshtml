@@ -491,7 +491,6 @@
             </div>
         </div>
     </div>
-
 </form>
 
 
@@ -834,7 +833,7 @@ function loadIndustry() {
     $(".btn_download").on("click", function () {
 
         var fileId = $(this).data('fileid');
-         var ajaxurl = '@Url.Action("AttachmentDownload", "Rfq")';
+         var ajaxurl = '@Url.Action("AttachmentDownload", "Home")';
         var url = ajaxurl+ "?fileid=" + fileId;
         $('#iframe_download_file').attr('src', url)
         //alert('download - ' + $('#iframe_download_file').attr('src'));

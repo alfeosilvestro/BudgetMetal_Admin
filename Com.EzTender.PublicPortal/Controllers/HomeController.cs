@@ -10,14 +10,16 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
 using Com.BudgetMetal.Services.Industries;
 using Com.BudgetMetal.Services.Quotation;
+using Configurations;
 using Com.BudgetMetal.Services.Company;
 using Com.BudgetMetal.Services.ServiceTags;
 using Com.BudgetMetal.Services.Users;
+using Com.BudgetMetal.Services.Attachment;
+using Microsoft.Extensions.Options;
 using Com.BudgetMetal.ViewModels.User;
-using System.Net.Mail;
-using System.Net;
-using Com.BudgetMetal.Common;
 using System.Text;
+using Com.BudgetMetal.Common;
+using System.IO;
 using Configurations;
 using Microsoft.Extensions.Options;
 
@@ -32,8 +34,9 @@ namespace Com.EzTender.PublicPortal.Controllers
         private readonly ICompanyService companyService;
         private readonly IServiceTagsService serviceTagsService;
         private readonly IUserService userService;
+        private readonly IAttachmentService attachmentService;
 
-        public HomeController(IRFQService rfqService, IIndustryService industryService, IQuotationService quotationService, ICompanyService companyService, IServiceTagsService serviceTagsService, IUserService userService, IOptions<AppSettings> appSettings)
+        public HomeController(IRFQService rfqService, IIndustryService industryService, IQuotationService quotationService, ICompanyService companyService, IServiceTagsService serviceTagsService, IUserService userService, IOptions<AppSettings> appSettings, IAttachmentService attachmentService)
         {
             this.rfqService = rfqService;
             this.industryService = industryService;
@@ -42,8 +45,7 @@ namespace Com.EzTender.PublicPortal.Controllers
             this.serviceTagsService = serviceTagsService;
             this.userService = userService;
             this._appSettings = appSettings.Value;
-
-
+            this.attachmentService = attachmentService;
         }
 
         public IActionResult Index()
@@ -321,6 +323,17 @@ namespace Com.EzTender.PublicPortal.Controllers
 
 
             return returnString;
+        }
+
+        public async Task<FileResult> AttachmentDownload(int fileid)
+        {
+            var result = await attachmentService.GetAttachmentById(fileid);
+
+            var fileByeArray = result.FileBinary;
+            string fileName = result.FileName;
+            var readStream = new MemoryStream(Convert.FromBase64String(fileByeArray));
+            var mimeType = "application/zip";
+            return File(readStream, mimeType, fileName);
         }
     }
 }

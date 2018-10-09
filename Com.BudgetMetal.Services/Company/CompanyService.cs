@@ -62,6 +62,37 @@ namespace Com.BudgetMetal.Services.Company
             return resultObj;
         }
 
+        public async Task<VmCompanyPage> GetCompanySupplierList(string keyword, int page, int totalRecords)
+        {
+            var dbPageResult = await repo.GetSupplierList(keyword,
+                (page == 0 ? Constants.app_firstPage : page),
+                (totalRecords == 0 ? Constants.app_totalRecords : totalRecords));
+
+            if (dbPageResult == null)
+            {
+                return new VmCompanyPage();
+            }
+
+            var resultObj = new VmCompanyPage();
+            resultObj.RequestId = DateTime.Now.ToString("yyyyMMddHHmmss");
+            resultObj.RequestDate = DateTime.Now;
+            resultObj.Result = new PageResult<VmCompanyItem>();
+            resultObj.Result.Records = new List<VmCompanyItem>();
+
+            Copy<PageResult<Com.BudgetMetal.DBEntities.Company>, PageResult<VmCompanyItem>>(dbPageResult, resultObj.Result, new string[] { "Records" });
+
+            foreach (var dbItem in dbPageResult.Records)
+            {
+                var resultItem = new VmCompanyItem();
+
+                Copy<Com.BudgetMetal.DBEntities.Company, VmCompanyItem>(dbItem, resultItem);
+                resultItem.IsVerified = (dbItem.IsVerified == null) ? false : (bool)dbItem.IsVerified;
+                resultObj.Result.Records.Add(resultItem);
+            }
+
+            return resultObj;
+        }
+
         public async Task<VmCompanyItem> GetCompanyById(int Id)
         {
             var dbPageResult = await repo.Get(Id);
