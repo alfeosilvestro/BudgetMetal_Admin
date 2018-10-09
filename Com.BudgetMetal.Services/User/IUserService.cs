@@ -26,6 +26,8 @@ namespace Com.BudgetMetal.Services.Users
 
         Task<VmUserItem> ValidateUser(VM_Sys_User_Sign_In user);
 
+        Task<bool> CheckEmail(string email);
 
+        Task<VmGenericServiceResult> Register(VmUserItem user, string[] serviceTags);
     }
 }
