@@ -29,7 +29,7 @@ namespace Com.BudgetMetal.ViewModels.Company
         public int? SubmittedQuotation { get; set; }
         public int? MaxRFQPerWeek { get; set; }
         public int? MaxQuotationPerWeek { get; set; }
-        public int? C_BusinessType { get; set; }
+        //public int? C_BusinessType { get; set; }
         public virtual List<VmUserItem> UserList { get; set; }
         public virtual List<VmRatingItem> RatingList { get; set; }
     }
