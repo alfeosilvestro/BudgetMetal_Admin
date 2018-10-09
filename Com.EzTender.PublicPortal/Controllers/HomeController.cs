@@ -10,6 +10,16 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
 using Com.BudgetMetal.Services.Industries;
 using Com.BudgetMetal.Services.Quotation;
+using Configurations;
+using Com.BudgetMetal.Services.Company;
+using Com.BudgetMetal.Services.ServiceTags;
+using Com.BudgetMetal.Services.Users;
+using Com.BudgetMetal.Services.Attachment;
+using Microsoft.Extensions.Options;
+using Com.BudgetMetal.ViewModels.User;
+using System.Text;
+using Com.BudgetMetal.Common;
+using System.IO;
 
 namespace Com.EzTender.PublicPortal.Controllers
 {
@@ -24,7 +34,7 @@ namespace Com.EzTender.PublicPortal.Controllers
         private readonly IUserService userService;
         private readonly IAttachmentService attachmentService;
 
-        public HomeController(IRFQService rfqService, IIndustryService industryService, IQuotationService quotationService, ICompanyService companyService, IServiceTagsService serviceTagsService, IUserService userService, IOptions<AppSettings> appSettings)
+        public HomeController(IRFQService rfqService, IIndustryService industryService, IQuotationService quotationService, ICompanyService companyService, IServiceTagsService serviceTagsService, IUserService userService, IOptions<AppSettings> appSettings, IAttachmentService attachmentService)
         {
             this.rfqService = rfqService;
             this.industryService = industryService;
