@@ -5,8 +5,11 @@ using System.Text;
 
 namespace Com.BudgetMetal.ViewModels.TimeLine
 {
-    public class VmTimeLinePage : ViewModelBase
+    public class VmTimeLineGroupByDate
     {
-        public PageResult<VmTimeLineGroupByDate> Result { get; set; }
+       public DateTime GroupDate { get; set; }
+
+       public List<VmTimeLineItemForPage> Records { get; set; }
+        
     }
 }

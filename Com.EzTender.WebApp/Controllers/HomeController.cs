@@ -34,10 +34,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Timeline()
-        {
-            return View();
-        }
+       
 
         public IActionResult About()
         {

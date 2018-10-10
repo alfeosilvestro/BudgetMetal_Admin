@@ -22,51 +22,57 @@
                             </div>
                         </div>
                         <div class="form-group form-float">
-                            <label for="quote_no">Company Name</label>
+                            <label for="Company_Name">Company Name</label>
                             <div class="form-line">
                                 <input type="text" asp-for="Company.Name" class="form-control" placeholder="Company Name" required>
 
                             </div>
                         </div>
                         <div class="form-group form-float">
-                            <label for="quote_no">Company Address</label>
+                            <label for="Company_Address">Company Address</label>
                             <div class="form-line">
                                 <textarea rows="3" asp-for="Company.Address" class="form-control no-resize" placeholder="Company Address"></textarea>
                             </div>
                         </div>
 
                         <div class="form-group" id="divServiceTags">
-                            <label for="quote_no">Please Select Service Tags</label>
-                            <div class="body">
-                                <select id="optgroup" class="ms" multiple="multiple" name="serviceTags"></select>
+                            <h5>Please Select Service Tags</h5>
+                           
+                            <div class="row">
+                                <div class="col-sm-6"> <strong>Avaiable Service </strong> </div>
+                                <div class="col-sm-6"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <strong> Selected Service </strong></div>
+                                <div class="col-sm-12">
+                                    <select id="optgroup" class="ms" multiple="multiple" name="serviceTags" required></select>
+                                </div>
                             </div>
+                            
                         </div>
                     </fieldset>
                     <h3>User Information</h3>
                     <fieldset>
                         <div class="form-group form-float">
-                            <label for="quote_no">Email Address</label>
+                            <label for="EmailAddress">Email Address</label>
                             <div class="form-line">
                                 <input type="email" asp-for="EmailAddress" class="form-control" placeholder="Email" required onfocusout="checkEmail()">
 
                             </div>
                         </div>
                         <div class="form-group form-float">
-                            <label for="quote_no">Password</label>
+                            <label for="Password">Password</label>
                             <div class="form-line">
                                 <input type="password" asp-for="Password" class="form-control" placeholder="Password" required>
 
                             </div>
                         </div>
                         <div class="form-group form-float">
-                            <label for="quote_no">Full Name</label>
+                            <label for="ContactName">Full Name</label>
                             <div class="form-line">
                                 <input type="text" asp-for="ContactName" class="form-control" placeholder="Full Name" required>
 
                             </div>
                         </div>
                         <div class="form-group form-float">
-                            <label for="quote_no">Contact Number</label>
+                            <label for="ContactNumber">Contact Number</label>
                             <div class="form-line">
                                 <input type="text" asp-for="ContactNumber" class="form-control" placeholder="Contact No." required>
                             </div>
@@ -141,7 +147,7 @@
                 return form.valid();
             },
             onFinished: function (event, currentIndex) {
-                alert("ok");
+                //alert("ok");
                 form.submit();
             }
         });
