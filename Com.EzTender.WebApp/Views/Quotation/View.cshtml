@@ -171,6 +171,7 @@
                                         <th width="25%">Item Name</th>
                                         <th width="35%">Item Description</th>
                                         <th width="20%">Internal Reference Code</th>
+                                        <th width="10%">Unit Price</th>
                                         <th width="10%">Quantity</th>
                                         <th width="10%">Amount</th>
                                     </tr>
@@ -182,13 +183,14 @@
                                             int i = 0;
                                             foreach (var item in Model.QuotationPriceSchedule)
                                             {
-                                                <tr>
-                                                    <td>@item.ItemName <input type="hidden" name="QuotationPriceSchedule[@i].ItemName" class="form-control" value="@item.ItemName" /></td>
-                                                    <td>@item.ItemDescription <input type="hidden" name="QuotationPriceSchedule[@i].ItemDescription" class="form-control" value="@item.ItemDescription" /></td>
-                                                    <td>@item.InternalRefrenceCode <input type="hidden" name="QuotationPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>
-                                                    <td>@item.QuantityRequired <input type="hidden" name="QuotationPriceSchedule[@i].QuantityRequired" class="form-control" value="@item.QuantityRequired" /></td>
-                                                    <td> @item.ItemAmount <input type="hidden" name="QuotationPriceSchedule[@i].ItemAmount" class="form-control" value="@item.ItemAmount" /></td>
-                                                </tr>
+                                    <tr>
+                                        <td>@item.ItemName <input type="hidden" name="QuotationPriceSchedule[@i].ItemName" class="form-control" value="@item.ItemName" /></td>
+                                        <td>@item.ItemDescription <input type="hidden" name="QuotationPriceSchedule[@i].ItemDescription" class="form-control" value="@item.ItemDescription" /></td>
+                                        <td>@item.InternalRefrenceCode <input type="hidden" name="QuotationPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>
+                                        <td> @item.UnitPrice <input type="hidden" name="QuotationPriceSchedule[@i].UnitPrice" class="form-control" value="@item.UnitPrice" /></td>
+                                        <td>@item.QuantityRequired <input type="hidden" name="QuotationPriceSchedule[@i].QuantityRequired" class="form-control" value="@item.QuantityRequired" /></td>
+                                        <td> @item.ItemAmount <input type="hidden" name="QuotationPriceSchedule[@i].ItemAmount" class="form-control" value="@item.ItemAmount" /></td>
+                                    </tr>
                                                 i++;
                                             }
                                         }
@@ -321,9 +323,9 @@
 
 
 </form>
-<!-- Editable Table Plugin Js -->
+<!-- Editable Table Plugin Js
 <script src="~/material_theme/plugins/editable-table/mindmup-editabletable.js"></script>
-<script src="~/material_theme/js/pages/tables/editable-table.js"></script>
+<script src="~/material_theme/js/pages/tables/editable-table.js"></script>-->
 <!-- Moment Plugin Js -->
 <script src="~/material_theme/plugins/momentjs/moment.js"></script>
 <!-- Bootstrap Material Datetime Picker Plugin Js -->

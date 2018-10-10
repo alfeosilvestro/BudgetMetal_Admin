@@ -356,9 +356,9 @@ namespace Com.GenericPlatform.WebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<JsonResult> GetSupplierByServiceTagsId(string serviceTagsId, int page)
+        public async Task<JsonResult> GetSupplierByServiceTagsId(string serviceTagsId, int page, string searchKeyword = "")
         {
-            var result = await companyService.GetSupplierByServiceTagsId(serviceTagsId, page);
+            var result = await companyService.GetSupplierByServiceTagsId(serviceTagsId, page, searchKeyword);
 
             return new JsonResult(result, new JsonSerializerSettings()
             {

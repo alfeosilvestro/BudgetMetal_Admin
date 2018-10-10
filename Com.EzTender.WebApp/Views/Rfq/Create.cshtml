@@ -202,9 +202,9 @@
                                             <span asp-validation-for="Requirement[0].Description" class="text-danger"></span>
                                         </td>
                                         @*<td>
-                                            <input type="text" asp-for="Requirement[0].Quantity" class="form-control" />
-                                            <span asp-validation-for="Requirement[0].Quantity" class="text-danger"></span>
-                                        </td>*@
+                                                <input type="text" asp-for="Requirement[0].Quantity" class="form-control" />
+                                                <span asp-validation-for="Requirement[0].Quantity" class="text-danger"></span>
+                                            </td>*@
                                         <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveRequirementRow(this)'>Remove</button></td>
                                     </tr>
                                 </tbody>
@@ -317,6 +317,14 @@
                                 </div>
                             </div>
                             <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" name="txtSearchSupplier" id="txtSearchSupplier" class="form-control" placeholder="Supplier Name, UEN">
+                                            
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="col-sm-3">
                                     <a class="btn btn-success" id="btnLoadSupplier">Search Supplier</a>
                                 </div>
@@ -421,12 +429,12 @@
             </div>
         </div>
     </div>
-    
+
 </form>
 
-<!-- Editable Table Plugin Js -->
+<!-- Editable Table Plugin Js
 <script src="~/material_theme/plugins/editable-table/mindmup-editabletable.js"></script>
-<script src="~/material_theme/js/pages/tables/editable-table.js"></script>
+<script src="~/material_theme/js/pages/tables/editable-table.js"></script>-->
 <!-- Moment Plugin Js -->
 <script src="~/material_theme/plugins/momentjs/moment.js"></script>
 <!-- Bootstrap Material Datetime Picker Plugin Js -->
@@ -586,9 +594,9 @@
     });
 
     function loadSupplier(page) {
-       
-     var serviceTagsId = $('#ddlServiceTags').val();
 
+     var serviceTagsId = $('#ddlServiceTags').val();
+        var searchSupplier = $('#txtSearchSupplier').val();
      var stringServiceTagsId = serviceTagsId.toString();
 
      if (serviceTagsId == null) {
@@ -597,7 +605,7 @@
             var ajaxurl = '@Url.Action("GetSupplierByServiceTagsId", "Rfq")';
             $.ajax({
                 url: ajaxurl,
-                data: { serviceTagsId: stringServiceTagsId, page:page},
+                data: { serviceTagsId: stringServiceTagsId, page: page, searchKeyword: searchSupplier},
                 dataType: 'json',
                 success: function (response) {
                     var obj = response.Result.Records;

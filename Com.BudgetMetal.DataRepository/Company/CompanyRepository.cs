@@ -19,7 +19,7 @@ namespace Com.BudgetMetal.DataRepository.Company
         {
         }
 
-        public PageResult<Com.BudgetMetal.DBEntities.Company> GetSupplierByServiceTagsId(string serviceTagsId, int page, int totalRecords)
+        public PageResult<Com.BudgetMetal.DBEntities.Company> GetSupplierByServiceTagsId(string serviceTagsId, int page, int totalRecords, string searchKeyword)
         {
             var filterServiceTags = new List<int>();
             var arrServiceTags = serviceTagsId.Split(',');
@@ -29,9 +29,9 @@ namespace Com.BudgetMetal.DataRepository.Company
             }
 
             var filterCompany = this.DbContext.SupplierServiceTags.Where(e=>e.IsActive == true & filterServiceTags.Contains(e.ServiceTags_Id)).Select(e=>e.Company_Id).Distinct().ToList();
-            
 
-            var records = this.entities.Where(e=>e.IsActive == true && filterCompany.Contains(e.Id));
+            searchKeyword = (searchKeyword == null) ? "" : searchKeyword.ToLower().Trim();
+            var records = this.entities.Where(e=>e.IsActive == true && filterCompany.Contains(e.Id) && (searchKeyword == "" || e.Name.ToLower().Contains(searchKeyword) || e.RegNo.ToLower().Contains(searchKeyword)));
 
             var recordList = records
                 .OrderBy(e=>e.Name)

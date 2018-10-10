@@ -9,7 +9,7 @@ namespace Com.BudgetMetal.DataRepository.Company
 {
     public interface ICompanyRepository : IGenericRepository<Com.BudgetMetal.DBEntities.Company>
     {
-        PageResult<Com.BudgetMetal.DBEntities.Company> GetSupplierByServiceTagsId(string serviceTagsId, int page, int totalRecord);
+        PageResult<Com.BudgetMetal.DBEntities.Company> GetSupplierByServiceTagsId(string serviceTagsId, int page, int totalRecord, string searchKeyword);
 
         Task<PageResult<Com.BudgetMetal.DBEntities.Company>> GetSupplierList(string keyword, int page, int totalRecords);
 
