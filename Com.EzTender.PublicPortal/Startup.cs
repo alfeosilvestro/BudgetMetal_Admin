@@ -45,6 +45,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Com.BudgetMetal.DataRepository.Rating;
 using Com.BudgetMetal.DataRepository.SupplierServiceTags;
+using Com.BudgetMetal.DataRepository.CompanySupplier;
 
 namespace Com.EzTender.PublicPortal
 {
@@ -164,7 +165,9 @@ namespace Com.EzTender.PublicPortal
 
             //Rating
             services.AddScoped<IRatingRepository, RatingRepository>();
-            services.AddScoped<ISupplierServiceTagsRepository, SupplierServiceTagsRepository>(); 
+            services.AddScoped<ISupplierServiceTagsRepository, SupplierServiceTagsRepository>();
+
+            services.AddScoped<ICompanySupplierRepository, CompanySupplierRepository>();
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

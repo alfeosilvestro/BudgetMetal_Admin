@@ -1,0 +1,48 @@
+﻿@model Com.BudgetMetal.ViewModels.Company.VmCompanyItem
+@using System.Linq;
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="block-header">
+    <h2>@Html.DisplayFor(model => model.Name)</h2>
+</div>
+
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    About
+                </h2>
+                <br />
+                <small>@Html.DisplayFor(model => model.About)</small>
+                <ul class="header-dropdown m-r--5">
+                    <li class="dropdown">
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <i class="material-icons">edit</i>
+                        </a>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a href="javascript:void(0);" class=" waves-effect waves-block">Edit</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row clearfix">
+    <!-- Linked Items -->
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                UEN No. : <b>@Html.DisplayFor(model => model.RegNo)</b>
+            </div>
+            <div class="header">
+                    Address: <b>@Html.DisplayFor(model => model.Address)</b>
+            </div>
+        </div>
+    </div>
+</div>

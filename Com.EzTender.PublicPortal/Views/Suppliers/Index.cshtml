@@ -4,20 +4,22 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h2>Prefer Supplier List</h2>
+<div class="block-header">
+    <h2>COMPANY PORTAL</h2>
+</div>
 <div class="card">
     <div class="header">
         <br />
         <div class="row">
-            @using (Html.BeginForm("PreferSuppliers", "Companies", FormMethod.Get))
+            @using (Html.BeginForm("Index", "Companies", FormMethod.Get))
             {
                 <div class="col-sm-5">
                     @Html.TextBox("keyword",
-         null,
-         new {
-             id = "search_key",
-             @class = "form-control"
-         })
+                     null,
+                     new {
+                         id = "search_key",
+                         @class = "form-control"
+                     })
                 </div>
                 <div class="col-sm-1">
                     <input class="btn btn-info" type="submit" value="Search" />
@@ -55,6 +57,7 @@
                         <td> @item.RegNo </td>
                         <td> @item.About </td>
                         <td> <input type="checkbox" id="@counter" class="chk-col-pink" @checkedStatus disabled> <label for="@counter"></label> </td>
+                        <td> <a type="button" class="btn btn-warning" href='@Url.Action("Details","Suppliers",new { id= item.Id })'>View</a></td>
                     </tr>
                     counter = counter + 1;
                 }

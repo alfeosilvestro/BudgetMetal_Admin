@@ -4,25 +4,25 @@ using System.Linq;
 using System.Threading.Tasks;
 using Com.BudgetMetal.Services.Company;
 using Com.BudgetMetal.ViewModels.Company;
-using Com.EazyTender.WebApp.Configurations;
+using Configurations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
-namespace Com.EzTender.WebApp.Controllers
+namespace Com.EzTender.PublicPortal.Controllers
 {
-    public class CompaniesController : Controller
+    public class SuppliersController : Controller
     {
         private readonly ICompanyService svs;
         private readonly AppSettings _appSettings;
 
-        public CompaniesController(ICompanyService svs, IOptions<AppSettings> appSettings)
+        public SuppliersController(ICompanyService svs, IOptions<AppSettings> appSettings)
         {
             this.svs = svs;
             this._appSettings = appSettings.Value;
         }
-        
-        // GET: Companies
+
+        // GET: Suppliers
         public async Task<ActionResult> Index(string keyword, int page, int totalRecords)
         {
             var result = await svs.GetCompanySupplierList(keyword, page, _appSettings.TotalRecordPerPage);
@@ -30,17 +30,7 @@ namespace Com.EzTender.WebApp.Controllers
             return View(result);
         }
 
-        // GET: PreferSuppliers
-        public async Task<ActionResult> PreferSuppliers(int page, string keyword)
-        {
-            var company_Id = HttpContext.Session.GetString("Company_Id");
-            int id = Convert.ToInt32(company_Id);
-            var result = await svs.GetSupplierByCompany(id, page, keyword);
-
-            return View(result);
-        }        
-
-        // GET: Companies/Details/5
+        // GET: Suppliers/Details/5        
         public async Task<IActionResult> Details(int id)
         {
             VmCompanyItem item = await svs.GetCompanyById(id);
@@ -52,13 +42,13 @@ namespace Com.EzTender.WebApp.Controllers
             return View(item);
         }
 
-        // GET: Companies/Create
+        // GET: Suppliers/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Companies/Create
+        // POST: Suppliers/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
@@ -75,13 +65,13 @@ namespace Com.EzTender.WebApp.Controllers
             }
         }
 
-        // GET: Companies/Edit/5
+        // GET: Suppliers/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: Companies/Edit/5
+        // POST: Suppliers/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -98,13 +88,13 @@ namespace Com.EzTender.WebApp.Controllers
             }
         }
 
-        // GET: Companies/Delete/5
+        // GET: Suppliers/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: Companies/Delete/5
+        // POST: Suppliers/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
