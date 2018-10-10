@@ -30,6 +30,14 @@ namespace Com.EzTender.WebApp.Controllers
             return View(result);
         }
 
+        // GET: PreferSuppliers
+        public async Task<ActionResult> PreferSuppliers(int id, int page, string keyword)
+        {
+            var result = await svs.GetSupplierByCompany(id, page, keyword);
+
+            return View(result);
+        }        
+
         // GET: Companies/Details/5
         public async Task<IActionResult> Details(int id)
         {

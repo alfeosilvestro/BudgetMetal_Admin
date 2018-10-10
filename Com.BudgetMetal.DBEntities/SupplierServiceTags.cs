@@ -13,7 +13,5 @@ namespace Com.BudgetMetal.DBEntities
         [ForeignKey("Company")]
         public int Company_Id { get; set; }
         public virtual Company Company { get; set; }
-
-        
     }
 }

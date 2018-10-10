@@ -168,10 +168,51 @@ namespace Com.BudgetMetal.DataRepository.Company
             return result;
         }
 
-       public async Task<Com.BudgetMetal.DBEntities.Company> GetCompanyByUEN(string RegNo)
+        public async Task<Com.BudgetMetal.DBEntities.Company> GetCompanyByUEN(string RegNo)
         {
            return await this.entities.Where(e => e.RegNo.ToLower() == RegNo.ToLower()).FirstOrDefaultAsync();
 
+        }
+
+        public async Task<PageResult<Com.BudgetMetal.DBEntities.Company>> GetSupplierByCompanyId(int companyId, int page, int totalRecords, string keyword)
+        {
+            
+            var filterCompany = await this.DbContext.CompanySupplier.Where(e => e.IsActive == true && e.Company_Id == companyId).Select(e => e.Supplier_Id).Distinct().ToListAsync();
+            string _keyword = (!string.IsNullOrEmpty(keyword)) ? keyword : "";
+            var records = await this.entities.Where(e => e.IsActive == true && filterCompany.Contains(e.Id) && e.Name.ToLower().Contains(_keyword.ToLower())).ToListAsync();
+
+            var recordList = records
+                .OrderBy(e => e.Name)
+            .Skip((totalRecords * page) - totalRecords)
+            .Take(totalRecords)
+            .ToList();
+
+            var count = records.Count();
+
+            var nextPage = 0;
+            var prePage = 0;
+            if (page > 1)
+            {
+                prePage = page - 1;
+            }
+
+            var totalPage = (count + totalRecords - 1) / totalRecords;
+            if (page < totalPage)
+            {
+                nextPage = page + 1;
+            }
+
+            var result = new PageResult<Com.BudgetMetal.DBEntities.Company>()
+            {
+                Records = recordList,
+                TotalPage = totalPage,
+                CurrentPage = page,
+                PreviousPage = prePage,
+                NextPage = nextPage,
+                TotalRecords = count
+            };
+
+            return result;
         }
     }
 }

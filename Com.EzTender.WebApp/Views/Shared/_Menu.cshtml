@@ -122,7 +122,24 @@
                 </li>
             </ul>
         </li>
-
+        <li>
+            <a href="javascript:void(0);" class="menu-toggle">
+                <i class="material-icons">settings</i>
+                <span>Supplier</span>
+            </a>
+            <ul class="ml-menu">
+                <li>
+                    <a asp-area="" asp-controller="Companies" asp-action="Index">
+                        Supplier List
+                    </a>
+                </li>
+                <li>
+                    <a asp-area="" asp-controller="Companies" asp-action="PreferSuppliers" asp-route-id="@(ViewBag.Company_Id)">
+                        Prefer Supplier List
+                    </a>
+                </li>
+            </ul>
+        </li>
     </ul>
 </div>
 <!-- #Menu -->
