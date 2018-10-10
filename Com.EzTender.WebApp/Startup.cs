@@ -6,6 +6,7 @@ using Com.BudgetMetal.DataRepository.Attachment;
 using Com.BudgetMetal.DataRepository.Code_Category;
 using Com.BudgetMetal.DataRepository.Code_Table;
 using Com.BudgetMetal.DataRepository.Company;
+using Com.BudgetMetal.DataRepository.CompanySupplier;
 using Com.BudgetMetal.DataRepository.Document;
 using Com.BudgetMetal.DataRepository.DocumentActivity;
 using Com.BudgetMetal.DataRepository.DocumentUser;
@@ -171,6 +172,9 @@ namespace Com.EzTender.WebApp
 
             //Rating
             services.AddScoped<IRatingRepository, RatingRepository>();
+
+            //CompanySupplier
+            services.AddScoped<ICompanySupplierRepository, CompanySupplierRepository>();
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

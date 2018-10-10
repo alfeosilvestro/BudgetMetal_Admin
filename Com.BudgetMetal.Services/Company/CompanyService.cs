@@ -1,6 +1,7 @@
 ﻿using Com.BudgetMetal.Common;
 using Com.BudgetMetal.DataRepository.Code_Table;
 using Com.BudgetMetal.DataRepository.Company;
+using Com.BudgetMetal.DataRepository.CompanySupplier;
 using Com.BudgetMetal.DataRepository.Rating;
 using Com.BudgetMetal.DataRepository.Users;
 using Com.BudgetMetal.Services.Base;
@@ -20,15 +21,17 @@ namespace Com.BudgetMetal.Services.Company
     {
         private readonly ICompanyRepository repo;
         private readonly IUserRepository repoUser;
-        private readonly ICodeTableRepository companyRepo;
+        private readonly ICodeTableRepository codeTableRepo;
         private readonly IRatingRepository ratingRepo;
+        private readonly ICompanySupplierRepository companySupplierRepo;
 
-        public CompanyService(ICompanyRepository repo, ICodeTableRepository companyRepo, IUserRepository repoUser, IRatingRepository ratingRepo)
+        public CompanyService(ICompanyRepository repo, ICodeTableRepository companyRepo, IUserRepository repoUser, IRatingRepository ratingRepo, ICompanySupplierRepository companySupplierRepo)
         {
             this.repo = repo;
-            this.companyRepo = companyRepo;
+            this.codeTableRepo = companyRepo;
             this.repoUser = repoUser;
             this.ratingRepo = ratingRepo;
+            this.companySupplierRepo = companySupplierRepo;
         }
 
         public async Task<VmCompanyPage> GetCompanyByPage(string keyword, int page, int totalRecords)
@@ -186,12 +189,12 @@ namespace Com.BudgetMetal.Services.Company
                 r.SupplierAvgRating = 0;
 
                 //Max Default RFQ Per Week
-                var codeTableRepo = companyRepo.Get(10100001);
+                var codeTableRepo = this.codeTableRepo.Get(10100001);
 
                 int maxQuotationPerWeek = Convert.ToInt32(codeTableRepo.Result.Value);
 
                 //Max Default Quote Per Week
-                codeTableRepo = companyRepo.Get(10100002);
+                codeTableRepo = this.codeTableRepo.Get(10100002);
 
                 int maxRFQPerWeek = Convert.ToInt32(codeTableRepo.Result.Value);
 
@@ -317,6 +320,37 @@ namespace Com.BudgetMetal.Services.Company
             Copy<Com.BudgetMetal.DBEntities.Company, VmCompanyItem>(dbPageResult, resultObj);
 
            
+            return resultObj;
+        }
+
+        public async Task<VmCompanyPage> GetSupplierByCompany(int companyId, int page, string keyword)
+        {
+            var dbPageResult = await repo.GetSupplierByCompanyId(companyId,
+                (page == 0 ? Constants.app_firstPage : page),
+                Constants.app_totalRecords, keyword);
+
+            if (dbPageResult == null)
+            {
+                return new VmCompanyPage();
+            }
+
+            var resultObj = new VmCompanyPage();
+            resultObj.RequestId = DateTime.Now.ToString("yyyyMMddHHmmss");
+            resultObj.RequestDate = DateTime.Now;
+            resultObj.Result = new PageResult<VmCompanyItem>();
+            resultObj.Result.Records = new List<VmCompanyItem>();
+
+            Copy<PageResult<Com.BudgetMetal.DBEntities.Company>, PageResult<VmCompanyItem>>(dbPageResult, resultObj.Result, new string[] { "Records" });
+
+            foreach (var dbItem in dbPageResult.Records)
+            {
+                var resultItem = new VmCompanyItem();
+
+                Copy<Com.BudgetMetal.DBEntities.Company, VmCompanyItem>(dbItem, resultItem);
+
+                resultObj.Result.Records.Add(resultItem);
+            }
+
             return resultObj;
         }
     }
