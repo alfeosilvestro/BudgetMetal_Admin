@@ -13,14 +13,6 @@ namespace Com.BudgetMetal.DB
             
         }
 
-        //public virtual DbSet<bm_gallery> bm_gallery { get; set; }
-
-        //public virtual DbSet<roles> roles { get; set; }
-
-        //public virtual DbSet<user>  user { get; set; }
-
-        //public virtual DbSet<CodeCategory> codeCategorie { get; set; }
-
         public virtual DbSet<Attachment> Attachment { get; set; }
 
         public virtual DbSet<bm_gallery> bm_gallery { get; set; }
@@ -50,6 +42,7 @@ namespace Com.BudgetMetal.DB
         public virtual DbSet<UserRoles> UserRoles { get; set; }
         public virtual DbSet<QuotationRequirement> QuotationRequirement { get; set; }
         public virtual DbSet<CompanySupplier> CompanySupplier { get; set; }
+        public virtual DbSet<TimeLine> TimeLine { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

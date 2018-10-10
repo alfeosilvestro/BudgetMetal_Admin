@@ -25,6 +25,7 @@ using Com.BudgetMetal.DataRepository.ServiceTags;
 using Com.BudgetMetal.DataRepository.Single_Sign_On;
 using Com.BudgetMetal.DataRepository.Sla;
 using Com.BudgetMetal.DataRepository.SupplierServiceTags;
+using Com.BudgetMetal.DataRepository.TimeLine;
 using Com.BudgetMetal.DataRepository.UserRoles;
 using Com.BudgetMetal.DataRepository.Users;
 using Com.BudgetMetal.DB;
@@ -39,6 +40,7 @@ using Com.BudgetMetal.Services.Quotation;
 using Com.BudgetMetal.Services.RFQ;
 using Com.BudgetMetal.Services.Roles;
 using Com.BudgetMetal.Services.ServiceTags;
+using Com.BudgetMetal.Services.TimeLine;
 using Com.BudgetMetal.Services.Users;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -103,7 +105,7 @@ namespace Com.EzTender.WebApp
         private void RegisterForDependencyInjection(IServiceCollection services)
         {
             //// Register for repository classes
-            
+
 
             //// Register for repository classes
             services.AddScoped<ISingle_Sign_OnRepository, Single_Sign_OnRepository>();
@@ -111,8 +113,8 @@ namespace Com.EzTender.WebApp
             //// Register for logic classes
             services.AddScoped<IGalleryService, GalleryService>();
 
-            services.AddScoped<IDocumentRepository, DocumentRepository>();           
-            
+            services.AddScoped<IDocumentRepository, DocumentRepository>();
+
             services.AddScoped<IRequirementRepository, RequirementRepository>();
             services.AddScoped<ISlaRepository, SlaRepository>();
             services.AddScoped<IPenaltyRepository, PenaltyRepository>();
@@ -126,7 +128,7 @@ namespace Com.EzTender.WebApp
 
             services.AddScoped<IQuotationService, QuotationService>();
             services.AddScoped<IQuotationRepository, QuotationRepository>();
-            
+
             services.AddScoped<IQuotationPriceScheduleRepository, QuotationPriceScheduleRepository>();
             services.AddScoped<IQuotationRequirementRepository, QuotationRequiremetRepository>();
 
@@ -153,8 +155,11 @@ namespace Com.EzTender.WebApp
             services.AddScoped<IServiceTagsRepository, ServiceTagsRepository>();
             services.AddScoped<IServiceTagsService, ServiceTagsService>();
 
-            
-                services.AddScoped<ISupplierServiceTagsRepository, SupplierServiceTagsRepository>();
+            services.AddScoped<ITimeLineRepository, TimeLineRepository>();
+            services.AddScoped<ITimeLineService, TimeLineService>();
+
+
+            services.AddScoped<ISupplierServiceTagsRepository, SupplierServiceTagsRepository>();
 
             //CodeTable
             services.AddScoped<ICodeTableRepository, CodeTableRepository>();
