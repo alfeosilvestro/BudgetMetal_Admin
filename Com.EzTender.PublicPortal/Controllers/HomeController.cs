@@ -20,8 +20,6 @@ using Com.BudgetMetal.ViewModels.User;
 using System.Text;
 using Com.BudgetMetal.Common;
 using System.IO;
-using Configurations;
-using Microsoft.Extensions.Options;
 
 namespace Com.EzTender.PublicPortal.Controllers
 {
@@ -143,12 +141,18 @@ namespace Com.EzTender.PublicPortal.Controllers
                 mailBody = "Please confirm your account by clicking the following link \n " + confirmationLink;
                 SendingMail sm = new SendingMail();
                 sm.SendMail(user.EmailAddress, "", "Confirmation for Registration", mailBody);
-                return RedirectToAction("Index");
+                return RedirectToAction("SuccessRegistration");
             }
             else
             {
                 return View();
             }
+        }
+
+        [HttpGet]
+        public IActionResult SuccessRegistration()
+        {
+            return View();
         }
 
         // GET: Rfq/Edit/5

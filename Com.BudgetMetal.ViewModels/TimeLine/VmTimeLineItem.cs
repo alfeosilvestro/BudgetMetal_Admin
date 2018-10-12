@@ -30,5 +30,8 @@ namespace Com.BudgetMetal.ViewModels.TimeLine
         public virtual VmCodeTableItem MType { get; set; }
 
         public bool IsRead { get; set; }
+        
     }
+
+    
 }

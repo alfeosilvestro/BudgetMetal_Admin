@@ -167,6 +167,7 @@ namespace Com.EzTender.PublicPortal
             services.AddScoped<IRatingRepository, RatingRepository>();
             services.AddScoped<ISupplierServiceTagsRepository, SupplierServiceTagsRepository>();
 
+            //CompanySupplier
             services.AddScoped<ICompanySupplierRepository, CompanySupplierRepository>();
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
