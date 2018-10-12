@@ -1,128 +1,260 @@
-﻿
-@model Com.BudgetMetal.ViewModels.Company.VmCompanyPage
+﻿@model Com.BudgetMetal.ViewModels.Company.VmCompanyPage
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Home Page";
 }
+
 <div class="block-header">
     <h2>COMPANY PORTAL</h2>
 </div>
-<div class="card">
-    <div class="header">
-        <br />
-        <div class="row">
-            @using (Html.BeginForm("Index", "Companies", FormMethod.Get))
-            {
-                <div class="col-sm-5">
-                    @Html.TextBox("keyword",
-                     null,
-                     new {
-                         id = "search_key",
-                         @class = "form-control"
-                     })
-                </div>
-                <div class="col-sm-1">
-                    <input class="btn btn-info" type="submit" value="Search" />
-                </div>
-            }
+
+<!-- Basic Alerts -->
+<div class="row">
+    <div class="col-sm-6">
+        <div class="btn-group" role="group" aria-label="Justified button group">
+            <button id="btn_tender_open" class="btn btn-default waves-effect btnStatus" data-item-id="100032" type="button">Open</button>
+            <button id="btn_tender_close" class="btn btn-primary waves-effect btnStatus" data-item-id="100033" type="button">Closed</button>
         </div>
     </div>
-    <br />
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                @*<th>ID</th>*@
-                <th> # </th>
-                <th> Name </th>
-                <th> Address </th>
-                <th> Domain </th>
-                <th> Registration No. </th>
-                <th> About </th>
-                <th> IsVerified </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @{
-                int counter = 1;
-                foreach (var item in Model.Result.Records)
-                {
-                    string checkedStatus = (item.IsVerified) ? "checked" : "";
-                    <tr>
-                        @*<td> @item.Id </td>*@
-                        <td> @counter </td>
-                        <td> @item.Name </td>
-                        <td> @item.Address </td>
-                        <td> @item.Domain </td>
-                        <td> @item.RegNo </td>
-                        <td> @item.About </td>
-                        <td> <input type="checkbox" id="@counter" class="chk-col-pink" @checkedStatus disabled> <label for="@counter"></label> </td>
-                        <td> <a type="button" class="btn btn-warning" href='@Url.Action("Details","Suppliers",new { id= item.Id })'>View</a></td>
-                    </tr>
-                    counter = counter + 1;
-                }
-            }
-        </tbody>
-    </table>
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="pagination pull-right" style="padding:10px;">
-                @{
-                    int currentPage = Model.Result.CurrentPage;
-                    int totalPage = Model.Result.TotalPage;
-                    int previousPage = Model.Result.PreviousPage;
-                    int nextPage = Model.Result.NextPage;
+    <div class="col-sm-6"></div>
+</div>
 
-                    int startPage = currentPage - 5;
-                    int endPage = currentPage + 4;
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="body">
+                <div class="row">
+                    <div class="col-sm-11">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="text" id="keyword" name="keyword" class="form-control" placeholder="<RFQ No, Company Name, Estimate Project Value>" value="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="hidden" name="statusId" id="statusId" value="0" />
 
-                    if (startPage <= 0)
-                    {
-                        endPage -= (startPage - 1);
-                        startPage = 1;
-                    }
-                    if (endPage > totalPage)
-                    {
-                        endPage = totalPage;
-                        if (endPage > 10)
-                        {
-                            startPage = endPage - 9;
-                        }
-                    }
+                        <button type="button" class="btn bg-indigo pull-right" id="btnSearch"> Search </button>
+                    </div>
+                </div>
+                <div class="row" id="CompanyList"></div>
+                <div class="row">
+                    <div class="pagination" style="padding:10px;">
 
-                    @if (endPage > 1)
-                    {
-                        <ul class="pagination">
-                            @if (currentPage > 1)
-                            {
-                                <li>
-                                    <a class='btn btn-md btn-primary' href="~/Companies">First</a>
-                                </li>
-                                <li>
-                                    <a class='btn btn-md btn-primary' href="?page=@(currentPage - 1)">Previous</a>
-                                </li>
-                            }
-
-                            @for (int page = startPage; page <= endPage; page++)
-                            {
-                                <li class="@(page == currentPage ? "active" : "")">
-                                    <a class='btn btn-md btn-primary' href="?page=@(page)"> @(page) </a>
-                                </li>
-                            }
-
-                            @if (currentPage < totalPage)
-                            {
-                                <li>
-                                    <a class='btn btn-md btn-primary' href="?page=@(currentPage + 1)">Next</a>
-                                </li>
-                                <li>
-                                    <a class='btn btn-md btn-primary' href="?page=@(totalPage)">Last</a>
-                                </li>
-                            }
-                        </ul>
-                    }
-                }
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+<script>
+    $(function () {
+        //loadPublicCompanyList(1);
+    });
+
+    $("button.btnStatus").on({
+        click: function () {
+            $('.btnStatus').removeClass("btn-default").removeClass("btn-primary").addClass("btn-primary");
+            $(this).removeClass("btn-default").removeClass("btn-primary").addClass("btn-default");
+            var statusId = $(this).data("item-id");
+            $('#statusId').val(statusId);
+            $('#CompanyList').empty();
+            loadPublicCompanyList(1);
+        }
+    });
+
+    $("#btnSearch").on({
+        click: function () {
+            $('#CompanyList').empty();
+            loadPublicCompanyList(1);
+        }
+    });
+
+    $("#keyword").keyup(function (event) {
+        if (event.keyCode === 13) {
+            $("#btnSearch").click();
+        }
+    });
+
+    function loadPublicCompanyList(page) {
+        var keyword = $('#keyword').val();
+        var statusId = $('#statusId').val();
+        var company = $('#Company_Id').val();
+        var ajaxurl = "/Suppliers/GetSupplier?page=" + page + "&status=100032&Company_Id=1&skeyword=" + encodeURIComponent(keyword);
+        $.ajax({
+            url: ajaxurl,
+            data: { page: page, status: statusId, Company_Id: company, skeyword: keyword},
+            dataType: 'json',
+            success: function (response) {
+                var obj = response.Result.Records;
+                for (var k in obj) {
+                    var item = obj[k];
+                    var rfqUrl = '@Url.Action("Details", "Suppliers")';
+                    $('#CompanyList').append(
+                        "<div class='clearfix' style='padding-left: 20px; padding-right: 20px;'> " +
+                        "<div class='row'> " +
+                        "<div class='col-sm-6'>Reg No. " + item.RegNo + "</div> " +
+                        
+                         "</div> " +
+                        "<div class='row'> " +
+                        "<div class='col-sm-12'><b>Name. <a href='" + rfqUrl + "/" + item.Id + "'>" + item.Name + "</a></b></div> " +
+
+                         "</div> " +
+                            "<div class='row'> " +
+                        "<div class='col-sm-4'>About: " + item.About + "</div> " +
+                        " </div> " +
+                        "<div class='row'> " +
+                                "<div class='col-sm-4'>Address: " + item.Address + "</div> " +
+                        " </div> " +
+                        " <hr/> "
+                    );
+
+                }
+                var totalRecord = response.Result.TotalRecords;
+
+                var openTab = $('#btn_tender_open');
+                var openTabClass = openTab.prop('class');
+                if (openTabClass.includes('btn-default')) {
+
+                    openTab.html("Open (" + totalRecord + ")")
+                }
+
+                var closeTab = $('#btn_tender_close');
+                var closeTabClass = closeTab.prop('class');
+                if (closeTabClass.includes('btn-default')) {
+
+                    closeTab.html("Close (" + totalRecord + ")")
+                }
+
+                var totalpage = response.Result.TotalPage;
+                var currentpage = response.Result.CurrentPage;
+                if (totalpage > currentpage) {
+                    $(".pagination").empty();
+                    $(".pagination").append(" <a class='btn btn-md btn-default' OnClick='loadPublicCompanyList(" + response.Result.NextPage + ")'> Load More </a> ");
+                } else {
+                    $(".pagination").empty();
+                }
+            },
+            error: function (response) {
+                alert(response)
+            }
+        });
+    }
+</script>
+
+@*<div class="card">
+        <div class="header">
+            <br />
+            <div class="row">
+                @using (Html.BeginForm("Index", "Companies", FormMethod.Get))
+                {
+                    <div class="col-sm-5">
+                        @Html.TextBox("keyword",
+                         null,
+                         new {
+                             id = "search_key",
+                             @class = "form-control"
+                         })
+                    </div>
+                    <div class="col-sm-1">
+                        <input class="btn btn-info" type="submit" value="Search" />
+                    </div>
+                }
+            </div>
+        </div>
+        <br />
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th> # </th>
+                    <th> Name </th>
+                    <th> Address </th>
+                    <th> Domain </th>
+                    <th> Registration No. </th>
+                    <th> About </th>
+                    <th> IsVerified </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int counter = 1;
+                    foreach (var item in Model.Result.Records)
+                    {
+                        string checkedStatus = (item.IsVerified) ? "checked" : "";
+                        <tr>
+                            <td> @counter </td>
+                            <td> @item.Name </td>
+                            <td> @item.Address </td>
+                            <td> @item.Domain </td>
+                            <td> @item.RegNo </td>
+                            <td> @item.About </td>
+                            <td> <input type="checkbox" id="@counter" class="chk-col-pink" @checkedStatus disabled> <label for="@counter"></label> </td>
+                            <td> <a type="button" class="btn btn-warning" href='@Url.Action("Details","Suppliers",new { id= item.Id })'>View</a></td>
+                        </tr>
+                        counter = counter + 1;
+                    }
+                }
+            </tbody>
+        </table>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="pagination pull-right" style="padding:10px;">
+                    @{
+                        int currentPage = Model.Result.CurrentPage;
+                        int totalPage = Model.Result.TotalPage;
+                        int previousPage = Model.Result.PreviousPage;
+                        int nextPage = Model.Result.NextPage;
+
+                        int startPage = currentPage - 5;
+                        int endPage = currentPage + 4;
+
+                        if (startPage <= 0)
+                        {
+                            endPage -= (startPage - 1);
+                            startPage = 1;
+                        }
+                        if (endPage > totalPage)
+                        {
+                            endPage = totalPage;
+                            if (endPage > 10)
+                            {
+                                startPage = endPage - 9;
+                            }
+                        }
+
+                        @if (endPage > 1)
+                        {
+                            <ul class="pagination">
+                                @if (currentPage > 1)
+                                {
+                                    <li>
+                                        <a class='btn btn-md btn-primary' href="~/Companies">First</a>
+                                    </li>
+                                    <li>
+                                        <a class='btn btn-md btn-primary' href="?page=@(currentPage - 1)">Previous</a>
+                                    </li>
+                                }
+
+                                @for (int page = startPage; page <= endPage; page++)
+                                {
+                                    <li class="@(page == currentPage ? "active" : "")">
+                                        <a class='btn btn-md btn-primary' href="?page=@(page)"> @(page) </a>
+                                    </li>
+                                }
+
+                                @if (currentPage < totalPage)
+                                {
+                                    <li>
+                                        <a class='btn btn-md btn-primary' href="?page=@(currentPage + 1)">Next</a>
+                                    </li>
+                                    <li>
+                                        <a class='btn btn-md btn-primary' href="?page=@(totalPage)">Last</a>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>*@

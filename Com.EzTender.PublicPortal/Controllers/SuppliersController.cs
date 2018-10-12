@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Com.BudgetMetal.Services.Company;
+using Com.BudgetMetal.Services.RFQ;
 using Com.BudgetMetal.ViewModels.Company;
 using Configurations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 
 namespace Com.EzTender.PublicPortal.Controllers
 {
@@ -15,11 +17,13 @@ namespace Com.EzTender.PublicPortal.Controllers
     {
         private readonly ICompanyService svs;
         private readonly AppSettings _appSettings;
+        private readonly IRFQService rfqService;
 
-        public SuppliersController(ICompanyService svs, IOptions<AppSettings> appSettings)
+        public SuppliersController(ICompanyService svs, IOptions<AppSettings> appSettings, IRFQService rfqService)
         {
             this.svs = svs;
             this._appSettings = appSettings.Value;
+            this.rfqService = rfqService;
         }
 
         // GET: Suppliers
@@ -109,6 +113,28 @@ namespace Com.EzTender.PublicPortal.Controllers
             {
                 return View();
             }
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetSupplier(int page, string status, string Company_Id, string skeyword)
+        {
+            var result = await svs.GetCompanySupplierList(skeyword, page, 3);
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetPublicRFQ(int page, string status, string skeyword)
+        {
+            var result = await rfqService.GetPublicRfqByPage(page, 2, Convert.ToInt32(status),
+                skeyword == null ? "" : skeyword);
+
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
         }
     }
 }

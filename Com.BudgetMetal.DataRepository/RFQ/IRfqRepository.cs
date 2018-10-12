@@ -13,7 +13,8 @@ namespace Com.BudgetMetal.DataRepository.RFQ
 
         Task<PageResult<Com.BudgetMetal.DBEntities.Rfq>> GetPublicRfqByPage(int page, int totalRecords, int statusId, string keyword);
 
-        Task<Com.BudgetMetal.DBEntities.Rfq> GetSingleRfqById(int id);
+        Task<Com.BudgetMetal.DBEntities.Rfq> GetSingleRfqById(int id); 
+
+        Task<PageResult<Com.BudgetMetal.DBEntities.Rfq>> GetPublicRfqByCompany(int page, int companyId, int totalRecords, int statusId, string keyword);
     }
-    
 }

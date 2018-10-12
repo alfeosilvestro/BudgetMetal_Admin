@@ -129,7 +129,7 @@ namespace Com.BudgetMetal.DataRepository.Company
                .Where(e =>
                  (e.IsActive == true) &&
                  (e.C_BusinessType == 100012) &&
-                 (keyword == string.Empty || e.Name.Contains(keyword))
+                 (keyword == string.Empty || e.Name.StartsWith(keyword))
                )
                .OrderBy(e => new { e.Name, e.CreatedDate })
                .Skip((totalRecords * page) - totalRecords)
@@ -139,7 +139,7 @@ namespace Com.BudgetMetal.DataRepository.Company
 
             var count = entities.Where(e =>
                  (e.IsActive == true) &&
-                 (keyword == string.Empty || e.Name.Contains(keyword)))
+                 (keyword == string.Empty || e.Name.StartsWith(keyword)))
                  .ToList().Count();
 
             var nextPage = 0;
