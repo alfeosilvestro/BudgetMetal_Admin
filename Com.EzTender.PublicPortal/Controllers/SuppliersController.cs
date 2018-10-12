@@ -26,6 +26,13 @@ namespace Com.EzTender.PublicPortal.Controllers
             this.rfqService = rfqService;
         }
 
+        
+        public ActionResult PublicRfqByCompany(int id)
+        {
+            ViewBag.Company_Id = id;
+
+            return View();
+        }
         // GET: Suppliers
         public async Task<ActionResult> Index(string keyword, int page, int totalRecords)
         {
@@ -126,9 +133,10 @@ namespace Com.EzTender.PublicPortal.Controllers
         }
 
         [HttpGet]
-        public async Task<JsonResult> GetPublicRFQ(int page, string status, string skeyword)
+        public async Task<JsonResult> GetPublicRFQByCompany(int page, int Company_Id, string status, string skeyword)
         {
-            var result = await rfqService.GetPublicRfqByPage(page, 2, Convert.ToInt32(status),
+            //var company_Id = HttpContext.Session.GetString("Company_Id");
+            var result = await rfqService.GetPublicRfqByCompany(page, Company_Id, 2, Convert.ToInt32(status),
                 skeyword == null ? "" : skeyword);
 
             return new JsonResult(result, new JsonSerializerSettings()

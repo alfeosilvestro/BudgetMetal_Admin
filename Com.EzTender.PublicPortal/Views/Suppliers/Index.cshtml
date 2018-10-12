@@ -88,7 +88,7 @@
                 var obj = response.Result.Records;
                 for (var k in obj) {
                     var item = obj[k];
-                    var rfqUrl = '@Url.Action("Details", "Suppliers")';
+                    var rfqUrl = '@Url.Action("PublicRfqByCompany", "Suppliers")';
                     $('#CompanyList').append(
                         "<div class='clearfix' style='padding-left: 20px; padding-right: 20px;'> " +
                         "<div class='row'> " +

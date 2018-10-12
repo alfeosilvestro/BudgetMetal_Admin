@@ -13,7 +13,6 @@ namespace Com.BudgetMetal.Services.RFQ
 
         Task<VmRfqPage> GetPublicRfqByPage(int page, int totalRecords, int statusId = 0, string keyword = "");
 
-
         string SaveRFQ(VmRfqItem rfq);
 
         string UpdateRFQ(VmRfqItem rfq);
@@ -35,5 +34,7 @@ namespace Com.BudgetMetal.Services.RFQ
         bool CheckRFQLimit(int companyId);
 
         Task<VmRfqItem> GetPublicPortalSingleRfqById(int documentId);
+
+        Task<VmRfqPage> GetPublicRfqByCompany(int page, int companyId, int totalRecords, int statusId = 0, string keyword = "");
     }
 }
