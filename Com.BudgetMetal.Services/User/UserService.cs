@@ -18,6 +18,7 @@ using Com.BudgetMetal.DataRepository.UserRoles;
 using Com.BudgetMetal.ViewModels.Sys_User;
 using Com.BudgetMetal.DataRepository.ServiceTags;
 using Com.BudgetMetal.DataRepository.SupplierServiceTags;
+using Com.BudgetMetal.ViewModels.UserRoles;
 
 namespace Com.BudgetMetal.Services.Users
 {
@@ -71,6 +72,20 @@ namespace Com.BudgetMetal.Services.Users
                 var result = new VmUserItem();
                 Copy<Com.BudgetMetal.DBEntities.User, VmUserItem>(dbresult, result);
 
+                if(dbresult.UserRoles != null)
+                {
+                    var SelectedRoles = new List<VmRoleItem>();
+                    foreach(var dbItem in dbresult.UserRoles)
+                    {
+                        var resultUserRoles = new VmRoleItem();
+                        var dbRole = await roleRepo.Get(dbItem.Role_Id);
+                        
+                        Copy<Com.BudgetMetal.DBEntities.Role, VmRoleItem>(dbRole, resultUserRoles);
+
+                        SelectedRoles.Add(resultUserRoles);
+                    }
+                    result.SelectedRoles = SelectedRoles;
+                }
                 return result;
             }
 

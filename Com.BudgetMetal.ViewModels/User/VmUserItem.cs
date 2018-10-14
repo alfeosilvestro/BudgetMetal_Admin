@@ -46,5 +46,6 @@ namespace Com.BudgetMetal.ViewModels.User
         public List<VmCodeTableItem> CodeTableList { get; set; }
         public List<VmRoleItem> RoleList { get; set; }
         public List<int> SelectedRoleId { get; set; }
+        public List<VmRoleItem> SelectedRoles { get; set; }
     }
 }

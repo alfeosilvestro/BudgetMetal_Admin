@@ -8,9 +8,11 @@ using Com.EzTender.WebApp.Models;
 using Com.BudgetMetal.Services.RFQ;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
+using Com.EzTender.WebApp.Filters;
 
 namespace Com.GenericPlatform.WebApp.Controllers
 {
+    [EzyTenderActionFilter]
     public class HomeController : Controller
     {
         private readonly IRFQService rfqService;
