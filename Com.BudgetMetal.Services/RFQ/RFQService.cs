@@ -34,6 +34,7 @@ using Com.BudgetMetal.DataRepository.Company;
 using Com.BudgetMetal.DataRepository.DocumentActivity;
 using Com.BudgetMetal.ViewModels.DocumentActivity;
 using Com.BudgetMetal.DataRepository.Quotation;
+using Com.BudgetMetal.DataRepository.CompanySupplier;
 
 namespace Com.BudgetMetal.Services.RFQ
 {
@@ -53,8 +54,9 @@ namespace Com.BudgetMetal.Services.RFQ
         private readonly ICompanyRepository repoCompany;
         private readonly IDocumentActivityRepository repoDocumentActivity;
         private readonly IQuotationRepository repoQuotation;
-        
-        public RFQService(IDocumentRepository repoDocument, IRfqRepository repoRfq, IAttachmentRepository repoAttachment, IRequirementRepository repoRequirement, ISlaRepository repoSla, IRfqPriceScheduleRepository repoRfqPriceSchedule, IPenaltyRepository repoPenalty, IInvitedSupplierRepository repoInvitedSupplier, IDocumentUserRepository repoDocumentUser, IUserRepository repoUser, IRoleRepository repoRole, ICompanyRepository repoCompany, IDocumentActivityRepository repoDocumentActivity, IQuotationRepository repoQuotation)
+        private readonly ICompanySupplierRepository repoCompanySupplier;
+
+        public RFQService(IDocumentRepository repoDocument, IRfqRepository repoRfq, IAttachmentRepository repoAttachment, IRequirementRepository repoRequirement, ISlaRepository repoSla, IRfqPriceScheduleRepository repoRfqPriceSchedule, IPenaltyRepository repoPenalty, IInvitedSupplierRepository repoInvitedSupplier, IDocumentUserRepository repoDocumentUser, IUserRepository repoUser, IRoleRepository repoRole, ICompanyRepository repoCompany, IDocumentActivityRepository repoDocumentActivity, IQuotationRepository repoQuotation, ICompanySupplierRepository repoCompanySupplier)
         {
             this.repoDocument = repoDocument;
             this.repoRfq = repoRfq;
@@ -67,16 +69,17 @@ namespace Com.BudgetMetal.Services.RFQ
             this.repoDocumentUser = repoDocumentUser;
             this.repoRole = repoRole;
             this.repoUser = repoUser;
-            this.repoCompany =  repoCompany;
+            this.repoCompany = repoCompany;
             this.repoDocumentActivity = repoDocumentActivity;
             this.repoQuotation = repoQuotation;
+            this.repoCompanySupplier = repoCompanySupplier;
         }
 
-        public async Task<VmRfqPage> GetRfqByPage(int documentOwner, int page,int totalRecords, int statusId = 0, string keyword = "")
+        public async Task<VmRfqPage> GetRfqByPage(int documentOwner, int page, int totalRecords, int statusId = 0, string keyword = "")
         {
             var dbPageResult = await repoRfq.GetRfqByPage(documentOwner,
                 (page == 0 ? Constants.app_firstPage : page),
-                (totalRecords == 0 ? Constants.app_totalRecords : totalRecords),statusId, keyword);
+                (totalRecords == 0 ? Constants.app_totalRecords : totalRecords), statusId, keyword);
 
             //var dbPageResult = repo.GetCodeTableByPage(keyword,
             //    (page == 0 ? Constants.app_firstPage : page),
@@ -123,7 +126,7 @@ namespace Com.BudgetMetal.Services.RFQ
                     };
 
                 }
-                
+
                 resultObj.Result.Records.Add(resultItem);
             }
 
@@ -194,11 +197,11 @@ namespace Com.BudgetMetal.Services.RFQ
 
             var dbResult = repoCompany.Get(companyId);
 
-            int RFQLimitPerWeek = (dbResult.Result.MaxRFQPerWeek == null)? 0: Convert.ToInt32( dbResult.Result.MaxRFQPerWeek);
+            int RFQLimitPerWeek = (dbResult.Result.MaxRFQPerWeek == null) ? 0 : Convert.ToInt32(dbResult.Result.MaxRFQPerWeek);
 
             bool RFQLimit = true;
 
-            if(documentCount >= RFQLimitPerWeek)
+            if (documentCount >= RFQLimitPerWeek)
             {
                 RFQLimit = false;
             }
@@ -352,12 +355,22 @@ namespace Com.BudgetMetal.Services.RFQ
                         dbInvitedSupplier.Rfq_Id = dbRFQ.Id;
                         dbInvitedSupplier.CreatedBy = dbInvitedSupplier.UpdatedBy = dbRFQ.CreatedBy;
                         repoInvitedSupplier.Add(dbInvitedSupplier);
+
+                        //For Prefer supplier List
+                        if (!repoCompanySupplier.IsExistedSupplier(rfq.Document.Company_Id, item.Company_Id))
+                        {                            
+                            Com.BudgetMetal.DBEntities.CompanySupplier companySupplierEntity = new Com.BudgetMetal.DBEntities.CompanySupplier();
+                            companySupplierEntity.Company_Id = rfq.Document.Company_Id;
+                            companySupplierEntity.Supplier_Id = item.Company_Id;
+                            companySupplierEntity.CreatedBy = companySupplierEntity.UpdatedBy = dbRFQ.CreatedBy;
+                            repoCompanySupplier.Add(companySupplierEntity);
+                        }
                     }
                     repoInvitedSupplier.Commit();
                 }
             }
 
-            if(rfq.Document.DocumentActivityList != null)
+            if (rfq.Document.DocumentActivityList != null)
             {
                 if (rfq.Document.DocumentActivityList.Count > 0)
                 {
@@ -459,7 +472,7 @@ namespace Com.BudgetMetal.Services.RFQ
                     repoRequirement.Commit();
                 }
             }
-            
+
             repoSla.InactiveByRFQId(dbRFQ.Id, dbRFQ.UpdatedBy);
             repoSla.Commit();
 
@@ -546,6 +559,17 @@ namespace Com.BudgetMetal.Services.RFQ
                         dbInvitedSupplier.Rfq_Id = dbRFQ.Id;
                         dbInvitedSupplier.CreatedBy = dbInvitedSupplier.UpdatedBy = dbRFQ.UpdatedBy;
                         repoInvitedSupplier.Add(dbInvitedSupplier);
+
+                        //For Prefer supplier List
+                        if (!repoCompanySupplier.IsExistedSupplier(rfq.Document.Company_Id, item.Company_Id))
+                        {                            
+                            Com.BudgetMetal.DBEntities.CompanySupplier companySupplierEntity = new Com.BudgetMetal.DBEntities.CompanySupplier();
+                            companySupplierEntity.Company_Id = rfq.Document.Company_Id;
+                            companySupplierEntity.Supplier_Id = item.Company_Id;
+                            companySupplierEntity.CreatedBy = companySupplierEntity.UpdatedBy = dbRFQ.CreatedBy;
+                            repoCompanySupplier.Add(companySupplierEntity);
+                        }
+                        
                     }
                     repoInvitedSupplier.Commit();
                 }
@@ -783,12 +807,12 @@ namespace Com.BudgetMetal.Services.RFQ
             resultDocument.DocumentType = documentType;
 
             var listAttachment = new List<VmAttachmentItem>();
-            if(dbResult.Document.Attachment != null)
+            if (dbResult.Document.Attachment != null)
             {
-                foreach(var item in dbResult.Document.Attachment.Where(e => e.IsActive == true).ToList())
+                foreach (var item in dbResult.Document.Attachment.Where(e => e.IsActive == true).ToList())
                 {
                     var itemAttachment = new VmAttachmentItem();
-                    Copy<Com.BudgetMetal.DBEntities.Attachment, VmAttachmentItem>(item, itemAttachment, new string[] { "Document" , "FileBinary" });
+                    Copy<Com.BudgetMetal.DBEntities.Attachment, VmAttachmentItem>(item, itemAttachment, new string[] { "Document", "FileBinary" });
                     listAttachment.Add(itemAttachment);
                 }
             }
@@ -798,8 +822,8 @@ namespace Com.BudgetMetal.Services.RFQ
             if (dbResult.Document.DocumentUser != null)
             {
                 List<int> UserList = new List<int>();
-                UserList = dbResult.Document.DocumentUser.Where(e=>e.IsActive ==  true).Select(e => e.User_Id).Distinct().ToList();
-                foreach(var itemUser in UserList)
+                UserList = dbResult.Document.DocumentUser.Where(e => e.IsActive == true).Select(e => e.User_Id).Distinct().ToList();
+                foreach (var itemUser in UserList)
                 {
                     var documentUser = new VmDocumentUserDisplay();
                     documentUser.User_Id = itemUser;
@@ -944,14 +968,14 @@ namespace Com.BudgetMetal.Services.RFQ
             //}
 
             var dbResultQuotationList = repoQuotation.GetQuotationByRfqId(documentId);
-            
+
             List<List<string>> requirementComparisonList = new List<List<string>>();
             List<List<string>> priceComparisonList = new List<List<string>>();
             foreach (var item in dbResultQuotationList.Result)
             {
                 List<string> requirementComparison = new List<string>();
-                requirementComparison.Add(item.Document.Company.Name); 
-                foreach(var requirementItem in item.QuotationRequirement.Where(e => e.IsActive == true).ToList())
+                requirementComparison.Add(item.Document.Company.Name);
+                foreach (var requirementItem in item.QuotationRequirement.Where(e => e.IsActive == true).ToList())
                 {
                     requirementComparison.Add(requirementItem.Compliance);
                 }
@@ -1183,5 +1207,6 @@ namespace Com.BudgetMetal.Services.RFQ
 
             return resultObj;
         }
+
     }
 }

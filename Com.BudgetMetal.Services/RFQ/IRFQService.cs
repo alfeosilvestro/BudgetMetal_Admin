@@ -36,5 +36,6 @@ namespace Com.BudgetMetal.Services.RFQ
         Task<VmRfqItem> GetPublicPortalSingleRfqById(int documentId);
 
         Task<VmRfqPage> GetPublicRfqByCompany(int page, int companyId, int totalRecords, int statusId = 0, string keyword = "");
+
     }
 }

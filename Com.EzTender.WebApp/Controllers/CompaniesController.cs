@@ -8,6 +8,7 @@ using Com.EazyTender.WebApp.Configurations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 
 namespace Com.EzTender.WebApp.Controllers
 {
@@ -41,8 +42,9 @@ namespace Com.EzTender.WebApp.Controllers
         }        
 
         // GET: Companies/Details/5
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details()
         {
+            int id = Convert.ToInt32(HttpContext.Session.GetString("Company_Id"));
             VmCompanyItem item = await svs.GetCompanyById(id);
 
             if (item == null)
@@ -119,6 +121,30 @@ namespace Com.EzTender.WebApp.Controllers
             {
                 return View();
             }
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> EditCompanyAbout(int CompanyId, string About)
+        {
+            string updatedBy = HttpContext.Session.GetString("EmailAddress");
+            var result = await svs.EditCompanyAbout(CompanyId, About, updatedBy);
+
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> EditCompanyAddress(int CompanyId, string Address)
+        {
+            string updatedBy = HttpContext.Session.GetString("EmailAddress");
+            var result = await svs.EditCompanyAddress(CompanyId, Address, updatedBy);
+
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
         }
     }
 }

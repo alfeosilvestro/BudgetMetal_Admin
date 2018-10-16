@@ -275,7 +275,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
 
                 return RedirectToAction("Index");
             }
-            catch
+            catch(Exception ex)
             {
                 return View();
             }
