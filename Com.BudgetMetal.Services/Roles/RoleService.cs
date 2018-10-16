@@ -135,16 +135,45 @@ namespace Com.BudgetMetal.Services.Roles
             repo.Commit();
         }
 
-        public async Task<List<VmRoleItem>> GetActiveRoles()
+        public async Task<List<VmRoleItem>> GetActiveRoles(string roleType)
         {
             var dbResult = await repo.GetAll() ;
 
             var resultList = new List<VmRoleItem>();
-            foreach(var dbItem in dbResult)
+            
+            
+           
+            foreach (var dbItem in dbResult)
             {
                 var resultItem = new VmRoleItem();
-                Copy<Role, VmRoleItem>(dbItem, resultItem);
-                resultList.Add(resultItem);
+
+               
+                if (roleType == "rfq")
+                {
+                    if (dbItem.Code.StartsWith("R_"))
+                    {
+                        Copy<Role, VmRoleItem>(dbItem, resultItem);
+                        resultList.Add(resultItem);
+                    }
+                   
+                }
+                else if (roleType == "quotation")
+                {
+                    if (dbItem.Code.StartsWith("Q_"))
+                    {
+                        Copy<Role, VmRoleItem>(dbItem, resultItem);
+                        resultList.Add(resultItem);
+                    }
+                }
+                else
+                {
+                    if ((!dbItem.Code.StartsWith("Q_")) ||(!dbItem.Code.StartsWith("R_")))
+                    {
+                        Copy<Role, VmRoleItem>(dbItem, resultItem);
+                        resultList.Add(resultItem);
+                    }
+                }
+                
             }
             return resultList;
 

@@ -9,9 +9,12 @@ using Com.EazyTender.WebApp.Configurations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Com.EzTender.WebApp.Filters;
+using Newtonsoft.Json;
 
 namespace Com.GenericPlatform.WebApp.Controllers
 {
+    [EzyTenderActionFilter]
     public class UserController : Controller
     {
         private readonly AppSettings _appSettings;
@@ -30,6 +33,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
         }
 
         // GET: User
+        
         public ActionResult SignIn()
         {
             TempData["ForgotPasswordUrl"] = _appSettings.App_Identity.PublicSiteUrl + "Home/ForgotPassword";
@@ -55,6 +59,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
             {
                
                 var result = userService.ValidateUser(user);
+
                 var resultObj = result.Result;
                 if (resultObj.Id == 0)
                 {
@@ -63,15 +68,24 @@ namespace Com.GenericPlatform.WebApp.Controllers
                 }
                 else
                 {
-                    // TODO: Add insert logic here
-                    
-                    HttpContext.Session.SetString("User_Id", resultObj.Id.ToString());
-                    HttpContext.Session.SetString("EmailAddress", resultObj.EmailAddress.ToString());
-                    HttpContext.Session.SetString("Company_Id", resultObj.Company_Id.ToString());
-                    HttpContext.Session.SetString("UserType", resultObj.UserType.ToString());
-                    HttpContext.Session.SetString("ContactName", resultObj.ContactName.ToString());
-                    HttpContext.Session.SetString("UserName", resultObj.UserName.ToString());
-
+                    if (resultObj.IsActive && resultObj.IsConfirmed)
+                    {
+                        // TODO: Add insert logic here
+                        HttpContext.Session.SetString("User_Id", resultObj.Id.ToString());
+                        HttpContext.Session.SetString("EmailAddress", resultObj.EmailAddress.ToString());
+                        HttpContext.Session.SetString("Company_Id", resultObj.Company_Id.ToString());
+                        HttpContext.Session.SetString("UserType", resultObj.UserType.ToString());
+                        HttpContext.Session.SetString("ContactName", resultObj.ContactName.ToString());
+                        HttpContext.Session.SetString("UserName", resultObj.UserName.ToString());
+                        HttpContext.Session.SetString("C_BusinessType", resultObj.Company.C_BusinessType.ToString());
+                        string strSelectedRoles = JsonConvert.SerializeObject(resultObj.SelectedRoles);
+                        HttpContext.Session.SetString("SelectedRoles", strSelectedRoles.ToString());
+                    }
+                    else
+                    {
+                        ViewBag.ErrorMessage = "Email not confiremed";
+                        return View(user);
+                    }
                     return RedirectToAction("Index", "Home");
                 }
 
