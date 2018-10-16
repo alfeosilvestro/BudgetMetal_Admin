@@ -86,6 +86,11 @@ namespace Com.BudgetMetal.Services.Users
                     }
                     result.SelectedRoles = SelectedRoles;
                 }
+
+                var resultCompany = new VmCompanyItem();
+                Copy<Com.BudgetMetal.DBEntities.Company, VmCompanyItem>(dbresult.Company, resultCompany);
+                result.Company = resultCompany;
+
                 return result;
             }
 
@@ -466,7 +471,7 @@ namespace Com.BudgetMetal.Services.Users
 
                     dbCompany.IsVerified = false;
                     dbCompany.SupplierAvgRating = dbCompany.BuyerAvgRating = dbCompany.AwardedQuotation = dbCompany.SubmittedQuotation = 0;
-                    dbCompany.C_BusinessType = Constants_CodeTable.Code_Supplier;
+                    dbCompany.C_BusinessType = Constants_CodeTable.Code_C_Supplier;
                     dbCompany.CreatedBy = dbCompany.UpdatedBy = user.EmailAddress;
                     var dbResultCompany = cRepo.Add(dbCompany);
                     cRepo.Commit();

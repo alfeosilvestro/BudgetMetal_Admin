@@ -19,6 +19,6 @@ namespace Com.BudgetMetal.Services.Roles
 
         Task Delete(int I);
 
-        Task<List<VmRoleItem>> GetActiveRoles();
+        Task<List<VmRoleItem>> GetActiveRoles(string roleType);
     }
 }

@@ -31,7 +31,7 @@ namespace Com.BudgetMetal.DataRepository.Users
 
         public async Task<User> GetUser(string email, string password)
         {
-            var records = await entities.Include(e=>e.UserRoles)
+            var records = await entities.Include(e=>e.Company).Include(e=>e.UserRoles)
                 .SingleOrDefaultAsync(e =>  e.EmailAddress == email && e.Password == password);
 
             return records;

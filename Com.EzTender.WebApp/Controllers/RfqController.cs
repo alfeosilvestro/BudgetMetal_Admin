@@ -347,7 +347,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
         [HttpGet]
         public async Task<JsonResult> GetActiveRoles()
         {
-            var result = await roleService.GetActiveRoles();
+            var result = await roleService.GetActiveRoles("rfq");
 
             return new JsonResult(result, new JsonSerializerSettings()
             {

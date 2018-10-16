@@ -77,13 +77,13 @@ namespace Com.GenericPlatform.WebApp.Controllers
                         HttpContext.Session.SetString("UserType", resultObj.UserType.ToString());
                         HttpContext.Session.SetString("ContactName", resultObj.ContactName.ToString());
                         HttpContext.Session.SetString("UserName", resultObj.UserName.ToString());
-
+                        HttpContext.Session.SetString("C_BusinessType", resultObj.Company.C_BusinessType.ToString());
                         string strSelectedRoles = JsonConvert.SerializeObject(resultObj.SelectedRoles);
                         HttpContext.Session.SetString("SelectedRoles", strSelectedRoles.ToString());
                     }
                     else
                     {
-                        ViewBag.ErrorMessage = "Email is not confiremed";
+                        ViewBag.ErrorMessage = "Email not confiremed";
                         return View(user);
                     }
                     return RedirectToAction("Index", "Home");

@@ -13,7 +13,7 @@ namespace Com.BudgetMetal.Common
         public static readonly int CodeCat_RFQStatus = 100030;
         public static readonly int CodeCat_QuotationStatus = 100040;
         public static readonly int CodeCat_ToleranceLevels = 10100000;
-
+        public static readonly int CodeCat_Company = 100050;
         #endregion
 
         #region Code Table
@@ -41,6 +41,12 @@ namespace Com.BudgetMetal.Common
 
         public static readonly int Code_MaxDefaultRFQPerWeek = 10100001;
         public static readonly int Code_MaxDefaultQuotePerWeek = 10100002;
+
+
+        public static readonly int Code_C_Buyer = 100051;
+        public static readonly int Code_C_Supplier = 100052;
+
+        
         #endregion
     }
 }

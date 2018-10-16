@@ -240,8 +240,8 @@
                                         <td>
                                             <input type="hidden" name="documentUserId[]" value="@ViewBag.User_Id" />
                                             <h5> @ViewBag.FullName </h5>
-                                            <input type="hidden" name="documentUserRole[]" value="1" />
-                                            <span class="label bg-deep-purple">Admin</span>
+                                            <input type="hidden" name="documentUserRole[]" value="@(Com.BudgetMetal.Common.Constants.RFQDefaultRoleId)" />
+                                            <span class="label bg-deep-purple">@(Com.BudgetMetal.Common.Constants.RFQDefaultRole)</span>
                                         </td>
                                         <td></td>
                                     </tr>
@@ -259,6 +259,8 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
                 <div class="body">
+                    <input type="hidden" name="btnType" id="btnType" value="" />
+                    <button type="button" id="btnDraft" class="btn btn-success">Draft</button>
                     <button type="button" id="btnSubmit" class="btn btn-success">Submit</button>
                 </div>
             </div>
@@ -290,9 +292,19 @@
         loadRole();
     });
 
-     $("#btnSubmit").click(function () {
-        $("#frmCreateQuotation").submit();
+    $("#btnSubmit").click(function () {
+        $("#btnType").val("Submit");
+        SaveForm();
     });
+
+    $("#btnDraft").click(function () {
+        $("#btnType").val("Draft");
+        SaveForm();
+    });
+
+    function SaveForm() {
+        $("#frmCreateQuotation").submit();
+    }
 
     function loadUser() {
         var ajaxurl = '@Url.Action("GetActiveUserByCompany", "Rfq")';
