@@ -36,6 +36,7 @@ using Com.BudgetMetal.ViewModels.DocumentActivity;
 using Com.BudgetMetal.DataRepository.Quotation;
 using Com.BudgetMetal.DataRepository.TimeLine;
 using Com.BudgetMetal.ViewModels.Company;
+using Com.BudgetMetal.DataRepository.CompanySupplier;
 
 namespace Com.BudgetMetal.Services.RFQ
 {
@@ -73,6 +74,7 @@ namespace Com.BudgetMetal.Services.RFQ
             this.repoCompany = repoCompany;
             this.repoDocumentActivity = repoDocumentActivity;
             this.repoQuotation = repoQuotation;
+            this.repoCompanySupplier = repoCompanySupplier;
             this.repoTimeLine = repoTimeLine;
         }
 
@@ -355,6 +357,24 @@ namespace Com.BudgetMetal.Services.RFQ
                         {
                             var dbInvitedSupplier = new Com.BudgetMetal.DBEntities.InvitedSupplier();
 
+                        Copy<VmInvitedSupplierItem, Com.BudgetMetal.DBEntities.InvitedSupplier>(item, dbInvitedSupplier);
+                        dbInvitedSupplier.Rfq_Id = dbRFQ.Id;
+                        dbInvitedSupplier.CreatedBy = dbInvitedSupplier.UpdatedBy = dbRFQ.CreatedBy;
+                        repoInvitedSupplier.Add(dbInvitedSupplier);
+
+                        //For Prefer supplier List
+                        if (!repoCompanySupplier.IsExistedSupplier(rfq.Document.Company_Id, item.Company_Id))
+                        {                            
+                            Com.BudgetMetal.DBEntities.CompanySupplier companySupplierEntity = new Com.BudgetMetal.DBEntities.CompanySupplier();
+                            companySupplierEntity.Company_Id = rfq.Document.Company_Id;
+                            companySupplierEntity.Supplier_Id = item.Company_Id;
+                            companySupplierEntity.CreatedBy = companySupplierEntity.UpdatedBy = dbRFQ.CreatedBy;
+                            repoCompanySupplier.Add(companySupplierEntity);
+                        }
+                    }
+                    repoInvitedSupplier.Commit();
+                }
+            }
                             Copy<VmInvitedSupplierItem, Com.BudgetMetal.DBEntities.InvitedSupplier>(item, dbInvitedSupplier);
                             dbInvitedSupplier.Rfq_Id = dbRFQ.Id;
                             dbInvitedSupplier.CreatedBy = dbInvitedSupplier.UpdatedBy = dbRFQ.CreatedBy;
@@ -613,6 +633,25 @@ namespace Com.BudgetMetal.Services.RFQ
                         {
                             var dbInvitedSupplier = new Com.BudgetMetal.DBEntities.InvitedSupplier();
 
+                        Copy<VmInvitedSupplierItem, Com.BudgetMetal.DBEntities.InvitedSupplier>(item, dbInvitedSupplier);
+                        dbInvitedSupplier.Rfq_Id = dbRFQ.Id;
+                        dbInvitedSupplier.CreatedBy = dbInvitedSupplier.UpdatedBy = dbRFQ.UpdatedBy;
+                        repoInvitedSupplier.Add(dbInvitedSupplier);
+
+                        //For Prefer supplier List
+                        if (!repoCompanySupplier.IsExistedSupplier(rfq.Document.Company_Id, item.Company_Id))
+                        {                            
+                            Com.BudgetMetal.DBEntities.CompanySupplier companySupplierEntity = new Com.BudgetMetal.DBEntities.CompanySupplier();
+                            companySupplierEntity.Company_Id = rfq.Document.Company_Id;
+                            companySupplierEntity.Supplier_Id = item.Company_Id;
+                            companySupplierEntity.CreatedBy = companySupplierEntity.UpdatedBy = dbRFQ.CreatedBy;
+                            repoCompanySupplier.Add(companySupplierEntity);
+                        }
+                        
+                    }
+                    repoInvitedSupplier.Commit();
+                }
+            }
                             Copy<VmInvitedSupplierItem, Com.BudgetMetal.DBEntities.InvitedSupplier>(item, dbInvitedSupplier);
                             dbInvitedSupplier.Rfq_Id = dbRFQ.Id;
                             dbInvitedSupplier.CreatedBy = dbInvitedSupplier.UpdatedBy = dbRFQ.UpdatedBy;

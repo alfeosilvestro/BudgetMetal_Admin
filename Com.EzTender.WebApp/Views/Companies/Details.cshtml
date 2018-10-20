@@ -15,15 +15,12 @@
                     About
                 </h2>
                 <br />
-                <small>@Html.DisplayFor(model => model.About)</small>
+                <textarea id="originalAbout" style="width:100%" rows="15" readonly>@Html.DisplayFor(model => model.About)</textarea>
                 <ul class="header-dropdown m-r--5">
                     <li class="dropdown">
-                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <a class=" waves-effect waves-block" data-toggle="modal" data-target="#aboutModal">
                             <i class="material-icons">edit</i>
                         </a>
-                        <ul class="dropdown-menu pull-right">
-                            <li><a href="javascript:void(0);" class=" waves-effect waves-block">Edit</a></li>
-                        </ul>
                     </li>
                 </ul>
             </div>
@@ -45,7 +42,7 @@
                             <i class="material-icons">edit</i>
                         </a>
                         <ul class="dropdown-menu pull-right">
-                            <li><a href="javascript:void(0);" class=" waves-effect waves-block">Edit Address</a></li>
+                            <li><a class=" waves-effect waves-block" data-toggle="modal" data-target="#addressModal">Edit Address</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -55,7 +52,7 @@
                     <a href="javascript:void(0);" class="list-group-item">
                         UEN No. : <b>@Html.DisplayFor(model => model.RegNo)</b>
                     </a>
-                    <a href="javascript:void(0);" class="list-group-item">Address: <b>@Html.DisplayFor(model => model.Address)</b></a>
+                    <a href="javascript:void(0);" class="list-group-item">Address: <span id="originalAddress">@Html.DisplayFor(model => model.Address)</span></a>
                 </div>
             </div>
         </div>
@@ -140,7 +137,7 @@
                                         <th>Email</th>
                                         <th>Job Title</th>
                                         <th>Type</th>
-                                        <th>User Role</th>
+                                        <th>Is Admin</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -158,7 +155,7 @@
                                                     <td> @item.EmailAddress </td>
                                                     <td> @item.JobTitle </td>
                                                     <td> @item.UserType </td>
-                                                    <td> @userRole </td>
+                                                    <td> @item.IsConfirmed </td>
                                                 </tr>
                                                 counter++;
                                             }
@@ -223,3 +220,109 @@
     </div>
 </div>
 
+<div class="modal fade" id="aboutModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">About Company</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <textarea name="about" id="txt_about" rows="5" style="width:100%; resize: none;">@Html.DisplayFor(model => model.About)</textarea>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnSubmit">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="addressModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Address</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <textarea name="about" id="txt_address" rows="5" style="width:100%; resize: none;">@Html.DisplayFor(model => model.Address)</textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnSubmitAddress">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+$(function () {
+    $('#btnSubmit').on('click', function(){
+        var about = $('#txt_about').val();
+        var ajaxurl = '@Url.Action("EditCompanyAbout", "Companies")';
+
+        $.ajax({
+            url: ajaxurl,
+            data: { CompanyId: @Model.Id, About: about },
+            dataType: 'json',
+            type: 'post',
+            success: function (response) {
+                //text box data clear and reset again.
+                if (response.IsSuccess) {
+                    $('#originalAbout').empty();
+                    $('#originalAbout').append(about);
+                    $('#aboutModal').modal('hide');
+                    alert(response.MessageToUser);
+                } else {
+                    alert(response.MessageToUser);
+                }
+            },
+            error: function (response) {
+                alert(response)
+            }
+        });
+
+    });
+
+    $('#btnSubmitAddress').on('click', function(){
+        var address = $('#txt_address').val();
+        var ajaxurl = '@Url.Action("EditCompanyAddress", "Companies")';
+        $.ajax({
+            url: ajaxurl,
+            data: { CompanyId: @Model.Id, Address: address },
+            dataType: 'json',
+            type: 'post',
+            success: function (response) {
+                //text box data clear and reset again.
+                if (response.IsSuccess) {
+                    $('#originalAddress').empty();
+                    $('#originalAddress').append(address);
+                    $('#addressModal').modal('hide');
+                    alert(response.MessageToUser);
+                } else {
+                    alert(response.MessageToUser);
+                }
+            },
+            error: function (response) {
+                alert(response)
+            }
+        });
+
+    });
+});
+
+</script>

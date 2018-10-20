@@ -125,11 +125,11 @@ namespace Com.BudgetMetal.Services.Company
                 {
                     foreach (var dbRoleItem in dbUser.UserRoles)
                     {
-                        VmRoleItem rItem = new VmRoleItem()
-                        {
-                            Name = dbRoleItem.Role.Name,
-                            Code = dbRoleItem.Role.Code
-                        };
+                        VmRoleItem rItem = new VmRoleItem();
+                        rItem.Id = dbRoleItem.Role.Id;
+                        rItem.Name = dbRoleItem.Role.Name;
+                        rItem.Code = dbRoleItem.Role.Code;
+                       
                         rListItem.Add(rItem);
                     }
                 }
@@ -360,6 +360,52 @@ namespace Com.BudgetMetal.Services.Company
             }
 
             return resultObj;
+        }
+        
+        public async Task<VmGenericServiceResult> EditCompanyAbout(int companyId, string about, string updatedBy)
+        {            
+            var result = new VmGenericServiceResult();
+
+            var dbresult = await repo.Get(companyId);
+
+            if (dbresult == null)
+            {
+                result.IsSuccess = false;
+                result.MessageToUser = "This email is not registered.";
+            }
+            else
+            {   
+                dbresult.About = about;
+                dbresult.UpdatedBy = updatedBy;
+                repo.Update(dbresult);
+                repo.Commit();
+                result.IsSuccess = true;
+                result.MessageToUser = "Successful";
+            }
+            return result;
+        }
+
+        public async Task<VmGenericServiceResult> EditCompanyAddress(int companyId, string address, string updatedBy)
+        {
+            var result = new VmGenericServiceResult();
+
+            var dbresult = await repo.Get(companyId);
+
+            if (dbresult == null)
+            {
+                result.IsSuccess = false;
+                result.MessageToUser = "This email is not registered.";
+            }
+            else
+            {
+                dbresult.Address = address;
+                dbresult.UpdatedBy = updatedBy;
+                repo.Update(dbresult);
+                repo.Commit();
+                result.IsSuccess = true;
+                result.MessageToUser = "Successful";
+            }
+            return result;
         }
     }
 }

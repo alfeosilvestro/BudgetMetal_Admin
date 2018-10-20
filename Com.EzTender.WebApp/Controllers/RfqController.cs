@@ -324,7 +324,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
                     return View();
                 }
             }
-            catch
+            catch(Exception ex)
             {
                 return View();
             }

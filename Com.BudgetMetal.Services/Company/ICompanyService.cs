@@ -28,5 +28,9 @@ namespace Com.BudgetMetal.Services.Company
         Task<VmCompanyItem> GetCompanyByUEN(string RegNo);
 
         Task<VmCompanyPage> GetSupplierByCompany(int companyId, int page, string keyword);
+
+        Task<VmGenericServiceResult> EditCompanyAbout(int companyId, string about, string updatedBy);
+
+        Task<VmGenericServiceResult> EditCompanyAddress(int companyId, string address, string updatedBy);
     }
 }
