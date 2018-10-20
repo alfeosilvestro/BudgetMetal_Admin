@@ -1,10 +1,14 @@
 ﻿@model Com.BudgetMetal.ViewModels.Rfq.VmRfqItem
-
+@using Microsoft.AspNetCore.Http;
 @{
     ViewData["Title"] = "View";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@{
+    string currentCompanyType = Context.Session.GetString("C_BusinessType");
+    string Code_C_Buyer = Com.BudgetMetal.Common.Constants_CodeTable.Code_C_Buyer.ToString();
+    
+}
 <form asp-controller="Rfq" asp-action="View" method="post" enctype="multipart/form-data" id="frmCreateRFQ">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="block-header">
@@ -95,8 +99,15 @@
                         <li role="presentation"><a href="#pricing" data-toggle="tab">Pricing Table</a></li>
                         <li role="presentation" id="tabinvited_suppliers"><a href="#invited_suppliers" data-toggle="tab">Invited Suppliers</a></li>
                         <li role="presentation"><a href="#attachments" data-toggle="tab">Files</a></li>
-                        <li role="presentation"><a href="#settings" data-toggle="tab">Users</a></li>
-                        <li role="presentation"><a href="#DocumentActivity" data-toggle="tab">Activity</a></li>
+                        @{
+                            if (Code_C_Buyer == currentCompanyType)
+                            {
+                                <li role="presentation"><a href="#settings" data-toggle="tab">Users</a></li>
+                                <li role="presentation"><a href="#DocumentActivity" data-toggle="tab">Activity</a></li>
+                            }
+                           
+                        }
+
                     </ul>
                     <!-- Tab panes -->
                     <div class="tab-content">
@@ -159,20 +170,20 @@
                                     </div>
                                 </div>
 
+                                @*<div class="col-sm-3">
+                                        <input type="checkbox" asp-for="SupplierProvideMaterial" class="chk-col-red" disabled />
+                                        <label for="SupplierProvideMaterial">Supplier to Provide Materials</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input type="checkbox" asp-for="SupplierProvideTransport" class="chk-col-red" disabled />
+                                        <label for="SupplierProvideTransport">Supplier to Provide Transport</label>
+                                    </div>*@
                                 <div class="col-sm-3">
-                                    <input type="checkbox" asp-for="SupplierProvideMaterial" class="chk-col-red" disabled />
-                                    <label for="SupplierProvideMaterial">Supplier to Provide Materials</label>
-                                </div>
-                                <div class="col-sm-3">
-                                    <input type="checkbox" asp-for="SupplierProvideTransport" class="chk-col-red" disabled />
-                                    <label for="SupplierProvideTransport">Supplier to Provide Transport</label>
-                                </div>
-                                <div class="col-sm-3">
-                                    <input type="checkbox" asp-for="IsPublic" class="chk-col-red" />
+                                    <input type="checkbox" asp-for="IsPublic" class="chk-col-red" disabled />
                                     <label for="IsPublic">Public</label>
                                 </div>
                                 <div class="col-sm-3">
-                                    <input type="checkbox" asp-for="SupplierProvideInstallationService" class="chk-col-red" />
+                                    <input type="checkbox" asp-for="SupplierProvideInstallationService" class="chk-col-red" disabled />
                                     <label for="SupplierProvideInstallationService">Supplier Provide Installation Service</label>
                                 </div>
                                 <div class="col-sm-6">
@@ -222,7 +233,13 @@
                                 </tbody>
 
                             </table>
-                            <button class="btn btn-default waves-effect m-r-20" type="button" data-target="#requirementCompareModal" data-toggle="modal">Requirement Comparison</button>
+                            @{
+                                if (Code_C_Buyer == currentCompanyType)
+                                {
+                                    <button class="btn btn-default waves-effect m-r-20" type="button" data-target="#requirementCompareModal" data-toggle="modal">Requirement Comparison</button>
+                                }
+                            }
+
                             <div tabindex="-1" class="modal fade in" id="requirementCompareModal" role="dialog" aria-labelledby="requirementCompareModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-lg" role="document">
                                     <div class="modal-content">
@@ -370,7 +387,14 @@
                                 </tbody>
 
                             </table>
-                            <button class="btn btn-default waves-effect m-r-20" type="button" data-target="#priceCompareModal" data-toggle="modal">Price Comparison</button>
+
+                            @{
+                                if (Code_C_Buyer == currentCompanyType)
+                                {
+                                    <button class="btn btn-default waves-effect m-r-20" type="button" data-target="#priceCompareModal" data-toggle="modal">Price Comparison</button>
+                                }
+                            }
+
 
                             <div tabindex="-1" class="modal fade in" id="priceCompareModal" role="dialog" aria-labelledby="priceCompareModalLabel" aria-hidden="true">
 
@@ -575,6 +599,9 @@
             </div>
         </div>
     </div>
+    @{
+        if (Code_C_Buyer == currentCompanyType)
+        {
     <div class="row clearfix">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
@@ -607,12 +634,34 @@
             </div>
         </div>
     </div>
+        }
+    }
+    
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
                 <div class="body">
-                    <a type="button" class="btn btn-danger" href='@Url.Action("Create","Quotation",new { id= Model.Id })'>Create Quotation</a>
                     <input type="hidden" id="loadinvitedsupplier" value="0" />
+                    @{
+                        if (Code_C_Buyer != currentCompanyType)
+                        {
+                            <a class="btn btn-danger" href='@Url.Action("Create","Quotation",new { id= Model.Id })'>Create Quotation</a>
+
+                        }
+                        else
+                        {
+                            if (Model.Document.DocumentStatus_Id == Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Draft)
+                            {
+                                <a class="btn btn-warning" href='@Url.Action("Edit","Rfq",new { id= Model.Id })'>Edit RFQ</a>
+                                <button type="button" id="btnDelete" class="btn btn-danger">Delete</button>
+                            }
+                            else if (Model.Document.DocumentStatus_Id == Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Submitted)
+                            {
+                                <button type="button" id="btnWithdrawn" class="btn btn-danger">Withdrawn</button>
+                            }
+                        }
+                    }
+
                 </div>
             </div>
         </div>
@@ -652,9 +701,7 @@
     $(function () {
 
         loadIndustry();
-
-        loadUser();
-        loadRole();
+        loadSelectedSupplier();
         loadQuotation(1);
         $('#frmCreateRFQ input').attr('readonly', 'readonly');
        // $('#StartRfqdate').datepicker("setDate", new Date(2008, 9, 03));
@@ -662,207 +709,91 @@
 
 
 
-    $("#btnSubmit").click(function () {
-        //alert($('.supplier:checkbox:checked'));
-        var haveInvitedSupplier = false;
-        $('input:checkbox.supplier').each(function () {
-            var sThisVal = (this.checked ? $(this).val() : "");
-            if (sThisVal != "") {
-                haveInvitedSupplier = true;
-            }
-        });
-
-        if (haveInvitedSupplier) {
-            $("#frmCreateRFQ").submit();
-        } else {
-            alert("Please invite at least one supplier.");
-        }
-    });
-
-    function loadUser() {
-        var ajaxurl = '@Url.Action("GetActiveUserByCompany", "Rfq")';
-
-        $('#ddlUser').append($('<option>', {
-            value: 0,
-            text: '--Select User--'
-        }));
-
-        $.ajax({
-            url: ajaxurl,
-            data: { CompanyId: 1 },
-            dataType: 'json',
-            success: function (response) {
-                //console.log(response);
-                var obj = response;
-                for (var k in obj) {
-                    var item = obj[k];
-                    $('#ddlUser').append($('<option>', {
-                        value: item.Id,
-                        text: item.ContactName
-                    }));
-                }
-                $("#ddlUser").selectpicker('refresh');
-
-            },
-            error: function (response) {
-                alert(response)
-            }
-
-        });
-    }
-
-    $("#btnAddUser").click(function () {
-        var userId = $("#ddlUser").val();
-        var userName = $("#ddlUser option:selected").text();
-        var roleId = $("#ddlRole").val();
-
-        if (userId == 0 ) {
-            alert("Please select the user");
-        } else {
-            var isExistingUser = false;
-            $('#userSettingTable > tbody  > tr > td > input[name="documentUserId[]"]').each(function () {
-                if (userId == $(this).val()) {
-                    alert("User is already exist in list.");
-                    isExistingUser = true;
-                }
-            });
-            if (isExistingUser == false) {
-                if (roleId == null) {
-                    alert("Please select the role(s)");
-                } else {
-                    var tmptag = "<tr><td>" +
-                        "<input type='hidden' name='documentUserId[]' value='" + userId + "' />" +
-                        "<h5> " + userName + " </h5>" +
-                        "<input type='hidden' name='documentUserRole[]' value='" + roleId + "' />";
-                    $("#ddlRole option:selected").each(function () {
-                        var $this = $(this);
-                        if ($this.length) {
-                            var selText = $this.text();
-                            tmptag = tmptag + "<span class='label bg-deep-purple'> " + selText +" </span>&nbsp;  ";
-                        }
-                    });
-                    tmptag = tmptag + "</td><td><button type='button' class='btn btn-danger waves-effect'  onclick='RemoveUserRow(this)'>Remove</button></td>";
-                    tmptag = tmptag + "</tr>";
-                    $("#userSettingTable > tbody").append(tmptag);
-                    $("#ddlUser").val(0);
-                    $("#ddlUser").selectpicker('refresh');
-                    $("#ddlRole").val(0);
-                    $("#ddlRole").selectpicker('refresh');
-                }
-            }
-        }
-    });
-
-    function RemoveUserRow(item) {
-        $(item).parent().parent().remove();
-    }
-
-    function loadRole() {
-        var ajaxurl = '@Url.Action("GetActiveRoles", "Rfq")';
-
-         $.ajax({
-            url: ajaxurl,
-            dataType: 'json',
-            success: function (response) {
-                //console.log(response);
-                var obj = response;
-                for (var k in obj) {
-                    var item = obj[k];
-                    $('#ddlRole').append($('<option>', {
-                        value: item.Id,
-                        text: item.Name
-                    }));
-
-                }
-                $("#ddlRole").selectpicker('refresh');
-
-            },
-            error: function (response) {
-                alert(response)
-            }
-
-        });
-    }
-
-    $("#btnLoadSupplier").click(function () {
-        $('#invitedSupplierTable > tbody').empty();
-        loadSupplier(1);
-    });
-
- function loadSupplier(page) {
-     var serviceTagsId = $('#ddlServiceTags').val();
-
-     var stringServiceTagsId = serviceTagsId.toString();
-
-     if (serviceTagsId == null) {
-         alert("Please select the service tags!");
-        } else {
-            var ajaxurl = '@Url.Action("GetSupplierByServiceTagsId", "Rfq")';
+    $("#btnDelete").click(function () {
+        var ajaxurl = '@Url.Action("DeleteRfq", "Rfq")';
+        $('.page-loader-wrapper').fadeIn();
             $.ajax({
                 url: ajaxurl,
-                data: { serviceTagsId: stringServiceTagsId, page:page},
+                data: {documentId: @(Model.Document.Id)},
                 dataType: 'json',
                 success: function (response) {
-                    var obj = response.Result.Records;
-                    for (var k in obj) {
-                        var item = obj[k];
-                        var selected = "";
-                        var selectedClass = "btn-success";
-                        var invited = "Invite";
-                        var invitedSupplier = $("#hdSelectedSuppliers").val();
-
-                        var array = invitedSupplier.split(',');
-                        array.forEach(function (i) {
-                            if (i == item.Id) {
-                                selected = "checked='checked'";
-                                selectedClass = "btn-danger";
-                                invited = "Invited";
-                            }
-                        });
-
-
-                        $('#invitedSupplierTable > tbody').append(
-                            "<tr>" +
-                            "<td> <h5>" + item.Name + "</h5><span class='label label-success'>Verified</span>" +
-                            " <p class='m-t-15 m-b-30'>" + item.About + "</p></td>" +
-                            "<td><input type='checkbox' class='filled-in supplier' id='chkSupplier_" + item.Id + "'  name='supplier_list[]' value='" + item.Id + "' " + selected + "> <button type='button' id='btnInvite_" + item.Id + "' class='btn " + selectedClass +"' disabled>"+invited+"</button></td>" +
-                            "</tr>");
-
-                    }
-                    $("#hdSelectedSuppliers").val("0");
-                    var totalpage = response.Result.TotalPage;
-                    var currentpage = response.Result.CurrentPage;
-                    if (totalpage > currentpage) {
-                        $(".pagination").empty();
-                        $(".pagination").append(" <a class='btn btn-md btn-default' OnClick='loadSupplier(" + response.Result.NextPage + ")'> Load More </a> ");
+                    //console.log(response);
+                    var obj = response;
+                    if (obj.IsSuccess) {
+                        var redirecturl = '@Url.Action("Index", "Rfq")';
+                        window.location.href = redirecturl;
                     } else {
-                        $(".pagination").empty();
-
+                        alert(obj.MessageToUser);
                     }
-
+                    $('.page-loader-wrapper').fadeOut();
                 },
                 error: function (response) {
                     alert(response)
                 }
             });
-     }
+    });
 
+     $("#btnWithdrawn").click(function () {
+        var ajaxurl = '@Url.Action("WithdrawnRfq", "Rfq")';
+         $('.page-loader-wrapper').fadeIn();
+            $.ajax({
+                url: ajaxurl,
+                data: {documentId: @(Model.Document.Id)},
+                dataType: 'json',
+                success: function (response) {
+                    //console.log(response);
+                    var obj = response;
+                    if (obj.IsSuccess) {
+                        var redirecturl = '@Url.Action("Index", "Rfq")';
+                        window.location.href = redirecturl;
+                    } else {
+                        alert(obj.MessageToUser);
+                    }
+                    $('.page-loader-wrapper').fadeOut();
+                },
+                error: function (response) {
+                    alert(response)
+                }
+            });
+    });
+
+    
+
+    
+
+   
+
+
+    function loadSelectedSupplier() {
+
+       var ajaxurl = '@Url.Action("LoadSelectedSupplier", "Rfq")';
+            $.ajax({
+                url: ajaxurl,
+                data: { RfqId: @(Model.Id)},
+                dataType: 'json',
+                success: function (response) {
+                    var obj = response;
+                    for (var k in obj) {
+                        var item = obj[k];
+                        var verifyBadge = "<span class='label label-danger'>Unverified</span>";
+                        if (item.IsVerified) {
+                            verifyBadge = "<span class='label label-success'>Verified</span>";
+                        }
+                        $('#invitedSupplierTable > tbody').append(
+                            "<tr>" +
+                            "<td> <h5>" + item.Name + "</h5>" + verifyBadge +
+                            " <p class='m-t-15 m-b-30'>" + item.About + "</p></td>" +
+                            "</tr>");
+                    }
+                },
+                error: function (response) {
+                    alert(response)
+                }
+            });
+   
     }
 
-    function checkSupplier(n) {
-
-        if ($("#chkSupplier_" + n).prop("checked")) {
-
-            $("#chkSupplier_" + n).prop("checked", false);
-            $("#btnInvite_" + n).removeClass("btn btn-danger").addClass("btn btn-success");
-            $("#btnInvite_" + n).text("Invite");
-        } else {
-            $("#chkSupplier_" + n).prop("checked", true);
-            $("#btnInvite_" + n).removeClass("btn btn-success").addClass("btn btn-danger");
-            $("#btnInvite_" + n).text("Invited");
-        }
-
-    }
+   
 function loadIndustry() {
     var ajaxurl = '@Url.Action("GetActiveIndustries", "Rfq")';
 
@@ -944,7 +875,7 @@ function loadIndustry() {
                     $("#ddlServiceTags").selectpicker('refresh');
                     $("#hdSelectedTags").val("0");
                     if ($("#loadinvitedsupplier").val() == "0") {
-                        loadSupplier(1);
+                        
                         $("#loadinvitedsupplier").val("1");
                     }
                 },

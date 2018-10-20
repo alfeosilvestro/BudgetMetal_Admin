@@ -163,14 +163,14 @@
                                     </div>
                                 </div>
 
-                                <div class="col-sm-3">
-                                    <input type="checkbox" asp-for="SupplierProvideMaterial" class="chk-col-red" />
-                                    <label for="SupplierProvideMaterial">Supplier to Provide Materials</label>
-                                </div>
-                                <div class="col-sm-3">
-                                    <input type="checkbox" asp-for="SupplierProvideTransport" class="chk-col-red" />
-                                    <label for="SupplierProvideTransport">Supplier to Provide Transport</label>
-                                </div>
+                                @*<div class="col-sm-3">
+                                        <input type="checkbox" asp-for="SupplierProvideMaterial" class="chk-col-red" />
+                                        <label for="SupplierProvideMaterial">Supplier to Provide Materials</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input type="checkbox" asp-for="SupplierProvideTransport" class="chk-col-red" />
+                                        <label for="SupplierProvideTransport">Supplier to Provide Transport</label>
+                                    </div>*@
                                 <div class="col-sm-3">
                                     <input type="checkbox" asp-for="IsPublic" class="chk-col-red" />
                                     <label for="IsPublic">Public</label>
@@ -547,7 +547,9 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
                 <div class="body">
-                    <button type="button" id="btnSubmit" class="btn btn-success">Submit</button>
+                    <input type="hidden" name="btnType" id="btnType" value="" />
+                    <button type="button" id="btnDraft" class="btn btn-info btn-lg">Draft</button>
+                    <button type="button" id="btnSubmit" class="btn btn-primary  btn-lg">Submit</button>
                     <input type="hidden" id="loadinvitedsupplier" value="0" />
                 </div>
             </div>
@@ -585,9 +587,7 @@
 
 <script>
     $(function () {
-
         loadIndustry();
-
         loadUser();
         loadRole()
        // $('#StartRfqdate').datepicker("setDate", new Date(2008, 9, 03));
@@ -600,22 +600,65 @@
 
     });
 
-    $("#btnSubmit").click(function () {
-        //alert($('.supplier:checkbox:checked'));
-        var haveInvitedSupplier = false;
-        $('input:checkbox.supplier').each(function () {
-            var sThisVal = (this.checked ? $(this).val() : "");
-            if (sThisVal != "") {
-                haveInvitedSupplier = true;
-            }
-        });
+    //$("#btnSubmit").click(function () {
+    //    //alert($('.supplier:checkbox:checked'));
+    //    var haveInvitedSupplier = false;
+    //    $('input:checkbox.supplier').each(function () {
+    //        var sThisVal = (this.checked ? $(this).val() : "");
+    //        if (sThisVal != "") {
+    //            haveInvitedSupplier = true;
+    //        }
+    //    });
 
-        if (haveInvitedSupplier) {
-            $("#frmCreateRFQ").submit();
-        } else {
-            alert("Please invite at least one supplier.");
-        }
+    //    if (haveInvitedSupplier) {
+    //        $("#frmCreateRFQ").submit();
+    //    } else {
+    //        alert("Please invite at least one supplier.");
+    //    }
+
+
+    //});
+
+    $("#btnSubmit").click(function () {
+        $("#btnType").val("submit");
+        SaveForm();
     });
+
+    $("#btnDraft").click(function () {
+        $("#btnType").val("draft");
+        SaveForm();
+    });
+
+    function SaveForm() {
+
+        var isValid = true;
+
+        //$("form#frmCreateRFQ :input[type=text]").each(function () {
+        //    var input = $(this);
+        //    if (input.val() == "") {
+        //        isValid = false;
+        //    }
+        //});
+
+        if (isValid) {
+            var haveInvitedSupplier = false;
+            $('input:checkbox.supplier').each(function () {
+                var sThisVal = (this.checked ? $(this).val() : "");
+                if (sThisVal != "") {
+                    haveInvitedSupplier = true;
+                }
+            });
+
+            if (haveInvitedSupplier) {
+                $('.page-loader-wrapper').fadeIn();
+                $("#frmCreateRFQ").submit();
+            } else {
+                alert("Please invite at least one supplier.");
+            }
+        } else {
+            alert("Please fill all fields!")
+        }
+    }
 
     function loadUser() {
         var ajaxurl = '@Url.Action("GetActiveUserByCompany", "Rfq")';
@@ -710,15 +753,12 @@
                         value: item.Id,
                         text: item.Name
                     }));
-
                 }
                 $("#ddlRole").selectpicker('refresh');
-
             },
             error: function (response) {
                 alert(response)
             }
-
         });
     }
 
@@ -759,12 +799,15 @@
                             }
                         });
 
-
+                        var verifyBadge = "<span class='label label-danger'>Unverified</span>";
+                        if (item.IsVerified) {
+                            verifyBadge = "<span class='label label-success'>Verified</span>";
+                        }
                         $('#invitedSupplierTable > tbody').append(
                             "<tr>" +
-                            "<td> <h5>" + item.Name + "</h5><span class='label label-success'>Verified</span>" +
+                            "<td> <h5>" + item.Name + "</h5>" + verifyBadge +
                             " <p class='m-t-15 m-b-30'>" + item.About + "</p></td>" +
-                            "<td><input type='checkbox' class='filled-in supplier' id='chkSupplier_" + item.Id + "'  name='supplier_list[]' value='" + item.Id + "' " + selected + "> <button type='button' id='btnInvite_" + item.Id + "' class='btn " + selectedClass +"' onclick='checkSupplier(" + item.Id + ")'>"+invited+"</button></td>" +
+                            "<td><input type='checkbox' class='filled-in supplier' id='chkSupplier_" + item.Id + "'  name='supplier_list' value='" + item.Id + "' " + selected + "> <button type='button' id='btnInvite_" + item.Id + "' class='btn " + selectedClass +"' onclick='checkSupplier(" + item.Id + ")'>"+invited+"</button></td>" +
                             "</tr>");
 
                     }
@@ -776,9 +819,7 @@
                         $(".pagination").append(" <a class='btn btn-md btn-default' OnClick='loadSupplier(" + response.Result.NextPage + ")'> Load More </a> ");
                     } else {
                         $(".pagination").empty();
-
                     }
-
                 },
                 error: function (response) {
                     alert(response)
@@ -793,14 +834,23 @@
         if ($("#chkSupplier_" + n).prop("checked")) {
 
             $("#chkSupplier_" + n).prop("checked", false);
-            $("#btnInvite_" + n).removeClass("btn btn-danger").addClass("btn btn-success");
-            $("#btnInvite_" + n).text("Invite");
+            $("#btnInvite_" + n).removeClass("btn btn-success").addClass("btn btn-danger");
+            $("#btnInvite_" + n).text("Select");
         } else {
             $("#chkSupplier_" + n).prop("checked", true);
-            $("#btnInvite_" + n).removeClass("btn btn-success").addClass("btn btn-danger");
-            $("#btnInvite_" + n).text("Invited");
+            $("#btnInvite_" + n).removeClass("btn btn-danger").addClass("btn btn-success");
+            $("#btnInvite_" + n).text("Selected");
         }
-
+        var selectedSupplier = "";
+        $('input[name="supplier_list"]:checked').each(function () {
+            if (selectedSupplier == "") {
+                selectedSupplier = this.value;
+            } else {
+                selectedSupplier = selectedSupplier + "," + this.value;
+            }
+        });
+        console.log(selectedSupplier);
+        $("#hdSelectedSuppliers").val(selectedSupplier);
     }
 function loadIndustry() {
     var ajaxurl = '@Url.Action("GetActiveIndustries", "Rfq")';

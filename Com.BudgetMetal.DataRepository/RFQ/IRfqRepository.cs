@@ -9,12 +9,14 @@ namespace Com.BudgetMetal.DataRepository.RFQ
 {
     public interface IRfqRepository : IGenericRepository<Com.BudgetMetal.DBEntities.Rfq>
     {
-        Task<PageResult<Com.BudgetMetal.DBEntities.Rfq>> GetRfqByPage(int documentOwner, int page, int totalRecords, int statusId, string keyword);
+        Task<PageResult<Com.BudgetMetal.DBEntities.Rfq>> GetRfqByPage(int userId, int documentOwner, int page, int totalRecords, bool isCompany, int statusId, string keyword);
 
         Task<PageResult<Com.BudgetMetal.DBEntities.Rfq>> GetPublicRfqByPage(int page, int totalRecords, int statusId, string keyword);
 
         Task<Com.BudgetMetal.DBEntities.Rfq> GetSingleRfqById(int id); 
 
         Task<PageResult<Com.BudgetMetal.DBEntities.Rfq>> GetPublicRfqByCompany(int page, int companyId, int totalRecords, int statusId, string keyword);
+
+        Task<List<Com.BudgetMetal.DBEntities.Company>> GetSelectedSupplier(int rfqId);
     }
 }

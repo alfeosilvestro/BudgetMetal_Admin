@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Com.BudgetMetal.ViewModels;
+using Com.BudgetMetal.ViewModels.Company;
 using Com.BudgetMetal.ViewModels.Rfq;
 
 namespace Com.BudgetMetal.Services.RFQ
 {
     public interface IRFQService
     {
-        Task<VmRfqPage> GetRfqByPage(int documentOwner, int page, int totalRecords, int statusId = 0, string keyword = "");
+        Task<VmRfqPage> GetRfqByPage(int userId, int documentOwner, int page, int totalRecords, bool isCompany, int statusId = 0, string keyword = "");
 
         Task<VmRfqPage> GetPublicRfqByPage(int page, int totalRecords, int statusId = 0, string keyword = "");
 
-        string SaveRFQ(VmRfqItem rfq);
+        VmGenericServiceResult SaveRFQ(VmRfqItem rfq);
 
-        string UpdateRFQ(VmRfqItem rfq);
+        VmGenericServiceResult UpdateRFQ(VmRfqItem rfq);
 
         //Task<VmRfqPage> GetRfqByPage(string keyword, int page, int totalRecords);
 
@@ -36,5 +37,11 @@ namespace Com.BudgetMetal.Services.RFQ
         Task<VmRfqItem> GetPublicPortalSingleRfqById(int documentId);
 
         Task<VmRfqPage> GetPublicRfqByCompany(int page, int companyId, int totalRecords, int statusId = 0, string keyword = "");
+
+        Task<List<VmCompanyItem>> LoadSelectedSupplier(int rfqId);
+
+        Task<VmGenericServiceResult> WithdrawnRfq(int documentId, int userId, string userName);
+
+        Task<VmGenericServiceResult> DeleteRfq(int documentId, int userId, string userName);
     }
 }

@@ -19,8 +19,13 @@ namespace Com.BudgetMetal.DataRepository.RFQ
         {
 
         }
-        public async Task<PageResult<Com.BudgetMetal.DBEntities.Rfq>> GetRfqByPage(int documentOwner, int page, int totalRecords, int statusId, string keyword)
+        public async Task<PageResult<Com.BudgetMetal.DBEntities.Rfq>> GetRfqByPage(int userId, int documentOwner, int page, int totalRecords, bool isCompanyAdmin, int statusId, string keyword)
         {
+            var filterDocument = await this.DbContext.DocumentUser
+                .Where(e => e.IsActive == true && e.User_Id == userId)
+                .Select(e => e.Document_Id).Distinct().ToListAsync();
+
+
             var records = await this.entities
                             .Include(e => e.Document)
                             .Include(e => e.Document.DocumentStatus)
@@ -36,6 +41,10 @@ namespace Com.BudgetMetal.DataRepository.RFQ
                             .OrderByDescending(e => e.CreatedDate)
                             .ToListAsync();
 
+            if (!isCompanyAdmin)
+            {
+                records = records.Where(e => filterDocument.Contains(e.Document_Id)).ToList();
+            }
 
             var recordList = records
                 .Skip((totalRecords * page) - totalRecords)
@@ -187,6 +196,16 @@ namespace Com.BudgetMetal.DataRepository.RFQ
                 NextPage = nextPage,
                 TotalRecords = count
             };
+
+            return result;
+        }
+
+
+        public async Task<List<Com.BudgetMetal.DBEntities.Company>> GetSelectedSupplier(int rfqId)
+        {
+            var filterCompay = this.DbContext.InvitedSupplier.Where(e => e.IsActive == true && e.Rfq_Id == rfqId).Select(e=>e.Company_Id).ToList();
+
+            var result = await this.DbContext.Company.Where(e => filterCompay.Contains(e.Id)).ToListAsync();
 
             return result;
         }

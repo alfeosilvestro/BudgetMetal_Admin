@@ -1,10 +1,12 @@
 ﻿using Com.BudgetMetal.DataRepository.Base;
 using Com.BudgetMetal.DB;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Com.BudgetMetal.DataRepository.InvitedSupplier
 {
@@ -28,6 +30,13 @@ namespace Com.BudgetMetal.DataRepository.InvitedSupplier
                 e.UpdatedBy = UpdatedBy;
             }
             );
+        }
+
+        public async Task<List<Com.BudgetMetal.DBEntities.InvitedSupplier>> GetByDocumentId(int documentId)
+        {
+            var result = await this.entities.Include(e => e.Rfq).Where(e => e.Rfq.Document_Id == documentId && e.IsActive == true).ToListAsync();
+
+            return result;
         }
     }
 }

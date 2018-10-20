@@ -8,6 +8,6 @@ namespace Com.BudgetMetal.DataRepository.CompanySupplier
 {
     public interface ICompanySupplierRepository : IGenericRepository<Com.BudgetMetal.DBEntities.CompanySupplier>
     {
-        
+        Task<List<int>> GetPreferredSupplierByCompanyId(int companyId);
     }
 }
