@@ -507,7 +507,7 @@ namespace Com.BudgetMetal.Services.Company
             return resultObj;
         }
 
-        public async Task<VmGenericServiceResult> EditCompanyUserRole(int companyId, int userId, string[] userRole, string updatedBy)
+        public async Task<VmGenericServiceResult>EditCompanyUserRole(int companyId, int userId, string[] userRole, string updatedBy)
         {
             var result = new VmGenericServiceResult();
 
