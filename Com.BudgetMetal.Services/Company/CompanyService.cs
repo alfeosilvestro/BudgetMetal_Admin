@@ -13,6 +13,7 @@ using Com.BudgetMetal.ViewModels.Role;
 using Com.BudgetMetal.ViewModels.User;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -263,11 +264,14 @@ namespace Com.BudgetMetal.Services.Company
             repo.Commit();
         }
 
-        public async Task<VmCompanyPage> GetSupplierByServiceTagsId(string serviceTagsId, int page, string searchKeyword)
+        public async Task<VmCompanyPage> GetSupplierByServiceTagsId( int companyId, string serviceTagsId,int page, string searchKeyword)
         {
             var dbPageResult = repo.GetSupplierByServiceTagsId(serviceTagsId,
                 (page == 0 ? Constants.app_firstPage : page),
                 Constants.app_totalRecords, searchKeyword);
+
+            var PreferredSupplierList = await companySupplierRepo.GetPreferredSupplierByCompanyId(companyId);
+            
 
             if (dbPageResult == null)
             {
@@ -278,7 +282,7 @@ namespace Com.BudgetMetal.Services.Company
             resultObj.RequestId = DateTime.Now.ToString("yyyyMMddHHmmss");
             resultObj.RequestDate = DateTime.Now;
             resultObj.Result = new PageResult<VmCompanyItem>();
-            resultObj.Result.Records = new List<VmCompanyItem>();
+             var companyList = new List<VmCompanyItem>();
 
             Copy<PageResult<Com.BudgetMetal.DBEntities.Company>, PageResult<VmCompanyItem>>(dbPageResult, resultObj.Result, new string[] { "Records" });
 
@@ -287,10 +291,14 @@ namespace Com.BudgetMetal.Services.Company
                 var resultItem = new VmCompanyItem();
 
                 Copy<Com.BudgetMetal.DBEntities.Company, VmCompanyItem>(dbItem, resultItem);
-
-                resultObj.Result.Records.Add(resultItem);
+                if (PreferredSupplierList.Contains(resultItem.Id))
+                {
+                    resultItem.OrderToShow = 1;
+                }
+               companyList.Add(resultItem);
             }
 
+            resultObj.Result.Records =companyList.OrderByDescending(e=>e.OrderToShow).ToList();
             return resultObj;
         }
 

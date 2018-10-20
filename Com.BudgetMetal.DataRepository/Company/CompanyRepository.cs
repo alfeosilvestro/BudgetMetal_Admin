@@ -31,15 +31,23 @@ namespace Com.BudgetMetal.DataRepository.Company
             var filterCompany = this.DbContext.SupplierServiceTags.Where(e=>e.IsActive == true & filterServiceTags.Contains(e.ServiceTags_Id)).Select(e=>e.Company_Id).Distinct().ToList();
 
             searchKeyword = (searchKeyword == null) ? "" : searchKeyword.ToLower().Trim();
-            var records = this.entities.Where(e=>e.IsActive == true && filterCompany.Contains(e.Id) && (searchKeyword == "" || e.Name.ToLower().Contains(searchKeyword) || e.RegNo.ToLower().Contains(searchKeyword)));
+            var records = this.entities.Where(e=>e.IsActive == true && e.C_BusinessType == Constants_CodeTable.Code_C_Supplier && filterCompany.Contains(e.Id) && (searchKeyword == "" || e.Name.ToLower().Contains(searchKeyword) || e.RegNo.ToLower().Contains(searchKeyword)));
+
+            //var recordList = records
+            //    .OrderBy(e=>e.Name)
+            //.Skip((totalRecords * page) - totalRecords)
+            //.Take(totalRecords)
+            //.ToList();
+
+            //var count = records.Count();
+            //var totalPage = (count + totalRecords - 1) / totalRecords;
+
 
             var recordList = records
-                .OrderBy(e=>e.Name)
-            .Skip((totalRecords * page) - totalRecords)
-            .Take(totalRecords)
-            .ToList();
+               .OrderBy(e => e.Name)
+               .ToList();
 
-            var count = records.Count();
+            var count = recordList.Count();
 
             var nextPage = 0;
             var prePage = 0;
@@ -48,7 +56,8 @@ namespace Com.BudgetMetal.DataRepository.Company
                 prePage = page - 1;
             }
 
-            var totalPage = (count + totalRecords - 1) / totalRecords;
+            var totalPage = 1;
+
             if (page < totalPage)
             {
                 nextPage = page + 1;

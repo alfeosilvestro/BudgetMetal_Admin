@@ -148,17 +148,17 @@
                                     </div>
                                 </div>
 
-                                <div class="col-sm-3">
+                                @*<div class="col-sm-3">
                                     <input type="checkbox" asp-for="SupplierProvideMaterial" class="chk-col-red" />
                                     <label for="SupplierProvideMaterial">Supplier to Provide Materials</label>
                                 </div>
                                 <div class="col-sm-3">
                                     <input type="checkbox" asp-for="SupplierProvideTransport" class="chk-col-red" />
                                     <label for="SupplierProvideTransport">Supplier to Provide Transport</label>
-                                </div>
+                                </div>*@
                                 <div class="col-sm-3">
                                     <input type="checkbox" asp-for="IsPublic" class="chk-col-red" />
-                                    <label for="IsPublic">IsPublic</label>
+                                    <label for="IsPublic">Public</label>
                                 </div>
                                 <div class="col-sm-3">
                                     <input type="checkbox" asp-for="SupplierProvideInstallationService" class="chk-col-red" />
@@ -201,10 +201,6 @@
                                             <input type="text" asp-for="Requirement[0].Description" class="form-control" />
                                             <span asp-validation-for="Requirement[0].Description" class="text-danger"></span>
                                         </td>
-                                        @*<td>
-                                                <input type="text" asp-for="Requirement[0].Quantity" class="form-control" />
-                                                <span asp-validation-for="Requirement[0].Quantity" class="text-danger"></span>
-                                            </td>*@
                                         <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveRequirementRow(this)'>Remove</button></td>
                                     </tr>
                                 </tbody>
@@ -309,7 +305,6 @@
                                     <input type="hidden" asp-for="IndustryOfRfq" id="hdIndustry" />
                                 </div>
                                 <div class="col-sm-8">
-                                    @*<select id="ddlServiceTags" class="form-control"></select>*@
                                     <select asp-for="SelectedTags" class="form-control show-tick" id="ddlServiceTags" data-live-search="true" multiple></select>
                                 </div>
                                 <div class="col-sm-1">
@@ -321,7 +316,7 @@
                                     <div class="form-group">
                                         <div class="form-line">
                                             <input type="text" name="txtSearchSupplier" id="txtSearchSupplier" class="form-control" placeholder="Supplier Name, UEN">
-                                            
+
                                         </div>
                                     </div>
                                 </div>
@@ -346,22 +341,7 @@
                         </div>
 
                         <div role="tabpanel" class="tab-pane fade" id="attachments">
-                            @*<div class="row clearfix">
-                                    <div class="col-sm-12">
-                                        <div action="/" id="frmFileUpload" class="dropzone" method="post" enctype="multipart/form-data">
-                                            <div class="dz-message">
-                                                <div class="drag-icon-cph">
-                                                    <i class="material-icons">touch_app</i>
-                                                </div>
-                                                <h3>Drop files here or click to upload.</h3>
-                                                <em>(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</em>
-                                            </div>
-                                            <div class="fallback">
-                                                <input name="file" type="file" multiple />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>*@
+                            
                             <table id="attachmentTable" class="table table-striped">
                                 <thead>
                                     <tr>
@@ -424,7 +404,10 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
                 <div class="body">
-                    <button type="button" id="btnSubmit" class="btn btn-success">Submit</button>
+                    <input type="hidden" name="btnType" id="btnType" value="" />
+                    <button type="button" id="btnDraft" class="btn btn-info btn-lg">Draft</button>
+                    <button type="button" id="btnSubmit" class="btn btn-primary  btn-lg">Submit</button>
+                    <button type="button" onclick='window.location.href = "@Url.Action("Index", "Rfq")";' class="btn btn-default  btn-lg">Cancel</button>
                 </div>
             </div>
         </div>
@@ -467,21 +450,47 @@
     });
 
     $("#btnSubmit").click(function () {
-        //alert($('.supplier:checkbox:checked'));
-        var haveInvitedSupplier = false;
-        $('input:checkbox.supplier').each(function () {
-            var sThisVal = (this.checked ? $(this).val() : "");
-            if (sThisVal != "") {
-                haveInvitedSupplier = true;
-            }
-        });
-
-        if (haveInvitedSupplier) {
-            $("#frmCreateRFQ").submit();
-        } else {
-            alert("Please invite at least one supplier.");
-        }
+        $("#btnType").val("submit");
+        SaveForm();
     });
+
+    $("#btnDraft").click(function () {
+        $("#btnType").val("draft");
+        SaveForm();
+    });
+
+    function SaveForm() {
+
+        var isValid = true;
+
+        //$("form#frmCreateRFQ :input[type=text]").each(function () {
+        //    var input = $(this);
+        //    if (input.val() == "") {
+        //        isValid = false;
+        //    }
+        //});
+
+        if (isValid) {
+            var haveInvitedSupplier = false;
+            $('input:checkbox.supplier').each(function () {
+                var sThisVal = (this.checked ? $(this).val() : "");
+                if (sThisVal != "") {
+                    haveInvitedSupplier = true;
+                }
+            });
+
+            if (haveInvitedSupplier) {
+                $('.page-loader-wrapper').fadeIn();
+                $("#frmCreateRFQ").submit();
+            } else {
+                alert("Please invite at least one supplier.");
+            }
+        } else {
+            alert("Please fill all fields!")
+        }
+    }
+
+
 
     function loadUser() {
         var ajaxurl = '@Url.Action("GetActiveUserByCompany", "Rfq")';
@@ -601,7 +610,8 @@
 
      if (serviceTagsId == null) {
             alert("Please select the service tags!")
-        } else {
+     } else {
+         $('.page-loader-wrapper').fadeIn();
             var ajaxurl = '@Url.Action("GetSupplierByServiceTagsId", "Rfq")';
             $.ajax({
                 url: ajaxurl,
@@ -611,12 +621,17 @@
                     var obj = response.Result.Records;
                     for (var k in obj) {
                         var item = obj[k];
+                        var verifyBadge = "<span class='label label-danger'>Unverified</span>";
+                        if (item.IsVerified) {
+                            verifyBadge = "<span class='label label-success'>Verified</span>";
+                        }
                         $('#invitedSupplierTable > tbody').append(
                             "<tr>" +
-                            "<td> <h5>" + item.Name + "</h5><span class='label label-success'>Verified</span>" +
+                            "<td> <h5>" + item.Name + "</h5>" + verifyBadge+
                             " <p class='m-t-15 m-b-30'>" + item.About + "</p></td>" +
-                            "<td><input type='checkbox' class='filled-in supplier' id='chkSupplier_" + item.Id + "'  name='supplier_list[]' value='" + item.Id + "'> <button type='button' id='btnInvite_" + item.Id + "' class='btn btn-danger' onclick='checkSupplier(" + item.Id + ")'>Select</button></td>" +
+                            "<td><input type='checkbox' class='filled-in supplier' id='chkSupplier_" + item.Id + "'  name='supplier_list' value='" + item.Id + "'> <button type='button' id='btnInvite_" + item.Id + "' class='btn btn-danger' onclick='checkSupplier(" + item.Id + ")'>Select</button></td>" +
                             "</tr>");
+
 
                     }
                     var totalpage = response.Result.TotalPage;
@@ -628,10 +643,11 @@
                         $(".pagination").empty();
 
                     }
-
+                    $('.page-loader-wrapper').fadeOut();
                 },
                 error: function (response) {
-                    alert(response)
+                    alert(response);
+                    $('.page-loader-wrapper').fadeOut();
                 }
             });
      }

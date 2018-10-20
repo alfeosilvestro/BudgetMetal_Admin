@@ -15,6 +15,16 @@ namespace Com.BudgetMetal.DataRepository.CompanySupplier
         public CompanySupplierRepository(DataContext context, ILoggerFactory loggerFactory) :
         base(context, loggerFactory, "CompanySupplierRepository")
         {
+
+            
+        }
+        public async Task<List<int>> GetPreferredSupplierByCompanyId(int companyId)
+        {
+            var resultList = new List<int>();
+
+            resultList = await this.entities.Where(e => e.IsActive == true && e.Company_Id == companyId).Select(e => e.Supplier_Id).Distinct().ToListAsync();
+
+            return resultList;
         }
 
         public void InactivePreferedCompanySupplier(int companyId, int supplierId, string updatedBy)

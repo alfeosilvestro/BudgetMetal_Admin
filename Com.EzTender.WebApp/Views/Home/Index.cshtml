@@ -86,7 +86,7 @@
         var ajaxurl = '@Url.Action("GetRFQForDashboard", "Home")';
         $.ajax({
             url: ajaxurl,
-            data: { page: page, status: statusId, Company_Id: company, skeyword: keyword},
+            data: { page: page, status: statusId, skeyword: keyword},
             dataType: 'json',
             success: function (response) {
                 var obj = response.Result.Records;

@@ -303,7 +303,19 @@
     });
 
     function SaveForm() {
-        $("#frmCreateQuotation").submit();
+        var isValid = true;
+        $("form#frmCreateQuotation :input").each(function () {
+            var input = $(this); 
+            if (input.val() == "") {
+                isValid = false;
+            }
+        });
+
+        if (isValid) {
+            $("#frmCreateQuotation").submit();
+        } else {
+            alert("Please fill all fields!")
+        }
     }
 
     function loadUser() {

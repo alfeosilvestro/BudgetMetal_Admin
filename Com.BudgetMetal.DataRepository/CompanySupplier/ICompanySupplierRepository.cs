@@ -11,5 +11,6 @@ namespace Com.BudgetMetal.DataRepository.CompanySupplier
         void InactivePreferedCompanySupplier(int companyId, int supplierId, string updatedBy);
 
         bool IsExistedSupplier(int companyId, int supplierId);
+        Task<List<int>> GetPreferredSupplierByCompanyId(int companyId);
     }
 }

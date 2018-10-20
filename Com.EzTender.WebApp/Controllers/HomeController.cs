@@ -9,6 +9,8 @@ using Com.BudgetMetal.Services.RFQ;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
 using Com.EzTender.WebApp.Filters;
+using Com.BudgetMetal.ViewModels.Role;
+using Com.BudgetMetal.Common;
 
 namespace Com.GenericPlatform.WebApp.Controllers
 {
@@ -58,11 +60,17 @@ namespace Com.GenericPlatform.WebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<JsonResult> GetRFQForDashboard(int page, string status, string Company_Id, string skeyword)
+        public async Task<JsonResult> GetRFQForDashboard(int page, string status, string skeyword)
         {
-           
-            var result = await rfqService.GetRfqByPage(Convert.ToInt32(Company_Id), page, 2,Convert.ToInt32(status), 
-                skeyword == null ? "": skeyword);
+            var Company_Id = HttpContext.Session.GetString("Company_Id");
+            var User_Id = HttpContext.Session.GetString("User_Id");
+            var userRoles = JsonConvert.DeserializeObject<List<VmRoleItem>>(HttpContext.Session.GetString("SelectedRoles"));
+            bool isCompanyAdmin = false;
+            if (userRoles.Where(e => e.Id == Constants.C_Admin_Role).ToList().Count > 0)
+            {
+                isCompanyAdmin = true;
+            }
+            var result = await rfqService.GetRfqByPage(Convert.ToInt32(User_Id), Convert.ToInt32(Company_Id), page, 10, isCompanyAdmin, Convert.ToInt32(status), skeyword == null ? "": skeyword);
 
             return new JsonResult(result, new JsonSerializerSettings()
             {

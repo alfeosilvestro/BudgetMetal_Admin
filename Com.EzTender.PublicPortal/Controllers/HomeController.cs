@@ -198,18 +198,7 @@ namespace Com.EzTender.PublicPortal.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        [HttpGet]
-        public async Task<JsonResult> GetRFQForDashboard(int page, string status, string Company_Id, string skeyword)
-        {
-
-            var result = await rfqService.GetRfqByPage(Convert.ToInt32(Company_Id), page, 2, Convert.ToInt32(status),
-                skeyword == null ? "" : skeyword);
-
-            return new JsonResult(result, new JsonSerializerSettings()
-            {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            });
-        }
+       
 
         [HttpGet]
         public async Task<JsonResult> GetPublicRFQ(int page, string status, string skeyword)

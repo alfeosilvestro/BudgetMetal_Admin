@@ -256,5 +256,25 @@ namespace Com.BudgetMetal.DataRepository.Users
 
             return records;
         }
+
+        public List<string> GetSupplierAdmin(List<int> supplierList)
+        {
+            var emailList = new List<string>();
+
+            var result =  this.entities.Include(e=>e.UserRoles).Where(e => supplierList.Contains(e.Company_Id) 
+            && e.IsActive == true 
+            && e.IsConfirmed == true
+            ).ToList();
+            foreach (var item in result)
+            {
+                if(item.UserRoles.Where(e=>e.Role_Id == Constants.C_Admin_Role && e.IsActive == true).ToList().Count > 0 )
+                {
+                    emailList.Add(item.EmailAddress);
+                }
+            }
+            //emailList = result.Select(e => e.EmailAddress).ToList();
+            
+            return emailList;
+        }
     }
 }

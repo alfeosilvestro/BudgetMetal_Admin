@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Com.BudgetMetal.Common;
 using Com.BudgetMetal.Services.Attachment;
 using Com.BudgetMetal.Services.Company;
 using Com.BudgetMetal.Services.Industries;
@@ -16,6 +17,7 @@ using Com.BudgetMetal.ViewModels.DocumentActivity;
 using Com.BudgetMetal.ViewModels.DocumentUser;
 using Com.BudgetMetal.ViewModels.InvitedSupplier;
 using Com.BudgetMetal.ViewModels.Rfq;
+using Com.BudgetMetal.ViewModels.Role;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -56,7 +58,14 @@ namespace Com.GenericPlatform.WebApp.Controllers
             }
             
             var Company_Id = HttpContext.Session.GetString("Company_Id");
-            var result = await rfqService.GetRfqByPage(Convert.ToInt32(Company_Id), page, 10);
+            var User_Id = HttpContext.Session.GetString("User_Id");
+            var userRoles = JsonConvert.DeserializeObject<List<VmRoleItem>>(HttpContext.Session.GetString("SelectedRoles"));
+            bool isCompanyAdmin = false;
+            if(userRoles.Where(e=>e.Id == Constants.C_Admin_Role).ToList().Count > 0)
+            {
+                isCompanyAdmin = true;
+            }
+            var result = await rfqService.GetRfqByPage(Convert.ToInt32(User_Id), Convert.ToInt32(Company_Id), page, 10,isCompanyAdmin);
             return View(result);
         }
 
@@ -98,8 +107,21 @@ namespace Com.GenericPlatform.WebApp.Controllers
         {
             try
             {
-
+                var submitType = Request.Form["btnType"];
+                string documentAction = "";
+                if (submitType.ToString().ToLower() == "draft")
+                {
+                    Rfq.Document.DocumentStatus_Id = Constants_CodeTable.Code_RFQ_Draft;
+                    documentAction = "Save as Draft";
+                }
+                else
+                {
+                    Rfq.Document.DocumentStatus_Id = Constants_CodeTable.Code_RFQ_Submitted;
+                    documentAction = "Submitted";
+                }
                 Rfq.SelectedTags = Request.Form["SelectedTags"].ToString();
+                Rfq.Document.UpdatedBy = HttpContext.Session.GetString("UserName");
+                Rfq.UpdatedBy = HttpContext.Session.GetString("UserName");
                 //var listAttachment = new List<VmAttachmentItem>();
                 int i = 0;
                 foreach (var itemFile in Request.Form.Files)
@@ -127,7 +149,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
                 //Rfq.Document.Attachment = listAttachment;
 
                 var listInvitedSupplier = new List<VmInvitedSupplierItem>();
-                var arrInvitedSupplier = Request.Form["supplier_list[]"].ToArray();
+                var arrInvitedSupplier = Request.Form["supplier_list"].ToArray();
                 foreach (var itemSupplier in arrInvitedSupplier)
                 {
                     var supplier = new VmInvitedSupplierItem();
@@ -162,16 +184,26 @@ namespace Com.GenericPlatform.WebApp.Controllers
                 {
                     User_Id = Convert.ToInt32(HttpContext.Session.GetString("User_Id")),
                     IsRfq = true,
-                    Action = "Update",
+                    Action = documentAction,
 
                 };
                 listDocumentActivity.Add(DocumentActivity);
                 //Rfq.DocumentActivityList = listDocumentActivity;
                 Rfq.Document.DocumentActivityList = listDocumentActivity;
 
-                string documentNo = rfqService.UpdateRFQ(Rfq);
+                //string documentNo = rfqService.UpdateRFQ(Rfq);
 
-                return RedirectToAction("Index");
+                //return RedirectToAction("Index");
+
+                var result = rfqService.UpdateRFQ(Rfq);
+                if (result.IsSuccess)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return View();
+                }
             }
             catch (Exception ex)
             {
@@ -201,6 +233,18 @@ namespace Com.GenericPlatform.WebApp.Controllers
         {
             try
             {
+                var submitType = Request.Form["btnType"];
+                string documentAction = "";
+                if (submitType.ToString().ToLower() == "draft")
+                {
+                    Rfq.Document.DocumentStatus_Id = Constants_CodeTable.Code_RFQ_Draft;
+                    documentAction = "Save as Draft";
+                }
+                else
+                {
+                    Rfq.Document.DocumentStatus_Id = Constants_CodeTable.Code_RFQ_Submitted;
+                    documentAction = "Submitted";
+                }
                 Rfq.SelectedTags = Request.Form["SelectedTags"].ToString();
                 var listAttachment = new List<VmAttachmentItem>();
                 int i = 0;
@@ -229,7 +273,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
                 Rfq.Document.Attachment = listAttachment;
 
                 var listInvitedSupplier = new List<VmInvitedSupplierItem>();
-                var arrInvitedSupplier = Request.Form["supplier_list[]"].ToArray();
+                var arrInvitedSupplier = Request.Form["supplier_list"].ToArray();
                 foreach (var itemSupplier in arrInvitedSupplier)
                 {
                     var supplier = new VmInvitedSupplierItem();
@@ -264,16 +308,21 @@ namespace Com.GenericPlatform.WebApp.Controllers
                 {
                     User_Id = Convert.ToInt32(HttpContext.Session.GetString("User_Id")),
                     IsRfq = true,
-                    Action = "Create",
+                    Action = documentAction,
 
                 };
                 listDocumentActivity.Add(DocumentActivity);
-                //Rfq.DocumentActivityList = listDocumentActivity;
                 Rfq.Document.DocumentActivityList = listDocumentActivity;
 
-                string documentNo = rfqService.SaveRFQ(Rfq);
-
-                return RedirectToAction("Index");
+                var result = rfqService.SaveRFQ(Rfq);
+                if (result.IsSuccess)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return View();
+                }
             }
             catch(Exception ex)
             {
@@ -358,7 +407,43 @@ namespace Com.GenericPlatform.WebApp.Controllers
         [HttpGet]
         public async Task<JsonResult> GetSupplierByServiceTagsId(string serviceTagsId, int page, string searchKeyword = "")
         {
-            var result = await companyService.GetSupplierByServiceTagsId(serviceTagsId, page, searchKeyword);
+            int companyId = Convert.ToInt32(HttpContext.Session.GetString("Company_Id"));
+            var result = await companyService.GetSupplierByServiceTagsId(companyId, serviceTagsId, page, searchKeyword);
+
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> WithdrawnRfq(int documentId)
+        {
+            
+            var result = await rfqService.WithdrawnRfq(documentId, Convert.ToInt32( HttpContext.Session.GetString("User_Id")), HttpContext.Session.GetString("UserName"));
+
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> DeleteRfq(int documentId)
+        {
+
+            var result = await rfqService.DeleteRfq(documentId, Convert.ToInt32(HttpContext.Session.GetString("User_Id")), HttpContext.Session.GetString("UserName"));
+
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> LoadSelectedSupplier(int RfqId)
+        {
+            var result = await rfqService.LoadSelectedSupplier(RfqId);
 
             return new JsonResult(result, new JsonSerializerSettings()
             {
