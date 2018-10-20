@@ -32,5 +32,11 @@ namespace Com.BudgetMetal.Services.Company
         Task<VmGenericServiceResult> EditCompanyAbout(int companyId, string about, string updatedBy);
 
         Task<VmGenericServiceResult> EditCompanyAddress(int companyId, string address, string updatedBy);
+
+        Task<VmGenericServiceResult> EditCompanyUser(int companyId, int userId, bool isActiveStatus, string updatedBy);
+
+        Task<VmCompanyItem> GetCompanyProfileById(int Id);
+
+        Task<VmGenericServiceResult> EditCompanyUserRole(int companyId, int userId, string[] userRole, string updatedBy);
     }
 }

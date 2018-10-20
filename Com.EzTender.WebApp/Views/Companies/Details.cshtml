@@ -15,7 +15,7 @@
                     About
                 </h2>
                 <br />
-                <textarea id="originalAbout" style="width:100%" rows="15" readonly>@Html.DisplayFor(model => model.About)</textarea>
+                <div id="originalAbout" style="width:100%" rows="15" readonly>@Html.DisplayFor(model => model.About)</div>
                 <ul class="header-dropdown m-r--5">
                     <li class="dropdown">
                         <a class=" waves-effect waves-block" data-toggle="modal" data-target="#aboutModal">
@@ -42,7 +42,7 @@
                             <i class="material-icons">edit</i>
                         </a>
                         <ul class="dropdown-menu pull-right">
-                            <li><a class=" waves-effect waves-block" data-toggle="modal" data-target="#addressModal">Edit Address</a></li>
+                            <li><a class="waves-effect waves-block" data-toggle="modal" data-target="#addressModal">Edit Address</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -138,17 +138,23 @@
                                         <th>Job Title</th>
                                         <th>Type</th>
                                         <th>Is Admin</th>
+                                        <th>Role</th>
+                                        <th></th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @{
                                         int counter = 1;
+                                        string buttonText = "";
                                         string userRole = "";
+                                        string className = "";
                                         if (Model.UserList != null)
                                         {
                                             foreach (var item in Model.UserList)
                                             {
-                                                userRole = string.Join(", ", item.RoleList.ToList());
+                                                buttonText = (item.IsConfirmed) ? "Active" : "Inactive";
+                                                className = (item.IsConfirmed) ? "btn btn-success" : "btn btn-danger";
                                                 <tr>
                                                     <td> @counter </td>
                                                     <td> @item.UserName </td>
@@ -156,6 +162,23 @@
                                                     <td> @item.JobTitle </td>
                                                     <td> @item.UserType </td>
                                                     <td> @item.IsConfirmed </td>
+                                                    <td>
+                                                        @{
+                                                            userRole = "";
+                                                            if (item.RoleList.Count > 0)
+                                                            {
+                                                                foreach (var roleItem in item.RoleList)
+                                                                {
+                                                                    userRole += "" + roleItem.Id + ",";
+                                                                    <span class='badge bg-cyan'>  @roleItem.Name  </span>
+                                                                }
+                                                            }
+                                                        }
+                                                    </td>
+                                                    <td><button type='button' id='btnInvite_@item.Id' class='@className' data-myval='@buttonText' onclick='checkSupplier(@item.Id)'> @buttonText </button></td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#userRoleModal" data-userRole="@userRole" data-userId="@item.Id">Edit Role</button>
+                                                    </td>
                                                 </tr>
                                                 counter++;
                                             }
@@ -231,8 +254,8 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="form-group col-md-12">
-                        <textarea name="about" id="txt_about" rows="5" style="width:100%; resize: none;">@Html.DisplayFor(model => model.About)</textarea>
-                        
+                        <textarea name="about" id="txt_about" rows="5" style="width:100%; border:solid 0px; resize: none;">@Html.DisplayFor(model => model.About)</textarea>
+
                     </div>
                 </div>
             </div>
@@ -265,27 +288,198 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             </div>
         </div>
-
+    </div>
+</div>
+<div class="modal fade" id="userRoleModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">User Role</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    @*<label asp-for="RoleList" class="control-label">Roles</label>
+                        <select asp-for="RoleList" multiple="multiple" id="RoleList" name="RoleList" asp-items="@(new SelectList(Model.RoleList, "Id", "Name"))" class="form-control">
+                            <option>Please select</option>
+                        </select>
+                        <span asp-validation-for="RoleList" class="text-danger"></span>*@
+                    <textarea hidden name="userId" id="userId" rows="1" style="width:100%; resize: none;"></textarea>
+                    <textarea hidden name="userRole" id="userRole" rows="1" style="width:100%; resize: none;"></textarea>
+                    <div class="row clearfix">
+                        <div class="col-sm-12">
+                            <select id="ddluserRole" class="form-control selectpicker" multiple>
+                                <option value="">-- Please select --</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnSubmitUserRole">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
     </div>
 </div>
 
+<!-- Editable Table Plugin Js -->
+<script src="~/material_theme/plugins/editable-table/mindmup-editabletable.js"></script>
+<script src="~/material_theme/js/pages/tables/editable-table.js"></script>
+<!-- Moment Plugin Js -->
+<script src="~/material_theme/plugins/momentjs/moment.js"></script>
+<!-- Bootstrap Material Datetime Picker Plugin Js -->
+<script src="~/material_theme/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
+<!-- Input Mask Plugin Js -->
+<script src="~/material_theme/plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
+<!-- Autosize Plugin Js -->
+<script src="~/material_theme/plugins/autosize/autosize.js"></script>
+<!-- Custom Js -->
+<script src="~/material_theme/js/pages/forms/basic-form-elements.js"></script>
+<!-- Dropzone Css -->
+<link href="~/material_theme/plugins/dropzone/dropzone.css" rel="stylesheet">
+<!-- Dropzone Plugin Js -->
+<script src="~/material_theme/plugins/dropzone/dropzone.js"></script>
+<!-- Bootstrap Colorpicker Js -->
+<script src="~/material_theme/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+
+<!-- Select Plugin Js -->
+<script src="~/material_theme/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
+<!-- Multi Select Plugin Js -->
+<script src="~/material_theme/plugins/multi-select/js/jquery.multi-select.js"></script>
+
 <script>
-$(function () {
-    $('#btnSubmit').on('click', function(){
-        var about = $('#txt_about').val();
-        var ajaxurl = '@Url.Action("EditCompanyAbout", "Companies")';
+    $(function () {
+        $('#btnSubmit').on('click', function(){
+            var about = $('#txt_about').val();
+            var ajaxurl = '@Url.Action("EditCompanyAbout", "Companies")';
 
+            $.ajax({
+                url: ajaxurl,
+                data: { CompanyId: @Model.Id, About: about },
+                dataType: 'json',
+                type: 'post',
+                success: function (response) {
+                    //text box data clear and reset again.
+                    if (response.IsSuccess) {
+                        $('#originalAbout').empty();
+                        $('#originalAbout').append(about);
+                        $('#aboutModal').modal('hide');
+                        alert(response.MessageToUser);
+                    } else {
+                        alert(response.MessageToUser);
+                    }
+                },
+                error: function (response) {
+                    alert(response)
+                }
+            });
+        });
+
+        $('#btnSubmitAddress').on('click', function(){
+            var address = $('#txt_address').val();
+            var ajaxurl = '@Url.Action("EditCompanyAddress", "Companies")';
+            $.ajax({
+                url: ajaxurl,
+                data: { CompanyId: @Model.Id, Address: address },
+                dataType: 'json',
+                type: 'post',
+                success: function (response) {
+                    //text box data clear and reset again.
+                    if (response.IsSuccess) {
+                        $('#originalAddress').empty();
+                        $('#originalAddress').append(address);
+                        $('#addressModal').modal('hide');
+                        alert(response.MessageToUser);
+                    } else {
+                        alert(response.MessageToUser);
+                    }
+                },
+                error: function (response) {
+                    alert(response)
+                }
+            });
+        });
+
+        $('#userRoleModal').on('show.bs.modal', function (event) {
+
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            //var code = button.data('code'); // Extract info from data-* attributes
+            var userRole = button.data('userrole'); // Extract info from data-* attributes
+            
+            var userId = button.data('userid'); 
+
+            alert("userid" + userId + " userrole " + userRole);
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            var modal = $(this);
+            modal.find('#userId').val("");
+            modal.find('#userId').val(userId);
+            modal.find('#userRole').val("");
+            modal.find('#userRole').val(userRole);
+            var roleType = "admin";
+            $("ddluserRole").empty();
+            loaduserRole(roleType);
+        });
+
+        $("#ddluserRole").change(function () {
+            //var industryId = $('#ddluserRole').val();
+            //var roleType = "admin";
+            //loaduserRole(roleType);
+            var userrole = $("#ddluserRole").val();
+            console.log(userrole);
+        });
+
+        $('#btnSubmitUserRole').on('click', function(){
+            var userId =  $('#userId').val();
+            var userRole = $('#ddluserRole').val();
+            console.log(userRole);
+            var ajaxurl = '@Url.Action("EditCompanyUserRole", "Companies")';
+            $.ajax({
+                url: ajaxurl,
+                data: { CompanyId: @Model.Id, UserRole: userRole, UserId: userId },
+                dataType: 'json',
+                type: 'post',
+                success: function (response) {
+                    //text box data clear and reset again.
+                    if (response.IsSuccess) {
+                        //$('#originalAddress').empty();
+                        //$('#originalAddress').append(address);
+                        $('#userRoleModal').modal('hide');
+                        alert(response.MessageToUser);
+                    } else {
+                        alert(response.MessageToUser);
+                    }
+                },
+                error: function (response) {
+                    alert(response)
+                }
+            });
+        });
+    });
+
+    function checkSupplier(n) {
+        var isConfirmStatus = $('#btnInvite_' + n).attr('data-myval')
+        var ajaxurl = '@Url.Action("EditCompanyUser", "Companies")';
         $.ajax({
             url: ajaxurl,
-            data: { CompanyId: @Model.Id, About: about },
+            data: { CompanyId: @Model.Id, UserId: n, IsConfirmStatus: isConfirmStatus },
             dataType: 'json',
             type: 'post',
             success: function (response) {
                 //text box data clear and reset again.
                 if (response.IsSuccess) {
-                    $('#originalAbout').empty();
-                    $('#originalAbout').append(about);
-                    $('#aboutModal').modal('hide');
+                    if (isConfirmStatus == "Inactive") {
+                        $("#btnInvite_" + n).removeClass("btn btn-danger").addClass("btn btn-success");
+                        $('#btnInvite_' + n).attr("data-myval", "Active");
+                        $("#btnInvite_" + n).text("Active");
+                    } else {
+                        $("#btnInvite_" + n).removeClass("btn btn-success").addClass("btn btn-danger");
+                        $('#btnInvite_' + n).attr("data-myval", "Inactive");
+                        $("#btnInvite_" + n).text("Inactive");
+                    }
                     alert(response.MessageToUser);
                 } else {
                     alert(response.MessageToUser);
@@ -295,34 +489,46 @@ $(function () {
                 alert(response)
             }
         });
+    }
 
-    });
+    function loaduserRole(roleType) {
+        $('#ddluserRole').empty();
+        if (roleType == "") {
+            $("#ddluserRole").selectpicker('refresh');
+        } else {
+            $('#hduserRole').val($("#ddluserRole option:selected").val());
+            //alert($('#hdIndustry').val())
+            var ajaxurl = '@Url.Action("GetuserRole", "Companies")';
 
-    $('#btnSubmitAddress').on('click', function(){
-        var address = $('#txt_address').val();
-        var ajaxurl = '@Url.Action("EditCompanyAddress", "Companies")';
-        $.ajax({
-            url: ajaxurl,
-            data: { CompanyId: @Model.Id, Address: address },
-            dataType: 'json',
-            type: 'post',
-            success: function (response) {
-                //text box data clear and reset again.
-                if (response.IsSuccess) {
-                    $('#originalAddress').empty();
-                    $('#originalAddress').append(address);
-                    $('#addressModal').modal('hide');
-                    alert(response.MessageToUser);
-                } else {
-                    alert(response.MessageToUser);
+            $.ajax({
+                url: ajaxurl,
+                data: { RoleType: roleType},
+                dataType: 'json',
+                success: function (response) {
+                    
+                    var obj = response;
+                    for (var k in obj) {
+                        var item = obj[k];
+                        var selected = "";
+                        var selectedTags = $("#userRole").val();
+                        
+                        var array = selectedTags.split(',');
+                        array.forEach(function (i) {
+                            if (i == item.Id) {
+                                selected = "selected";
+                            }
+                        });                        
+                        var tmpstring = "<option value='" + item.Id + "' " + selected + ">" + item.Name + "</option>"
+                        $('#ddluserRole').append(tmpstring);
+                    }
+
+                    $("#ddluserRole").selectpicker('refresh');
+                    $("#hduserRole").val("0");
+                },
+                error: function (response) {
+                    alert(response)
                 }
-            },
-            error: function (response) {
-                alert(response)
-            }
-        });
-
-    });
-});
-
+            });
+        }
+    }
 </script>

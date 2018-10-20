@@ -235,5 +235,26 @@ namespace Com.BudgetMetal.DataRepository.Users
                             );
             return record;
         }
+
+        public async Task<Com.BudgetMetal.DBEntities.User> GetUserCompanyIdandUserId(int companyId, int userId)
+        {
+            var record = await this.entities
+                            .SingleOrDefaultAsync(e =>
+                              (e.IsActive == true)
+                              && (e.Company_Id == companyId)
+                              && (e.Id == userId)
+                            );
+            return record;
+        }
+
+        public async Task<List<User>> GetUserByCompanyNotFilterWithConfirm(int Id)
+        {
+            var records = await entities.Include(r=>r.UserRoles).Where(e => e.IsActive == true
+           && e.Company_Id == Id)
+            .OrderBy(e => e.ContactName)
+            .ToListAsync();
+
+            return records;
+        }
     }
 }

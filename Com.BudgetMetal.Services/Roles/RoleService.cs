@@ -157,6 +157,14 @@ namespace Com.BudgetMetal.Services.Roles
                     }
                    
                 }
+                else if (roleType == "admin")
+                {
+                    if (dbItem.Code.Contains("_Admin"))
+                    {
+                        Copy<Role, VmRoleItem>(dbItem, resultItem);
+                        resultList.Add(resultItem);
+                    }
+                }
                 else if (roleType == "quotation")
                 {
                     if (dbItem.Code.StartsWith("Q_"))
@@ -176,7 +184,6 @@ namespace Com.BudgetMetal.Services.Roles
                 
             }
             return resultList;
-
         }
     }
 }

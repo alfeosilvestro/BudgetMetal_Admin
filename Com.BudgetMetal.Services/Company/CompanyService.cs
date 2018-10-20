@@ -3,6 +3,7 @@ using Com.BudgetMetal.DataRepository.Code_Table;
 using Com.BudgetMetal.DataRepository.Company;
 using Com.BudgetMetal.DataRepository.CompanySupplier;
 using Com.BudgetMetal.DataRepository.Rating;
+using Com.BudgetMetal.DataRepository.Roles;
 using Com.BudgetMetal.DataRepository.Users;
 using Com.BudgetMetal.Services.Base;
 using Com.BudgetMetal.ViewModels;
@@ -24,14 +25,16 @@ namespace Com.BudgetMetal.Services.Company
         private readonly ICodeTableRepository codeTableRepo;
         private readonly IRatingRepository ratingRepo;
         private readonly ICompanySupplierRepository companySupplierRepo;
+        private readonly IRoleRepository roleRepository;
 
-        public CompanyService(ICompanyRepository repo, ICodeTableRepository companyRepo, IUserRepository repoUser, IRatingRepository ratingRepo, ICompanySupplierRepository companySupplierRepo)
+        public CompanyService(ICompanyRepository repo, ICodeTableRepository companyRepo, IUserRepository repoUser, IRatingRepository ratingRepo, ICompanySupplierRepository companySupplierRepo, IRoleRepository roleRepository)
         {
             this.repo = repo;
             this.codeTableRepo = companyRepo;
             this.repoUser = repoUser;
             this.ratingRepo = ratingRepo;
             this.companySupplierRepo = companySupplierRepo;
+            this.roleRepository = roleRepository;
         }
 
         public async Task<VmCompanyPage> GetCompanyByPage(string keyword, int page, int totalRecords)
@@ -397,6 +400,133 @@ namespace Com.BudgetMetal.Services.Company
                 result.IsSuccess = true;
                 result.MessageToUser = "Successful";
             }
+            return result;
+        }
+
+        public async Task<VmGenericServiceResult> EditCompanyUser(int companyId, int userId, bool isActiveStatus, string updatedBy)
+        {
+            var result = new VmGenericServiceResult();
+
+            var dbresult = await repoUser.GetUserCompanyIdandUserId(companyId, userId);
+
+            if (dbresult == null)
+            {
+                result.IsSuccess = false;
+                result.MessageToUser = "This email is not registered.";
+            }
+            else
+            {
+                dbresult.IsConfirmed = isActiveStatus;
+                dbresult.UpdatedBy = updatedBy;
+                repoUser.Update(dbresult);
+                repoUser.Commit();
+                result.IsSuccess = true;
+                result.MessageToUser = "Successful";
+            }
+            return result;
+        }
+
+        public async Task<VmCompanyItem> GetCompanyProfileById(int Id)
+        {
+            var dbPageResult = await repo.Get(Id);
+
+            if (dbPageResult == null)
+            {
+                return new VmCompanyItem();
+            }
+
+            var resultObj = new VmCompanyItem();
+
+            Copy<Com.BudgetMetal.DBEntities.Company, VmCompanyItem>(dbPageResult, resultObj);
+
+            resultObj.IsVerified = (dbPageResult.IsVerified == null) ? false : (bool)dbPageResult.IsVerified;
+
+            var dbUserList = await repoUser.GetUserByCompanyNotFilterWithConfirm(Id);
+
+            if (dbUserList == null) return resultObj;
+
+            resultObj.UserList = new List<VmUserItem>();
+
+            foreach (var dbUser in dbUserList)
+            {
+                List<VmRoleItem> rListItem = new List<VmRoleItem>();
+                if (dbUser.UserRoles != null)
+                {
+                    foreach (var dbRoleItem in dbUser.UserRoles)
+                    {
+                        var dbRole = roleRepository.Get(dbRoleItem.Role_Id);
+                        if (dbRole != null)
+                        {
+                            VmRoleItem rItem = new VmRoleItem();
+                            rItem.Id = dbRole.Result.Id;
+                            rItem.Name = dbRole.Result.Name;
+                            rItem.Code = dbRole.Result.Code;
+                            rListItem.Add(rItem);
+                        }
+                    }
+                }
+                VmUserItem user = new VmUserItem()
+                {
+                    Id = dbUser.Id,
+                    UserName = dbUser.UserName,
+                    EmailAddress = dbUser.EmailAddress,
+                    JobTitle = dbUser.JobTitle,
+                    UserType = dbUser.UserType,
+                    IsConfirmed = dbUser.IsConfirmed,
+                    IsActive = dbUser.IsActive,
+                    RoleList = rListItem
+                };
+
+                resultObj.UserList.Add(user);
+            }
+
+            var dbRepoList = await ratingRepo.GetRagintByCompany(Id);
+            if (dbRepoList == null) return resultObj;
+
+            resultObj.RatingList = new List<VmRatingItem>();
+            foreach (var dbRating in dbRepoList)
+            {
+                VmRatingItem rating = new VmRatingItem()
+                {
+                    SpeedOfQuotation = dbRating.SpeedOfQuotation,
+                    SpeedofDelivery = dbRating.SpeedofDelivery,
+                    ServiceQuality = dbRating.ServiceQuality,
+                    Price = dbRating.Price,
+                    SpeedofProcessing = dbRating.SpeedofProcessing,
+                    Payment = dbRating.Payment,
+                    Title = dbRating.Title,
+                    Description = dbRating.Description,
+                    Ratingcol = dbRating.Ratingcol,
+                    UserName = dbRating.User.ContactName
+                };
+                //var rating = new VmRatingItem();
+                //Copy<Com.BudgetMetal.DBEntities.Rating, VmRatingItem>(dbRating, rating);
+                resultObj.RatingList.Add(rating);
+            }
+
+            return resultObj;
+        }
+
+        public async Task<VmGenericServiceResult> EditCompanyUserRole(int companyId, int userId, string[] userRole, string updatedBy)
+        {
+            var result = new VmGenericServiceResult();
+
+            var dbresult = await repoUser.GetUserCompanyIdandUserId(companyId, userId);
+
+            //if (dbresult == null)
+            //{
+            //    result.IsSuccess = false;
+            //    result.MessageToUser = "This email is not registered.";
+            //}
+            //else
+            //{
+            //    dbresult.IsConfirmed = isActiveStatus;
+            //    dbresult.UpdatedBy = updatedBy;
+            //    repoUser.Update(dbresult);
+            //    repoUser.Commit();
+            //    result.IsSuccess = true;
+            //    result.MessageToUser = "Successful";
+            //}
             return result;
         }
     }

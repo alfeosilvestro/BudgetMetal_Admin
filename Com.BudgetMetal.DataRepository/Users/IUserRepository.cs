@@ -22,5 +22,9 @@ namespace Com.BudgetMetal.DataRepository.Users
         Task<Com.BudgetMetal.DBEntities.User> GetUserById(int id);
 
         Task<Com.BudgetMetal.DBEntities.User> GetUserByEmail(string email);
+
+        Task<Com.BudgetMetal.DBEntities.User> GetUserCompanyIdandUserId(int companyId, int userId);
+
+        Task<List<User>> GetUserByCompanyNotFilterWithConfirm(int Id); 
     }
 }

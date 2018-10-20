@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Com.BudgetMetal.Services.Company;
+using Com.BudgetMetal.Services.Roles;
 using Com.BudgetMetal.ViewModels.Company;
 using Com.EazyTender.WebApp.Configurations;
 using Microsoft.AspNetCore.Http;
@@ -16,11 +17,13 @@ namespace Com.EzTender.WebApp.Controllers
     {
         private readonly ICompanyService svs;
         private readonly AppSettings _appSettings;
+        private readonly IRoleService roleService;
 
-        public CompaniesController(ICompanyService svs, IOptions<AppSettings> appSettings)
+        public CompaniesController(ICompanyService svs, IOptions<AppSettings> appSettings, IRoleService roleService)
         {
             this.svs = svs;
             this._appSettings = appSettings.Value;
+            this.roleService = roleService;
         }
         
         // GET: Companies
@@ -45,7 +48,7 @@ namespace Com.EzTender.WebApp.Controllers
         public async Task<IActionResult> Details()
         {
             int id = Convert.ToInt32(HttpContext.Session.GetString("Company_Id"));
-            VmCompanyItem item = await svs.GetCompanyById(id);
+            VmCompanyItem item = await svs.GetCompanyProfileById(id);
 
             if (item == null)
             {
@@ -140,6 +143,43 @@ namespace Com.EzTender.WebApp.Controllers
         {
             string updatedBy = HttpContext.Session.GetString("EmailAddress");
             var result = await svs.EditCompanyAddress(CompanyId, Address, updatedBy);
+
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> EditCompanyUser(int CompanyId, int UserId, string IsConfirmStatus)
+        {
+            string updatedBy = HttpContext.Session.GetString("EmailAddress");
+            bool isActiveStatus = (IsConfirmStatus == "Active") ? false : true;
+            var result = await svs.EditCompanyUser(CompanyId, UserId, isActiveStatus, updatedBy);
+
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetuserRole(string RoleType)
+        {
+            var result = await roleService.GetActiveRoles(RoleType);
+
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> EditCompanyUserRole(int CompanyId, int UserId, string[] userRole)
+        {
+            string updatedBy = HttpContext.Session.GetString("EmailAddress");
+            
+            var result = await svs.EditCompanyUserRole(CompanyId, UserId, userRole, updatedBy);
 
             return new JsonResult(result, new JsonSerializerSettings()
             {
