@@ -10,8 +10,8 @@
 <div class="row">
     <div class="col-sm-6">
         <div class="btn-group" role="group" aria-label="Justified button group">
-            <button id="btn_tender_open" class="btn btn-default waves-effect btnStatus" data-item-id="100032" type="button">Open</button>
-            <button id="btn_tender_close" class="btn btn-primary waves-effect btnStatus" data-item-id="100033" type="button">Closed</button>
+            <button id="btn_tender_open" class="btn btn-default waves-effect btnStatus" data-item-id="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Submitted)" type="button">Open</button>
+            <button id="btn_tender_close" class="btn btn-primary waves-effect btnStatus" data-item-id="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Closed)" type="button">Closed</button>
         </div>
     </div>
     <div class="col-sm-6"></div>
@@ -32,7 +32,7 @@
                         </div>
                     </div>
                     <div class="col-sm-1">
-                        <input type="hidden" name="statusId" id="statusId" value="0" />
+                        <input type="hidden" name="statusId" id="statusId" value="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Submitted)" />
                         @*<input type="hidden" name="Company_Id" id="Company_Id" value="@(ViewBag.Company_Id)" />*@
                         <button type="button" class="btn bg-indigo pull-right" id="btnSearch"> Search </button>
                     </div>
@@ -88,11 +88,11 @@
     function loadRFQ(page) {
         var keyword = $('#keyword').val();
         var statusId = $('#statusId').val();
-        var company = $('#Company_Id').val();        
-        var ajaxurl = "/Home/GetRFQForDashboard?page=" + page + "&status=100032&Company_Id=1&skeyword=" + encodeURIComponent(keyword);
+        
+        var ajaxurl = "/Home/GetPublicRFQ?page=" + page + "&status="+ statusId +"&skeyword=" + encodeURIComponent(keyword);
         $.ajax({
             url: ajaxurl,
-            data: { page: page, status: statusId, Company_Id: company, skeyword: keyword},
+            data: { page: page, status: statusId, skeyword: keyword},
             dataType: 'json',
             success: function (response) {
                 var obj = response.Result.Records;

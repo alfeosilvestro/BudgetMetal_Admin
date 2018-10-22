@@ -5,6 +5,7 @@ using Com.BudgetMetal.DataRepository.CompanySupplier;
 using Com.BudgetMetal.DataRepository.Rating;
 using Com.BudgetMetal.DataRepository.Roles;
 using Com.BudgetMetal.DataRepository.Users;
+using Com.BudgetMetal.DataRepository.UserRoles;
 using Com.BudgetMetal.Services.Base;
 using Com.BudgetMetal.ViewModels;
 using Com.BudgetMetal.ViewModels.Company;
@@ -27,8 +28,9 @@ namespace Com.BudgetMetal.Services.Company
         private readonly IRatingRepository ratingRepo;
         private readonly ICompanySupplierRepository companySupplierRepo;
         private readonly IRoleRepository roleRepository;
+        private readonly IUserRolesRepository userRoleRepository;
 
-        public CompanyService(ICompanyRepository repo, ICodeTableRepository companyRepo, IUserRepository repoUser, IRatingRepository ratingRepo, ICompanySupplierRepository companySupplierRepo, IRoleRepository roleRepository)
+        public CompanyService(ICompanyRepository repo, ICodeTableRepository companyRepo, IUserRepository repoUser, IRatingRepository ratingRepo, ICompanySupplierRepository companySupplierRepo, IRoleRepository roleRepository, IUserRolesRepository userRoleRepository)
         {
             this.repo = repo;
             this.codeTableRepo = companyRepo;
@@ -36,6 +38,7 @@ namespace Com.BudgetMetal.Services.Company
             this.ratingRepo = ratingRepo;
             this.companySupplierRepo = companySupplierRepo;
             this.roleRepository = roleRepository;
+            this.userRoleRepository = userRoleRepository;
         }
 
         public async Task<VmCompanyPage> GetCompanyByPage(string keyword, int page, int totalRecords)
@@ -519,6 +522,29 @@ namespace Com.BudgetMetal.Services.Company
         {
             var result = new VmGenericServiceResult();
 
+            //var dbRoleUserResult = userRoleRepository.GetUserRolesByUserId(userId);
+            //if(dbRoleUserResult != null)
+            //{                
+            //    foreach (var item in dbRoleUserResult.Result)
+            //    {
+
+            //    }
+            //}
+            
+            foreach (var role in userRole)
+            {
+                int roleId = int.Parse(role);
+                var dbRoleUserResult = userRoleRepository.GetUserRolesByUserIdRoleId(userId, roleId);
+                if(dbRoleUserResult != null)
+                {
+                    result.IsSuccess = false;
+                    result.MessageToUser = "Already registered.";
+                }
+                else
+                {
+                   // dbRoleUserResult.Result.
+                }
+            }
             var dbresult = await repoUser.GetUserCompanyIdandUserId(companyId, userId);
 
             //if (dbresult == null)
