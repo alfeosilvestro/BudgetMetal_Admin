@@ -39,6 +39,7 @@ using Com.BudgetMetal.DataRepository.QuotationRequirement;
 using Com.BudgetMetal.ViewModels.QuotationRequirement;
 using Com.BudgetMetal.DataRepository.DocumentActivity;
 using Com.BudgetMetal.ViewModels.DocumentActivity;
+using Com.BudgetMetal.DataRepository.TimeLine;
 
 namespace Com.BudgetMetal.Services.Quotation
 {
@@ -53,13 +54,13 @@ namespace Com.BudgetMetal.Services.Quotation
         private readonly IQuotationPriceScheduleRepository repoPriceSchedule;
         private readonly IQuotationRequirementRepository repoRequirement;
         private readonly IDocumentActivityRepository repoDocumentActivity;
-
+        private readonly ITimeLineRepository repoTimeLine;
         private readonly ICompanyRepository repoCompany;
         private readonly IUserRepository repoUser;
         private readonly IRoleRepository repoRole;
-        
 
-        public QuotationService(IRfqRepository repoRfq, IDocumentRepository repoDocument, IQuotationRepository repoQuotation, IAttachmentRepository repoAttachment, IDocumentUserRepository repoDocumentUser, IQuotationPriceScheduleRepository repoPriceSchedule, IUserRepository repoUser, IRoleRepository repoRole, IQuotationRequirementRepository repoQuotationRequirement, IDocumentActivityRepository repoDocumentActivity, ICompanyRepository repoCompany)
+
+        public QuotationService(IRfqRepository repoRfq, IDocumentRepository repoDocument, IQuotationRepository repoQuotation, IAttachmentRepository repoAttachment, IDocumentUserRepository repoDocumentUser, IQuotationPriceScheduleRepository repoPriceSchedule, IUserRepository repoUser, IRoleRepository repoRole, IQuotationRequirementRepository repoQuotationRequirement, IDocumentActivityRepository repoDocumentActivity, ICompanyRepository repoCompany, ITimeLineRepository repoTimeLine)
         {
             this.repoRfq = repoRfq;
             this.repoDocument = repoDocument;
@@ -72,17 +73,14 @@ namespace Com.BudgetMetal.Services.Quotation
             this.repoCompany = repoCompany;
             this.repoRequirement = repoQuotationRequirement;
             this.repoDocumentActivity = repoDocumentActivity;
+            this.repoTimeLine = repoTimeLine;
         }
 
-        public async Task<VmQuotationPage> GetQuotationByPage(int documentOwner, int page, int totalRecords)
+        public async Task<VmQuotationPage> GetQuotationByPage(int userId, int companyId, int page, int totalRecords, bool isCompany, int statusId = 0, string keyword = "")
         {
-            var dbPageResult = await repoQuotation.GetQuotationByPage(documentOwner,
+            var dbPageResult = await repoQuotation.GetQuotationByPage(userId, companyId,
                 (page == 0 ? Constants.app_firstPage : page),
-                (totalRecords == 0 ? Constants.app_totalRecords : totalRecords));
-
-            //var dbPageResult = repo.GetCodeTableByPage(keyword,
-            //    (page == 0 ? Constants.app_firstPage : page),
-            //    (totalRecords == 0 ? Constants.app_totalRecords : totalRecords));
+                (totalRecords == 0 ? Constants.app_totalRecords : totalRecords), isCompany, statusId, keyword);
 
             if (dbPageResult == null)
             {
@@ -130,7 +128,145 @@ namespace Com.BudgetMetal.Services.Quotation
             return resultObj;
         }
 
-        public async Task<VmQuotationPage> GetQuotationByRfqId(int RfqId, int page, int totalRecords, int statusId = 0 , string keyword = "")
+        public async Task<VmGenericServiceResult> CancelQuotation(int documentId, int userId, string userName)
+        {
+            var result = new VmGenericServiceResult();
+            try
+            {
+                //Change Status
+                var dbDocument = await repoDocument.Get(documentId);
+                dbDocument.DocumentStatus_Id = Constants_CodeTable.Code_Quotation_Cancelled;
+                dbDocument.UpdatedBy = userName;
+                repoDocument.Update(dbDocument);
+
+                //Add Document Activity
+                var dbDocumentActivity = new Com.BudgetMetal.DBEntities.DocumentActivity()
+                {
+                    Action = "Cancel",
+                    IsRfq = false,
+                    User_Id = userId,
+                    Document_Id = documentId,
+                    CreatedBy = userName,
+                    UpdatedBy = userName
+                };
+                repoDocumentActivity.Add(dbDocumentActivity);
+                repoDocumentActivity.Commit();
+
+                //Add Timeline
+                var timeline = new Com.BudgetMetal.DBEntities.TimeLine()
+                {
+                    Company_Id = dbDocument.Company_Id,
+                    User_Id = userId,
+                    Message = "Document " + dbDocument.DocumentNo + " is successfully cancelled.",
+                    MessageType = Constants_CodeTable.Code_TM_Quotation,
+                    IsRead = false,
+                    Document_Id = dbDocument.Id,
+                    CreatedBy = userName,
+                    UpdatedBy = userName
+                };
+                repoTimeLine.Add(timeline);
+                repoTimeLine.Commit();
+
+                var buyerId = repoQuotation.GetRfqOwnerId(documentId);
+
+                var timelineforbuyer = new Com.BudgetMetal.DBEntities.TimeLine()
+                {
+                    Company_Id = buyerId,
+                    User_Id = userId,
+                    Message = "Cancel quotation for RFQ ",
+                    MessageType = Constants_CodeTable.Code_TM_Quotation,
+                    IsRead = false,
+                    Document_Id = documentId,
+                    CreatedBy = userName,
+                    UpdatedBy = userName
+                };
+                repoTimeLine.Add(timelineforbuyer);
+
+                repoTimeLine.Commit();
+                //end adding timeline
+
+                //get rfq owner admin email
+                var resultBuyerAdmin = repoUser.GetBuyerAdmin(buyerId);
+                var sendMail = new SendingMail();
+                if (resultBuyerAdmin != null)
+                {
+                    string emailSubject = "Cancel Quotation for RFQ.";
+                    string emailBody = "Email Template need to provide.";
+                    foreach (var item in resultBuyerAdmin)
+                    {
+                        sendMail.SendMail(item, "", emailSubject, emailBody);
+                    }
+                }
+
+
+                result.IsSuccess = true;
+                result.MessageToUser = "Your Rfq is successfully updated.";
+            }
+            catch
+            {
+                result.IsSuccess = false;
+                result.MessageToUser = "Your Rfq is failed to update.";
+            }
+
+            return result;
+
+        }
+
+        public async Task<VmQuotationPage> GetQuotationForBuyerByPage(int userId, int buyerId, int page, int totalRecords, bool isCompany, int statusId = 0, string keyword = "")
+        {
+            var dbPageResult = await repoQuotation.GetQuotationForBuyerByPage(userId, buyerId,
+                 (page == 0 ? Constants.app_firstPage : page),
+                 (totalRecords == 0 ? Constants.app_totalRecords : totalRecords), isCompany, statusId, keyword);
+
+
+
+            if (dbPageResult == null)
+            {
+                return new VmQuotationPage();
+            }
+
+            var resultObj = new VmQuotationPage();
+            resultObj.RequestId = DateTime.Now.ToString("yyyyMMddHHmmss");
+            resultObj.RequestDate = DateTime.Now;
+            resultObj.Result = new PageResult<VmQuotationItem>();
+            resultObj.Result.Records = new List<VmQuotationItem>();
+
+            Copy<PageResult<Com.BudgetMetal.DBEntities.Quotation>, PageResult<VmQuotationItem>>(dbPageResult, resultObj.Result, new string[] { "Records" });
+
+            foreach (var dbItem in dbPageResult.Records)
+            {
+                var resultItem = new VmQuotationItem();
+
+                Copy<Com.BudgetMetal.DBEntities.Quotation, VmQuotationItem>(dbItem, resultItem);
+
+                if (dbItem.Document != null)
+                {
+                    resultItem.Document = new ViewModels.Document.VmDocumentItem()
+                    {
+                        DocumentNo = dbItem.Document.DocumentNo,
+                        DocumentStatus = new ViewModels.CodeTable.VmCodeTableItem()
+                        {
+                            Name = dbItem.Document.DocumentStatus.Name
+                        },
+                        DocumentType = new ViewModels.CodeTable.VmCodeTableItem()
+                        {
+                            Name = dbItem.Document.DocumentStatus.Name
+                        },
+                        Company = new ViewModels.Company.VmCompanyItem()
+                        {
+                            Name = dbItem.Document.Company.Name
+                        }
+                    };
+
+                }
+
+                resultObj.Result.Records.Add(resultItem);
+            }
+
+            return resultObj;
+        }
+
+        public async Task<VmQuotationPage> GetQuotationByRfqId(int RfqId, int page, int totalRecords, int statusId = 0, string keyword = "")
         {
             var dbPageResult = await repoQuotation.GetQuotationByRfqId(RfqId,
                 (page == 0 ? Constants.app_firstPage : page),
@@ -238,124 +374,167 @@ namespace Com.BudgetMetal.Services.Quotation
 
         }
 
-        public string SaveQuotation(VmQuotationItem quotation)
+        public VmGenericServiceResult SaveQuotation(VmQuotationItem quotation)
         {
-            var dbDocument = new Com.BudgetMetal.DBEntities.Document();
-            string documentNo = "";
-            documentNo = GenerateDocumentNo(quotation.Document.Company_Id);
-            quotation.Document.DocumentNo = documentNo;
-            quotation.Document.WorkingPeriod = GetCurrentWeek();
-            Copy<VmDocumentItem, Com.BudgetMetal.DBEntities.Document>(quotation.Document, dbDocument);
-            repoDocument.Add(dbDocument);
-            repoDocument.Commit();
-
-            quotation.Document_Id = dbDocument.Id;
-
-            var dbQuotation = new Com.BudgetMetal.DBEntities.Quotation();
-            Copy<VmQuotationItem, Com.BudgetMetal.DBEntities.Quotation>(quotation, dbQuotation);
-            repoQuotation.Add(dbQuotation);
-            repoQuotation.Commit();
-
-            if (quotation.Document.Attachment != null)
+            var result = new VmGenericServiceResult();
+            try
             {
-                if (quotation.Document.Attachment.Count > 0)
+                var dbDocument = new Com.BudgetMetal.DBEntities.Document();
+                string documentNo = "";
+                documentNo = GenerateDocumentNo(quotation.Document.Company_Id);
+                quotation.Document.DocumentNo = documentNo;
+                quotation.Document.WorkingPeriod = GetCurrentWeek();
+                Copy<VmDocumentItem, Com.BudgetMetal.DBEntities.Document>(quotation.Document, dbDocument);
+                repoDocument.Add(dbDocument);
+                repoDocument.Commit();
+
+                quotation.Document_Id = dbDocument.Id;
+
+                var dbQuotation = new Com.BudgetMetal.DBEntities.Quotation();
+                Copy<VmQuotationItem, Com.BudgetMetal.DBEntities.Quotation>(quotation, dbQuotation);
+                repoQuotation.Add(dbQuotation);
+                repoQuotation.Commit();
+
+                if (quotation.Document.Attachment != null)
                 {
-                    foreach (var item in quotation.Document.Attachment)
+                    if (quotation.Document.Attachment.Count > 0)
                     {
-                        var dbAttachment = new Com.BudgetMetal.DBEntities.Attachment();
+                        foreach (var item in quotation.Document.Attachment)
+                        {
+                            var dbAttachment = new Com.BudgetMetal.DBEntities.Attachment();
 
-                        Copy<VmAttachmentItem, Com.BudgetMetal.DBEntities.Attachment>(item, dbAttachment);
-                        dbAttachment.Document_Id = dbDocument.Id;
-                        dbAttachment.CreatedBy = dbAttachment.UpdatedBy = dbQuotation.CreatedBy;
-                        repoAttachment.Add(dbAttachment);
+                            Copy<VmAttachmentItem, Com.BudgetMetal.DBEntities.Attachment>(item, dbAttachment);
+                            dbAttachment.Document_Id = dbDocument.Id;
+                            dbAttachment.CreatedBy = dbAttachment.UpdatedBy = dbQuotation.CreatedBy;
+                            repoAttachment.Add(dbAttachment);
+                        }
+                        repoAttachment.Commit();
                     }
-                    repoAttachment.Commit();
                 }
-            }
 
-            if (quotation.Document.DocumentUser != null)
+                if (quotation.Document.DocumentUser != null)
+                {
+                    if (quotation.Document.DocumentUser.Count > 0)
+                    {
+                        foreach (var item in quotation.Document.DocumentUser)
+                        {
+                            var dbDocumentUser = new Com.BudgetMetal.DBEntities.DocumentUser();
+
+                            Copy<VmDocumentUserItem, Com.BudgetMetal.DBEntities.DocumentUser>(item, dbDocumentUser);
+                            dbDocumentUser.Document_Id = dbDocument.Id;
+                            dbDocumentUser.CreatedBy = dbDocumentUser.UpdatedBy = dbQuotation.CreatedBy;
+                            repoDocumentUser.Add(dbDocumentUser);
+                        }
+                        repoDocumentUser.Commit();
+                    }
+                }
+
+                if (quotation.QuotationPriceSchedule != null)
+                {
+                    if (quotation.QuotationPriceSchedule.Count > 0)
+                    {
+                        foreach (var item in quotation.QuotationPriceSchedule)
+                        {
+                            var dbQPriceSchedule = new Com.BudgetMetal.DBEntities.QuotationPriceSchedule();
+
+                            Copy<VmQuotationPriceScheduleItem, Com.BudgetMetal.DBEntities.QuotationPriceSchedule>(item, dbQPriceSchedule);
+                            dbQPriceSchedule.Quotation_Id = dbQuotation.Id;
+                            dbQPriceSchedule.CreatedBy = dbQPriceSchedule.UpdatedBy = dbQuotation.CreatedBy;
+                            repoPriceSchedule.Add(dbQPriceSchedule);
+                        }
+                        repoPriceSchedule.Commit();
+                    }
+                }
+
+                if (quotation.QuotationRequirement != null)
+                {
+                    if (quotation.QuotationRequirement.Count > 0)
+                    {
+                        foreach (var item in quotation.QuotationRequirement)
+                        {
+                            var dbQRequirement = new Com.BudgetMetal.DBEntities.QuotationRequirement();
+
+                            Copy<VmQuotationRequirementItem, Com.BudgetMetal.DBEntities.QuotationRequirement>(item, dbQRequirement);
+                            dbQRequirement.Quotation_Id = dbQuotation.Id;
+                            dbQRequirement.CreatedBy = dbQRequirement.UpdatedBy = dbQuotation.CreatedBy;
+                            repoRequirement.Add(dbQRequirement);
+                        }
+                        repoPriceSchedule.Commit();
+                    }
+                }
+
+                if (quotation.Document.DocumentActivityList != null)
+                {
+                    if (quotation.Document.DocumentActivityList.Count > 0)
+                    {
+                        foreach (var item in quotation.Document.DocumentActivityList)
+                        {
+                            var dbDocumentActivity = new Com.BudgetMetal.DBEntities.DocumentActivity();
+
+                            Copy<VmDocumentActivityItem, Com.BudgetMetal.DBEntities.DocumentActivity>(item, dbDocumentActivity);
+                            dbDocumentActivity.Document_Id = dbDocument.Id;
+                            dbDocumentActivity.CreatedBy = dbDocumentActivity.UpdatedBy = quotation.CreatedBy;
+                            repoDocumentActivity.Add(dbDocumentActivity);
+                        }
+                        repoDocumentActivity.Commit();
+                    }
+                }
+
+                //start adding timeline
+                var timeline = new Com.BudgetMetal.DBEntities.TimeLine()
+                {
+                    Company_Id = quotation.Document.Company_Id,
+                    User_Id = quotation.Document.DocumentUser.FirstOrDefault().User_Id,
+                    Message = "Your company interest on RFQ " + quotation.Rfq.Document.DocumentNo,
+                    MessageType = Constants_CodeTable.Code_TM_Quotation,
+                    IsRead = false,
+                    Document_Id = dbDocument.Id,
+                    CreatedBy = dbQuotation.CreatedBy,
+                    UpdatedBy = dbQuotation.CreatedBy
+                };
+                repoTimeLine.Add(timeline);
+
+                var timelineforbuyer = new Com.BudgetMetal.DBEntities.TimeLine()
+                {
+                    Company_Id = quotation.Rfq.Document.Company_Id,
+                    User_Id = quotation.Document.DocumentUser.FirstOrDefault().User_Id,
+                    Message = "Interest on RFQ " + quotation.Rfq.Document.DocumentNo,
+                    MessageType = Constants_CodeTable.Code_TM_Rfq,
+                    IsRead = false,
+                    Document_Id = quotation.Rfq.Document.Id,
+                    CreatedBy = dbQuotation.CreatedBy,
+                    UpdatedBy = dbQuotation.CreatedBy
+                };
+                repoTimeLine.Add(timelineforbuyer);
+
+                repoTimeLine.Commit();
+                //end adding timeline
+
+                //get rfq owner admin email
+                var resultBuyerAdmin = repoUser.GetBuyerAdmin(quotation.Rfq.Document.Company_Id);
+                var sendMail = new SendingMail();
+                if (resultBuyerAdmin != null)
+                {
+                    string emailSubject = "You are intvited for RFQ " + documentNo + ".";
+                    string emailBody = "Email Template need to provide.";
+                    foreach (var item in resultBuyerAdmin)
+                    {
+                        sendMail.SendMail(item, "", emailSubject, emailBody);
+                    }
+                }
+
+
+                result.IsSuccess = true;
+                result.MessageToUser = dbQuotation.Id.ToString();
+            }
+            catch (Exception ex)
             {
-                if (quotation.Document.DocumentUser.Count > 0)
-                {
-                    foreach (var item in quotation.Document.DocumentUser)
-                    {
-                        var dbDocumentUser = new Com.BudgetMetal.DBEntities.DocumentUser();
-
-                        Copy<VmDocumentUserItem, Com.BudgetMetal.DBEntities.DocumentUser>(item, dbDocumentUser);
-                        dbDocumentUser.Document_Id = dbDocument.Id;
-                        dbDocumentUser.CreatedBy = dbDocumentUser.UpdatedBy = dbQuotation.CreatedBy;
-                        repoDocumentUser.Add(dbDocumentUser);
-                    }
-                    repoDocumentUser.Commit();
-                }
+                result.IsSuccess = false;
+                result.MessageToUser = "Fail to create your RFQ. Please contact site admin.";
+                result.Error = ex;
             }
+            return result;
 
-            if (quotation.QuotationPriceSchedule != null)
-            {
-                if (quotation.QuotationPriceSchedule.Count > 0)
-                {
-                    foreach (var item in quotation.QuotationPriceSchedule)
-                    {
-                        var dbQPriceSchedule = new Com.BudgetMetal.DBEntities.QuotationPriceSchedule();
-
-                        Copy<VmQuotationPriceScheduleItem, Com.BudgetMetal.DBEntities.QuotationPriceSchedule>(item, dbQPriceSchedule);
-                        dbQPriceSchedule.Quotation_Id = dbQuotation.Id;
-                        dbQPriceSchedule.CreatedBy = dbQPriceSchedule.UpdatedBy = dbQuotation.CreatedBy;
-                        repoPriceSchedule.Add(dbQPriceSchedule);
-                    }
-                    repoPriceSchedule.Commit();
-                }
-            }
-
-            if (quotation.QuotationRequirement != null)
-            {
-                if (quotation.QuotationRequirement.Count > 0)
-                {
-                    foreach (var item in quotation.QuotationRequirement)
-                    {
-                        var dbQRequirement = new Com.BudgetMetal.DBEntities.QuotationRequirement();
-
-                        Copy<VmQuotationRequirementItem, Com.BudgetMetal.DBEntities.QuotationRequirement>(item, dbQRequirement);
-                        dbQRequirement.Quotation_Id = dbQuotation.Id;
-                        dbQRequirement.CreatedBy = dbQRequirement.UpdatedBy = dbQuotation.CreatedBy;
-                        repoRequirement.Add(dbQRequirement);
-                    }
-                    repoPriceSchedule.Commit();
-                }
-            }
-
-            //if (dbDocument != null)
-            //{
-            //    var dbDocumentActivity = new Com.BudgetMetal.DBEntities.DocumentActivity();
-            //    dbDocumentActivity.Document_Id = dbDocument.Id;
-            //    dbDocumentActivity.User_Id = 1;
-            //    dbDocumentActivity.IsRfq = false;
-            //    dbDocumentActivity.Action = "Save";
-            //    dbDocumentActivity.CreatedBy = dbDocumentActivity.UpdatedBy = dbQuotation.UpdatedBy;
-            //    repoDocumentActivity.Add(dbDocumentActivity);
-            //    repoDocumentActivity.Commit();
-            //}
-
-            if (quotation.Document.DocumentActivityList != null)
-            {
-                if (quotation.Document.DocumentActivityList.Count > 0)
-                {
-                    foreach (var item in quotation.Document.DocumentActivityList)
-                    {
-                        var dbDocumentActivity = new Com.BudgetMetal.DBEntities.DocumentActivity();
-
-                        Copy<VmDocumentActivityItem, Com.BudgetMetal.DBEntities.DocumentActivity>(item, dbDocumentActivity);
-                        dbDocumentActivity.Document_Id = dbDocument.Id;
-                        dbDocumentActivity.CreatedBy = dbDocumentActivity.UpdatedBy = quotation.CreatedBy;
-                        repoDocumentActivity.Add(dbDocumentActivity);
-                    }
-                    repoDocumentActivity.Commit();
-                }
-            }
-
-
-
-            return documentNo;
         }
 
         /// <summary>
@@ -363,127 +542,186 @@ namespace Com.BudgetMetal.Services.Quotation
         /// </summary>
         /// <param name="quotation"></param>
         /// <returns></returns>
-        public string UpdateQuotation(VmQuotationItem quotation)
+        public VmGenericServiceResult UpdateQuotation(VmQuotationItem quotation)
         {
-            var dbDocument = new Com.BudgetMetal.DBEntities.Document();
-            Copy<VmDocumentItem, Com.BudgetMetal.DBEntities.Document>(quotation.Document, dbDocument);
-            repoDocument.Update(dbDocument);
-            repoDocument.Commit();
-
-            quotation.Document_Id = dbDocument.Id;
-
-            var dbQuotation = new Com.BudgetMetal.DBEntities.Quotation();
-            Copy<VmQuotationItem, Com.BudgetMetal.DBEntities.Quotation>(quotation, dbQuotation);
-            repoQuotation.Update(dbQuotation);
-            repoQuotation.Commit();
-
-            repoAttachment.InactiveByDocumentId(dbDocument.Id, dbDocument.UpdatedBy);
-            repoAttachment.Commit();
-
-            if (quotation.Document.Attachment != null)
+            var result = new VmGenericServiceResult();
+            try
             {
-                if (quotation.Document.Attachment.Count > 0)
-                {
-                    foreach (var item in quotation.Document.Attachment)
-                    {
-                        var dbAttachment = new Com.BudgetMetal.DBEntities.Attachment();
+                var dbDocument = new Com.BudgetMetal.DBEntities.Document();
+                Copy<VmDocumentItem, Com.BudgetMetal.DBEntities.Document>(quotation.Document, dbDocument);
+                repoDocument.Update(dbDocument);
+                repoDocument.Commit();
 
-                        Copy<VmAttachmentItem, Com.BudgetMetal.DBEntities.Attachment>(item, dbAttachment);
-                        dbAttachment.Document_Id = dbDocument.Id;
-                        dbAttachment.CreatedBy = dbAttachment.UpdatedBy = dbQuotation.UpdatedBy;
-                        if (dbAttachment.Id < 1)
+                quotation.Document_Id = dbDocument.Id;
+
+                var dbQuotation = new Com.BudgetMetal.DBEntities.Quotation();
+                Copy<VmQuotationItem, Com.BudgetMetal.DBEntities.Quotation>(quotation, dbQuotation);
+                repoQuotation.Update(dbQuotation);
+                repoQuotation.Commit();
+
+                repoAttachment.InactiveByDocumentId(dbDocument.Id, dbDocument.UpdatedBy);
+                repoAttachment.Commit();
+
+                if (quotation.Document.Attachment != null)
+                {
+                    if (quotation.Document.Attachment.Count > 0)
+                    {
+                        foreach (var item in quotation.Document.Attachment)
                         {
-                            repoAttachment.Add(dbAttachment);
+                            var dbAttachment = new Com.BudgetMetal.DBEntities.Attachment();
+
+                            Copy<VmAttachmentItem, Com.BudgetMetal.DBEntities.Attachment>(item, dbAttachment);
+                            dbAttachment.Document_Id = dbDocument.Id;
+                            dbAttachment.CreatedBy = dbAttachment.UpdatedBy = dbQuotation.UpdatedBy;
+                            if (dbAttachment.Id < 1)
+                            {
+                                repoAttachment.Add(dbAttachment);
+                            }
+                            else
+                            {
+                                repoAttachment.UpdateDescription(dbAttachment);
+                            }
                         }
-                        else
+                        repoAttachment.Commit();
+                    }
+                }
+
+                repoAttachment.DeleteByDocumentId(dbDocument.Id);
+
+                repoDocumentUser.InactiveByDocumentId(dbDocument.Id, dbDocument.UpdatedBy);
+                repoDocumentUser.Commit();
+
+                if (quotation.Document.DocumentUser != null)
+                {
+                    if (quotation.Document.DocumentUser.Count > 0)
+                    {
+                        foreach (var item in quotation.Document.DocumentUser)
                         {
-                            repoAttachment.UpdateDescription(dbAttachment);
+                            var dbDocumentUser = new Com.BudgetMetal.DBEntities.DocumentUser();
+
+                            Copy<VmDocumentUserItem, Com.BudgetMetal.DBEntities.DocumentUser>(item, dbDocumentUser);
+                            dbDocumentUser.Document_Id = dbDocument.Id;
+                            dbDocumentUser.CreatedBy = dbDocumentUser.UpdatedBy = dbQuotation.UpdatedBy;
+                            repoDocumentUser.Add(dbDocumentUser);
+                        }
+                        repoDocumentUser.Commit();
+                    }
+                }
+
+                repoPriceSchedule.InactiveByQuotationId(dbQuotation.Id, dbQuotation.UpdatedBy);
+                repoPriceSchedule.Commit();
+
+                if (quotation.QuotationPriceSchedule != null)
+                {
+                    if (quotation.QuotationPriceSchedule.Count > 0)
+                    {
+                        foreach (var item in quotation.QuotationPriceSchedule)
+                        {
+                            var dbQPriceSchedule = new Com.BudgetMetal.DBEntities.QuotationPriceSchedule();
+
+                            Copy<VmQuotationPriceScheduleItem, Com.BudgetMetal.DBEntities.QuotationPriceSchedule>(item, dbQPriceSchedule);
+                            dbQPriceSchedule.Quotation_Id = dbQuotation.Id;
+                            dbQPriceSchedule.CreatedBy = dbQPriceSchedule.UpdatedBy = dbQuotation.CreatedBy;
+                            repoPriceSchedule.Add(dbQPriceSchedule);
+                        }
+                        repoPriceSchedule.Commit();
+                    }
+                }
+
+                repoRequirement.InactiveByQuotationId(dbQuotation.Id, dbQuotation.UpdatedBy);
+                repoRequirement.Commit();
+
+                if (quotation.QuotationRequirement != null)
+                {
+                    if (quotation.QuotationRequirement.Count > 0)
+                    {
+                        foreach (var item in quotation.QuotationRequirement)
+                        {
+                            var dbQRequirement = new Com.BudgetMetal.DBEntities.QuotationRequirement();
+
+                            Copy<VmQuotationRequirementItem, Com.BudgetMetal.DBEntities.QuotationRequirement>(item, dbQRequirement);
+                            dbQRequirement.Quotation_Id = dbQuotation.Id;
+                            dbQRequirement.CreatedBy = dbQRequirement.UpdatedBy = dbQuotation.CreatedBy;
+                            repoRequirement.Add(dbQRequirement);
+                        }
+                        repoPriceSchedule.Commit();
+                    }
+                }
+
+                if (quotation.Document.DocumentActivityList != null)
+                {
+                    if (quotation.Document.DocumentActivityList.Count > 0)
+                    {
+                        foreach (var item in quotation.Document.DocumentActivityList)
+                        {
+                            var dbDocumentActivity = new Com.BudgetMetal.DBEntities.DocumentActivity();
+
+                            Copy<VmDocumentActivityItem, Com.BudgetMetal.DBEntities.DocumentActivity>(item, dbDocumentActivity);
+                            dbDocumentActivity.Document_Id = quotation.Document_Id;
+                            dbDocumentActivity.CreatedBy = dbDocumentActivity.UpdatedBy = quotation.CreatedBy;
+                            repoDocumentActivity.Add(dbDocumentActivity);
+                        }
+                        repoDocumentActivity.Commit();
+                    }
+                }
+
+                //start adding timeline
+                var timeline = new Com.BudgetMetal.DBEntities.TimeLine()
+                {
+                    Company_Id = quotation.Document.Company_Id,
+                    User_Id = quotation.Document.DocumentUser.FirstOrDefault().User_Id,
+                    Message = "Updated on quotation" + quotation.Document.DocumentNo,
+                    MessageType = Constants_CodeTable.Code_TM_Quotation,
+                    IsRead = false,
+                    Document_Id = dbDocument.Id,
+                    CreatedBy = dbQuotation.CreatedBy,
+                    UpdatedBy = dbQuotation.CreatedBy
+                };
+                repoTimeLine.Add(timeline);
+
+                if(quotation.Document.DocumentStatus_Id == Constants_CodeTable.Code_Quotation_Submitted)
+                {
+                    var timelineforbuyer = new Com.BudgetMetal.DBEntities.TimeLine()
+                    {
+                        Company_Id = quotation.Rfq.Document.Company_Id,
+                        User_Id = quotation.Document.DocumentUser.FirstOrDefault().User_Id,
+                        Message = "Quotation " + quotation.Document.DocumentNo + " has been submitted.",
+                    MessageType = Constants_CodeTable.Code_TM_Rfq,
+                        IsRead = false,
+                        Document_Id = quotation.Rfq.Document.Id,
+                        CreatedBy = dbQuotation.CreatedBy,
+                        UpdatedBy = dbQuotation.CreatedBy
+                    };
+                    repoTimeLine.Add(timelineforbuyer);
+
+                    repoTimeLine.Commit();
+                    //end adding timeline
+
+                    //get rfq owner admin email
+                    var resultBuyerAdmin = repoUser.GetBuyerAdmin(quotation.Rfq.Document.Company_Id);
+                    var sendMail = new SendingMail();
+                    if (resultBuyerAdmin != null)
+                    {
+                        string emailSubject = "Quotation " + quotation.Document.DocumentNo + " has been submitted.";
+                        string emailBody = "Email Template need to provide.";
+                        foreach (var item in resultBuyerAdmin)
+                        {
+                            sendMail.SendMail(item, "", emailSubject, emailBody);
                         }
                     }
-                    repoAttachment.Commit();
                 }
+                
+
+                result.IsSuccess = true;
+                result.MessageToUser = dbQuotation.Id.ToString();
             }
-
-            repoAttachment.DeleteByDocumentId(dbDocument.Id);
-
-            repoDocumentUser.InactiveByDocumentId(dbDocument.Id, dbDocument.UpdatedBy);
-            repoDocumentUser.Commit();
-
-            if (quotation.Document.DocumentUser != null)
+            catch (Exception ex)
             {
-                if (quotation.Document.DocumentUser.Count > 0)
-                {
-                    foreach (var item in quotation.Document.DocumentUser)
-                    {
-                        var dbDocumentUser = new Com.BudgetMetal.DBEntities.DocumentUser();
-
-                        Copy<VmDocumentUserItem, Com.BudgetMetal.DBEntities.DocumentUser>(item, dbDocumentUser);
-                        dbDocumentUser.Document_Id = dbDocument.Id;
-                        dbDocumentUser.CreatedBy = dbDocumentUser.UpdatedBy = dbQuotation.UpdatedBy;
-                        repoDocumentUser.Add(dbDocumentUser);
-                    }
-                    repoDocumentUser.Commit();
-                }
+                result.IsSuccess = false;
+                result.MessageToUser = "Fail to create your RFQ. Please contact site admin.";
+                result.Error = ex;
             }
-
-            repoPriceSchedule.InactiveByQuotationId(dbQuotation.Id, dbQuotation.UpdatedBy);
-            repoPriceSchedule.Commit();
-
-            if (quotation.QuotationPriceSchedule != null)
-            {
-                if (quotation.QuotationPriceSchedule.Count > 0)
-                {
-                    foreach (var item in quotation.QuotationPriceSchedule)
-                    {
-                        var dbQPriceSchedule = new Com.BudgetMetal.DBEntities.QuotationPriceSchedule();
-
-                        Copy<VmQuotationPriceScheduleItem, Com.BudgetMetal.DBEntities.QuotationPriceSchedule>(item, dbQPriceSchedule);
-                        dbQPriceSchedule.Quotation_Id = dbQuotation.Id;
-                        dbQPriceSchedule.CreatedBy = dbQPriceSchedule.UpdatedBy = dbQuotation.CreatedBy;
-                        repoPriceSchedule.Add(dbQPriceSchedule);
-                    }
-                    repoPriceSchedule.Commit();
-                }
-            }
-
-            repoRequirement.InactiveByQuotationId(dbQuotation.Id, dbQuotation.UpdatedBy);
-            repoRequirement.Commit();
-
-            if (quotation.QuotationRequirement != null)
-            {
-                if (quotation.QuotationRequirement.Count > 0)
-                {
-                    foreach (var item in quotation.QuotationRequirement)
-                    {
-                        var dbQRequirement = new Com.BudgetMetal.DBEntities.QuotationRequirement();
-
-                        Copy<VmQuotationRequirementItem, Com.BudgetMetal.DBEntities.QuotationRequirement>(item, dbQRequirement);
-                        dbQRequirement.Quotation_Id = dbQuotation.Id;
-                        dbQRequirement.CreatedBy = dbQRequirement.UpdatedBy = dbQuotation.CreatedBy;
-                        repoRequirement.Add(dbQRequirement);
-                    }
-                    repoPriceSchedule.Commit();
-                }
-            }
-
-            if (quotation.Document.DocumentActivityList != null)
-            {
-                if (quotation.Document.DocumentActivityList.Count > 0)
-                {
-                    foreach (var item in quotation.Document.DocumentActivityList)
-                    {
-                        var dbDocumentActivity = new Com.BudgetMetal.DBEntities.DocumentActivity();
-
-                        Copy<VmDocumentActivityItem, Com.BudgetMetal.DBEntities.DocumentActivity>(item, dbDocumentActivity);
-                        dbDocumentActivity.Document_Id = quotation.Document_Id;
-                        dbDocumentActivity.CreatedBy = dbDocumentActivity.UpdatedBy = quotation.CreatedBy;
-                        repoDocumentActivity.Add(dbDocumentActivity);
-                    }
-                    repoDocumentActivity.Commit();
-                }
-            }
-
-            return quotation.Document.DocumentNo;
+            return result;
         }
 
         private string GenerateDocumentNo(int companyId)
@@ -521,7 +759,7 @@ namespace Com.BudgetMetal.Services.Quotation
 
             var resultObject = new VmQuotationItem();
 
-            Copy<Com.BudgetMetal.DBEntities.Quotation, VmQuotationItem>(dbResult, resultObject, new string[] { "Document","QuotationPriceSchedule" });
+            Copy<Com.BudgetMetal.DBEntities.Quotation, VmQuotationItem>(dbResult, resultObject, new string[] { "Document", "QuotationPriceSchedule" });
 
             var resultDocument = new VmDocumentItem();
 
@@ -596,12 +834,12 @@ namespace Com.BudgetMetal.Services.Quotation
             }
             resultObject.QuotationPriceSchedule = listQuotationPriceSchedule;
 
-            var listQuotationRequirement= new List<VmQuotationRequirementItem>();
+            var listQuotationRequirement = new List<VmQuotationRequirementItem>();
             if (dbResult.QuotationRequirement != null)
             {
                 foreach (var item in dbResult.QuotationRequirement.Where(e => e.IsActive == true).ToList())
                 {
-                    var itemQuotationRequirement = new VmQuotationRequirementItem();                    
+                    var itemQuotationRequirement = new VmQuotationRequirementItem();
                     Copy<Com.BudgetMetal.DBEntities.QuotationRequirement, VmQuotationRequirementItem>(item, itemQuotationRequirement, new string[] { "Quotation" });
                     listQuotationRequirement.Add(itemQuotationRequirement);
                 }

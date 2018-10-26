@@ -56,16 +56,31 @@ namespace Com.GenericPlatform.WebApp.Controllers
             {
                 page = Convert.ToInt32(queryPage);
             }
-            
+
             var Company_Id = HttpContext.Session.GetString("Company_Id");
             var User_Id = HttpContext.Session.GetString("User_Id");
             var userRoles = JsonConvert.DeserializeObject<List<VmRoleItem>>(HttpContext.Session.GetString("SelectedRoles"));
             bool isCompanyAdmin = false;
-            if(userRoles.Where(e=>e.Id == Constants.C_Admin_Role).ToList().Count > 0)
+            if (userRoles.Where(e => e.Id == Constants.C_Admin_Role).ToList().Count > 0)
             {
                 isCompanyAdmin = true;
             }
-            var result = await rfqService.GetRfqByPage(Convert.ToInt32(User_Id), Convert.ToInt32(Company_Id), page, 10,isCompanyAdmin);
+            var result = await rfqService.GetRfqByPage(Convert.ToInt32(User_Id), Convert.ToInt32(Company_Id), page, 10, isCompanyAdmin);
+            return View(result);
+        }
+
+        public async Task<ActionResult> Listing()
+        {
+            string queryPage = HttpContext.Request.Query["page"];
+            int page = 1;
+            if (queryPage != null)
+            {
+                page = Convert.ToInt32(queryPage);
+            }
+
+            var Company_Id = HttpContext.Session.GetString("Company_Id");
+
+            var result = await rfqService.GetRfqForSupplierByPage(Convert.ToInt32(Company_Id), page, 10);
             return View(result);
         }
 
@@ -120,8 +135,8 @@ namespace Com.GenericPlatform.WebApp.Controllers
                     documentAction = "Submitted";
                 }
                 Rfq.SelectedTags = Request.Form["SelectedTags"].ToString();
-                Rfq.Document.UpdatedBy = HttpContext.Session.GetString("UserName");
-                Rfq.UpdatedBy = HttpContext.Session.GetString("UserName");
+                Rfq.Document.UpdatedBy = HttpContext.Session.GetString("EmailAddress");
+                Rfq.UpdatedBy = HttpContext.Session.GetString("EmailAddress");
                 //var listAttachment = new List<VmAttachmentItem>();
                 int i = 0;
                 foreach (var itemFile in Request.Form.Files)
@@ -218,8 +233,9 @@ namespace Com.GenericPlatform.WebApp.Controllers
             ViewBag.Company_Id = HttpContext.Session.GetString("Company_Id");
             ViewBag.UserName = HttpContext.Session.GetString("UserName");
             ViewBag.FullName = HttpContext.Session.GetString("ContactName");
-
-            if (rfqService.CheckRFQLimit(Convert.ToInt32(HttpContext.Session.GetString("Company_Id"))) ==  false){
+            ViewBag.EmailAddress = HttpContext.Session.GetString("EmailAddress");
+            if (rfqService.CheckRFQLimit(Convert.ToInt32(HttpContext.Session.GetString("Company_Id"))) == false)
+            {
                 TempData["message"] = "RFQ Limitation per week is exceed. please contact admin to upgrade your account.";
                 return RedirectToAction("Index");
             }
@@ -324,7 +340,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
                     return View();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return View();
             }
@@ -374,7 +390,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
         [HttpGet]
         public async Task<JsonResult> GetQuotationByRfqId(int RfqId, int page, string keyword)
         {
-            var result = await quotationService.GetQuotationByRfqId(RfqId, page, 10, 0, (keyword == null ? "": keyword));
+            var result = await quotationService.GetQuotationByRfqId(RfqId, page, 10, 0, (keyword == null ? "" : keyword));
 
             return new JsonResult(result, new JsonSerializerSettings()
             {
@@ -419,8 +435,8 @@ namespace Com.GenericPlatform.WebApp.Controllers
         [HttpGet]
         public async Task<JsonResult> WithdrawnRfq(int documentId)
         {
-            
-            var result = await rfqService.WithdrawnRfq(documentId, Convert.ToInt32( HttpContext.Session.GetString("User_Id")), HttpContext.Session.GetString("UserName"));
+
+            var result = await rfqService.WithdrawnRfq(documentId, Convert.ToInt32(HttpContext.Session.GetString("User_Id")), HttpContext.Session.GetString("UserName"));
 
             return new JsonResult(result, new JsonSerializerSettings()
             {
@@ -433,6 +449,18 @@ namespace Com.GenericPlatform.WebApp.Controllers
         {
 
             var result = await rfqService.DeleteRfq(documentId, Convert.ToInt32(HttpContext.Session.GetString("User_Id")), HttpContext.Session.GetString("UserName"));
+
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> CheckQuotationByRfqId(int rfqId)
+        {
+
+            var result = await rfqService.CheckQuotationByRfqId(rfqId, Convert.ToInt32(HttpContext.Session.GetString("Company_Id")));
 
             return new JsonResult(result, new JsonSerializerSettings()
             {

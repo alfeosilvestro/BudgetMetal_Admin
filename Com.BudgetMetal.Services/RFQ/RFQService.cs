@@ -137,6 +137,64 @@ namespace Com.BudgetMetal.Services.RFQ
             return resultObj;
         }
 
+        public async Task<VmRfqPage> GetRfqForSupplierByPage(int supplierId, int page, int totalRecords, int statusId = 0, string keyword = "")
+        {
+            var dbPageResult = await repoRfq.GetRfqForSupplierByPage(supplierId,
+                (page == 0 ? Constants.app_firstPage : page),
+                (totalRecords == 0 ? Constants.app_totalRecords : totalRecords), statusId, keyword);
+
+            //var dbPageResult = repo.GetCodeTableByPage(keyword,
+            //    (page == 0 ? Constants.app_firstPage : page),
+            //    (totalRecords == 0 ? Constants.app_totalRecords : totalRecords));
+
+            if (dbPageResult == null)
+            {
+                return new VmRfqPage();
+            }
+
+            var resultObj = new VmRfqPage();
+            resultObj.RequestId = DateTime.Now.ToString("yyyyMMddHHmmss");
+            resultObj.RequestDate = DateTime.Now;
+            resultObj.Result = new PageResult<VmRfqItem>();
+            resultObj.Result.Records = new List<VmRfqItem>();
+
+            Copy<PageResult<Rfq>, PageResult<VmRfqItem>>(dbPageResult, resultObj.Result, new string[] { "Records" });
+
+            foreach (var dbItem in dbPageResult.Records)
+            {
+                var resultItem = new VmRfqItem();
+
+                Copy<Rfq, VmRfqItem>(dbItem, resultItem);
+
+                if (dbItem.Document != null)
+                {
+                    resultItem.Document = new ViewModels.Document.VmDocumentItem()
+                    {
+                        Id = dbItem.Document.Id,
+                        DocumentNo = dbItem.Document.DocumentNo,
+                        Title = dbItem.Document.Title,
+                        DocumentStatus = new ViewModels.CodeTable.VmCodeTableItem()
+                        {
+                            Name = dbItem.Document.DocumentStatus.Name
+                        },
+                        DocumentType = new ViewModels.CodeTable.VmCodeTableItem()
+                        {
+                            Name = dbItem.Document.DocumentStatus.Name
+                        },
+                        Company = new ViewModels.Company.VmCompanyItem()
+                        {
+                            Name = dbItem.Document.Company.Name
+                        }
+                    };
+
+                }
+
+                resultObj.Result.Records.Add(resultItem);
+            }
+
+            return resultObj;
+        }
+
         public async Task<VmRfqPage> GetPublicRfqByPage(int page, int totalRecords, int statusId = 0, string keyword = "")
         {
             var dbPageResult = await repoRfq.GetPublicRfqByPage((page == 0 ? Constants.app_firstPage : page),
@@ -775,6 +833,7 @@ namespace Com.BudgetMetal.Services.RFQ
                 var dbDocumentActivity = new Com.BudgetMetal.DBEntities.DocumentActivity()
                 {
                     Action = "Withdrawn",
+                    IsRfq = true,
                     User_Id = userId,
                     Document_Id = documentId,
                     CreatedBy = userName,
@@ -860,6 +919,7 @@ namespace Com.BudgetMetal.Services.RFQ
                 {
                     Action = "Withdrawn",
                     User_Id = userId,
+                    IsRfq = true,
                     Document_Id = documentId,
                     CreatedBy = userName,
                     UpdatedBy = userName
@@ -1516,6 +1576,26 @@ namespace Com.BudgetMetal.Services.RFQ
             }
 
             return listCompany;
+        }
+
+        public async Task<VmGenericServiceResult> CheckQuotationByRfqId(int rfqId, int companyId)
+        {
+            var result = new VmGenericServiceResult();
+
+            var dbresult = await repoQuotation.GetQuotationBy_RfqId_CompanyId(rfqId, companyId);
+
+            if (dbresult == null)
+            {
+                result.IsSuccess = false;
+                result.MessageToUser = "";
+            }
+            else
+            {
+                result.IsSuccess = true;
+                result.MessageToUser = dbresult.Id.ToString();
+            }
+
+            return result;
         }
     }
 }

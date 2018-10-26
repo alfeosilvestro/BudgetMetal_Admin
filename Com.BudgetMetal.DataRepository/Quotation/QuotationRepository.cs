@@ -19,7 +19,7 @@ namespace Com.BudgetMetal.DataRepository.Quotation
 
         }
 
-        public async Task<PageResult<Com.BudgetMetal.DBEntities.Quotation>> GetQuotationByPage(int documentOwner, int page, int totalRecords)
+        public async Task<PageResult<Com.BudgetMetal.DBEntities.Quotation>> GetQuotationByPage(int userId, int companyId, int page, int totalRecords, bool isCompany, int statusId = 0, string keyword = "")
         {
             var records = await this.entities
                             .Include(e => e.Document)
@@ -29,7 +29,61 @@ namespace Com.BudgetMetal.DataRepository.Quotation
                             .Where(e =>
                               (e.IsActive == true)
                               && (e.Document.IsActive == true)
-                              && (e.Document.Company_Id == documentOwner)
+                              && (e.Document.Company_Id == companyId)
+                            )
+                            .OrderByDescending(e => e.CreatedDate)
+                            .ToListAsync();
+
+
+            var recordList = records
+                .Skip((totalRecords * page) - totalRecords)
+                .Take(totalRecords).ToList();
+
+            var count = records.Count();
+
+            var nextPage = 0;
+            var prePage = 0;
+            if (page > 1)
+            {
+                prePage = page - 1;
+            }
+
+            var totalPage = (count + totalRecords - 1) / totalRecords;
+            if (page < totalPage)
+            {
+                nextPage = page + 1;
+            }
+
+            var result = new PageResult<Com.BudgetMetal.DBEntities.Quotation>()
+            {
+                Records = recordList,
+                TotalPage = totalPage,
+                CurrentPage = page,
+                PreviousPage = prePage,
+                NextPage = nextPage,
+                TotalRecords = count
+            };
+
+            return result;
+        }
+
+        public async Task<PageResult<Com.BudgetMetal.DBEntities.Quotation>> GetQuotationForBuyerByPage(int userId, int buyerId, int page, int totalRecords, bool isCompany, int statusId = 0, string keyword = "")
+        {
+            var filterRfqId = this.DbContext.Rfq.Include(e => e.Document)
+                .Where(e => e.Document.Company_Id == buyerId).Select(e => e.Id).ToList();
+
+            
+
+            var records = await this.entities
+                            .Include(e => e.Document)
+                            .Include(e => e.Document.DocumentStatus)
+                            .Include(e => e.Document.DocumentType)
+                            .Include(e => e.Document.Company)
+                            .Where(e =>
+                              (e.IsActive == true)
+                              && (e.Document.IsActive == true)
+                              && (filterRfqId.Contains(e.Rfq_Id))
+                              && (e.Document.DocumentStatus_Id != Constants_CodeTable.Code_Quotation_Draft)
                             )
                             .OrderByDescending(e => e.CreatedDate)
                             .ToListAsync();
@@ -156,6 +210,33 @@ namespace Com.BudgetMetal.DataRepository.Quotation
                               && (e.Id == id)
                             );
             return record;
+        }
+
+        public async Task<Com.BudgetMetal.DBEntities.Quotation> GetQuotationBy_RfqId_CompanyId(int rfqId, int companyId)
+        {
+            var filterStatus = new List<int>();
+            filterStatus.Add(Constants_CodeTable.Code_Quotation_Accepted);
+            filterStatus.Add(Constants_CodeTable.Code_Quotation_Draft);
+            filterStatus.Add(Constants_CodeTable.Code_Quotation_Rejected);
+            filterStatus.Add(Constants_CodeTable.Code_Quotation_Submitted);
+
+           
+            var record = await this.entities.Include(e => e.Document)
+                .Where(e => e.IsActive == true
+                && e.Document.IsActive ==  true
+                && e.Rfq_Id == rfqId
+                && e.Document.Company_Id == companyId
+                && filterStatus.Contains( e.Document.DocumentStatus_Id)
+                ).SingleOrDefaultAsync();
+
+            return record;
+        }
+
+        public int GetRfqOwnerId(int documentId)
+        {
+            var rfqDocumentId = this.entities.Where(e => e.Document_Id == documentId).First().Rfq_Id;
+
+            return this.DbContext.Rfq.Include(e => e.Document).Where(e => e.Id == rfqDocumentId).First().Document.Company_Id;
         }
     }
 }

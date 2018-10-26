@@ -27,6 +27,8 @@ namespace Com.BudgetMetal.DataRepository.Users
 
         Task<Com.BudgetMetal.DBEntities.User> GetUserCompanyIdandUserId(int companyId, int userId);
 
-        Task<List<User>> GetUserByCompanyNotFilterWithConfirm(int Id); 
+        Task<List<User>> GetUserByCompanyNotFilterWithConfirm(int Id);
+
+        List<string> GetBuyerAdmin(int company_Id);
     }
 }
