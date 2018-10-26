@@ -46,6 +46,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Com.BudgetMetal.DataRepository.Rating;
 using Com.BudgetMetal.DataRepository.SupplierServiceTags;
 using Com.BudgetMetal.DataRepository.CompanySupplier;
+using Com.BudgetMetal.DataRepository.TimeLine;
+using Com.BudgetMetal.Services.TimeLine;
 
 namespace Com.EzTender.PublicPortal
 {
@@ -154,6 +156,9 @@ namespace Com.EzTender.PublicPortal
 
             services.AddScoped<IServiceTagsRepository, ServiceTagsRepository>();
             services.AddScoped<IServiceTagsService, ServiceTagsService>();
+
+            services.AddScoped<ITimeLineRepository, TimeLineRepository>();
+            services.AddScoped<ITimeLineService, TimeLineService>();
 
             //CodeTable
             services.AddScoped<ICodeTableRepository, CodeTableRepository>();

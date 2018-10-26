@@ -196,9 +196,7 @@ namespace Com.EzTender.PublicPortal.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-       
+        }       
 
         [HttpGet]
         public async Task<JsonResult> GetPublicRFQ(int page, string status, string skeyword)
@@ -289,7 +287,6 @@ namespace Com.EzTender.PublicPortal.Controllers
             }
             return new string(chars);
         }
-
 
         [HttpGet]
         public async Task<string> LoadServiceTags()
