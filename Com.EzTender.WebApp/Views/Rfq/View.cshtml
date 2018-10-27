@@ -9,8 +9,7 @@
     string Code_C_Buyer = Com.BudgetMetal.Common.Constants_CodeTable.Code_C_Buyer.ToString();
     
 }
-<form asp-controller="Rfq" asp-action="View" method="post" enctype="multipart/form-data" id="frmCreateRFQ">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
     <div class="block-header">
         <h2>Prepare Request for Quotation</h2>
     </div>
@@ -645,8 +644,9 @@
                     @{
                         if (Code_C_Buyer != currentCompanyType)
                         {
-                            <a class="btn btn-danger" href='@Url.Action("Create","Quotation",new { id= Model.Id })'>Create Quotation</a>
+                            <a class="btn btn-danger" id="btnCreateQuotation" href='@Url.Action("Create","Quotation",new { id= Model.Id })'>Register &amp; Interest</a>
 
+                            <div id="divViewQuotionForSupplier"></div>
                         }
                         else
                         {
@@ -667,7 +667,7 @@
         </div>
     </div>
 
-</form>
+
 
 
 <!-- Editable Table Plugin Js
@@ -699,12 +699,19 @@
 
 <script>
     $(function () {
+        var buyer = @(Code_C_Buyer);
+        var currentComapnyType = @(currentCompanyType);
+        if (buyer != currentComapnyType) {
+            loadQuotationForSupplier(@Model.Id);
 
-        loadIndustry();
-        loadSelectedSupplier();
-        loadQuotation(1);
+        } else {
+            loadQuotation(1);
+            loadIndustry();
+            loadSelectedSupplier();
+        }
+
+       
         $('#frmCreateRFQ input').attr('readonly', 'readonly');
-       // $('#StartRfqdate').datepicker("setDate", new Date(2008, 9, 03));
     });
 
 
@@ -931,6 +938,29 @@ function loadIndustry() {
 
                 }
 
+            },
+            error: function (response) {
+                alert(response)
+            }
+        });
+    }
+
+    function loadQuotationForSupplier(_rfqId) {
+       
+        var ajaxurl = '@Url.Action("CheckQuotationByRfqId", "Rfq")';
+        
+        $.ajax({
+            url: ajaxurl,
+            data: { rfqId: _rfqId},
+            dataType: 'json',
+            success: function (response) {
+                var obj = response;
+                if (obj.IsSuccess) {
+                    var q_id = obj.MessageToUser;
+                    var quotationurl = '@Url.Action("View", "Quotation")' + '/' + obj.MessageToUser;
+                    $("#divViewQuotionForSupplier").append("Your company has registered for this RFQ. <a class='btn btn-md btn-warning' OnClick='window.location.href = \"" + quotationurl+"\"'> View Quotation </a> ");
+                    $("#btnCreateQuotation").hide();
+                }
             },
             error: function (response) {
                 alert(response)

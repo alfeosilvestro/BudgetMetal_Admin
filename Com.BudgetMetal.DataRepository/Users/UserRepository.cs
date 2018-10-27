@@ -276,5 +276,25 @@ namespace Com.BudgetMetal.DataRepository.Users
             
             return emailList;
         }
+
+        public List<string> GetBuyerAdmin(int companyId)
+        {
+            var emailList = new List<string>();
+
+            var result = this.entities.Include(e => e.UserRoles).Where(e => e.Company_Id == companyId
+             && e.IsActive == true
+             && e.IsConfirmed == true
+            ).ToList();
+            foreach (var item in result)
+            {
+                if (item.UserRoles.Where(e => e.Role_Id == Constants.C_Admin_Role && e.IsActive == true).ToList().Count > 0)
+                {
+                    emailList.Add(item.EmailAddress);
+                }
+            }
+            //emailList = result.Select(e => e.EmailAddress).ToList();
+
+            return emailList;
+        }
     }
 }

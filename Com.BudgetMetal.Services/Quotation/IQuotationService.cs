@@ -11,18 +11,22 @@ namespace Com.BudgetMetal.Services.Quotation
     public interface IQuotationService
     {
 
-        Task<VmQuotationPage> GetQuotationByPage(int documentOwner, int page, int totalRecords);
+        Task<VmQuotationPage> GetQuotationByPage(int userId, int companyId, int page, int totalRecords, bool isCompany, int statusId = 0, string keyword = "");
+
+        Task<VmQuotationPage> GetQuotationForBuyerByPage(int userId, int buyerId, int page, int totalRecords, bool isCompany, int statusId = 0, string keyword = "");
 
         Task<VmQuotationPage> GetQuotationByRfqId(int RfqId, int page, int totalRecords, int statusId = 0, string keyword = "");
 
         Task<VmQuotationItem> InitialLoadByRfqId(int RfqId);
 
-        string SaveQuotation(VmQuotationItem quotation);
+        VmGenericServiceResult SaveQuotation(VmQuotationItem quotation);
 
         Task<VmQuotationItem> GetSingleQuotationById(int id);
 
-        string UpdateQuotation(VmQuotationItem quotationItem);
+        VmGenericServiceResult UpdateQuotation(VmQuotationItem quotationItem);
 
         bool CheckQuotationLimit(int companyId);
+
+        Task<VmGenericServiceResult> CancelQuotation(int documentId, int userId, string userName);
     }
 }

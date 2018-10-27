@@ -3,18 +3,22 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Com.BudgetMetal.Common;
 using Com.BudgetMetal.Services.Attachment;
 using Com.BudgetMetal.Services.Quotation;
 using Com.BudgetMetal.Services.Roles;
 using Com.BudgetMetal.Services.Users;
 using Com.BudgetMetal.ViewModels.Attachment;
+using Com.BudgetMetal.ViewModels.Document;
 using Com.BudgetMetal.ViewModels.DocumentActivity;
 using Com.BudgetMetal.ViewModels.DocumentUser;
 using Com.BudgetMetal.ViewModels.Quotation;
+using Com.BudgetMetal.ViewModels.Role;
 using Com.EazyTender.WebApp.Configurations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 
 namespace Com.EzTender.WebApp.Controllers
 {
@@ -45,8 +49,38 @@ namespace Com.EzTender.WebApp.Controllers
             {
                 page = Convert.ToInt32(queryPage);
             }
-            int companyId = Convert.ToInt32(HttpContext.Session.GetString("Company_Id"));
-            var result = await quotationService.GetQuotationByPage(companyId, page, 10);
+            var Company_Id = HttpContext.Session.GetString("Company_Id");
+            var User_Id = HttpContext.Session.GetString("User_Id");
+            var userRoles = JsonConvert.DeserializeObject<List<VmRoleItem>>(HttpContext.Session.GetString("SelectedRoles"));
+            bool isCompanyAdmin = false;
+            if (userRoles.Where(e => e.Id == Constants.C_Admin_Role).ToList().Count > 0)
+            {
+                isCompanyAdmin = true;
+            }
+            var result = await quotationService.GetQuotationForBuyerByPage(Convert.ToInt32(User_Id), Convert.ToInt32(Company_Id), page, 10, isCompanyAdmin);
+            return View(result);
+        }
+
+        // GET: Quotation
+        [HttpGet]
+        public async Task<ActionResult> Listing()
+        {
+            string queryPage = HttpContext.Request.Query["page"];
+            int page = 1;
+            if (queryPage != null)
+            {
+                page = Convert.ToInt32(queryPage);
+            }
+            var Company_Id = HttpContext.Session.GetString("Company_Id");
+            var User_Id = HttpContext.Session.GetString("User_Id");
+            var userRoles = JsonConvert.DeserializeObject<List<VmRoleItem>>(HttpContext.Session.GetString("SelectedRoles"));
+            bool isCompanyAdmin = false;
+            if (userRoles.Where(e => e.Id == Constants.C_Admin_Role).ToList().Count > 0)
+            {
+                isCompanyAdmin = true;
+            }
+           
+            var result = await quotationService.GetQuotationByPage(Convert.ToInt32(User_Id), Convert.ToInt32(Company_Id), page, 10, isCompanyAdmin);
             return View(result);
         }
 
@@ -56,8 +90,28 @@ namespace Com.EzTender.WebApp.Controllers
         {
             try
             {
-                var result = await quotationService.GetSingleQuotationById(id);
+                ViewBag.User_Id = HttpContext.Session.GetString("User_Id");
+                ViewBag.Company_Id = HttpContext.Session.GetString("Company_Id");
+                ViewBag.UserName = HttpContext.Session.GetString("UserName");
+                ViewBag.FullName = HttpContext.Session.GetString("ContactName");
 
+                var userRoles = JsonConvert.DeserializeObject<List<VmRoleItem>>(HttpContext.Session.GetString("SelectedRoles"));
+                bool isCompanyAdmin = false;
+                if (userRoles.Where(e => e.Id == Constants.C_Admin_Role).ToList().Count > 0)
+                {
+                    isCompanyAdmin = true;
+                }
+                ViewBag.CompanyAdmin = isCompanyAdmin;
+                
+                var result = await quotationService.GetSingleQuotationById(id);
+                int userId = Convert.ToInt32(HttpContext.Session.GetString("User_Id"));
+                int roleId = Convert.ToInt32( Constants.QuotationDefaultRoleId);
+
+                ViewBag.DocumentOwner = false;
+                if (result.Document.DocumentUser.Where(e=>e.User_Id == userId && e.Role_Id == roleId).ToList().Count> 0)
+                {
+                    ViewBag.DocumentOwner = true;
+                }
                 return View(result);
             }
             catch (Exception ex)
@@ -84,11 +138,36 @@ namespace Com.EzTender.WebApp.Controllers
 
         }
 
+        [HttpGet]
+        public async Task<JsonResult> CancelQuotation(int documentId)
+        {
+
+            var result = await quotationService.CancelQuotation(documentId, Convert.ToInt32(HttpContext.Session.GetString("User_Id")), HttpContext.Session.GetString("UserName"));
+
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
+
         [HttpPost]
         public ActionResult Edit(VmQuotationItem quotationItem)
         {
             try
             {
+                var submitType = Request.Form["btnType"];
+                string documentAction = "";
+                if (submitType.ToString().ToLower() == "draft")
+                {
+                    quotationItem.Document.DocumentStatus_Id = Constants_CodeTable.Code_Quotation_Draft;
+                    documentAction = "Save as Draft";
+                }
+                else
+                {
+                    quotationItem.Document.DocumentStatus_Id = Constants_CodeTable.Code_Quotation_Submitted;
+                    documentAction = "Submitted";
+                }
+
                 var listAttachment = new List<VmAttachmentItem>();
                 int i = 0;
                 foreach (var itemFile in Request.Form.Files)
@@ -137,15 +216,25 @@ namespace Com.EzTender.WebApp.Controllers
                 var DocumentActivity = new VmDocumentActivityItem()
                 {
                     User_Id = Convert.ToInt32(HttpContext.Session.GetString("User_Id")),
-                    IsRfq = true,
-                    Action = "Update",
+                    IsRfq = false,
+                    Action = documentAction,
                 };
                 listDocumentActivity.Add(DocumentActivity);
                 quotationItem.Document.DocumentActivityList = listDocumentActivity;
 
-                string documentNo = quotationService.UpdateQuotation(quotationItem);
+                //string documentNo = quotationService.UpdateQuotation(quotationItem);
 
-                return RedirectToAction("Index");
+                //return RedirectToAction("Index");
+
+                var result = quotationService.UpdateQuotation(quotationItem);
+                if (result.IsSuccess)
+                {
+                    return RedirectToAction("Listing");
+                }
+                else
+                {
+                    return View();
+                }
             }
             catch (Exception ex)
             {
@@ -169,8 +258,40 @@ namespace Com.EzTender.WebApp.Controllers
                     return RedirectToAction("Index");
                 }
                 var result = await quotationService.InitialLoadByRfqId(id);
+                result.Document = new VmDocumentItem();
+                result.Document.DocumentStatus_Id = Constants_CodeTable.Code_Quotation_Draft;
+                result.Document.DocumentType_Id = Constants_CodeTable.Code_Quotation;
+                result.Document.Company_Id = Convert.ToInt32(HttpContext.Session.GetString("Company_Id"));
+                result.Document.ContactPersonName = HttpContext.Session.GetString("ContactName");
+                result.Document.CreatedBy = result.Document.UpdatedBy = result.CreatedBy = result.UpdatedBy = HttpContext.Session.GetString("EmailAddress"); 
+                result.Document.DocumentUser = new List<VmDocumentUserItem>();
+                var documentUser = new VmDocumentUserItem
+                {
+                    User_Id = Convert.ToInt32(HttpContext.Session.GetString("User_Id")),
+                    Role_Id = Convert.ToInt32(Constants.QuotationDefaultRoleId)
+                };
+                result.Document.DocumentUser.Add(documentUser);
 
-                return View(result);
+                result.Document.DocumentActivityList = new List<VmDocumentActivityItem>();
+                var DocumentActivity = new VmDocumentActivityItem()
+                {
+                    User_Id = Convert.ToInt32(HttpContext.Session.GetString("User_Id")),
+                    IsRfq = false,
+                    Action = "Create",
+
+                };
+                result.Document.DocumentActivityList.Add(DocumentActivity);
+
+                var resultSaving = quotationService.SaveQuotation(result);
+
+                if (resultSaving.IsSuccess)
+                {
+                    return RedirectToAction("Edit",new { id = resultSaving.MessageToUser});
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }
             }
             catch (Exception ex)
             {
@@ -242,7 +363,7 @@ namespace Com.EzTender.WebApp.Controllers
                 listDocumentActivity.Add(DocumentActivity);
                 quotationItem.Document.DocumentActivityList = listDocumentActivity;
 
-                string documentNo = quotationService.SaveQuotation(quotationItem);
+                var result = quotationService.SaveQuotation(quotationItem);
 
                 return RedirectToAction("Index");
             }

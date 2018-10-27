@@ -12,6 +12,8 @@ namespace Com.BudgetMetal.Services.RFQ
     {
         Task<VmRfqPage> GetRfqByPage(int userId, int documentOwner, int page, int totalRecords, bool isCompany, int statusId = 0, string keyword = "");
 
+        Task<VmRfqPage> GetRfqForSupplierByPage(int supplierId, int page, int totalRecords, int statusId = 0, string keyword = "");
+
         Task<VmRfqPage> GetPublicRfqByPage(int page, int totalRecords, int statusId = 0, string keyword = "");
 
         VmGenericServiceResult SaveRFQ(VmRfqItem rfq);
@@ -43,5 +45,7 @@ namespace Com.BudgetMetal.Services.RFQ
         Task<VmGenericServiceResult> WithdrawnRfq(int documentId, int userId, string userName);
 
         Task<VmGenericServiceResult> DeleteRfq(int documentId, int userId, string userName);
+
+        Task<VmGenericServiceResult> CheckQuotationByRfqId(int rfqId, int companyId);
     }
 }

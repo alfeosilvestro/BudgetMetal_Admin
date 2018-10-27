@@ -78,6 +78,64 @@ namespace Com.BudgetMetal.DataRepository.RFQ
             return result;
         }
 
+        public async Task<PageResult<Com.BudgetMetal.DBEntities.Rfq>> GetRfqForSupplierByPage(int supplierId, int page, int totalRecords, int statusId, string keyword)
+        {
+            var filterRfq = await this.DbContext.InvitedSupplier
+                .Where(e => e.IsActive == true && e.Company_Id == supplierId)
+                .Select(e => e.Rfq_Id).Distinct().ToListAsync();
+
+
+            var records = await this.entities
+                            .Include(e => e.Document)
+                            .Include(e => e.Document.DocumentStatus)
+                            .Include(e => e.Document.DocumentType)
+                            .Include(e => e.Document.Company)
+                            .Where(e =>
+                              (e.IsActive == true)
+                              && (e.Document.IsActive == true)
+                              && filterRfq.Contains(e.Id)
+                              && (statusId == 0 || e.Document.DocumentStatus_Id == statusId)
+                              && (e.Document.DocumentStatus_Id != Constants_CodeTable.Code_RFQ_Delete)
+                              && (e.Document.DocumentStatus_Id != Constants_CodeTable.Code_RFQ_Draft)
+                              && (keyword == "" || e.Document.Title.ToLower().Contains(keyword.ToLower()) || e.Document.DocumentNo.ToLower().Contains(keyword.ToLower()) || e.Document.Company.Name.ToLower().Contains(keyword.ToLower()))
+                            )
+                            .OrderByDescending(e => e.CreatedDate)
+                            .ToListAsync();
+
+
+            var recordList = records
+                .Skip((totalRecords * page) - totalRecords)
+                .Take(totalRecords).ToList();
+
+            var count = records.Count();
+
+            var nextPage = 0;
+            var prePage = 0;
+            if (page > 1)
+            {
+                prePage = page - 1;
+            }
+
+            var totalPage = (count + totalRecords - 1) / totalRecords;
+            if (page < totalPage)
+            {
+                nextPage = page + 1;
+            }
+
+            var result = new PageResult<Com.BudgetMetal.DBEntities.Rfq>()
+            {
+                Records = recordList,
+                TotalPage = totalPage,
+                CurrentPage = page,
+                PreviousPage = prePage,
+                NextPage = nextPage,
+                TotalRecords = count
+            };
+
+            return result;
+        }
+
+
         public async Task<PageResult<Com.BudgetMetal.DBEntities.Rfq>> GetPublicRfqByPage(int page, int totalRecords, int statusId, string keyword)
         {
             var records = await this.entities
@@ -136,8 +194,8 @@ namespace Com.BudgetMetal.DataRepository.RFQ
                             .Include(e => e.Document.DocumentType)
                             .Include(e => e.Document.Company)
                             .Include(e => e.Document.DocumentUser)
-                            .Include(e=>e.Document.Attachment)
-                            .Include(e=>e.Requirement)
+                            .Include(e => e.Document.Attachment)
+                            .Include(e => e.Requirement)
                             .Include(e => e.Penalty)
                             .Include(e => e.Sla)
                             .Include(e => e.RfqPriceSchedule)
@@ -203,7 +261,7 @@ namespace Com.BudgetMetal.DataRepository.RFQ
 
         public async Task<List<Com.BudgetMetal.DBEntities.Company>> GetSelectedSupplier(int rfqId)
         {
-            var filterCompay = this.DbContext.InvitedSupplier.Where(e => e.IsActive == true && e.Rfq_Id == rfqId).Select(e=>e.Company_Id).ToList();
+            var filterCompay = this.DbContext.InvitedSupplier.Where(e => e.IsActive == true && e.Rfq_Id == rfqId).Select(e => e.Company_Id).ToList();
 
             var result = await this.DbContext.Company.Where(e => filterCompay.Contains(e.Id)).ToListAsync();
 

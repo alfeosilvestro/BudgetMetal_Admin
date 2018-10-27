@@ -24,13 +24,13 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <input type="text" asp-for="Document.DocumentNo" readonly class="form-control" placeholder="<Auto Generate by System>">
-                                    <input type="hidden" asp-for="Document.DocumentStatus_Id" value="100032">
-                                    <input type="hidden" asp-for="Document.DocumentType_Id" value="100021">
+                                    <input type="hidden" asp-for="Document.DocumentStatus_Id" value="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Draft)">
+                                    <input type="hidden" asp-for="Document.DocumentType_Id" value="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ)">
                                     <input type="hidden" asp-for="Document.Company_Id" value="@ViewBag.Company_Id">
-                                    <input type="hidden" asp-for="Document.CreatedBy" value="@ViewBag.UserName">
-                                    <input type="hidden" asp-for="Document.UpdatedBy" value="@ViewBag.UserName">
-                                    <input type="hidden" asp-for="CreatedBy" value="@ViewBag.UserName">
-                                    <input type="hidden" asp-for="UpdatedBy" value="@ViewBag.UserName">
+                                    <input type="hidden" asp-for="Document.CreatedBy" value="@ViewBag.EmailAddress">
+                                    <input type="hidden" asp-for="Document.UpdatedBy" value="@ViewBag.EmailAddress">
+                                    <input type="hidden" asp-for="CreatedBy" value="@ViewBag.EmailAddress">
+                                    <input type="hidden" asp-for="UpdatedBy" value="@ViewBag.EmailAddress">
                                 </div>
                             </div>
                         </div>
