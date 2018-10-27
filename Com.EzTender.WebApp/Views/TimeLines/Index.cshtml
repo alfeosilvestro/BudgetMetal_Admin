@@ -7,9 +7,9 @@
 <h2>Timeline</h2>
 
 <div class="row">
-    <div class="col-md-12" id="timelineList">
+    <div class="col-md-12">
         <!-- The time line -->
-        <ul class="timeline">
+        <ul class="timeline" id="timelineList">
             <!-- timeline time label -->
             <li class="time-label">
                 <span class="bg-red">
@@ -220,15 +220,15 @@
 
 <script>
     $(function () {
-
+        $('#timelineList').empty();
         loadTimeLine(1);
-
     });
 
-   
+
 
     $("#btnSearch").on({
         click: function () {
+
             $('#timelineList').empty();
             loadTimeLine(1);
         }
@@ -236,24 +236,49 @@
 
     function loadTimeLine(page) {
         var keyword = $('#keyword').val();
-        var ajaxurl = '@Url.Action("GetTimeLine", "TimeLines")';
+        var ajaxurl = '@Url.Action("GetTimeLineData", "TimeLines")';
         $.ajax({
             url: ajaxurl,
             data: { page: page, skeyword: keyword},
             dataType: 'json',
             success: function (response) {
                 var obj = response.Result.Records;
-                //console.log(obj);
+                var strTimeLineList = "";
+                var envelope = ["bg-blue", "bg-gray", "bg-green"];
                 for (var k in obj) {
                     var item = obj[k];
-                    $('#timelineList').append( );
-
+                    strTimeLineList = strTimeLineList + "<li class='time-label'>" +
+                        "<span class='bg-red'>" + item.StrGroupDate + "</span>" +
+                        "</li>";
+                    var itemRecord = item.Records;
+                    for (var j in itemRecord) {
+                        var subItem = itemRecord[j];
+                        var envelopeColor = "bg-blue";
+                        if (subItem.MessageType == "@( Com.BudgetMetal.Common.Constants_CodeTable.Code_TM_Rfq)") {
+                            envelopeColor = "bg-green";
+                        }
+                        else if (subItem.MessageType == "@( Com.BudgetMetal.Common.Constants_CodeTable.Code_TM_Quotation)") {
+                            envelopeColor = "bg-grey";
+                        } 
+                        strTimeLineList +=
+                            "<li>" +
+                            "<i class='fa fa-envelope " + envelopeColor + "'></i>" +
+                                "<div class='timeline-item'>" +
+                                    "<span class='time'><i class='fa fa-clock-o'></i>" + subItem.Time + "</span>" +
+                                    "<h3 class='timeline-header'>" + subItem.UserName + " has updated.</h3>" +
+                                    "<div class='timeline-body'>" + subItem.Message + "</div>" +
+                                    "<div class='timeline-footer'><a href='" + item.DocumentUrl + "' class='btn btn-primary btn-xs'>Read more</a>" +
+                                "</div>"
+                            "</li>";
+                    }
                 }
+                console.log(response);
+                $('#timelineList').append(strTimeLineList);
                 var totalpage = response.Result.TotalPage;
                 var currentpage = response.Result.CurrentPage;
                 if (totalpage > currentpage) {
                     $(".pagination").empty();
-                    $(".pagination").append(" <a class='btn btn-md btn-default' OnClick='loadRFQ(" + response.Result.NextPage + ")'> Load More </a> ");
+                    $(".pagination").append(" <a class='btn btn-md btn-default' OnClick='loadTimeLine(" + response.Result.NextPage + ")'> Load More </a> ");
                 } else {
                     $(".pagination").empty();
 

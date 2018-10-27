@@ -9,6 +9,6 @@ namespace Com.BudgetMetal.Services.TimeLine
 {
     public interface ITimeLineService
     {
-        
+        Task<VmTimeLinePage> GetTimeLineData(int page, int companyId, int totalRecords, string keyword = "");
     }
 }

@@ -7,9 +7,9 @@ namespace Com.BudgetMetal.ViewModels.TimeLine
 {
     public class VmTimeLineGroupByDate
     {
-       public DateTime GroupDate { get; set; }
+        public DateTime GroupDate { get; set; }
+        public string StrGroupDate { get; set; }
+        public List<VmTimeLineItemForPage> Records { get; set; }
 
-       public List<VmTimeLineItemForPage> Records { get; set; }
-        
     }
 }
