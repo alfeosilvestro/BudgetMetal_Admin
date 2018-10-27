@@ -41,6 +41,10 @@
                                     <input type="hidden" asp-for="Document.Id">
                                     <input type="hidden" asp-for="IsActive" />
                                     <input type="hidden" asp-for="Document.IsActive" />
+
+                                    <input type="hidden" asp-for="Document.WorkingPeriod" />
+                                    <input type="hidden" asp-for="Rfq.Document.Company_Id" />
+                                    <input type="hidden" asp-for="Rfq.Document_Id" />
                                 </div>
                             </div>
                         </div>
@@ -87,7 +91,7 @@
                                     <label for="quote_no">Contact Person</label>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" asp-for="Document.ContactPersonName" class="form-control" placeholder="Contact Person" value="@ViewBag.FullName">
+                                            <input type="text" asp-for="Document.ContactPersonName" class="form-control" placeholder="Contact Person">
                                         </div>
                                     </div>
                                 </div>
@@ -395,8 +399,8 @@
         var isValid = true;
         
         if (isValid) {
-            $('.page-loader-wrapper').fadeIn();
             $("#frmCreateQuotation").submit();
+            $('.page-loader-wrapper').fadeIn();
         } else {
             alert("Please fill all fields!")
         }
@@ -481,7 +485,7 @@
     }
 
     function loadRole() {
-        var ajaxurl = '@Url.Action("GetActiveRoles", "Rfq")';
+        var ajaxurl = '@Url.Action("GetActiveRoles", "Quotation")';
 
          $.ajax({
             url: ajaxurl,

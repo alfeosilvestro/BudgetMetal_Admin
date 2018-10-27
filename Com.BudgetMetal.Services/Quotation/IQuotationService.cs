@@ -28,5 +28,7 @@ namespace Com.BudgetMetal.Services.Quotation
         bool CheckQuotationLimit(int companyId);
 
         Task<VmGenericServiceResult> CancelQuotation(int documentId, int userId, string userName);
+
+        Task<VmGenericServiceResult> DecideQuotation(int documentId, int userId, string userName, bool isAccept);
     }
 }

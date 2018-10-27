@@ -212,6 +212,107 @@ namespace Com.BudgetMetal.Services.Quotation
 
         }
 
+        public async Task<VmGenericServiceResult> DecideQuotation(int documentId, int userId, string userName, bool isAccept)
+        {
+            var result = new VmGenericServiceResult();
+            try
+            {
+                string emailSubject = "";
+                string documentAction = "";
+                string timelineMessage = "";
+                //Change Status
+                var dbDocument = await repoDocument.Get(documentId);
+                if (isAccept)
+                {
+                    dbDocument.DocumentStatus_Id = Constants_CodeTable.Code_Quotation_Accepted;
+                    emailSubject = "Quotation Accepted.";
+                    documentAction = "Accepted";
+                    timelineMessage = "Document " + dbDocument.DocumentNo + " is accepted.";
+                }
+                else
+                {
+                    dbDocument.DocumentStatus_Id = Constants_CodeTable.Code_Quotation_Rejected;
+                    emailSubject = "Quotation Rejected";
+                    documentAction = "Rejected";
+                    timelineMessage = "Document " + dbDocument.DocumentNo + " is rejected.";
+                }
+                dbDocument.UpdatedBy = userName;
+                repoDocument.Update(dbDocument);
+
+                //Add Document Activity
+                var dbDocumentActivity = new Com.BudgetMetal.DBEntities.DocumentActivity()
+                {
+                    Action = documentAction,
+                    IsRfq = false,
+                    User_Id = userId,
+                    Document_Id = documentId,
+                    CreatedBy = userName,
+                    UpdatedBy = userName
+                };
+                repoDocumentActivity.Add(dbDocumentActivity);
+                repoDocumentActivity.Commit();
+
+                //Add Timeline
+                var timeline = new Com.BudgetMetal.DBEntities.TimeLine()
+                {
+                    Company_Id = dbDocument.Company_Id,
+                    User_Id = userId,
+                    Message = timelineMessage,
+                    MessageType = Constants_CodeTable.Code_TM_Quotation,
+                    IsRead = false,
+                    Document_Id = dbDocument.Id,
+                    CreatedBy = userName,
+                    UpdatedBy = userName
+                };
+                repoTimeLine.Add(timeline);
+                repoTimeLine.Commit();
+
+                var buyerId = repoQuotation.GetRfqOwnerId(documentId);
+
+                var timelineforbuyer = new Com.BudgetMetal.DBEntities.TimeLine()
+                {
+                    Company_Id = buyerId,
+                    User_Id = userId,
+                    Message =  timelineMessage,
+                    MessageType = Constants_CodeTable.Code_TM_Quotation,
+                    IsRead = false,
+                    Document_Id = documentId,
+                    CreatedBy = userName,
+                    UpdatedBy = userName
+                };
+                repoTimeLine.Add(timelineforbuyer);
+
+                repoTimeLine.Commit();
+                //end adding timeline
+
+                //get rfq owner admin email
+                var resultSuppllierAdmin = repoUser.GetBuyerAdmin(dbDocument.Company_Id);
+                var sendMail = new SendingMail();
+                if (resultSuppllierAdmin != null)
+                {
+                    
+                    string emailBody = "Email Template need to provide.";
+                    foreach (var item in resultSuppllierAdmin)
+                    {
+                        sendMail.SendMail(item, "", emailSubject, emailBody);
+                    }
+                }
+
+
+                result.IsSuccess = true;
+                result.MessageToUser = "Your Quotation is successfully updated.";
+            }
+            catch
+            {
+                result.IsSuccess = false;
+                result.MessageToUser = "Your Rfq is failed to update.";
+            }
+
+            return result;
+
+        }
+
+
         public async Task<VmQuotationPage> GetQuotationForBuyerByPage(int userId, int buyerId, int page, int totalRecords, bool isCompany, int statusId = 0, string keyword = "")
         {
             var dbPageResult = await repoQuotation.GetQuotationForBuyerByPage(userId, buyerId,
@@ -348,7 +449,7 @@ namespace Com.BudgetMetal.Services.Quotation
                 {
                     var resultPriceSchedule = new VmQuotationPriceScheduleItem();
 
-                    Copy<Com.BudgetMetal.DBEntities.RfqPriceSchedule, VmQuotationPriceScheduleItem>(dbItem, resultPriceSchedule, new string[] { "Rfq_Id", "Rfq_Id", "ItemAmount", "Quotation_Id" });
+                    Copy<Com.BudgetMetal.DBEntities.RfqPriceSchedule, VmQuotationPriceScheduleItem>(dbItem, resultPriceSchedule, new string[] { "Rfq_Id", "Rfq_Id", "ItemAmount", "Quotation_Id", "Id" });
 
                     listPriceSchdule.Add(resultPriceSchedule);
                 }
@@ -363,7 +464,7 @@ namespace Com.BudgetMetal.Services.Quotation
                 {
                     var resultRequirement = new VmQuotationRequirementItem();
 
-                    Copy<Com.BudgetMetal.DBEntities.Requirement, VmQuotationRequirementItem>(dbItem, resultRequirement, new string[] { "Rfq_Id", "Rfq_Id", "Compliance", "SupplierDescription", "Quotation_Id" });
+                    Copy<Com.BudgetMetal.DBEntities.Requirement, VmQuotationRequirementItem>(dbItem, resultRequirement, new string[] { "Rfq_Id", "Rfq_Id", "Compliance", "SupplierDescription", "Quotation_Id", "Id" });
 
                     listRequirement.Add(resultRequirement);
                 }
@@ -678,8 +779,9 @@ namespace Com.BudgetMetal.Services.Quotation
                     UpdatedBy = dbQuotation.CreatedBy
                 };
                 repoTimeLine.Add(timeline);
+                repoTimeLine.Commit();
 
-                if(quotation.Document.DocumentStatus_Id == Constants_CodeTable.Code_Quotation_Submitted)
+                if (quotation.Document.DocumentStatus_Id == Constants_CodeTable.Code_Quotation_Submitted)
                 {
                     var timelineforbuyer = new Com.BudgetMetal.DBEntities.TimeLine()
                     {
@@ -688,7 +790,7 @@ namespace Com.BudgetMetal.Services.Quotation
                         Message = "Quotation " + quotation.Document.DocumentNo + " has been submitted.",
                     MessageType = Constants_CodeTable.Code_TM_Rfq,
                         IsRead = false,
-                        Document_Id = quotation.Rfq.Document.Id,
+                        Document_Id = quotation.Rfq.Document_Id,
                         CreatedBy = dbQuotation.CreatedBy,
                         UpdatedBy = dbQuotation.CreatedBy
                     };

@@ -107,8 +107,8 @@ namespace Com.EzTender.WebApp.Controllers
                 int userId = Convert.ToInt32(HttpContext.Session.GetString("User_Id"));
                 int roleId = Convert.ToInt32( Constants.QuotationDefaultRoleId);
 
-                ViewBag.DocumentOwner = false;
-                if (result.Document.DocumentUser.Where(e=>e.User_Id == userId && e.Role_Id == roleId).ToList().Count> 0)
+                ViewBag.DocumentOwner = true;
+                if (result.Document.DocumentUserDisplay.Where(e => e.User_Id == userId && e.Roles.Contains(Constants.QuotationDefaultRole)).ToList().Count > 0)
                 {
                     ViewBag.DocumentOwner = true;
                 }
@@ -150,6 +150,17 @@ namespace Com.EzTender.WebApp.Controllers
             });
         }
 
+        [HttpGet]
+        public async Task<JsonResult> DecideQuotation(int documentId, int isAccept)
+        {
+
+            var result = await quotationService.DecideQuotation(documentId, Convert.ToInt32(HttpContext.Session.GetString("User_Id")), HttpContext.Session.GetString("UserName"),( (isAccept == 1) ? true : false));
+
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
         [HttpPost]
         public ActionResult Edit(VmQuotationItem quotationItem)
         {
@@ -259,6 +270,7 @@ namespace Com.EzTender.WebApp.Controllers
                 }
                 var result = await quotationService.InitialLoadByRfqId(id);
                 result.Document = new VmDocumentItem();
+                result.Document.ContactPersonName = HttpContext.Session.GetString("UserName");
                 result.Document.DocumentStatus_Id = Constants_CodeTable.Code_Quotation_Draft;
                 result.Document.DocumentType_Id = Constants_CodeTable.Code_Quotation;
                 result.Document.Company_Id = Convert.ToInt32(HttpContext.Session.GetString("Company_Id"));
@@ -371,6 +383,17 @@ namespace Com.EzTender.WebApp.Controllers
             {
                 return View();
             }
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetActiveRoles()
+        {
+            var result = await roleService.GetActiveRoles("quotation");
+
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
         }
 
         private byte[] ConvertFiletoBytes(IFormFile file)

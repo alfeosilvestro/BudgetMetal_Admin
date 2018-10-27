@@ -47,6 +47,8 @@
                                 <input type="hidden" asp-for="Document.Id">
                                 <input type="hidden" asp-for="IsActive" />
                                 <input type="hidden" asp-for="Document.IsActive" />
+                                <input type="hidden" asp-for="Document.WorkingPeriod" />
+                                <input type="hidden" asp-for="Rfq.Document.Company_Id" />
                             </div>
                         </div>
                     </div>
@@ -425,6 +427,58 @@
                 }
             });
     });
+
+    $("#btnReject").click(function () {
+        var ajaxurl = '@Url.Action("DecideQuotation", "Quotation")';
+        $('.page-loader-wrapper').fadeIn();
+            $.ajax({
+                url: ajaxurl,
+                data: {documentId: @(Model.Document.Id), isAccept : 0},
+                dataType: 'json',
+                success: function (response) {
+                    //console.log(response);
+                    var obj = response;
+                    if (obj.IsSuccess) {
+                        var redirecturl = '@Url.Action("Index", "Quotation")';
+                        window.location.href = redirecturl;
+                    } else {
+                        alert(obj.MessageToUser);
+                    }
+                    $('.page-loader-wrapper').fadeOut();
+                },
+                error: function (response) {
+                    alert(response)
+                }
+            });
+    });
+
+
+
+    $("#btnAccept").click(function () {
+        var ajaxurl = '@Url.Action("DecideQuotation", "Quotation")';
+        $('.page-loader-wrapper').fadeIn();
+            $.ajax({
+                url: ajaxurl,
+                data: {documentId: @(Model.Document.Id), isAccept : 1},
+                dataType: 'json',
+                success: function (response) {
+                    //console.log(response);
+                    var obj = response;
+                    if (obj.IsSuccess) {
+                        var redirecturl = '@Url.Action("Index", "Quotation")';
+                        window.location.href = redirecturl;
+                    } else {
+                        alert(obj.MessageToUser);
+                    }
+                    $('.page-loader-wrapper').fadeOut();
+                },
+                error: function (response) {
+                    alert(response)
+                }
+            });
+    });
+
+
 </script>
 
 

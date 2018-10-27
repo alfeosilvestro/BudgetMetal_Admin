@@ -133,7 +133,7 @@ namespace Com.BudgetMetal.DataRepository.Quotation
                               (e.IsActive == true)
                               && (e.Document.IsActive == true)
                               && (e.Rfq_Id == RfqId)
-                              && (statusId == 0 || e.Document.DocumentStatus_Id == statusId)
+                              && (statusId == 0 || e.Document.DocumentStatus_Id != Constants_CodeTable.Code_Quotation_Draft)
                               && (keyword == "" || e.Document.DocumentNo == keyword)
                             )
                             .OrderByDescending(e => e.CreatedDate)

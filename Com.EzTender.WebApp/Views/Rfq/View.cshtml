@@ -9,7 +9,7 @@
     string Code_C_Buyer = Com.BudgetMetal.Common.Constants_CodeTable.Code_C_Buyer.ToString();
     
 }
-
+<form asp-controller="Rfq" asp-action="View" method="post" enctype="multipart/form-data" id="frmCreateRFQ">
     <div class="block-header">
         <h2>Prepare Request for Quotation</h2>
     </div>
@@ -96,15 +96,16 @@
                         <li role="presentation"><a href="#service_level_agreement" data-toggle="tab">SLA</a></li>
                         <li role="presentation"><a href="#penalty" data-toggle="tab">Commercial terms ( need to confirm)</a></li>
                         <li role="presentation"><a href="#pricing" data-toggle="tab">Pricing Table</a></li>
-                        <li role="presentation" id="tabinvited_suppliers"><a href="#invited_suppliers" data-toggle="tab">Invited Suppliers</a></li>
                         <li role="presentation"><a href="#attachments" data-toggle="tab">Files</a></li>
+
                         @{
                             if (Code_C_Buyer == currentCompanyType)
                             {
+                                <li role="presentation" id="tabinvited_suppliers"><a href="#invited_suppliers" data-toggle="tab">Invited Suppliers</a></li>
                                 <li role="presentation"><a href="#settings" data-toggle="tab">Users</a></li>
                                 <li role="presentation"><a href="#DocumentActivity" data-toggle="tab">Activity</a></li>
                             }
-                           
+
                         }
 
                     </ul>
@@ -179,11 +180,15 @@
                                     </div>*@
                                 <div class="col-sm-3">
                                     <input type="checkbox" asp-for="IsPublic" class="chk-col-red" disabled />
-                                    <label for="IsPublic">Public</label>
+                                        <label for="IsPublic">Public</label>
+                                   
+
                                 </div>
                                 <div class="col-sm-3">
                                     <input type="checkbox" asp-for="SupplierProvideInstallationService" class="chk-col-red" disabled />
-                                    <label for="SupplierProvideInstallationService">Supplier Provide Installation Service</label>
+                                        <label for="SupplierProvideInstallationService">Supplier Provide Installation Service</label>
+
+                                    
                                 </div>
                                 <div class="col-sm-6">
                                     &nbsp;
@@ -601,41 +606,41 @@
     @{
         if (Code_C_Buyer == currentCompanyType)
         {
-    <div class="row clearfix">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="card">
-                <div class="header">
-                    <h2>
-                        Quotation List
-                    </h2>
-                </div>
-                <div class="body">
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>
+                                Quotation List
+                            </h2>
+                        </div>
+                        <div class="body">
 
-                    <div class="row clearfix">
-                        <table class="table table-striped" id="tbQuotation">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>Document No</th>
-                                    <th>Company</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                        <div class="row" id="pagination">
-                            <div class="col-sm-12" id="divPagination">
+                            <div class="row clearfix">
+                                <table class="table table-striped" id="tbQuotation">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Document No</th>
+                                            <th>Company</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                                <div class="row" id="pagination">
+                                    <div class="col-sm-12" id="divPagination">
 
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
         }
     }
-    
+
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
@@ -668,36 +673,36 @@
     </div>
 
 
+    </form>
+
+    <!-- Editable Table Plugin Js
+    <script src="~/material_theme/plugins/editable-table/mindmup-editabletable.js"></script>
+    <script src="~/material_theme/js/pages/tables/editable-table.js"></script>-->
+    <!-- Moment Plugin Js -->
+    <script src="~/material_theme/plugins/momentjs/moment.js"></script>
+    <!-- Bootstrap Material Datetime Picker Plugin Js -->
+    <script src="~/material_theme/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
+    <!-- Input Mask Plugin Js -->
+    <script src="~/material_theme/plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
+    <!-- Autosize Plugin Js -->
+    <script src="~/material_theme/plugins/autosize/autosize.js"></script>
+    <!-- Custom Js -->
+    <script src="~/material_theme/js/pages/forms/basic-form-elements.js"></script>
+    <!-- Dropzone Css -->
+    <link href="~/material_theme/plugins/dropzone/dropzone.css" rel="stylesheet">
+    <!-- Dropzone Plugin Js -->
+    <script src="~/material_theme/plugins/dropzone/dropzone.js"></script>
+    <!-- Bootstrap Colorpicker Js -->
+    <script src="~/material_theme/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+
+    <!-- Select Plugin Js -->
+    <script src="~/material_theme/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
+    <!-- Multi Select Plugin Js -->
+    <script src="~/material_theme/plugins/multi-select/js/jquery.multi-select.js"></script>
 
 
-<!-- Editable Table Plugin Js
-<script src="~/material_theme/plugins/editable-table/mindmup-editabletable.js"></script>
-<script src="~/material_theme/js/pages/tables/editable-table.js"></script>-->
-<!-- Moment Plugin Js -->
-<script src="~/material_theme/plugins/momentjs/moment.js"></script>
-<!-- Bootstrap Material Datetime Picker Plugin Js -->
-<script src="~/material_theme/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
-<!-- Input Mask Plugin Js -->
-<script src="~/material_theme/plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
-<!-- Autosize Plugin Js -->
-<script src="~/material_theme/plugins/autosize/autosize.js"></script>
-<!-- Custom Js -->
-<script src="~/material_theme/js/pages/forms/basic-form-elements.js"></script>
-<!-- Dropzone Css -->
-<link href="~/material_theme/plugins/dropzone/dropzone.css" rel="stylesheet">
-<!-- Dropzone Plugin Js -->
-<script src="~/material_theme/plugins/dropzone/dropzone.js"></script>
-<!-- Bootstrap Colorpicker Js -->
-<script src="~/material_theme/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
-
-<!-- Select Plugin Js -->
-<script src="~/material_theme/plugins/bootstrap-select/js/bootstrap-select.js"></script>
-
-<!-- Multi Select Plugin Js -->
-<script src="~/material_theme/plugins/multi-select/js/jquery.multi-select.js"></script>
-
-
-<script>
+    <script>
     $(function () {
         var buyer = @(Code_C_Buyer);
         var currentComapnyType = @(currentCompanyType);
@@ -710,7 +715,7 @@
             loadSelectedSupplier();
         }
 
-       
+
         $('#frmCreateRFQ input').attr('readonly', 'readonly');
     });
 
@@ -764,11 +769,11 @@
             });
     });
 
-    
 
-    
 
-   
+
+
+
 
 
     function loadSelectedSupplier() {
@@ -797,10 +802,10 @@
                     alert(response)
                 }
             });
-   
+
     }
 
-   
+
 function loadIndustry() {
     var ajaxurl = '@Url.Action("GetActiveIndustries", "Rfq")';
 
@@ -882,7 +887,7 @@ function loadIndustry() {
                     $("#ddlServiceTags").selectpicker('refresh');
                     $("#hdSelectedTags").val("0");
                     if ($("#loadinvitedsupplier").val() == "0") {
-                        
+
                         $("#loadinvitedsupplier").val("1");
                     }
                 },
@@ -946,9 +951,9 @@ function loadIndustry() {
     }
 
     function loadQuotationForSupplier(_rfqId) {
-       
+
         var ajaxurl = '@Url.Action("CheckQuotationByRfqId", "Rfq")';
-        
+
         $.ajax({
             url: ajaxurl,
             data: { rfqId: _rfqId},
@@ -967,5 +972,5 @@ function loadIndustry() {
             }
         });
     }
-</script>
+    </script>
 

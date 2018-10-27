@@ -650,8 +650,8 @@
             });
 
             if (haveInvitedSupplier) {
-                $('.page-loader-wrapper').fadeIn();
                 $("#frmCreateRFQ").submit();
+                $('.page-loader-wrapper').fadeIn();
             } else {
                 alert("Please invite at least one supplier.");
             }
