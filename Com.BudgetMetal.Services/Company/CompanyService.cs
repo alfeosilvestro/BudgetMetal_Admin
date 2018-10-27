@@ -522,30 +522,42 @@ namespace Com.BudgetMetal.Services.Company
         {
             var result = new VmGenericServiceResult();
 
-            //var dbRoleUserResult = userRoleRepository.GetUserRolesByUserId(userId);
-            //if(dbRoleUserResult != null)
-            //{                
-            //    foreach (var item in dbRoleUserResult.Result)
-            //    {
+            var dbRoleUser = userRoleRepository.GetUserRolesByUserId(userId);
+            if (dbRoleUser != null)
+            {
+                foreach (var item in dbRoleUser.Result)
+                {
+                    DBEntities.UserRoles userRoles = await userRoleRepository.Get(item.Id);
+                    userRoleRepository.Delete(userRoles);
+                }
+                userRoleRepository.Commit();
+            }
 
-            //    }
-            //}
-            
             foreach (var role in userRole)
             {
                 int roleId = int.Parse(role);
-                var dbRoleUserResult = userRoleRepository.GetUserRolesByUserIdRoleId(userId, roleId);
-                if(dbRoleUserResult != null)
+                var dbRoleUserResult = await userRoleRepository.GetUserRolesByUserIdRoleId(userId, roleId);
+                if (dbRoleUserResult == null)
                 {
-                    result.IsSuccess = false;
-                    result.MessageToUser = "Already registered.";
+                    DBEntities.UserRoles userRoles = new DBEntities.UserRoles();
+                    userRoles.User_Id = userId;
+                    userRoles.IsActive = true;
+                    userRoles.UpdatedBy = updatedBy;
+                    userRoles.Role_Id = roleId;
+                    userRoleRepository.Add(userRoles);
                 }
                 else
                 {
-                   // dbRoleUserResult.Result.
+                    dbRoleUserResult.IsActive = true;
+                    dbRoleUserResult.UpdatedBy = updatedBy;
+                    dbRoleUserResult.Role_Id = roleId;
+                    userRoleRepository.Update(dbRoleUserResult);
                 }
+                userRoleRepository.Commit();
+                result.IsSuccess = true;
+                result.MessageToUser = "Successful";
             }
-            var dbresult = await repoUser.GetUserCompanyIdandUserId(companyId, userId);
+            //var dbresult = await repoUser.GetUserCompanyIdandUserId(companyId, userId);
 
             //if (dbresult == null)
             //{
