@@ -148,7 +148,7 @@ namespace Com.BudgetMetal.DataRepository.RFQ
                               && (e.Document.IsActive == true)
                               && e.IsPublic == true
                               && (statusId == 0 || e.Document.DocumentStatus_Id == statusId)
-                              && (keyword == "" || e.Document.DocumentNo.Contains(keyword))
+                              && (keyword == "" || e.Document.DocumentNo.Contains(keyword) || e.Document.Title.ToLower().Contains(keyword.ToLower()) || e.Document.Company.Name.ToLower().Contains(keyword.ToLower()))
                             )
                             .OrderByDescending(e => e.CreatedDate)
                             .ToListAsync();
