@@ -639,7 +639,7 @@
         //        isValid = false;
         //    }
         //});
-
+        isValid = $("form#frmCreateRFQ").valid();
         if (isValid) {
             var haveInvitedSupplier = false;
             $('input:checkbox.supplier').each(function () {
@@ -650,8 +650,8 @@
             });
 
             if (haveInvitedSupplier) {
-                $("#frmCreateRFQ").submit();
                 $('.page-loader-wrapper').fadeIn();
+                $("#frmCreateRFQ").submit();
             } else {
                 alert("Please invite at least one supplier.");
             }

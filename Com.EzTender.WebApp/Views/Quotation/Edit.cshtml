@@ -397,10 +397,10 @@
     function SaveForm() {
 
         var isValid = true;
-        
+        isValid = $("form#frmCreateQuotation").valid();
         if (isValid) {
-            $("#frmCreateQuotation").submit();
             $('.page-loader-wrapper').fadeIn();
+            $("#frmCreateQuotation").submit();
         } else {
             alert("Please fill all fields!")
         }
