@@ -355,7 +355,6 @@
         $('#btnSubmit').on('click', function(){
             var about = $('#txt_about').val();
             var ajaxurl = '@Url.Action("EditCompanyAbout", "Companies")';
-
             $.ajax({
                 url: ajaxurl,
                 data: { CompanyId: @Model.Id, About: about },
@@ -411,7 +410,7 @@
             
             var userId = button.data('userid'); 
 
-            alert("userid" + userId + " userrole " + userRole);
+            //alert("userid" + userId + " userrole " + userRole);
             // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
             // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
             var modal = $(this);
@@ -504,8 +503,7 @@
                 url: ajaxurl,
                 data: { RoleType: roleType},
                 dataType: 'json',
-                success: function (response) {
-                    
+                success: function (response) {                    
                     var obj = response;
                     for (var k in obj) {
                         var item = obj[k];

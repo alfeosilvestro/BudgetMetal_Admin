@@ -8,8 +8,6 @@ using System.Text;
 
 namespace Com.BudgetMetal.ViewModels.TimeLine
 {
-    
-
     public class VmTimeLineItemForPage
     {
         public string UserName { get; set; }

@@ -30,5 +30,13 @@ namespace Com.BudgetMetal.DBEntities
 
         public bool IsRead { get; set; }
 
+        [ForeignKey("Document_Id")]
+        public virtual Document Document { get; set; }
+
+        [ForeignKey("User_Id")]
+        public virtual User User { get; set; }
+
+        [ForeignKey("Company_Id")]
+        public virtual Company Company { get; set; }
     }
 }
