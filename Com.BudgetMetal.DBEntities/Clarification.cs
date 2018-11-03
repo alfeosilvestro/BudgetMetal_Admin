@@ -11,12 +11,18 @@ namespace Com.BudgetMetal.DBEntities
         public string ClarificationAnswer { get; set; }
         public bool? AnswerType { get; set; }
 
-        [ForeignKey("Document")]
+        
         public int Document_Id { get; set; }
+
+        [ForeignKey("Document_Id")]
         public Document Document { get; set; }
 
-        [ForeignKey("User")]
+       
         public int User_Id { get; set; }
+
+        [ForeignKey("User_Id")]
         public User User { get; set; }
+
+        public int Clarification_Id { get; set; }
     }
 }

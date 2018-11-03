@@ -37,6 +37,8 @@ using Com.BudgetMetal.DataRepository.Quotation;
 using Com.BudgetMetal.DataRepository.TimeLine;
 using Com.BudgetMetal.ViewModels.Company;
 using Com.BudgetMetal.DataRepository.CompanySupplier;
+using Com.BudgetMetal.DataRepository.Clarification;
+using Com.BudgetMetal.ViewModels.Clarification;
 using Com.BudgetMetal.ViewModels.Industries;
 using Com.BudgetMetal.DataRepository.Industries;
 
@@ -60,9 +62,10 @@ namespace Com.BudgetMetal.Services.RFQ
         private readonly IQuotationRepository repoQuotation;
         private readonly ITimeLineRepository repoTimeLine;
         private readonly ICompanySupplierRepository repoCompanySupplier;
+        private readonly IClarificationRepository repoClarification;
         private readonly IIndustryRepository industryRepository;
 
-        public RFQService(IDocumentRepository repoDocument, IRfqRepository repoRfq, IAttachmentRepository repoAttachment, IRequirementRepository repoRequirement, ISlaRepository repoSla, IRfqPriceScheduleRepository repoRfqPriceSchedule, IPenaltyRepository repoPenalty, IInvitedSupplierRepository repoInvitedSupplier, IDocumentUserRepository repoDocumentUser, IUserRepository repoUser, IRoleRepository repoRole, ICompanyRepository repoCompany, IDocumentActivityRepository repoDocumentActivity, IQuotationRepository repoQuotation, ITimeLineRepository repoTimeLine, ICompanySupplierRepository repoCompanySupplier, IIndustryRepository industryRepository)
+        public RFQService(IDocumentRepository repoDocument, IRfqRepository repoRfq, IAttachmentRepository repoAttachment, IRequirementRepository repoRequirement, ISlaRepository repoSla, IRfqPriceScheduleRepository repoRfqPriceSchedule, IPenaltyRepository repoPenalty, IInvitedSupplierRepository repoInvitedSupplier, IDocumentUserRepository repoDocumentUser, IUserRepository repoUser, IRoleRepository repoRole, ICompanyRepository repoCompany, IDocumentActivityRepository repoDocumentActivity, IQuotationRepository repoQuotation, ITimeLineRepository repoTimeLine, ICompanySupplierRepository repoCompanySupplier, IClarificationRepository repoClarification)
         {
             this.repoDocument = repoDocument;
             this.repoRfq = repoRfq;
@@ -80,6 +83,7 @@ namespace Com.BudgetMetal.Services.RFQ
             this.repoQuotation = repoQuotation;
             this.repoCompanySupplier = repoCompanySupplier;
             this.repoTimeLine = repoTimeLine;
+            this.repoClarification = repoClarification;
             this.industryRepository = industryRepository;
         }
 
@@ -1291,36 +1295,7 @@ namespace Com.BudgetMetal.Services.RFQ
             resultObject.InvitedSupplier = listInvitedSupplier;
 
 
-            //var documentActivityEntity = repoDocumentActivity.GetDocumentActivityWithDocumentId(dbResult.Document_Id, true);
-            //var listDocumentActivity = new List<VmDocumentActivityItem>();
-            //if (documentActivityEntity != null)
-            //{
-            //    foreach (var item in documentActivityEntity.Result.Records)
-            //    {
-            //        var newItem = new VmDocumentActivityItem();
-            //        newItem.Action = item.Action;
-            //        newItem.CreatedBy = item.CreatedBy;
-            //        newItem.CreatedDate = item.CreatedDate;
-            //        newItem.Document_Id = item.Document_Id;
-            //        listDocumentActivity.Add(newItem);
-            //    }
-            //}
-            //resultObject.DocumentActivityList = listDocumentActivity;
-
-            //if (documentActivityEntity != null)
-            //{
-            //    var listDocumentActivity = new List<VmDocumentActivityItem>();
-            //    foreach (var item in documentActivityEntity.Result.Records)
-            //    {
-            //        var newItem = new VmDocumentActivityItem();
-            //        newItem.Action = item.Action;
-            //        newItem.CreatedBy = item.CreatedBy;
-            //        newItem.CreatedDate = item.CreatedDate;
-            //        newItem.Document_Id = item.Document_Id;
-            //        listDocumentActivity.Add(newItem);
-            //    }
-            //    resultObject.Document.DocumentActivityList = listDocumentActivity;
-            //}
+            
 
             if (dbResult.Document.DocumentActivity != null)
             {
@@ -1337,16 +1312,23 @@ namespace Com.BudgetMetal.Services.RFQ
                 resultObject.Document.DocumentActivityList = listDocumentActivity;
             }
 
-            //var listInvitedSupplier = new List<VmInvitedSupplierItem>();
-            //if (dbResult.InvitedSupplier != null)
-            //{
-            //    foreach (var item in dbResult.InvitedSupplier)
-            //    {
-            //        var itemInvitedSupplier = new VmInvitedSupplierItem();
-            //        Copy<Com.BudgetMetal.DBEntities.InvitedSupplier, VmInvitedSupplierItem>(item, itemInvitedSupplier, new string[] { "Rfq" });
-            //        listInvitedSupplier.Add(itemInvitedSupplier);
-            //    }
-            //}
+            resultObject.Document.ClarificationList = new List<VmClarificationItem>();
+            if (dbResult.Document.Clarification != null)
+            {
+                foreach (var item in dbResult.Document.Clarification.Where(e => e.IsActive == true).ToList())
+                {
+                    var newItem = new VmClarificationItem();
+                    Copy<Com.BudgetMetal.DBEntities.Clarification, VmClarificationItem>(item, newItem);
+
+                    var user = await repoUser.Get(item.User_Id);
+                    var userModel = new VmUserItem();
+                    Copy<Com.BudgetMetal.DBEntities.User, VmUserItem>(user, userModel);
+
+                    newItem.User = userModel;
+
+                    resultObject.Document.ClarificationList.Add(newItem);
+                }
+            }
 
             var dbResultQuotationList = repoQuotation.GetQuotationByRfqId(documentId);
 
@@ -1623,6 +1605,53 @@ namespace Com.BudgetMetal.Services.RFQ
             {
                 result.IsSuccess = true;
                 result.MessageToUser = dbresult.Id.ToString();
+            }
+
+            return result;
+        }
+
+        public async Task<VmGenericServiceResult> AddClarification(int documentId, int userId, string userName, string clarification, int commentId)
+        {
+            var result = new VmGenericServiceResult();
+            try
+            {
+                var dbClarification = new Com.BudgetMetal.DBEntities.Clarification
+                {
+                    Document_Id = documentId,
+                    User_Id = userId,
+                    ClarificationQuestion = clarification,
+                    Clarification_Id = commentId,
+                    CreatedBy = userName,
+                    UpdatedBy = userName
+                };
+
+                repoClarification.Add(dbClarification);
+                repoClarification.Commit();
+               
+                var dbDocument = await repoDocument.Get(documentId);
+              
+                //Add Timeline
+                var timeline = new Com.BudgetMetal.DBEntities.TimeLine()
+                {
+                    Company_Id = dbDocument.Company_Id,
+                    User_Id = userId,
+                    Message = userName + " has added clarification in Document " + dbDocument.DocumentNo + ".",
+                    MessageType = Constants_CodeTable.Code_TM_Rfq,
+                    IsRead = false,
+                    Document_Id = dbDocument.Id,
+                    CreatedBy = userName,
+                    UpdatedBy = userName
+                };
+                repoTimeLine.Add(timeline);
+                repoTimeLine.Commit();
+                
+                result.IsSuccess = true;
+                result.MessageToUser = dbClarification.Id.ToString();
+            }
+            catch
+            {
+                result.IsSuccess = false;
+                result.MessageToUser = "You have failed to add clarification.";
             }
 
             return result;

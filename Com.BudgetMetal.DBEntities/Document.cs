@@ -38,7 +38,7 @@ namespace Com.BudgetMetal.DBEntities
         public virtual CodeTable DocumentType { get; set; }
 
         public virtual ICollection<Attachment> Attachment { get; set; }
-        //public ICollection<Clarification> Clarification { get; set; }
+        public virtual ICollection<Clarification> Clarification { get; set; }
         public virtual ICollection<DocumentUser> DocumentUser { get; set; }
         public virtual ICollection<DocumentActivity> DocumentActivity { get; set; }
         //public ICollection<Quotation> Quotation { get; set; }

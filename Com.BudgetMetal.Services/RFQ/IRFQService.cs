@@ -47,5 +47,8 @@ namespace Com.BudgetMetal.Services.RFQ
         Task<VmGenericServiceResult> DeleteRfq(int documentId, int userId, string userName);
 
         Task<VmGenericServiceResult> CheckQuotationByRfqId(int rfqId, int companyId);
+
+
+        Task<VmGenericServiceResult> AddClarification(int documentId, int userId, string userName, string clarification, int commentId);
     }
 }
