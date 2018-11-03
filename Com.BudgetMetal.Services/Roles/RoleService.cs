@@ -157,9 +157,9 @@ namespace Com.BudgetMetal.Services.Roles
                     }
                    
                 }
-                else if (roleType == "admin")
+                else if (roleType == "company")//admin
                 {
-                    if (dbItem.Code.Contains("_Admin"))
+                    if (dbItem.Code.StartsWith("C_"))
                     {
                         Copy<Role, VmRoleItem>(dbItem, resultItem);
                         resultList.Add(resultItem);

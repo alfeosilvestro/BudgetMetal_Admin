@@ -37,6 +37,5 @@ namespace Com.EzTender.WebApp.Controllers
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             });
         }
-
     }
 }

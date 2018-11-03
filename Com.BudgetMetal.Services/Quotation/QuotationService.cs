@@ -106,9 +106,26 @@ namespace Com.BudgetMetal.Services.Quotation
 
                 if (dbItem.Document != null)
                 {
+                    if (dbItem.Rfq != null)
+                    {
+                        var documentEntity = repoDocument.Get(dbItem.Rfq.Document_Id);
+                        if (documentEntity != null)
+                        {
+                            resultItem.Rfq = new VmRfqItem()
+                            {
+                                ValidRfqdate = resultItem.ValidToDate,
+                                Document = new VmDocumentItem()
+                                {
+                                    DocumentNo = documentEntity.Result.DocumentNo,
+                                }
+                            };
+                        }
+                    }
+
                     resultItem.Document = new ViewModels.Document.VmDocumentItem()
                     {
                         DocumentNo = dbItem.Document.DocumentNo,
+                        UpdatedDate = dbItem.Document.UpdatedDate,
                         DocumentStatus = new ViewModels.CodeTable.VmCodeTableItem()
                         {
                             Name = dbItem.Document.DocumentStatus.Name
@@ -322,8 +339,6 @@ namespace Com.BudgetMetal.Services.Quotation
                  (page == 0 ? Constants.app_firstPage : page),
                  (totalRecords == 0 ? Constants.app_totalRecords : totalRecords), isCompany, statusId, keyword);
 
-
-
             if (dbPageResult == null)
             {
                 return new VmQuotationPage();
@@ -343,11 +358,28 @@ namespace Com.BudgetMetal.Services.Quotation
 
                 Copy<Com.BudgetMetal.DBEntities.Quotation, VmQuotationItem>(dbItem, resultItem);
 
+                if(dbItem.Rfq != null)
+                {
+                    var documentEntity = repoDocument.Get(dbItem.Rfq.Document_Id);
+                    if(documentEntity != null)
+                    {
+                        resultItem.Rfq = new VmRfqItem()
+                        {
+                            ValidRfqdate = resultItem.ValidToDate,
+                            Document = new VmDocumentItem()
+                            {
+                                DocumentNo = documentEntity.Result.DocumentNo,
+                            }
+                        };
+                    }
+                }
+
                 if (dbItem.Document != null)
                 {
                     resultItem.Document = new ViewModels.Document.VmDocumentItem()
                     {
                         DocumentNo = dbItem.Document.DocumentNo,
+                        UpdatedDate = dbItem.Document.UpdatedDate,
                         DocumentStatus = new ViewModels.CodeTable.VmCodeTableItem()
                         {
                             Name = dbItem.Document.DocumentStatus.Name

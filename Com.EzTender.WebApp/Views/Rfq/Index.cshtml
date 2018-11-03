@@ -34,14 +34,14 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Document No</th>
+                                <th>RFQ No</th>
                                 <th>Company</th>
                                 <th>Status</th>
                                 <th>Internal Refrence No</th>
                                 <th>Internal Project Name</th>
-                                <th>Industry Of Rfq</th>
-                                <th>Start Rfq Date</th>
-                                <th>Valid Rfq Date</th>
+                                <th>Industry</th>
+                                <th>Start Date</th>
+                                <th>Closing Date</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -56,8 +56,8 @@
                                         <td>@item.InternalRefrenceNo</td>
                                         <td>@item.InternalProjectName</td>
                                         <td>@item.IndustryOfRfq</td>
-                                        <td>@item.StartRfqdate</td>
-                                        <td>@item.ValidRfqdate</td>
+                                        <td>@Html.DisplayFor(modelitem => item.StartRfqdate)</td>
+                                        <td>@Html.DisplayFor(modelitem => item.ValidRfqdate)</td>
                                     </tr>
                                 }
                             }

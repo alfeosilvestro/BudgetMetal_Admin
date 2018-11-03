@@ -220,23 +220,28 @@
 
 <script>
     $(function () {
+        $('.page-loader-wrapper').fadeIn();
         $('#timelineList').empty();
+
         loadTimeLine(1);
+        $('.page-loader-wrapper').fadeOut();
     });
 
 
 
     $("#btnSearch").on({
         click: function () {
-
+            $('.page-loader-wrapper').fadeIn();
             $('#timelineList').empty();
             loadTimeLine(1);
+            $('.page-loader-wrapper').fadeOut();
         }
     });
 
     function loadTimeLine(page) {
         var keyword = $('#keyword').val();
         var ajaxurl = '@Url.Action("GetTimeLineData", "TimeLines")';
+       
         $.ajax({
             url: ajaxurl,
             data: { page: page, skeyword: keyword},
@@ -254,12 +259,15 @@
                     for (var j in itemRecord) {
                         var subItem = itemRecord[j];
                         var envelopeColor = "bg-blue";
+                        var strurl = "";
                         if (subItem.MessageType == "@( Com.BudgetMetal.Common.Constants_CodeTable.Code_TM_Rfq)") {
                             envelopeColor = "bg-green";
+                            strurl = '@Url.Action("View", "Rfq")';
                         }
                         else if (subItem.MessageType == "@( Com.BudgetMetal.Common.Constants_CodeTable.Code_TM_Quotation)") {
                             envelopeColor = "bg-grey";
-                        } 
+                            strurl = '@Url.Action("View", "Quotation")';
+                        }
                         strTimeLineList +=
                             "<li>" +
                             "<i class='fa fa-envelope " + envelopeColor + "'></i>" +
@@ -267,12 +275,11 @@
                                     "<span class='time'><i class='fa fa-clock-o'></i>" + subItem.Time + "</span>" +
                                     "<h3 class='timeline-header'>" + subItem.UserName + " has updated.</h3>" +
                                     "<div class='timeline-body'>" + subItem.Message + "</div>" +
-                                    "<div class='timeline-footer'><a href='" + item.DocumentUrl + "' class='btn btn-primary btn-xs'>Read more</a>" +
+                                    "<div class='timeline-footer'><a href='" +strurl +"/"+ subItem.DocumentUrl + "' class='btn btn-primary btn-xs' target='_blank'>View Document</a>" +
                                 "</div>"
                             "</li>";
                     }
                 }
-                console.log(response);
                 $('#timelineList').append(strTimeLineList);
                 var totalpage = response.Result.TotalPage;
                 var currentpage = response.Result.CurrentPage;
@@ -281,9 +288,8 @@
                     $(".pagination").append(" <a class='btn btn-md btn-default' OnClick='loadTimeLine(" + response.Result.NextPage + ")'> Load More </a> ");
                 } else {
                     $(".pagination").empty();
-
                 }
-
+                
             },
             error: function (response) {
                 alert(response)

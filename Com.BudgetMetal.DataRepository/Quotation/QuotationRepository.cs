@@ -26,6 +26,7 @@ namespace Com.BudgetMetal.DataRepository.Quotation
                             .Include(e => e.Document.DocumentStatus)
                             .Include(e => e.Document.DocumentType)
                             .Include(e => e.Document.Company)
+                            .Include(e => e.Rfq)
                             .Where(e =>
                               (e.IsActive == true)
                               && (e.Document.IsActive == true)
@@ -79,6 +80,7 @@ namespace Com.BudgetMetal.DataRepository.Quotation
                             .Include(e => e.Document.DocumentStatus)
                             .Include(e => e.Document.DocumentType)
                             .Include(e => e.Document.Company)
+                            .Include(e=> e.Rfq)
                             .Where(e =>
                               (e.IsActive == true)
                               && (e.Document.IsActive == true)
@@ -238,6 +240,16 @@ namespace Com.BudgetMetal.DataRepository.Quotation
             var rfqDocumentId = this.entities.Where(e => e.Document_Id == documentId).First().Rfq_Id;
 
             return this.DbContext.Rfq.Include(e => e.Document).Where(e => e.Id == rfqDocumentId).First().Document.Company_Id;
+        }
+
+        public async Task<int> GetQuotationByDocumentId(int documentId)
+        {
+            var record = await this.entities
+                            .SingleOrDefaultAsync(e =>
+                            (e.IsActive == true)
+                            && (e.Document_Id == documentId)
+                            );
+            return record.Id;
         }
     }
 }
