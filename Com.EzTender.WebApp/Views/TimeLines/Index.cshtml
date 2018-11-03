@@ -220,28 +220,23 @@
 
 <script>
     $(function () {
-        $('.page-loader-wrapper').fadeIn();
         $('#timelineList').empty();
-
         loadTimeLine(1);
-        $('.page-loader-wrapper').fadeOut();
     });
 
 
 
     $("#btnSearch").on({
         click: function () {
-            $('.page-loader-wrapper').fadeIn();
             $('#timelineList').empty();
             loadTimeLine(1);
-            $('.page-loader-wrapper').fadeOut();
         }
     });
 
     function loadTimeLine(page) {
         var keyword = $('#keyword').val();
         var ajaxurl = '@Url.Action("GetTimeLineData", "TimeLines")';
-       
+        $('.page-loader-wrapper').fadeIn();
         $.ajax({
             url: ajaxurl,
             data: { page: page, skeyword: keyword},
@@ -289,10 +284,11 @@
                 } else {
                     $(".pagination").empty();
                 }
-                
+                $('.page-loader-wrapper').fadeOut();
             },
             error: function (response) {
                 alert(response)
+                $('.page-loader-wrapper').fadeOut();
             }
         });
     }
