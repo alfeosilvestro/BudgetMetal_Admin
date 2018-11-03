@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
@@ -23,6 +24,14 @@ namespace Com.BudgetMetal.Services.Base
             return result;
         }
 
+        /// <summary>
+        /// Copy one object type to another
+        /// </summary>
+        /// <param name="source">Source.</param>
+        /// <param name="destination">Destination.</param>
+        /// <param name="skipPropertyNames">Skip property names.</param>
+        /// <typeparam name="TSource">The 1st type parameter.</typeparam>
+        /// <typeparam name="TDestination">The 2nd type parameter.</typeparam>
         public static void Copy<TSource, TDestination>(TSource source, TDestination destination, string[] skipPropertyNames = null)
             where TSource : class
             where TDestination : class
@@ -53,6 +62,58 @@ namespace Com.BudgetMetal.Services.Base
                         }
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Copies the list.
+        /// </summary>
+        /// <param name="sourceList">Source list.</param>
+        /// <param name="destinationList">Destination list.</param>
+        /// <param name="skipPropertyNames">Skip property names.</param>
+        /// <typeparam name="TSource">The 1st type parameter.</typeparam>
+        /// <typeparam name="TDestination">The 2nd type parameter.</typeparam>
+        public static void CopyList<TSource, TDestination>(IEnumerable<TSource> sourceList, 
+                                                           IEnumerable<TDestination> destinationList, 
+                                                           string[] skipPropertyNames = null)
+            where TSource : class
+            where TDestination : class, new()
+        {
+
+            foreach(var sourceItem in sourceList)
+            {
+                TDestination tempDestObj = new TDestination();
+
+                var sourceProperties = sourceItem.GetType().GetProperties();
+                var destinationProperties = tempDestObj.GetType().GetProperties();
+
+                foreach (var sourceProperty in sourceProperties)
+                {
+                    foreach (var destinationProperty in destinationProperties)
+                    {
+                        if (sourceProperty.Name == destinationProperty.Name && sourceProperty.PropertyType == destinationProperty.PropertyType)
+                        {
+                            if (skipPropertyNames != null)
+                            {
+                                var skipPropertyName = skipPropertyNames.FirstOrDefault(n => n.ToLower().Equals(destinationProperty.Name.ToLower()));
+
+                                if (string.IsNullOrEmpty(skipPropertyName))
+                                {
+                                    destinationProperty.SetValue(tempDestObj, sourceProperty.GetValue(sourceItem));
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                destinationProperty.SetValue(tempDestObj, sourceProperty.GetValue(sourceItem));
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                // add to destination list
+                destinationList.Append(tempDestObj);
             }
         }
     }
