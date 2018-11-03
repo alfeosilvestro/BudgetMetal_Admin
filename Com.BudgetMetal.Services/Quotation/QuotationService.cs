@@ -40,6 +40,7 @@ using Com.BudgetMetal.ViewModels.QuotationRequirement;
 using Com.BudgetMetal.DataRepository.DocumentActivity;
 using Com.BudgetMetal.ViewModels.DocumentActivity;
 using Com.BudgetMetal.DataRepository.TimeLine;
+using Com.BudgetMetal.DataRepository.Clarification;
 
 namespace Com.BudgetMetal.Services.Quotation
 {
@@ -58,9 +59,9 @@ namespace Com.BudgetMetal.Services.Quotation
         private readonly ICompanyRepository repoCompany;
         private readonly IUserRepository repoUser;
         private readonly IRoleRepository repoRole;
+        private readonly IClarificationRepository repoClarification
 
-
-        public QuotationService(IRfqRepository repoRfq, IDocumentRepository repoDocument, IQuotationRepository repoQuotation, IAttachmentRepository repoAttachment, IDocumentUserRepository repoDocumentUser, IQuotationPriceScheduleRepository repoPriceSchedule, IUserRepository repoUser, IRoleRepository repoRole, IQuotationRequirementRepository repoQuotationRequirement, IDocumentActivityRepository repoDocumentActivity, ICompanyRepository repoCompany, ITimeLineRepository repoTimeLine)
+        public QuotationService(IRfqRepository repoRfq, IDocumentRepository repoDocument, IQuotationRepository repoQuotation, IAttachmentRepository repoAttachment, IDocumentUserRepository repoDocumentUser, IQuotationPriceScheduleRepository repoPriceSchedule, IUserRepository repoUser, IRoleRepository repoRole, IQuotationRequirementRepository repoQuotationRequirement, IDocumentActivityRepository repoDocumentActivity, ICompanyRepository repoCompany, ITimeLineRepository repoTimeLine, IClarificationRepository repoClarification)
         {
             this.repoRfq = repoRfq;
             this.repoDocument = repoDocument;
@@ -1011,6 +1012,53 @@ namespace Com.BudgetMetal.Services.Quotation
             }
 
             return resultObject;
+        }
+
+        public async Task<VmGenericServiceResult> AddClarification(int documentId, int userId, string userName, string clarification, int commentId)
+        {
+            var result = new VmGenericServiceResult();
+            try
+            {
+                var dbClarification = new Com.BudgetMetal.DBEntities.Clarification
+                {
+                    Document_Id = documentId,
+                    User_Id = userId,
+                    ClarificationQuestion = clarification,
+                    Clarification_Id = commentId,
+                    CreatedBy = userName,
+                    UpdatedBy = userName
+                };
+
+                repoClarification.Add(dbClarification);
+                repoClarification.Commit();
+
+                var dbDocument = await repoDocument.Get(documentId);
+
+                //Add Timeline
+                var timeline = new Com.BudgetMetal.DBEntities.TimeLine()
+                {
+                    Company_Id = dbDocument.Company_Id,
+                    User_Id = userId,
+                    Message = userName + " has added clarification in Document " + dbDocument.DocumentNo + ".",
+                    MessageType = Constants_CodeTable.Code_TM_Rfq,
+                    IsRead = false,
+                    Document_Id = dbDocument.Id,
+                    CreatedBy = userName,
+                    UpdatedBy = userName
+                };
+                repoTimeLine.Add(timeline);
+                repoTimeLine.Commit();
+
+                result.IsSuccess = true;
+                result.MessageToUser = dbClarification.Id.ToString();
+            }
+            catch
+            {
+                result.IsSuccess = false;
+                result.MessageToUser = "You have failed to add clarification.";
+            }
+
+            return result;
         }
     }
 }

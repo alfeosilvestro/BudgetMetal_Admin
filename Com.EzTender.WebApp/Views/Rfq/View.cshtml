@@ -7,7 +7,7 @@
 @{
     string currentCompanyType = Context.Session.GetString("C_BusinessType");
     string Code_C_Buyer = Com.BudgetMetal.Common.Constants_CodeTable.Code_C_Buyer.ToString();
-    
+    string UserName = Context.Session.GetString("UserName");
 }
 <form asp-controller="Rfq" asp-action="View" method="post" enctype="multipart/form-data" id="frmCreateRFQ">
     <div class="block-header">
@@ -180,15 +180,15 @@
                                     </div>*@
                                 <div class="col-sm-3">
                                     <input type="checkbox" asp-for="IsPublic" class="chk-col-red" disabled />
-                                        <label for="IsPublic">Public</label>
-                                   
+                                    <label for="IsPublic">Public</label>
+
 
                                 </div>
                                 <div class="col-sm-3">
                                     <input type="checkbox" asp-for="SupplierProvideInstallationService" class="chk-col-red" disabled />
-                                        <label for="SupplierProvideInstallationService">Supplier Provide Installation Service</label>
+                                    <label for="SupplierProvideInstallationService">Supplier Provide Installation Service</label>
 
-                                    
+
                                 </div>
                                 <div class="col-sm-6">
                                     &nbsp;
@@ -672,37 +672,79 @@
         </div>
     </div>
 
+</form>
 
-    </form>
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    Clarification
+                </h2>
+            </div>
+            <div class="body">
+                @{
+                    if (Model.Document.DocumentStatus_Id == Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Submitted && Code_C_Buyer != currentCompanyType)
+                    {
+                        <div class="row clearfix">
+                            <div class="col-sm-11">
+                                <div class="form-group">
+                                    <label for="txtComment">Comment</label>
+                                    <div class="form-line">
+                                        <textarea class="form-control" id="txtComment" placeholder="Please type comment here"></textarea>
+                                    </div>
+                                </div>
 
-    <!-- Editable Table Plugin Js
-    <script src="~/material_theme/plugins/editable-table/mindmup-editabletable.js"></script>
-    <script src="~/material_theme/js/pages/tables/editable-table.js"></script>-->
-    <!-- Moment Plugin Js -->
-    <script src="~/material_theme/plugins/momentjs/moment.js"></script>
-    <!-- Bootstrap Material Datetime Picker Plugin Js -->
-    <script src="~/material_theme/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
-    <!-- Input Mask Plugin Js -->
-    <script src="~/material_theme/plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
-    <!-- Autosize Plugin Js -->
-    <script src="~/material_theme/plugins/autosize/autosize.js"></script>
-    <!-- Custom Js -->
-    <script src="~/material_theme/js/pages/forms/basic-form-elements.js"></script>
-    <!-- Dropzone Css -->
-    <link href="~/material_theme/plugins/dropzone/dropzone.css" rel="stylesheet">
-    <!-- Dropzone Plugin Js -->
-    <script src="~/material_theme/plugins/dropzone/dropzone.js"></script>
-    <!-- Bootstrap Colorpicker Js -->
-    <script src="~/material_theme/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
-
-    <!-- Select Plugin Js -->
-    <script src="~/material_theme/plugins/bootstrap-select/js/bootstrap-select.js"></script>
-
-    <!-- Multi Select Plugin Js -->
-    <script src="~/material_theme/plugins/multi-select/js/jquery.multi-select.js"></script>
+                            </div>
+                            <div class="col-sm-1">
+                                <br />
+                                <button type="button" id="btnAddComment" class="btn btn-primary"> Send </button>
+                            </div>
+                        </div>
+                    }
+                }
 
 
-    <script>
+                <div class="row clearfix">
+                    <div class="col-sm-12" id="divClarificationList">
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Editable Table Plugin Js
+<script src="~/material_theme/plugins/editable-table/mindmup-editabletable.js"></script>
+<script src="~/material_theme/js/pages/tables/editable-table.js"></script>-->
+<!-- Moment Plugin Js -->
+<script src="~/material_theme/plugins/momentjs/moment.js"></script>
+<!-- Bootstrap Material Datetime Picker Plugin Js -->
+<script src="~/material_theme/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
+<!-- Input Mask Plugin Js -->
+<script src="~/material_theme/plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
+<!-- Autosize Plugin Js -->
+<script src="~/material_theme/plugins/autosize/autosize.js"></script>
+<!-- Custom Js -->
+<script src="~/material_theme/js/pages/forms/basic-form-elements.js"></script>
+<!-- Dropzone Css -->
+<link href="~/material_theme/plugins/dropzone/dropzone.css" rel="stylesheet">
+<!-- Dropzone Plugin Js -->
+<script src="~/material_theme/plugins/dropzone/dropzone.js"></script>
+<!-- Bootstrap Colorpicker Js -->
+<script src="~/material_theme/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+
+<!-- Select Plugin Js -->
+<script src="~/material_theme/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
+<!-- Multi Select Plugin Js -->
+<script src="~/material_theme/plugins/multi-select/js/jquery.multi-select.js"></script>
+
+
+<script>
     $(function () {
         var buyer = @(Code_C_Buyer);
         var currentComapnyType = @(currentCompanyType);
@@ -769,15 +811,131 @@
             });
     });
 
+$("#btnAddComment").click(function () {
+    var ajaxurl = '@Url.Action("AddComment", "Rfq")';
+    var comment = $("#txtComment").val();
+    if (comment == "") {
+        alert("Comment field is required!");
+        $("#txtComment").focus();
+        return false;
+    }
+         $('.page-loader-wrapper').fadeIn();
+            $.ajax({
+                url: ajaxurl,
+                data: {documentId: @(Model.Document.Id), clarification: comment},
+                dataType: 'json',
+                success: function (response) {
+                    //console.log(response);
+                    var obj = response;
+                    if (obj.IsSuccess) {
+                        var clarificationId = obj.MessageToUser;
+                        var userName = "@(UserName)";
 
+                        var divRow = "<div class='row' style='border:solid 1px;padding-top:10px;' id='rowClarification_" + clarificationId + "'>" +
+                            "<div class='col-sm-3' id='headerClarification_" + clarificationId + "'>" +
+                            "<strong>" + userName + "</strong> <br /><br />" +
+                            "<span class='text-success' id='replyCount_" + clarificationId + "'><strong>0 Reply</strong></span><input type='hidden' id='hdReplyCount_" + clarificationId + "' value='0'>" +
+                            "</div>" +
+                            "<div class='col-sm-8' id='bodyClarification_" + clarificationId + "'>" +
+                            "<div class='col-sm-12' id='questionClarification_" + clarificationId + "'>" +
+                            "<div id='comment_" + clarificationId + "'>" + comment.replace("\n","<br>") + "</div>" +
+                            "<br> <button type='button' class='btn btn-default' onclick='AddReplyPanel(" + clarificationId + ")'>Reply</button> &nbsp; <button class='btn btn-danger'  type='button'  onclick='DeleteClarification(" + clarificationId + ")'>Delete</button>" +
+                            "</div>" +
+                            "<div class='col-sm-12' id='replyClarification_" + clarificationId + "'></div>" +
+                            "<div class='col-sm-12' id='pnlReplyClarification_" + clarificationId + "'></div>" +
+                            "</div>" +
+                            "</div>";
+                        $("#divClarificationList").append(divRow);
+                        $("#txtComment").val("");
+                    } else {
+                        alert(obj.MessageToUser);
+                    }
+                    $('.page-loader-wrapper').fadeOut();
+                },
+                error: function (response) {
+                    alert(response)
+                    $('.page-loader-wrapper').fadeOut();
+                }
+            });
+    });
 
+    function AddReplyPanel(id) {
+        $("#pnlReplyClarification_" + id).empty();
+        var replyPanel = "<div><textarea id='txtReply_" + id + "' class='form-control'></textarea><br>" +
+            "<button type='button' class='btn btn-success' onclick='AddReply(" + id + ");'>Send</button> <button type='button' class='btn btn-danger' onclick='RemovePanel("+id+")'>Cancel</button>"+
+            "</div>";
+        $("#pnlReplyClarification_" + id).append(replyPanel);
+    }
 
+    function DeleteClarification(id) {
+        alert("Delete_" + id);
+    }
 
+    function AddReply(id) {
+        var replyMessage = $("#txtReply_" + id).val();
+        var ajaxurl = '@Url.Action("ReplyComment", "Rfq")';
+        if (replyMessage == "") {
+        alert("Reply field is required!");
+        $("#txtReply_" + id).focus();
+        return false;
+    }
+         $('.page-loader-wrapper').fadeIn();
+            $.ajax({
+                url: ajaxurl,
+                data: { documentId: @(Model.Document.Id), clarification: replyMessage, commentId: id},
+                dataType: 'json',
+                success: function (response) {
+                    //console.log(response);
+                    var obj = response;
+                    if (obj.IsSuccess) {
+                        var clarificationId = obj.MessageToUser;
+                        var userName = "@(UserName)";
+                        var today = new Date();
+                        var dd = today.getDate();
+                        var mm = today.getMonth() + 1; //January is 0!
 
+                        var yyyy = today.getFullYear();
+                        if (dd < 10) {
+                            dd = '0' + dd;
+                        }
+                        if (mm < 10) {
+                            mm = '0' + mm;
+                        }
+                        var currentTime = dd + '/' + mm + '/' + yyyy;
+                        var divRow = "<div class='col-sm-11 pull-right'><hr><div>" + replyMessage.replace("\n", "<br>") + "</div><br><span>Replied by <strong>" + userName + "</strong> On " + currentTime + " </span></div>";
+                        $("#replyClarification_" + id).append(divRow);
+
+                        var replyCount = $("#hdReplyCount_" + id).val();
+                        replyCount = parseInt(replyCount) + 1;
+                        $("#hdReplyCount_" + id).val(replyCount);
+                        $("#replyCount_" + id).empty();
+                        if (replyCount > 1) {
+                            $("#replyCount_" + id).append("<strong>" + replyCount + " Replies</strong>");
+                        } else {
+                            $("#replyCount_" + id).append("<strong>" + replyCount + " Reply</strong>");
+                        }
+                        
+
+                        $("#pnlReplyClarification_" + id).empty();
+                    } else {
+                        alert(obj.MessageToUser);
+                    }
+                    $('.page-loader-wrapper').fadeOut();
+                },
+                error: function (response) {
+                    alert(response)
+                    $('.page-loader-wrapper').fadeOut();
+                }
+            });
+    }
+
+    function RemovePanel(id) {
+        $("#pnlReplyClarification_" + id).empty();
+        alert(id);
+    }
 
 
     function loadSelectedSupplier() {
-
        var ajaxurl = '@Url.Action("LoadSelectedSupplier", "Rfq")';
             $.ajax({
                 url: ajaxurl,
@@ -972,5 +1130,5 @@ function loadIndustry() {
             }
         });
     }
-    </script>
+</script>
 

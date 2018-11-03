@@ -13,6 +13,7 @@ namespace Com.BudgetMetal.ViewModels.Clarification
         public string ClarificationQuestion { get; set; }
         public string ClarificationAnswer { get; set; }
         public bool? AnswerType { get; set; }
+        public int Clarification_Id { get; set; }
 
         public virtual VmDocumentItem Document { get; set; }
         public virtual VmUserItem User { get; set; }

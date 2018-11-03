@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Com.BudgetMetal.DataRepository.Attachment;
+using Com.BudgetMetal.DataRepository.Clarification;
 using Com.BudgetMetal.DataRepository.Code_Category;
 using Com.BudgetMetal.DataRepository.Code_Table;
 using Com.BudgetMetal.DataRepository.Company;
@@ -159,7 +160,7 @@ namespace Com.EzTender.WebApp
             services.AddScoped<ITimeLineRepository, TimeLineRepository>();
             services.AddScoped<ITimeLineService, TimeLineService>();
 
-
+            services.AddScoped<IClarificationRepository, ClarificationRepository>();
             services.AddScoped<ISupplierServiceTagsRepository, SupplierServiceTagsRepository>();
 
             //CodeTable

@@ -30,5 +30,7 @@ namespace Com.BudgetMetal.Services.Quotation
         Task<VmGenericServiceResult> CancelQuotation(int documentId, int userId, string userName);
 
         Task<VmGenericServiceResult> DecideQuotation(int documentId, int userId, string userName, bool isAccept);
+
+        Task<VmGenericServiceResult> AddClarification(int documentId, int userId, string userName, string clarification, int commentId);
     }
 }

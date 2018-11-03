@@ -37,6 +37,7 @@ using Com.BudgetMetal.DataRepository.Quotation;
 using Com.BudgetMetal.DataRepository.TimeLine;
 using Com.BudgetMetal.ViewModels.Company;
 using Com.BudgetMetal.DataRepository.CompanySupplier;
+using Com.BudgetMetal.DataRepository.Clarification;
 
 namespace Com.BudgetMetal.Services.RFQ
 {
@@ -58,8 +59,9 @@ namespace Com.BudgetMetal.Services.RFQ
         private readonly IQuotationRepository repoQuotation;
         private readonly ITimeLineRepository repoTimeLine;
         private readonly ICompanySupplierRepository repoCompanySupplier;
+        private readonly IClarificationRepository repoClarification;
 
-        public RFQService(IDocumentRepository repoDocument, IRfqRepository repoRfq, IAttachmentRepository repoAttachment, IRequirementRepository repoRequirement, ISlaRepository repoSla, IRfqPriceScheduleRepository repoRfqPriceSchedule, IPenaltyRepository repoPenalty, IInvitedSupplierRepository repoInvitedSupplier, IDocumentUserRepository repoDocumentUser, IUserRepository repoUser, IRoleRepository repoRole, ICompanyRepository repoCompany, IDocumentActivityRepository repoDocumentActivity, IQuotationRepository repoQuotation, ITimeLineRepository repoTimeLine, ICompanySupplierRepository repoCompanySupplier)
+        public RFQService(IDocumentRepository repoDocument, IRfqRepository repoRfq, IAttachmentRepository repoAttachment, IRequirementRepository repoRequirement, ISlaRepository repoSla, IRfqPriceScheduleRepository repoRfqPriceSchedule, IPenaltyRepository repoPenalty, IInvitedSupplierRepository repoInvitedSupplier, IDocumentUserRepository repoDocumentUser, IUserRepository repoUser, IRoleRepository repoRole, ICompanyRepository repoCompany, IDocumentActivityRepository repoDocumentActivity, IQuotationRepository repoQuotation, ITimeLineRepository repoTimeLine, ICompanySupplierRepository repoCompanySupplier, IClarificationRepository repoClarification)
         {
             this.repoDocument = repoDocument;
             this.repoRfq = repoRfq;
@@ -77,6 +79,7 @@ namespace Com.BudgetMetal.Services.RFQ
             this.repoQuotation = repoQuotation;
             this.repoCompanySupplier = repoCompanySupplier;
             this.repoTimeLine = repoTimeLine;
+            this.repoClarification = repoClarification;
         }
 
         public async Task<VmRfqPage> GetRfqByPage(int userId, int documentOwner, int page, int totalRecords, bool isCompanyAdmin, int statusId = 0, string keyword = "")
@@ -1593,6 +1596,53 @@ namespace Com.BudgetMetal.Services.RFQ
             {
                 result.IsSuccess = true;
                 result.MessageToUser = dbresult.Id.ToString();
+            }
+
+            return result;
+        }
+
+        public async Task<VmGenericServiceResult> AddClarification(int documentId, int userId, string userName, string clarification, int commentId)
+        {
+            var result = new VmGenericServiceResult();
+            try
+            {
+                var dbClarification = new Com.BudgetMetal.DBEntities.Clarification
+                {
+                    Document_Id = documentId,
+                    User_Id = userId,
+                    ClarificationQuestion = clarification,
+                    Clarification_Id = commentId,
+                    CreatedBy = userName,
+                    UpdatedBy = userName
+                };
+
+                repoClarification.Add(dbClarification);
+                repoClarification.Commit();
+               
+                var dbDocument = await repoDocument.Get(documentId);
+              
+                //Add Timeline
+                var timeline = new Com.BudgetMetal.DBEntities.TimeLine()
+                {
+                    Company_Id = dbDocument.Company_Id,
+                    User_Id = userId,
+                    Message = userName + " has added clarification in Document " + dbDocument.DocumentNo + ".",
+                    MessageType = Constants_CodeTable.Code_TM_Rfq,
+                    IsRead = false,
+                    Document_Id = dbDocument.Id,
+                    CreatedBy = userName,
+                    UpdatedBy = userName
+                };
+                repoTimeLine.Add(timeline);
+                repoTimeLine.Commit();
+                
+                result.IsSuccess = true;
+                result.MessageToUser = dbClarification.Id.ToString();
+            }
+            catch
+            {
+                result.IsSuccess = false;
+                result.MessageToUser = "You have failed to add clarification.";
             }
 
             return result;

@@ -445,6 +445,30 @@ namespace Com.GenericPlatform.WebApp.Controllers
         }
 
         [HttpGet]
+        public async Task<JsonResult> AddComment(int documentId, string clarification)
+        {
+
+            var result = await rfqService.AddClarification(documentId, Convert.ToInt32(HttpContext.Session.GetString("User_Id")), HttpContext.Session.GetString("UserName"), clarification,0);
+
+            return new JsonResult(result, new JsonSerializerSettings()
+            { 
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> ReplyComment(int documentId, string clarification, int commentId)
+        {
+
+            var result = await rfqService.AddClarification(documentId, Convert.ToInt32(HttpContext.Session.GetString("User_Id")), HttpContext.Session.GetString("UserName"), clarification, commentId);
+
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
+
+        [HttpGet]
         public async Task<JsonResult> DeleteRfq(int documentId)
         {
 
