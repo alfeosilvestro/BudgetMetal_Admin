@@ -205,6 +205,7 @@ namespace Com.BudgetMetal.DataRepository.Quotation
                             .Include(e => e.QuotationRequirement)
                             .Include(e => e.QuotationPriceSchedule)
                             .Include(e => e.Document.DocumentActivity)
+                            .Include(e=>e.Document.Clarification)
                             .SingleOrDefaultAsync(e =>
                               (e.IsActive == true)
                               && (e.Id == id)

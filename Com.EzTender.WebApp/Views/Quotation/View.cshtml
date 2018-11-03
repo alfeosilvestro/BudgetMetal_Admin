@@ -409,7 +409,42 @@
 
                 <div class="row clearfix">
                     <div class="col-sm-12" id="divClarificationList">
-
+                        @{
+                            if (Model.Document.ClarificationList != null)
+                            {
+                                foreach (var item in Model.Document.ClarificationList.Where(e => e.Clarification_Id == 0).ToList())
+                                {
+                                    var listReply = Model.Document.ClarificationList.Where(e => e.Clarification_Id == item.Id).ToList();
+                                    <div class='row' style='border:solid 1px;padding-top:10px;' id='rowClarification_@(item.Id)'>
+                                        <div class='col-sm-3' id='headerClarification_@(item.Id)'>
+                                            <strong> @(item.User.UserName) </strong> <br /><br />
+                                            <span class='text-success' id='replyCount_@(item.Id)'><strong>@(listReply.Count) Reply</strong></span><input type='hidden' id='hdReplyCount_@(item.Id)' value='@(listReply.Count)'>
+                                        </div>
+                                        <div class='col-sm-8' id='bodyClarification_@(item.Id)'>
+                                            <div class='col-sm-12' id='questionClarification_@(item.Id)'>
+                                                <div id='comment_@(item.Id)'>  @item.ClarificationQuestion</div>
+                                                <br> <button type='button' class='btn btn-default' onclick='AddReplyPanel( @(item.Id))'>Reply</button> &nbsp; <button class='btn btn-danger' type='button' onclick='DeleteClarification(@(item.Id))'>Delete</button>
+                                            </div>
+                                            <div class='col-sm-12' id='replyClarification_@(item.Id)'>
+                                                @{
+                                                    foreach (var replyItem in listReply)
+                                                    {
+                                                        <div class='col-sm-11 pull-right'>
+                                                            <hr>
+                                                            <div>
+                                                                @(replyItem.ClarificationQuestion)
+                                                            </div><br>
+                                                            <span>Replied by <strong> @(replyItem.User.UserName) </strong> On  @(replyItem.CreatedDate)  </span>
+                                                        </div>
+                                                    }
+                                                }
+                                            </div>
+                                            <div class='col-sm-12' id='pnlReplyClarification_@(item.Id)'></div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        }
                     </div>
 
                 </div>

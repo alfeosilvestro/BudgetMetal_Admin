@@ -38,6 +38,7 @@ using Com.BudgetMetal.DataRepository.TimeLine;
 using Com.BudgetMetal.ViewModels.Company;
 using Com.BudgetMetal.DataRepository.CompanySupplier;
 using Com.BudgetMetal.DataRepository.Clarification;
+using Com.BudgetMetal.ViewModels.Clarification;
 
 namespace Com.BudgetMetal.Services.RFQ
 {
@@ -1264,36 +1265,7 @@ namespace Com.BudgetMetal.Services.RFQ
             resultObject.InvitedSupplier = listInvitedSupplier;
 
 
-            //var documentActivityEntity = repoDocumentActivity.GetDocumentActivityWithDocumentId(dbResult.Document_Id, true);
-            //var listDocumentActivity = new List<VmDocumentActivityItem>();
-            //if (documentActivityEntity != null)
-            //{
-            //    foreach (var item in documentActivityEntity.Result.Records)
-            //    {
-            //        var newItem = new VmDocumentActivityItem();
-            //        newItem.Action = item.Action;
-            //        newItem.CreatedBy = item.CreatedBy;
-            //        newItem.CreatedDate = item.CreatedDate;
-            //        newItem.Document_Id = item.Document_Id;
-            //        listDocumentActivity.Add(newItem);
-            //    }
-            //}
-            //resultObject.DocumentActivityList = listDocumentActivity;
-
-            //if (documentActivityEntity != null)
-            //{
-            //    var listDocumentActivity = new List<VmDocumentActivityItem>();
-            //    foreach (var item in documentActivityEntity.Result.Records)
-            //    {
-            //        var newItem = new VmDocumentActivityItem();
-            //        newItem.Action = item.Action;
-            //        newItem.CreatedBy = item.CreatedBy;
-            //        newItem.CreatedDate = item.CreatedDate;
-            //        newItem.Document_Id = item.Document_Id;
-            //        listDocumentActivity.Add(newItem);
-            //    }
-            //    resultObject.Document.DocumentActivityList = listDocumentActivity;
-            //}
+            
 
             if (dbResult.Document.DocumentActivity != null)
             {
@@ -1310,16 +1282,23 @@ namespace Com.BudgetMetal.Services.RFQ
                 resultObject.Document.DocumentActivityList = listDocumentActivity;
             }
 
-            //var listInvitedSupplier = new List<VmInvitedSupplierItem>();
-            //if (dbResult.InvitedSupplier != null)
-            //{
-            //    foreach (var item in dbResult.InvitedSupplier)
-            //    {
-            //        var itemInvitedSupplier = new VmInvitedSupplierItem();
-            //        Copy<Com.BudgetMetal.DBEntities.InvitedSupplier, VmInvitedSupplierItem>(item, itemInvitedSupplier, new string[] { "Rfq" });
-            //        listInvitedSupplier.Add(itemInvitedSupplier);
-            //    }
-            //}
+            resultObject.Document.ClarificationList = new List<VmClarificationItem>();
+            if (dbResult.Document.Clarification != null)
+            {
+                foreach (var item in dbResult.Document.Clarification.Where(e => e.IsActive == true).ToList())
+                {
+                    var newItem = new VmClarificationItem();
+                    Copy<Com.BudgetMetal.DBEntities.Clarification, VmClarificationItem>(item, newItem);
+
+                    var user = await repoUser.Get(item.User_Id);
+                    var userModel = new VmUserItem();
+                    Copy<Com.BudgetMetal.DBEntities.User, VmUserItem>(user, userModel);
+
+                    newItem.User = userModel;
+
+                    resultObject.Document.ClarificationList.Add(newItem);
+                }
+            }
 
             var dbResultQuotationList = repoQuotation.GetQuotationByRfqId(documentId);
 

@@ -1,4 +1,5 @@
 ﻿using Com.BudgetMetal.ViewModels.Attachment;
+using Com.BudgetMetal.ViewModels.Clarification;
 using Com.BudgetMetal.ViewModels.CodeTable;
 using Com.BudgetMetal.ViewModels.Company;
 using Com.BudgetMetal.ViewModels.DocumentActivity;
@@ -51,5 +52,7 @@ namespace Com.BudgetMetal.ViewModels.Document
         public List<VmDocumentUserDisplay> DocumentUserDisplay { get; set; }
 
         public List<VmDocumentActivityItem> DocumentActivityList { get; set; }
+
+        public List<VmClarificationItem> ClarificationList { get; set; }
     }
 }
