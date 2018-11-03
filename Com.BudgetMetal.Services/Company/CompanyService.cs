@@ -521,7 +521,7 @@ namespace Com.BudgetMetal.Services.Company
         public async Task<VmGenericServiceResult>EditCompanyUserRole(int companyId, int userId, string[] userRole, string updatedBy)
         {
             var result = new VmGenericServiceResult();
-
+            string roleName = "";
             var dbRoleUser = userRoleRepository.GetUserRolesByUserId(userId);
             if (dbRoleUser != null)
             {
@@ -535,44 +535,40 @@ namespace Com.BudgetMetal.Services.Company
 
             foreach (var role in userRole)
             {
-                int roleId = int.Parse(role);
-                var dbRoleUserResult = await userRoleRepository.GetUserRolesByUserIdRoleId(userId, roleId);
-                if (dbRoleUserResult == null)
+                if (role != null)
                 {
-                    DBEntities.UserRoles userRoles = new DBEntities.UserRoles();
-                    userRoles.User_Id = userId;
-                    userRoles.IsActive = true;
-                    userRoles.UpdatedBy = updatedBy;
-                    userRoles.Role_Id = roleId;
-                    userRoleRepository.Add(userRoles);
+                    int roleId = int.Parse(role);
+                    var dbRoleUserResult = await userRoleRepository.GetUserRolesByUserIdRoleId(userId, roleId);
+                    if (dbRoleUserResult == null)
+                    {
+                        DBEntities.UserRoles userRoles = new DBEntities.UserRoles();
+                        userRoles.User_Id = userId;
+                        userRoles.IsActive = true;
+                        userRoles.UpdatedBy = updatedBy;
+                        userRoles.Role_Id = roleId;
+                        userRoleRepository.Add(userRoles);
+                    }
+                    else
+                    {
+                        dbRoleUserResult.IsActive = true;
+                        dbRoleUserResult.UpdatedBy = updatedBy;
+                        dbRoleUserResult.Role_Id = roleId;
+                        userRoleRepository.Update(dbRoleUserResult);
+                    }
+                    var roleEntity = roleRepository.Get(roleId);
+                    if (roleEntity != null)
+                    {
+                        roleName += roleEntity.Result.Name + "|";
+                    }
+                    result.IsSuccess = true;
                 }
                 else
                 {
-                    dbRoleUserResult.IsActive = true;
-                    dbRoleUserResult.UpdatedBy = updatedBy;
-                    dbRoleUserResult.Role_Id = roleId;
-                    userRoleRepository.Update(dbRoleUserResult);
+                    result.IsSuccess = true;
                 }
-                userRoleRepository.Commit();
-                result.IsSuccess = true;
-                result.MessageToUser = "Successful";
-            }
-            //var dbresult = await repoUser.GetUserCompanyIdandUserId(companyId, userId);
-
-            //if (dbresult == null)
-            //{
-            //    result.IsSuccess = false;
-            //    result.MessageToUser = "This email is not registered.";
-            //}
-            //else
-            //{
-            //    dbresult.IsConfirmed = isActiveStatus;
-            //    dbresult.UpdatedBy = updatedBy;
-            //    repoUser.Update(dbresult);
-            //    repoUser.Commit();
-            //    result.IsSuccess = true;
-            //    result.MessageToUser = "Successful";
-            //}
+            }            
+            result.MessageToUser = roleName.TrimEnd('|');
+            userRoleRepository.Commit();
             return result;
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Com.BudgetMetal.ViewModels
@@ -12,12 +13,14 @@ namespace Com.BudgetMetal.ViewModels
             set;
         }
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dddd dd MMMM yyyy}")]
         public DateTime CreatedDate
         {
             get;
             set;
         }
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dddd dd MMMM yyyy}")]
         public DateTime UpdatedDate
         {
             get;

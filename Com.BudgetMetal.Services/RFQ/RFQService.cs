@@ -37,6 +37,8 @@ using Com.BudgetMetal.DataRepository.Quotation;
 using Com.BudgetMetal.DataRepository.TimeLine;
 using Com.BudgetMetal.ViewModels.Company;
 using Com.BudgetMetal.DataRepository.CompanySupplier;
+using Com.BudgetMetal.ViewModels.Industries;
+using Com.BudgetMetal.DataRepository.Industries;
 
 namespace Com.BudgetMetal.Services.RFQ
 {
@@ -58,8 +60,9 @@ namespace Com.BudgetMetal.Services.RFQ
         private readonly IQuotationRepository repoQuotation;
         private readonly ITimeLineRepository repoTimeLine;
         private readonly ICompanySupplierRepository repoCompanySupplier;
+        private readonly IIndustryRepository industryRepository;
 
-        public RFQService(IDocumentRepository repoDocument, IRfqRepository repoRfq, IAttachmentRepository repoAttachment, IRequirementRepository repoRequirement, ISlaRepository repoSla, IRfqPriceScheduleRepository repoRfqPriceSchedule, IPenaltyRepository repoPenalty, IInvitedSupplierRepository repoInvitedSupplier, IDocumentUserRepository repoDocumentUser, IUserRepository repoUser, IRoleRepository repoRole, ICompanyRepository repoCompany, IDocumentActivityRepository repoDocumentActivity, IQuotationRepository repoQuotation, ITimeLineRepository repoTimeLine, ICompanySupplierRepository repoCompanySupplier)
+        public RFQService(IDocumentRepository repoDocument, IRfqRepository repoRfq, IAttachmentRepository repoAttachment, IRequirementRepository repoRequirement, ISlaRepository repoSla, IRfqPriceScheduleRepository repoRfqPriceSchedule, IPenaltyRepository repoPenalty, IInvitedSupplierRepository repoInvitedSupplier, IDocumentUserRepository repoDocumentUser, IUserRepository repoUser, IRoleRepository repoRole, ICompanyRepository repoCompany, IDocumentActivityRepository repoDocumentActivity, IQuotationRepository repoQuotation, ITimeLineRepository repoTimeLine, ICompanySupplierRepository repoCompanySupplier, IIndustryRepository industryRepository)
         {
             this.repoDocument = repoDocument;
             this.repoRfq = repoRfq;
@@ -77,6 +80,7 @@ namespace Com.BudgetMetal.Services.RFQ
             this.repoQuotation = repoQuotation;
             this.repoCompanySupplier = repoCompanySupplier;
             this.repoTimeLine = repoTimeLine;
+            this.industryRepository = industryRepository;
         }
 
         public async Task<VmRfqPage> GetRfqByPage(int userId, int documentOwner, int page, int totalRecords, bool isCompanyAdmin, int statusId = 0, string keyword = "")
@@ -101,6 +105,8 @@ namespace Com.BudgetMetal.Services.RFQ
             resultObj.Result.Records = new List<VmRfqItem>();
 
             Copy<PageResult<Rfq>, PageResult<VmRfqItem>>(dbPageResult, resultObj.Result, new string[] { "Records" });
+
+            var industryList = industryRepository.GetAll();
 
             foreach (var dbItem in dbPageResult.Records)
             {
@@ -129,6 +135,17 @@ namespace Com.BudgetMetal.Services.RFQ
                         }
                     };
 
+                }
+
+                resultItem.IndustryOfRfq = "";
+
+                if (!string.IsNullOrEmpty(dbItem.IndustryOfRfq))
+                {
+                    var industry = industryList.Result.Where(x => x.Id == int.Parse(dbItem.IndustryOfRfq)).FirstOrDefault();
+                    if(industry != null)
+                    {
+                        resultItem.IndustryOfRfq = industry.Name;
+                    }
                 }
 
                 resultObj.Result.Records.Add(resultItem);
@@ -160,6 +177,8 @@ namespace Com.BudgetMetal.Services.RFQ
 
             Copy<PageResult<Rfq>, PageResult<VmRfqItem>>(dbPageResult, resultObj.Result, new string[] { "Records" });
 
+            var industryList = industryRepository.GetAll();
+
             foreach (var dbItem in dbPageResult.Records)
             {
                 var resultItem = new VmRfqItem();
@@ -187,6 +206,17 @@ namespace Com.BudgetMetal.Services.RFQ
                         }
                     };
 
+                }
+
+                resultItem.IndustryOfRfq = "";
+
+                if (!string.IsNullOrEmpty(dbItem.IndustryOfRfq))
+                {
+                    var industry = industryList.Result.Where(x => x.Id == int.Parse(dbItem.IndustryOfRfq)).FirstOrDefault();
+                    if (industry != null)
+                    {
+                        resultItem.IndustryOfRfq = industry.Name;
+                    }
                 }
 
                 resultObj.Result.Records.Add(resultItem);

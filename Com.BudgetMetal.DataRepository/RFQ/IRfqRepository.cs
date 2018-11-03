@@ -20,5 +20,7 @@ namespace Com.BudgetMetal.DataRepository.RFQ
         Task<PageResult<Com.BudgetMetal.DBEntities.Rfq>> GetPublicRfqByCompany(int page, int companyId, int totalRecords, int statusId, string keyword);
 
         Task<List<Com.BudgetMetal.DBEntities.Company>> GetSelectedSupplier(int rfqId);
+
+        Task<int> GetSingleRfqByDocumentId(int documentId);
     }
 }

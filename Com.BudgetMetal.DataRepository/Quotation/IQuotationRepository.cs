@@ -23,5 +23,7 @@ namespace Com.BudgetMetal.DataRepository.Quotation
         Task<Com.BudgetMetal.DBEntities.Quotation> GetQuotationBy_RfqId_CompanyId(int rfqId, int companyId);
 
         int GetRfqOwnerId(int documentId);
+
+        Task<int> GetQuotationByDocumentId(int documentId);
     }
 }

@@ -73,20 +73,20 @@
             <div class="body">
                 <div class="list-group">
                     <a href="javascript:void(0);" class="list-group-item">
-                        Supplier Avg Rating: <b>@Html.DisplayFor(model => model.SupplierAvgRating)</b>
+                        Supplier Avg Rating: <span class="stars">@Html.DisplayFor(model => model.SupplierAvgRating)</span>
                     </a>
                     <a href="javascript:void(0);" class="list-group-item">
-                        Buyer Avg Rating: <b>@Html.DisplayFor(model => model.BuyerAvgRating)</b>
-                    </a>
+                        Buyer Avg Rating: <span class="stars">@Html.DisplayFor(model => model.BuyerAvgRating)</span>
+                    </a>                    
                     @*<a href="javascript:void(0);" class="list-group-item">
-                            Awarded Quotation: <b>@Html.DisplayFor(model => model.AwardedQuotation)</b>
-                        </a>
-                        <a href="javascript:void(0);" class="list-group-item">
-                            Submitted Quotation: <b>@Html.DisplayFor(model => model.SubmittedQuotation)</b>
-                        </a>
-                        <a href="javascript:void(0);" class="list-group-item">
-                            Maximum RFQ Per Week: <b>@Html.DisplayFor(model => model.MaxRFQPerWeek)</b>
-                        </a>*@
+                        Awarded Quotation: <b>@Html.DisplayFor(model => model.AwardedQuotation)</b>
+                    </a>
+                    <a href="javascript:void(0);" class="list-group-item">
+                        Submitted Quotation: <b>@Html.DisplayFor(model => model.SubmittedQuotation)</b>
+                    </a>
+                    <a href="javascript:void(0);" class="list-group-item">
+                        Maximum RFQ Per Week: <b>@Html.DisplayFor(model => model.MaxRFQPerWeek)</b>
+                    </a>*@
                 </div>
             </div>
         </div>
@@ -162,7 +162,7 @@
                                                     <td> @item.JobTitle </td>
                                                     <td> @item.UserType </td>
                                                     <td> @item.IsConfirmed </td>
-                                                    <td>
+                                                    <td id="UserRoleId_@item.Id">
                                                         @{
                                                             userRole = "";
                                                             if (item.RoleList.Count > 0)
@@ -352,6 +352,9 @@
 
 <script>
     $(function () {
+
+        $('span.stars').stars();
+
         $('#btnSubmit').on('click', function(){
             var about = $('#txt_about').val();
             var ajaxurl = '@Url.Action("EditCompanyAbout", "Companies")';
@@ -418,7 +421,7 @@
             modal.find('#userId').val(userId);
             modal.find('#userRole').val("");
             modal.find('#userRole').val(userRole);
-            var roleType = "admin";
+            var roleType = "company";
             $("ddluserRole").empty();
             loaduserRole(roleType);
         });
@@ -434,7 +437,6 @@
         $('#btnSubmitUserRole').on('click', function(){
             var userId =  $('#userId').val();
             var userRole = $('#ddluserRole').val();
-            console.log(userRole);
             var ajaxurl = '@Url.Action("EditCompanyUserRole", "Companies")';
             $.ajax({
                 url: ajaxurl,
@@ -444,12 +446,26 @@
                 success: function (response) {
                     //text box data clear and reset again.
                     if (response.IsSuccess) {
-                        //$('#originalAddress').empty();
-                        //$('#originalAddress').append(address);
+                        console.log(userRole);
+                        $('#UserRoleId_' + userId).empty();
                         $('#userRoleModal').modal('hide');
-                        alert(response.MessageToUser);
+                        //$('#UserRoleId_' + userId).append("<span class='badge bg-cyan'> Company Administrator </span>");
+                        //alert(response.MessageToUser);
+                        var array = response.MessageToUser.split('|');
+                        var roleText = "";
+                        for (val of array) {
+                            console.log(val);
+                            roleText += "<span class='badge bg-cyan'>" + val + " </span>";
+                        }
+                        if (roleText.trim().length > 0) {
+                            $('#UserRoleId_' + userId).append(roleText);
+                        }
+                        else {
+                            $('#UserRoleId_' + userId).empty();
+                        }
                     } else {
-                        alert(response.MessageToUser);
+                        //alert(response.MessageToUser);
+                        $('#UserRoleId_' + userId).empty();
                     }
                 },
                 error: function (response) {
@@ -529,4 +545,18 @@
             });
         }
     }
+
+    $.fn.stars = function () {
+        return $(this).each(function () {
+            // Get the value
+            var val = parseFloat($(this).html());
+            // Make sure that the value is in 0 - 5 range, multiply to get width
+            var size = Math.max(0, (Math.min(5, val))) * 16;
+            // Create stars holder
+            var $span = $('<span />').width(size);
+            // Replace the numerical value with stars
+            $(this).html($span);
+        });
+    }
+
 </script>

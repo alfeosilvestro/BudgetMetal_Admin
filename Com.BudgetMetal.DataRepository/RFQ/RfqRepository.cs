@@ -27,7 +27,7 @@ namespace Com.BudgetMetal.DataRepository.RFQ
 
 
             var records = await this.entities
-                            .Include(e => e.Document)
+                            .Include(e => e.Document)                            
                             .Include(e => e.Document.DocumentStatus)
                             .Include(e => e.Document.DocumentType)
                             .Include(e => e.Document.Company)
@@ -266,6 +266,16 @@ namespace Com.BudgetMetal.DataRepository.RFQ
             var result = await this.DbContext.Company.Where(e => filterCompay.Contains(e.Id)).ToListAsync();
 
             return result;
+        }
+
+        public async Task<int> GetSingleRfqByDocumentId(int documentId)
+        {
+            var record = await this.entities
+                            .SingleOrDefaultAsync(e =>
+                              (e.IsActive == true)
+                              && (e.Document_Id == documentId)
+                            );
+            return record.Id;
         }
     }
 }

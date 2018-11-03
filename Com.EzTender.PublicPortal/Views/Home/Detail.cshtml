@@ -501,7 +501,7 @@
 
     function loadUser() {
         var ajaxurl = '@Url.Action("GetActiveUserByCompany", "Rfq")';
-
+        $('.page-loader-wrapper').fadeIn();
         $('#ddlUser').append($('<option>', {
             value: 0,
             text: '--Select User--'
@@ -522,10 +522,11 @@
                     }));
                 }
                 $("#ddlUser").selectpicker('refresh');
-
+                $('.page-loader-wrapper').fadeOut();
             },
             error: function (response) {
                 alert(response)
+                $('.page-loader-wrapper').fadeOut();
             }
 
         });
