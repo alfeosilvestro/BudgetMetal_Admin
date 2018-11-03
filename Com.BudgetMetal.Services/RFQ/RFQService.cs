@@ -65,7 +65,7 @@ namespace Com.BudgetMetal.Services.RFQ
         private readonly IClarificationRepository repoClarification;
         private readonly IIndustryRepository industryRepository;
 
-        public RFQService(IDocumentRepository repoDocument, IRfqRepository repoRfq, IAttachmentRepository repoAttachment, IRequirementRepository repoRequirement, ISlaRepository repoSla, IRfqPriceScheduleRepository repoRfqPriceSchedule, IPenaltyRepository repoPenalty, IInvitedSupplierRepository repoInvitedSupplier, IDocumentUserRepository repoDocumentUser, IUserRepository repoUser, IRoleRepository repoRole, ICompanyRepository repoCompany, IDocumentActivityRepository repoDocumentActivity, IQuotationRepository repoQuotation, ITimeLineRepository repoTimeLine, ICompanySupplierRepository repoCompanySupplier, IClarificationRepository repoClarification)
+        public RFQService(IDocumentRepository repoDocument, IRfqRepository repoRfq, IAttachmentRepository repoAttachment, IRequirementRepository repoRequirement, ISlaRepository repoSla, IRfqPriceScheduleRepository repoRfqPriceSchedule, IPenaltyRepository repoPenalty, IInvitedSupplierRepository repoInvitedSupplier, IDocumentUserRepository repoDocumentUser, IUserRepository repoUser, IRoleRepository repoRole, ICompanyRepository repoCompany, IDocumentActivityRepository repoDocumentActivity, IQuotationRepository repoQuotation, ITimeLineRepository repoTimeLine, ICompanySupplierRepository repoCompanySupplier, IClarificationRepository repoClarification, IIndustryRepository industryRepository)
         {
             this.repoDocument = repoDocument;
             this.repoRfq = repoRfq;
