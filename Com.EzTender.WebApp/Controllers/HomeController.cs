@@ -59,6 +59,18 @@ namespace Com.GenericPlatform.WebApp.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        public IActionResult ErrorForUser()
+        {
+            string access = Request.Query["access"];
+            if(access != null)
+            {
+                if(access.ToString().ToLower().Trim() == "denied")
+                {
+                    TempData["ErrorMessage"] = "You are not authorized to access this page.";
+                }
+            }
+            return View();
+        }
         [HttpGet]
         public async Task<JsonResult> GetRFQForDashboard(int page, string status, string skeyword)
         {

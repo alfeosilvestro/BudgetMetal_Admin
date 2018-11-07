@@ -423,7 +423,7 @@
                                         <div class='col-sm-8' id='bodyClarification_@(item.Id)'>
                                             <div class='col-sm-12' id='questionClarification_@(item.Id)'>
                                                 <div id='comment_@(item.Id)'>  @item.ClarificationQuestion</div>
-                                                <br> <button type='button' class='btn btn-default' onclick='AddReplyPanel( @(item.Id))'>Reply</button> &nbsp; <button class='btn btn-danger' type='button' onclick='DeleteClarification(@(item.Id))'>Delete</button>
+                                                <br> <button type='button' class='btn btn-default' onclick='AddReplyPanel( @(item.Id))'>Reply</button>
                                             </div>
                                             <div class='col-sm-12' id='replyClarification_@(item.Id)'>
                                                 @{
@@ -585,7 +585,7 @@ $("#btnAddComment").click(function () {
                             "<div class='col-sm-8' id='bodyClarification_" + clarificationId + "'>" +
                             "<div class='col-sm-12' id='questionClarification_" + clarificationId + "'>" +
                             "<div id='comment_" + clarificationId + "'>" + comment.replace("\n","<br>") + "</div>" +
-                            "<br> <button type='button' class='btn btn-default' onclick='AddReplyPanel(" + clarificationId + ")'>Reply</button> &nbsp; <button class='btn btn-danger'  type='button'  onclick='DeleteClarification(" + clarificationId + ")'>Delete</button>" +
+                            "<br> <button type='button' class='btn btn-default' onclick='AddReplyPanel(" + clarificationId + ")'>Reply</button> " +
                             "</div>" +
                             "<div class='col-sm-12' id='replyClarification_" + clarificationId + "'></div>" +
                             "<div class='col-sm-12' id='pnlReplyClarification_" + clarificationId + "'></div>" +

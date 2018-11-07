@@ -1081,5 +1081,35 @@ namespace Com.BudgetMetal.Services.Quotation
 
             return result;
         }
+
+        public async Task<VmGenericServiceResult> CheckPermissionForQuotation(int companyId, int C_BussinessType, int userId, int QuotationId, bool companyAdmin)
+        {
+            var result = new VmGenericServiceResult();
+
+            var quotation = await repoQuotation.GetSingleQuotationById(QuotationId);
+
+            result.IsSuccess = false;
+            if (quotation != null)
+            {
+                if (C_BussinessType == Constants_CodeTable.Code_C_Supplier)
+                {
+                    if (quotation.Document.Company_Id == companyId)
+                    {
+                         result.IsSuccess = true;
+                    }
+                }
+                else if (C_BussinessType == Constants_CodeTable.Code_C_Buyer)
+                {
+                    var buyerId = repoQuotation.GetRfqOwnerId(quotation.Document_Id);
+
+                    if (companyId == buyerId)
+                    {
+                        result.IsSuccess = true;
+                    }
+                }
+            }
+            return result;
+        }
+
     }
 }

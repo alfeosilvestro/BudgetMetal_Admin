@@ -90,13 +90,34 @@ namespace Com.GenericPlatform.WebApp.Controllers
         {
             try
             {
-                var result = await rfqService.GetSingleRfqById(id);
+                string User_Id = HttpContext.Session.GetString("User_Id");
+                string Company_Id = HttpContext.Session.GetString("Company_Id");
+                string currentCompanyType = HttpContext.Session.GetString("C_BusinessType");
 
-                return View(result);
+                var userRoles = JsonConvert.DeserializeObject<List<VmRoleItem>>(HttpContext.Session.GetString("SelectedRoles"));
+                bool isCompanyAdmin = false;
+                if (userRoles.Where(e => e.Id == Constants.C_Admin_Role).ToList().Count > 0)
+                {
+                    isCompanyAdmin = true;
+                }
+
+                var checkPermissionResult = await rfqService.CheckPermissionForRFQ(Convert.ToInt32(Company_Id), Convert.ToInt32(currentCompanyType), Convert.ToInt32(User_Id), id, isCompanyAdmin);
+
+                if (checkPermissionResult.IsSuccess)
+                {
+                    var result = await rfqService.GetSingleRfqById(id);
+                    return View(result);
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "You are not authorized to access this RFQ.";
+                    return RedirectToAction("ErrorForUser", "Home");
+                }
             }
             catch (Exception ex)
             {
-                return RedirectToAction("Index");
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction("ErrorForUser", "Home");
             }
 
         }
@@ -107,16 +128,38 @@ namespace Com.GenericPlatform.WebApp.Controllers
         {
             try
             {
-                var result = await rfqService.GetSingleRfqById(id);
+                string User_Id = HttpContext.Session.GetString("User_Id");
+                string Company_Id = HttpContext.Session.GetString("Company_Id");
+                string currentCompanyType = HttpContext.Session.GetString("C_BusinessType");
 
-                return View(result);
+                var userRoles = JsonConvert.DeserializeObject<List<VmRoleItem>>(HttpContext.Session.GetString("SelectedRoles"));
+                bool isCompanyAdmin = false;
+                if (userRoles.Where(e => e.Id == Constants.C_Admin_Role).ToList().Count > 0)
+                {
+                    isCompanyAdmin = true;
+                }
+
+                var checkPermissionResult = await rfqService.CheckPermissionForRFQ(Convert.ToInt32(Company_Id), Convert.ToInt32(currentCompanyType), Convert.ToInt32(User_Id), id, isCompanyAdmin);
+
+                if (checkPermissionResult.IsSuccess)
+                {
+                    var result = await rfqService.GetSingleRfqById(id);
+                    return View(result);
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "You are not authorized to access this RFQ.";
+                    return RedirectToAction("ErrorForUser", "Home");
+                }
             }
             catch (Exception ex)
             {
-                return RedirectToAction("Index");
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction("ErrorForUser", "Home");
             }
 
         }
+
         [HttpPost]
         public ActionResult Edit(VmRfqItem Rfq)
         {
@@ -236,8 +279,9 @@ namespace Com.GenericPlatform.WebApp.Controllers
             ViewBag.EmailAddress = HttpContext.Session.GetString("EmailAddress");
             if (rfqService.CheckRFQLimit(Convert.ToInt32(HttpContext.Session.GetString("Company_Id"))) == false)
             {
-                TempData["message"] = "RFQ Limitation per week is exceed. please contact admin to upgrade your account.";
-                return RedirectToAction("Index");
+                TempData["ErrorMessage"] = "RFQ Limitation per week is exceed. please contact admin to upgrade your account.";
+               
+                return RedirectToAction("ErrorForUser", "Home");
             }
 
             return View();
@@ -337,12 +381,14 @@ namespace Com.GenericPlatform.WebApp.Controllers
                 }
                 else
                 {
-                    return View();
+                    TempData["ErrorMessage"] ="Error while creating RFQ. Please contact system administrator.";
+                    return RedirectToAction("ErrorForUser", "Home");
                 }
             }
             catch (Exception ex)
             {
-                return View();
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction("ErrorForUser", "Home");
             }
         }
 
@@ -448,10 +494,10 @@ namespace Com.GenericPlatform.WebApp.Controllers
         public async Task<JsonResult> AddComment(int documentId, string clarification)
         {
 
-            var result = await rfqService.AddClarification(documentId, Convert.ToInt32(HttpContext.Session.GetString("User_Id")), HttpContext.Session.GetString("UserName"), clarification,0);
+            var result = await rfqService.AddClarification(documentId, Convert.ToInt32(HttpContext.Session.GetString("User_Id")), HttpContext.Session.GetString("UserName"), clarification, 0);
 
             return new JsonResult(result, new JsonSerializerSettings()
-            { 
+            {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             });
         }
