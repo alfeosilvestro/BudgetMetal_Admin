@@ -91,22 +91,47 @@
                 //console.log(obj);
                 for (var k in obj) {
                     var item = obj[k];
+                    //$('#RFQList').append(
+                    //    "<li class='list-group-item clearfix'> " +
+                    //        "<div class='row'> " +
+                    //            "<div class='col-sm-12'>RFQ No. "+ item.Document.DocumentNo +"</div> " +
+                    //        "</div> " +
+                    //    "<div class='row'> " +
+                    //    "<div class='col-sm-4'>Company : " + item.Document.Company.Name + "</div> " +
+                    //    "<div class='col-sm-4'>Estimated Project Value : $" + item.ContractValue+"</div> " +
+                    //            "<div class='col-sm-4'></div> " +
+                    //        "</div> " +
+                    //        "<div class='row'> " +
+                    //    "<div class='col-sm-4'>Open RFQ Date: " + item.StartRfqdate +"</div> " +
+                    //            "<div class='col-sm-4'></div> " +
+                    //            "<div class='col-sm-4'>Status : "+ item.Document.DocumentStatus.Name+"</div> " +
+                    //        " </div> " +
+                    //    " </li> "
+                    //);
+                    var rfqUrl = '@Url.Action("View", "Rfq")';
                     $('#RFQList').append(
-                        "<li class='list-group-item clearfix'> " +
+                        "<div class='clearfix' style='padding-left: 20px; padding-right: 20px;'> " +
                             "<div class='row'> " +
-                                "<div class='col-sm-12'>RFQ No. "+ item.Document.DocumentNo +"</div> " +
+                                "<div class='col-sm-6'>RFQ No. " + item.Document.DocumentNo + "</div> " +
+                                "<div class='col-sm-6'><span class='btn btn-success pull-right'>" + item.Document.DocumentStatus.Name + "</span></div> " +
                             "</div> " +
                         "<div class='row'> " +
-                        "<div class='col-sm-4'>Company : " + item.Document.Company.Name + "</div> " +
-                        "<div class='col-sm-4'>Estimated Project Value : $" + item.ContractValue+"</div> " +
+                        "<div class='col-sm-12'><b>Title. <a href='" + rfqUrl + "/"+ item.Id + "' target='_blank'>" + item.Document.Title + "</a></b></div> " +
+
+                            "</div> " +
+                            "<div class='row'> " +
+                                "<div class='col-sm-4'>Company: " + item.Document.Company.Name + "</div> " +
+                                "<div class='col-sm-4'>Estimated Project Value : $" + item.ContractValue+"</div> " +
                                 "<div class='col-sm-4'></div> " +
                             "</div> " +
                             "<div class='row'> " +
-                        "<div class='col-sm-4'>Open RFQ Date: " + item.StartRfqdate +"</div> " +
+                                "<div class='col-sm-4'>Open Date: " + item.StartRfqdate + "</div> " +
+                                "<div class='col-sm-4'>Close Date: " + item.ValidRfqdate + "</div> " +
                                 "<div class='col-sm-4'></div> " +
-                                "<div class='col-sm-4'>Status : "+ item.Document.DocumentStatus.Name+"</div> " +
+                                //"<div class='col-sm-4'><a href='" + item.Document.Id +"' class='btn btn-primary waves-effect pull-right'>View</a></div> " +
                             " </div> " +
-                        " </li> "
+                        " </div> " +
+                        " <hr/> "
                     );
 
                 }

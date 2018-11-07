@@ -28,17 +28,17 @@ namespace Com.EzTender.PublicPortal.Controllers
         private readonly AppSettings _appSettings;
         private readonly IIndustryService industryService;
         private readonly IRFQService rfqService;
-        private readonly IQuotationService quotationService;
+        //private readonly IQuotationService quotationService;
         private readonly ICompanyService companyService;
         private readonly IServiceTagsService serviceTagsService;
         private readonly IUserService userService;
         private readonly IAttachmentService attachmentService;
 
-        public HomeController(IRFQService rfqService, IIndustryService industryService, IQuotationService quotationService, ICompanyService companyService, IServiceTagsService serviceTagsService, IUserService userService, IOptions<AppSettings> appSettings, IAttachmentService attachmentService)
+        public HomeController(IRFQService rfqService, IIndustryService industryService, ICompanyService companyService, IServiceTagsService serviceTagsService, IUserService userService, IOptions<AppSettings> appSettings, IAttachmentService attachmentService)
         {
             this.rfqService = rfqService;
             this.industryService = industryService;
-            this.quotationService = quotationService;
+            //this.quotationService = quotationService;
             this.companyService = companyService;
             this.serviceTagsService = serviceTagsService;
             this.userService = userService;
@@ -221,16 +221,16 @@ namespace Com.EzTender.PublicPortal.Controllers
             });
         }
 
-        [HttpGet]
-        public async Task<JsonResult> GetQuotationByRfqId(int RfqId, int page, string keyword)
-        {
-            var result = await quotationService.GetQuotationByRfqId(RfqId, page, 10, 0, (keyword == null ? "" : keyword));
+        //[HttpGet]
+        //public async Task<JsonResult> GetQuotationByRfqId(int RfqId, int page, string keyword)
+        //{
+        //    var result = await quotationService.GetQuotationByRfqId(RfqId, page, 10, 0, (keyword == null ? "" : keyword));
 
-            return new JsonResult(result, new JsonSerializerSettings()
-            {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            });
-        }
+        //    return new JsonResult(result, new JsonSerializerSettings()
+        //    {
+        //        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+        //    });
+        //}
 
         [HttpGet]
         public async Task<JsonResult> CheckUEN(string RegNo)

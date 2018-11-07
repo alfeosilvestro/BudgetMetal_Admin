@@ -138,7 +138,7 @@ namespace Com.BudgetMetal.DataRepository.Company
                .Where(e =>
                  (e.IsActive == true) &&
                  (e.C_BusinessType == Com.BudgetMetal.Common.Constants_CodeTable.Code_C_Supplier) &&
-                 (keyword == string.Empty || e.Name.ToLower().StartsWith(keyword))
+                 (e.Name.StartsWith(keyword))
                )
                .OrderBy(e => new { e.Name, e.CreatedDate })
                .Skip((totalRecords * page) - totalRecords)

@@ -8,7 +8,7 @@
 </div>
 
 <!-- Basic Alerts -->
-<div class="row">
+@*<div class="row">
     <div class="col-sm-6">
         <div class="btn-group" role="group" aria-label="Justified button group">
             <button id="btn_tender_open" class="btn btn-default waves-effect btnStatus" data-item-id="100032" type="button">Open</button>
@@ -16,7 +16,7 @@
         </div>
     </div>
     <div class="col-sm-6"></div>
-</div>
+</div>*@
 
 <div class="row clearfix">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -88,7 +88,6 @@
                 var obj = response.Result.Records;
                 for (var k in obj) {
                     var item = obj[k];
-                    var rfqUrl = '@Url.Action("PublicRfqByCompany", "Suppliers")';
                     $('#CompanyList').append(
                         "<div class='clearfix' style='padding-left: 20px; padding-right: 20px;'> " +
                         "<div class='row'> " +
@@ -96,7 +95,7 @@
                         
                          "</div> " +
                         "<div class='row'> " +
-                        "<div class='col-sm-12'><b>Name. <a href='" + rfqUrl + "/" + item.Id + "'>" + item.Name + "</a></b></div> " +
+                        "<div class='col-sm-12'><b>Name. " + item.Name + "</b></div> " +
 
                          "</div> " +
                             "<div class='row'> " +
