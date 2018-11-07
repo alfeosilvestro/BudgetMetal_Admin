@@ -50,5 +50,7 @@ namespace Com.BudgetMetal.Services.RFQ
 
 
         Task<VmGenericServiceResult> AddClarification(int documentId, int userId, string userName, string clarification, int commentId);
+
+        Task<VmGenericServiceResult> CheckPermissionForRFQ(int companyId, int C_BussinessType, int userId, int RfqId, bool companyAdmin);
     }
 }

@@ -146,7 +146,7 @@ namespace Com.BudgetMetal.Services.RFQ
                 if (!string.IsNullOrEmpty(dbItem.IndustryOfRfq))
                 {
                     var industry = industryList.Result.Where(x => x.Id == int.Parse(dbItem.IndustryOfRfq)).FirstOrDefault();
-                    if(industry != null)
+                    if (industry != null)
                     {
                         resultItem.IndustryOfRfq = industry.Name;
                     }
@@ -1295,7 +1295,7 @@ namespace Com.BudgetMetal.Services.RFQ
             resultObject.InvitedSupplier = listInvitedSupplier;
 
 
-            
+
 
             if (dbResult.Document.DocumentActivity != null)
             {
@@ -1627,9 +1627,9 @@ namespace Com.BudgetMetal.Services.RFQ
 
                 repoClarification.Add(dbClarification);
                 repoClarification.Commit();
-               
+
                 var dbDocument = await repoDocument.Get(documentId);
-              
+
                 //Add Timeline
                 var timeline = new Com.BudgetMetal.DBEntities.TimeLine()
                 {
@@ -1644,7 +1644,7 @@ namespace Com.BudgetMetal.Services.RFQ
                 };
                 repoTimeLine.Add(timeline);
                 repoTimeLine.Commit();
-                
+
                 result.IsSuccess = true;
                 result.MessageToUser = dbClarification.Id.ToString();
             }
@@ -1654,6 +1654,55 @@ namespace Com.BudgetMetal.Services.RFQ
                 result.MessageToUser = "You have failed to add clarification.";
             }
 
+            return result;
+        }
+
+        public async Task<VmGenericServiceResult> CheckPermissionForRFQ(int companyId, int C_BussinessType, int userId, int RfqId, bool companyAdmin)
+        {
+            var result = new VmGenericServiceResult();
+
+            var rfq = await repoRfq.GetSingleRfqById(RfqId);
+
+            result.IsSuccess = false;
+            if (rfq != null)
+            {
+                if (rfq.IsPublic)
+                {
+                    result.IsSuccess = true;
+                }
+                else { 
+                if (C_BussinessType == Constants_CodeTable.Code_C_Buyer)
+                {
+                    if (rfq.Document.Company_Id == companyId)
+                    {
+                        if (companyAdmin)
+                        {
+                            result.IsSuccess = true;
+                        }
+                        else
+                        {
+                            if (rfq.Document.DocumentUser != null)
+                            {
+                                if (rfq.Document.DocumentUser.Where(e => e.IsActive == true && e.User_Id == userId).ToList().Count > 0)
+                                {
+                                    result.IsSuccess = true;
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (C_BussinessType == Constants_CodeTable.Code_C_Supplier)
+                {
+                    if(rfq.InvitedSupplier != null)
+                    {
+                        if (rfq.InvitedSupplier.Where(e => e.IsActive == true && e.Company_Id == companyId).ToList().Count > 0)
+                        {
+                            result.IsSuccess = true;
+                        }
+                    }
+                }
+                }
+            }
             return result;
         }
     }

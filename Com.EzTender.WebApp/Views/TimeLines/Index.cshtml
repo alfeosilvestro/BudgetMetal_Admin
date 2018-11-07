@@ -236,6 +236,7 @@
     function loadTimeLine(page) {
         var keyword = $('#keyword').val();
         var ajaxurl = '@Url.Action("GetTimeLineData", "TimeLines")';
+        
         $('.page-loader-wrapper').fadeIn();
         $.ajax({
             url: ajaxurl,

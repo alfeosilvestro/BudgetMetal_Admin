@@ -79,7 +79,7 @@ namespace Com.EzTender.WebApp.Controllers
             {
                 isCompanyAdmin = true;
             }
-           
+
             var result = await quotationService.GetQuotationByPage(Convert.ToInt32(User_Id), Convert.ToInt32(Company_Id), page, 10, isCompanyAdmin);
             return View(result);
         }
@@ -102,21 +102,36 @@ namespace Com.EzTender.WebApp.Controllers
                     isCompanyAdmin = true;
                 }
                 ViewBag.CompanyAdmin = isCompanyAdmin;
-                
-                var result = await quotationService.GetSingleQuotationById(id);
-                int userId = Convert.ToInt32(HttpContext.Session.GetString("User_Id"));
-                int roleId = Convert.ToInt32( Constants.QuotationDefaultRoleId);
 
-                ViewBag.DocumentOwner = true;
-                if (result.Document.DocumentUserDisplay.Where(e => e.User_Id == userId && e.Roles.Contains(Constants.QuotationDefaultRole)).ToList().Count > 0)
+                string User_Id = HttpContext.Session.GetString("User_Id");
+                string Company_Id = HttpContext.Session.GetString("Company_Id");
+                string currentCompanyType = HttpContext.Session.GetString("C_BusinessType");
+
+                var checkPermissionResult = await quotationService.CheckPermissionForQuotation(Convert.ToInt32(Company_Id), Convert.ToInt32(currentCompanyType), Convert.ToInt32(User_Id), id, isCompanyAdmin);
+
+                if (checkPermissionResult.IsSuccess)
                 {
+                    var result = await quotationService.GetSingleQuotationById(id);
+                    int userId = Convert.ToInt32(HttpContext.Session.GetString("User_Id"));
+                    int roleId = Convert.ToInt32(Constants.QuotationDefaultRoleId);
+
                     ViewBag.DocumentOwner = true;
+                    if (result.Document.DocumentUserDisplay.Where(e => e.User_Id == userId && e.Roles.Contains(Constants.QuotationDefaultRole)).ToList().Count > 0)
+                    {
+                        ViewBag.DocumentOwner = true;
+                    }
+                    return View(result);
                 }
-                return View(result);
+                else
+                {
+                    TempData["ErrorMessage"] = "You are not authorized to access this Quotation.";
+                    return RedirectToAction("ErrorForUser", "Home");
+                }
             }
             catch (Exception ex)
             {
-                return RedirectToAction("Index");
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction("ErrorForUser", "Home");
             }
 
         }
@@ -127,13 +142,35 @@ namespace Com.EzTender.WebApp.Controllers
         {
             try
             {
-                var result = await quotationService.GetSingleQuotationById(id);
+                string User_Id = HttpContext.Session.GetString("User_Id");
+                string Company_Id = HttpContext.Session.GetString("Company_Id");
+                string currentCompanyType = HttpContext.Session.GetString("C_BusinessType");
+                var userRoles = JsonConvert.DeserializeObject<List<VmRoleItem>>(HttpContext.Session.GetString("SelectedRoles"));
+                bool isCompanyAdmin = false;
+                if (userRoles.Where(e => e.Id == Constants.C_Admin_Role).ToList().Count > 0)
+                {
+                    isCompanyAdmin = true;
+                }
+
+                var checkPermissionResult = await quotationService.CheckPermissionForQuotation(Convert.ToInt32(Company_Id), Convert.ToInt32(currentCompanyType), Convert.ToInt32(User_Id), id, isCompanyAdmin);
+                if (checkPermissionResult.IsSuccess)
+                {
+var result = await quotationService.GetSingleQuotationById(id);
 
                 return View(result);
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "You are not authorized to access this Quotation.";
+                    return RedirectToAction("ErrorForUser", "Home");
+                }
+
+                
             }
             catch (Exception ex)
             {
-                return RedirectToAction("Index");
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction("ErrorForUser", "Home");
             }
 
         }
@@ -154,7 +191,7 @@ namespace Com.EzTender.WebApp.Controllers
         public async Task<JsonResult> DecideQuotation(int documentId, int isAccept)
         {
 
-            var result = await quotationService.DecideQuotation(documentId, Convert.ToInt32(HttpContext.Session.GetString("User_Id")), HttpContext.Session.GetString("UserName"),( (isAccept == 1) ? true : false));
+            var result = await quotationService.DecideQuotation(documentId, Convert.ToInt32(HttpContext.Session.GetString("User_Id")), HttpContext.Session.GetString("UserName"), ((isAccept == 1) ? true : false));
 
             return new JsonResult(result, new JsonSerializerSettings()
             {
@@ -244,12 +281,14 @@ namespace Com.EzTender.WebApp.Controllers
                 }
                 else
                 {
-                    return View();
+                    TempData["ErrorMessage"] = "Error on updating quotation.";
+                    return RedirectToAction("ErrorForUser", "Home");
                 }
             }
             catch (Exception ex)
             {
-                return View();
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction("ErrorForUser", "Home");
             }
         }
 
@@ -275,7 +314,7 @@ namespace Com.EzTender.WebApp.Controllers
                 result.Document.DocumentType_Id = Constants_CodeTable.Code_Quotation;
                 result.Document.Company_Id = Convert.ToInt32(HttpContext.Session.GetString("Company_Id"));
                 result.Document.ContactPersonName = HttpContext.Session.GetString("ContactName");
-                result.Document.CreatedBy = result.Document.UpdatedBy = result.CreatedBy = result.UpdatedBy = HttpContext.Session.GetString("EmailAddress"); 
+                result.Document.CreatedBy = result.Document.UpdatedBy = result.CreatedBy = result.UpdatedBy = HttpContext.Session.GetString("EmailAddress");
                 result.Document.DocumentUser = new List<VmDocumentUserItem>();
                 var documentUser = new VmDocumentUserItem
                 {
@@ -298,16 +337,18 @@ namespace Com.EzTender.WebApp.Controllers
 
                 if (resultSaving.IsSuccess)
                 {
-                    return RedirectToAction("Edit",new { id = resultSaving.MessageToUser});
+                    return RedirectToAction("Edit", new { id = resultSaving.MessageToUser });
                 }
                 else
                 {
-                    return RedirectToAction("Index");
+                    TempData["ErrorMessage"] = "Error on updating quotation.";
+                    return RedirectToAction("ErrorForUser", "Home");
                 }
             }
             catch (Exception ex)
             {
-                return RedirectToAction("Index");
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction("ErrorForUser", "Home");
             }
         }
 

@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewData["Title"] = "ErrorForUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Error For User</h2>
+
+<div class="box">
+    <div class="row">
+        <div class="col-sm-8">
+
+            @{
+                if (TempData["ErrorMessage"] != null)
+                {
+                    <span class="text-danger">
+                        @TempData["ErrorMessage"]
+                    </span>
+                }
+            }
+
+
+        </div>
+    </div>
+</div>
