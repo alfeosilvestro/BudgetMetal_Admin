@@ -61,7 +61,7 @@ namespace Com.BudgetMetal.Services.Users
 
         public async Task<VmUserItem> ValidateUser(VM_Sys_User_Sign_In user)
         {
-            var dbresult = await repo.GetUser(user.UserName, user.Password);
+            var dbresult = await repo.GetUser(user.UserName, Md5.Encrypt(user.Password));
            
             if (dbresult == null)
             {
@@ -496,6 +496,7 @@ namespace Com.BudgetMetal.Services.Users
                 var dbUser = new User();
                 Copy<VmUserItem, Com.BudgetMetal.DBEntities.User>(user, dbUser, new string[] { "Company" });
                 dbUser.Company_Id = companyId;
+                dbUser.Password = Common.Md5.Encrypt(dbUser.Password);
                 dbUser.CreatedBy = dbUser.UpdatedBy = user.EmailAddress;
                 dbUser.UserName = user.ContactName;
                 dbUser.IsConfirmed = false;
@@ -562,7 +563,7 @@ namespace Com.BudgetMetal.Services.Users
             }
             else
             {
-                dbresult.Password = newPassword;
+                dbresult.Password = Md5.Encrypt(newPassword);
                 repo.Update(dbresult);
                 repo.Commit();
                 result.IsSuccess = true;
