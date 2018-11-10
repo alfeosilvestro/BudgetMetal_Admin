@@ -23,15 +23,15 @@ namespace Com.BudgetMetal.DataRepository.Company
         {
             var filterServiceTags = new List<int>();
             var arrServiceTags = serviceTagsId.Split(',');
-            foreach(string Id in arrServiceTags)
+            foreach (string Id in arrServiceTags)
             {
                 filterServiceTags.Add(Convert.ToInt32(Id.Trim()));
             }
 
-            var filterCompany = this.DbContext.SupplierServiceTags.Where(e=>e.IsActive == true & filterServiceTags.Contains(e.ServiceTags_Id)).Select(e=>e.Company_Id).Distinct().ToList();
+            var filterCompany = this.DbContext.SupplierServiceTags.Where(e => e.IsActive == true & filterServiceTags.Contains(e.ServiceTags_Id)).Select(e => e.Company_Id).Distinct().ToList();
 
             searchKeyword = (searchKeyword == null) ? "" : searchKeyword.ToLower().Trim();
-            var records = this.entities.Where(e=>e.IsActive == true && e.C_BusinessType == Constants_CodeTable.Code_C_Supplier && filterCompany.Contains(e.Id) && (searchKeyword == "" || e.Name.ToLower().Contains(searchKeyword) || e.RegNo.ToLower().Contains(searchKeyword)));
+            var records = this.entities.Where(e => e.IsActive == true && e.C_BusinessType == Constants_CodeTable.Code_C_Supplier && filterCompany.Contains(e.Id) && (searchKeyword == "" || e.Name.ToLower().Contains(searchKeyword) || e.RegNo.ToLower().Contains(searchKeyword)));
 
             //var recordList = records
             //    .OrderBy(e=>e.Name)
@@ -84,14 +84,14 @@ namespace Com.BudgetMetal.DataRepository.Company
                 //return await base.GetPage(keyword, page, totalRecords);
             }
 
-            var records = entities
+            var records = await entities
                .Where(e =>
                  (e.IsActive == true) &&
                  (keyword == string.Empty || e.Name.Contains(keyword))
                )
                .OrderBy(e => new { e.Name, e.CreatedDate })
                .Skip((totalRecords * page) - totalRecords)
-               .Take(totalRecords);
+               .Take(totalRecords).ToListAsync();
 
             var recordList = records.ToList();
 
@@ -134,15 +134,15 @@ namespace Com.BudgetMetal.DataRepository.Company
                 //return await base.GetPage(keyword, page, totalRecords);
             }
 
-            var records = entities
+            var records = await entities
                .Where(e =>
                  (e.IsActive == true) &&
                  (e.C_BusinessType == Com.BudgetMetal.Common.Constants_CodeTable.Code_C_Supplier) &&
-                 (e.Name.StartsWith(keyword))
+                 (e.Name.StartsWith(keyword) && keyword != "")
                )
                .OrderBy(e => new { e.Name, e.CreatedDate })
                .Skip((totalRecords * page) - totalRecords)
-               .Take(totalRecords);
+               .Take(totalRecords).ToListAsync();
 
             var recordList = records.ToList();
 
@@ -179,13 +179,13 @@ namespace Com.BudgetMetal.DataRepository.Company
 
         public async Task<Com.BudgetMetal.DBEntities.Company> GetCompanyByUEN(string RegNo)
         {
-           return await this.entities.Where(e => e.RegNo.ToLower() == RegNo.ToLower()).FirstOrDefaultAsync();
+            return await this.entities.Where(e => e.RegNo.ToLower() == RegNo.ToLower()).FirstOrDefaultAsync();
 
         }
 
         public async Task<PageResult<Com.BudgetMetal.DBEntities.Company>> GetSupplierByCompanyId(int companyId, int page, int totalRecords, string keyword)
         {
-            
+
             var filterCompany = await this.DbContext.CompanySupplier.Where(e => e.IsActive == true && e.Company_Id == companyId).Select(e => e.Supplier_Id).Distinct().ToListAsync();
             string _keyword = (!string.IsNullOrEmpty(keyword)) ? keyword : "";
             var records = await this.entities.Where(e => e.IsActive == true && filterCompany.Contains(e.Id) && e.Name.ToLower().Contains(_keyword.ToLower())).ToListAsync();
