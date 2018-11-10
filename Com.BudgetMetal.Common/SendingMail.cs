@@ -31,7 +31,7 @@ namespace Com.BudgetMetal.Common
                 var smtp = new SmtpClient
                 {
                     Host = "smtp.gmail.com",
-                    Port = 587,
+                    Port = 25,
                     EnableSsl = true,
                     DeliveryMethod = SmtpDeliveryMethod.Network,
                     UseDefaultCredentials = false,

@@ -7,13 +7,15 @@ namespace Com.BudgetMetal.Common
 {
     public static class Md5
     {
+        private static string key = "nnhhyy66";
+
         public static string Encrypt(string text)
         {
             using (var md5 = new MD5CryptoServiceProvider())
             {
                 using (var tdes = new TripleDESCryptoServiceProvider())
                 {
-                    tdes.Key = md5.ComputeHash(UTF8Encoding.UTF8.GetBytes("nnhhyy66"));
+                    tdes.Key = md5.ComputeHash(UTF8Encoding.UTF8.GetBytes(key));
                     tdes.Mode = CipherMode.ECB;
                     tdes.Padding = PaddingMode.PKCS7;
 
@@ -33,7 +35,7 @@ namespace Com.BudgetMetal.Common
             {
                 using (var tdes = new TripleDESCryptoServiceProvider())
                 {
-                    tdes.Key = md5.ComputeHash(UTF8Encoding.UTF8.GetBytes("nnhhyy66"));
+                    tdes.Key = md5.ComputeHash(UTF8Encoding.UTF8.GetBytes(key));
                     tdes.Mode = CipherMode.ECB;
                     tdes.Padding = PaddingMode.PKCS7;
 
