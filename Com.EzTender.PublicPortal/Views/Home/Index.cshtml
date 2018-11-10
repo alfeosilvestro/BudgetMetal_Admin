@@ -10,7 +10,7 @@
 <div class="row">
     <div class="col-sm-6">
         <div class="btn-group" role="group" aria-label="Justified button group">
-            <button id="btn_tender_open" class="btn btn-default waves-effect btnStatus" data-item-id="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Submitted)" type="button">Open</button>
+            <button id="btn_tender_open" class="btn btn-default waves-effect btnStatus" data-item-id="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Open)" type="button">Open</button>
             <button id="btn_tender_close" class="btn btn-primary waves-effect btnStatus" data-item-id="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Closed)" type="button">Closed</button>
         </div>
     </div>
@@ -32,7 +32,7 @@
                         </div>
                     </div>
                     <div class="col-sm-1">
-                        <input type="hidden" name="statusId" id="statusId" value="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Submitted)" />
+                        <input type="hidden" name="statusId" id="statusId" value="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Open)" />
                         @*<input type="hidden" name="Company_Id" id="Company_Id" value="@(ViewBag.Company_Id)" />*@
                         <button type="button" class="btn bg-indigo pull-right" id="btnSearch"> Search </button>
                     </div>

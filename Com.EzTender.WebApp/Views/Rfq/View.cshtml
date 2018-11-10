@@ -660,8 +660,13 @@
                                 <a class="btn btn-warning" href='@Url.Action("Edit","Rfq",new { id= Model.Id })'>Edit RFQ</a>
                                 <button type="button" id="btnDelete" class="btn btn-danger">Delete</button>
                             }
-                            else if (Model.Document.DocumentStatus_Id == Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Submitted)
+                            else if (Model.Document.DocumentStatus_Id == Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_RequiredApproval || Model.Document.DocumentStatus_Id == Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Open)
                             {
+                                if (ViewBag.isCompanyAdmin || ViewBag.isRfqApprover)
+                                {
+                                    <button type="button" id="btnApprove" class="btn btn-primary">Approve</button>
+                                }
+
                                 <button type="button" id="btnWithdrawn" class="btn btn-danger">Withdrawn</button>
                             }
                         }
@@ -684,7 +689,7 @@
             </div>
             <div class="body">
                 @{
-                    if (Model.Document.DocumentStatus_Id == Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Submitted && Code_C_Buyer != currentCompanyType)
+                    if (Model.Document.DocumentStatus_Id == Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Open && Code_C_Buyer != currentCompanyType)
                     {
                         <div class="row clearfix">
                             <div class="col-sm-11">
@@ -800,6 +805,30 @@
 
     $("#btnDelete").click(function () {
         var ajaxurl = '@Url.Action("DeleteRfq", "Rfq")';
+        $('.page-loader-wrapper').fadeIn();
+            $.ajax({
+                url: ajaxurl,
+                data: {documentId: @(Model.Document.Id)},
+                dataType: 'json',
+                success: function (response) {
+                    //console.log(response);
+                    var obj = response;
+                    if (obj.IsSuccess) {
+                        var redirecturl = '@Url.Action("Index", "Rfq")';
+                        window.location.href = redirecturl;
+                    } else {
+                        alert(obj.MessageToUser);
+                    }
+                    $('.page-loader-wrapper').fadeOut();
+                },
+                error: function (response) {
+                    alert(response)
+                }
+            });
+    });
+
+    $("#btnApprove").click(function () {
+        var ajaxurl = '@Url.Action("ApproveRfq", "Rfq")';
         $('.page-loader-wrapper').fadeIn();
             $.ajax({
                 url: ajaxurl,

@@ -209,6 +209,18 @@ namespace Com.BudgetMetal.DataRepository.RFQ
             return record;
         }
 
+        public async Task<Com.BudgetMetal.DBEntities.Rfq> GetRfqByQuotation_DocumentId(int documentId)
+        {
+            var quotation = this.DbContext.Quotation.Where(e => e.Document_Id == documentId).Single();
+            var record = await this.entities
+                            .Include(e => e.Document)
+                            .SingleOrDefaultAsync(e =>
+                              (e.IsActive == true)
+                              && (e.Id == quotation.Rfq_Id)
+                            );
+            return record;
+        }
+
         public async Task<PageResult<Com.BudgetMetal.DBEntities.Rfq>> GetPublicRfqByCompany(int page, int companyId, int totalRecords, int statusId, string keyword)
         {
             var records = await this.entities

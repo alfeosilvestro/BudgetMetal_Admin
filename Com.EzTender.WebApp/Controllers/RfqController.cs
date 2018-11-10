@@ -100,12 +100,25 @@ namespace Com.GenericPlatform.WebApp.Controllers
                 {
                     isCompanyAdmin = true;
                 }
+                ViewBag.isCompanyAdmin = isCompanyAdmin;
 
                 var checkPermissionResult = await rfqService.CheckPermissionForRFQ(Convert.ToInt32(Company_Id), Convert.ToInt32(currentCompanyType), Convert.ToInt32(User_Id), id, isCompanyAdmin);
 
                 if (checkPermissionResult.IsSuccess)
                 {
                     var result = await rfqService.GetSingleRfqById(id);
+
+                    bool isRfqApprover = false;
+                    int tmpUserId = Convert.ToInt32(User_Id);
+                    if(result.Document.DocumentUserDisplay != null)
+                    {
+                        var tmpDocumentUser = result.Document.DocumentUserDisplay.Where(e => e.User_Id == tmpUserId).First();
+                        if(tmpDocumentUser.Roles.Contains("RFQ Approver"))
+                        {
+                            isRfqApprover = true;
+                        }
+                    }
+                    ViewBag.isRfqApprover = isRfqApprover;
                     return View(result);
                 }
                 else
@@ -161,7 +174,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(VmRfqItem Rfq)
+        public async Task<ActionResult> Edit(VmRfqItem Rfq)
         {
             try
             {
@@ -174,7 +187,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
                 }
                 else
                 {
-                    Rfq.Document.DocumentStatus_Id = Constants_CodeTable.Code_RFQ_Submitted;
+                    Rfq.Document.DocumentStatus_Id = Constants_CodeTable.Code_RFQ_RequiredApproval;
                     documentAction = "Submitted";
                 }
                 Rfq.SelectedTags = Request.Form["SelectedTags"].ToString();
@@ -253,7 +266,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
 
                 //return RedirectToAction("Index");
 
-                var result = rfqService.UpdateRFQ(Rfq);
+                var result =await rfqService.UpdateRFQ(Rfq);
                 if (result.IsSuccess)
                 {
                     return RedirectToAction("Index");
@@ -289,7 +302,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
 
         // POST: Rfq/Create
         [HttpPost]
-        public ActionResult Create(VmRfqItem Rfq)
+        public async Task<ActionResult> Create(VmRfqItem Rfq)
         {
             try
             {
@@ -302,7 +315,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
                 }
                 else
                 {
-                    Rfq.Document.DocumentStatus_Id = Constants_CodeTable.Code_RFQ_Submitted;
+                    Rfq.Document.DocumentStatus_Id = Constants_CodeTable.Code_RFQ_RequiredApproval;
                     documentAction = "Submitted";
                 }
                 Rfq.SelectedTags = Request.Form["SelectedTags"].ToString();
@@ -374,7 +387,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
                 listDocumentActivity.Add(DocumentActivity);
                 Rfq.Document.DocumentActivityList = listDocumentActivity;
 
-                var result = rfqService.SaveRFQ(Rfq);
+                var result = await rfqService.SaveRFQ(Rfq);
                 if (result.IsSuccess)
                 {
                     return RedirectToAction("Index");
@@ -483,6 +496,18 @@ namespace Com.GenericPlatform.WebApp.Controllers
         {
 
             var result = await rfqService.WithdrawnRfq(documentId, Convert.ToInt32(HttpContext.Session.GetString("User_Id")), HttpContext.Session.GetString("UserName"));
+
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> ApproveRfq(int documentId)
+        {
+
+            var result = await rfqService.ApproveRfq(documentId, Convert.ToInt32(HttpContext.Session.GetString("User_Id")), HttpContext.Session.GetString("UserName"));
 
             return new JsonResult(result, new JsonSerializerSettings()
             {

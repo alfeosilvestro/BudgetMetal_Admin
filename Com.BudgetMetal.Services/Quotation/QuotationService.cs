@@ -306,17 +306,38 @@ namespace Com.BudgetMetal.Services.Quotation
                 //end adding timeline
 
                 //get rfq owner admin email
-                var resultSuppllierAdmin = repoUser.GetBuyerAdmin(dbDocument.Company_Id);
+                var resultBuyerAdmin = repoUser.GetBuyerAdmin(buyerId);
                 var sendMail = new SendingMail();
-                if (resultSuppllierAdmin != null)
+                if (resultBuyerAdmin != null)
                 {
                     
                     string emailBody = "Email Template need to provide.";
-                    foreach (var item in resultSuppllierAdmin)
+                    foreach (var item in resultBuyerAdmin)
                     {
                         sendMail.SendMail(item, "", emailSubject, emailBody);
                     }
                 }
+                //update status of rfq
+                var rfqItem = await repoRfq.GetRfqByQuotation_DocumentId(documentId);
+                var dbRfqDocument = await repoDocument.Get(rfqItem.Document_Id);
+                if (isAccept)
+                {
+                    dbRfqDocument.DocumentStatus_Id = Constants_CodeTable.Code_Quotation_Accepted;
+                    documentAction = "Awarded";
+                }
+                dbRfqDocument.UpdatedBy = userName;
+                repoDocument.Update(dbRfqDocument);
+                var dbRfqDocumentActivity = new Com.BudgetMetal.DBEntities.DocumentActivity()
+                {
+                    Action = documentAction,
+                    IsRfq = false,
+                    User_Id = userId,
+                    Document_Id = rfqItem.Document_Id,
+                    CreatedBy = userName,
+                    UpdatedBy = userName
+                };
+                repoDocumentActivity.Add(dbDocumentActivity);
+                repoDocumentActivity.Commit();
 
 
                 result.IsSuccess = true;

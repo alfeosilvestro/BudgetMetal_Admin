@@ -26,7 +26,7 @@ namespace Com.BudgetMetal.Common
 
                 var fromAddress = new MailAddress("ezytender@gmail.com", "EzyTender");
                 var toAddress = new MailAddress(toMail, toMail);
-                const string fromPassword = "Qwer@123";
+                const string fromPassword = "nnhhyy66";
 
                 var smtp = new SmtpClient
                 {

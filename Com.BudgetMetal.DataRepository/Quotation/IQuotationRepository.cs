@@ -25,5 +25,6 @@ namespace Com.BudgetMetal.DataRepository.Quotation
         int GetRfqOwnerId(int documentId);
 
         Task<int> GetQuotationByDocumentId(int documentId);
+
     }
 }

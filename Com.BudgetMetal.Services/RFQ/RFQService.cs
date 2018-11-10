@@ -306,7 +306,7 @@ namespace Com.BudgetMetal.Services.RFQ
         }
 
 
-        public VmGenericServiceResult SaveRFQ(VmRfqItem rfq)
+        public async Task<VmGenericServiceResult> SaveRFQ(VmRfqItem rfq)
         {
             var result = new VmGenericServiceResult();
             try
@@ -468,14 +468,7 @@ namespace Com.BudgetMetal.Services.RFQ
                         repoInvitedSupplier.Commit();
                     }
                 }
-                //            Copy<VmInvitedSupplierItem, Com.BudgetMetal.DBEntities.InvitedSupplier>(item, dbInvitedSupplier);
-                //            dbInvitedSupplier.Rfq_Id = dbRFQ.Id;
-                //            dbInvitedSupplier.CreatedBy = dbInvitedSupplier.UpdatedBy = dbRFQ.CreatedBy;
-                //            repoInvitedSupplier.Add(dbInvitedSupplier);
-                //        }
-                //        repoInvitedSupplier.Commit();
-                //    }
-                //}
+                
 
                 if (rfq.Document.DocumentActivityList != null)
                 {
@@ -508,41 +501,74 @@ namespace Com.BudgetMetal.Services.RFQ
                 };
                 repoTimeLine.Add(timeline);
                 repoTimeLine.Commit();
-                //end adding timeline
-                if (rfq.Document.DocumentStatus_Id == Constants_CodeTable.Code_RFQ_Submitted)
+                //send email to admin or rfq approver
+                if(rfq.Document.DocumentStatus_Id == Constants_CodeTable.Code_RFQ_RequiredApproval)
                 {
-                    //get invited supplier email
 
-                    var resultSupplierAdmin = repoUser.GetSupplierAdmin(rfq.InvitedSupplier.Select(e => e.Company_Id).Distinct().ToList());
-                    var sendMail = new SendingMail();
-                    if (resultSupplierAdmin != null)
+                    if(rfq.Document.DocumentUser.Where(e=>e.Role_Id == Constants.RFQApproverRoleId).ToList().Count >0)
                     {
-                        string emailSubject = "You are intvited for RFQ " + documentNo + ".";
-                        string emailBody = "Email Template need to provide.";
-                        foreach (var item in resultSupplierAdmin)
+                        var sendMail = new SendingMail();
+                        string emailSubject = documentNo + " is pending for your action.";
+                        string emailBody = "Please approve..... Email Template need to provide. ";
+                       
+                        foreach (var item in rfq.Document.DocumentUser.Where(e=>e.Role_Id == Constants.RFQApproverRoleId).ToList())
                         {
-                            sendMail.SendMail(item, "", emailSubject, emailBody);
+                            var dbuser = await repoUser.Get(item.User_Id);
+                            sendMail.SendMail(dbuser.EmailAddress, "", emailSubject, emailBody);
                         }
                     }
-                    //start adding timeline
-                    foreach (var item in rfq.InvitedSupplier)
+                    else
                     {
-                        var timelineForInvitedSupplier = new Com.BudgetMetal.DBEntities.TimeLine()
+                        // send email admin to approve rfq
+                        var resultBuyerAdmin = repoUser.GetBuyerAdmin(rfq.Document.Company_Id);
+                        var sendMail = new SendingMail();
+                        if (resultBuyerAdmin != null)
                         {
-                            Company_Id = item.Company_Id,
-                            User_Id = rfq.Document.DocumentUser.FirstOrDefault().User_Id,
-                            Message = "RFQ is successfully created.",
-                            MessageType = Constants_CodeTable.Code_TM_Rfq,
-                            Document_Id = dbDocument.Id,
-                            IsRead = false,
-                            CreatedBy = dbRFQ.CreatedBy,
-                            UpdatedBy = dbRFQ.CreatedBy
-                        };
-                        repoTimeLine.Add(timelineForInvitedSupplier);
-                        repoTimeLine.Commit();
+                            string emailSubject = documentNo +" is pending for your action.";
+                            string emailBody = "Please approve..... Email Template need to provide. ";
+                            foreach (var item in resultBuyerAdmin)
+                            {
+                                sendMail.SendMail(item, "", emailSubject, emailBody);
+                            }
+                        }
                     }
-                    //end adding timeline
                 }
+
+                //end adding timeline
+                //if (rfq.Document.DocumentStatus_Id == Constants_CodeTable.Code_RFQ_Open)
+                //{
+                //    //get invited supplier email
+
+                //    var resultSupplierAdmin = repoUser.GetSupplierAdmin(rfq.InvitedSupplier.Select(e => e.Company_Id).Distinct().ToList());
+                //    var sendMail = new SendingMail();
+                //    if (resultSupplierAdmin != null)
+                //    {
+                //        string emailSubject = "You are intvited for RFQ " + documentNo + ".";
+                //        string emailBody = "Email Template need to provide.";
+                //        foreach (var item in resultSupplierAdmin)
+                //        {
+                //            sendMail.SendMail(item, "", emailSubject, emailBody);
+                //        }
+                //    }
+                //    //start adding timeline
+                //    foreach (var item in rfq.InvitedSupplier)
+                //    {
+                //        var timelineForInvitedSupplier = new Com.BudgetMetal.DBEntities.TimeLine()
+                //        {
+                //            Company_Id = item.Company_Id,
+                //            User_Id = rfq.Document.DocumentUser.FirstOrDefault().User_Id,
+                //            Message = "RFQ is successfully created.",
+                //            MessageType = Constants_CodeTable.Code_TM_Rfq,
+                //            Document_Id = dbDocument.Id,
+                //            IsRead = false,
+                //            CreatedBy = dbRFQ.CreatedBy,
+                //            UpdatedBy = dbRFQ.CreatedBy
+                //        };
+                //        repoTimeLine.Add(timelineForInvitedSupplier);
+                //        repoTimeLine.Commit();
+                //    }
+                //    //end adding timeline
+                //}
 
                 result.IsSuccess = true;
                 result.MessageToUser = "You have succesfully created RFQ as Document No." + documentNo;
@@ -558,7 +584,7 @@ namespace Com.BudgetMetal.Services.RFQ
             return result;
         }
 
-        public VmGenericServiceResult UpdateRFQ(VmRfqItem rfq)
+        public async Task<VmGenericServiceResult> UpdateRFQ(VmRfqItem rfq)
         {
             var result = new VmGenericServiceResult();
             try
@@ -797,40 +823,72 @@ namespace Com.BudgetMetal.Services.RFQ
                 repoTimeLine.Add(timeline);
                 repoTimeLine.Commit();
                 //end adding timeline
-                if (rfq.Document.DocumentStatus_Id == Constants_CodeTable.Code_RFQ_Submitted)
+                //send email to admin or rfq approver
+                if (rfq.Document.DocumentStatus_Id == Constants_CodeTable.Code_RFQ_RequiredApproval)
                 {
-                    //get invited supplier email
 
-                    var resultSupplierAdmin = repoUser.GetSupplierAdmin(rfq.InvitedSupplier.Select(e => e.Company_Id).Distinct().ToList());
-                    var sendMail = new SendingMail();
-                    if (resultSupplierAdmin != null)
+                    if (rfq.Document.DocumentUser.Where(e => e.Role_Id == Constants.RFQApproverRoleId).ToList().Count > 0)
                     {
-                        string emailSubject = "You are intvited for Document " + rfq.Document.DocumentNo + ".";
-                        string emailBody = "Email Template need to provide.";
-                        foreach (var item in resultSupplierAdmin)
+                        var sendMail = new SendingMail();
+                        string emailSubject = rfq.Document.DocumentNo + " is pending for your action.";
+                        string emailBody = "Please approve..... Email Template need to provide. ";
+
+                        foreach (var item in rfq.Document.DocumentUser.Where(e => e.Role_Id == Constants.RFQApproverRoleId).ToList())
                         {
-                            sendMail.SendMail(item, "", emailSubject, emailBody);
+                            var dbuser = await repoUser.Get(item.User_Id);
+                            sendMail.SendMail(dbuser.EmailAddress, "", emailSubject, emailBody);
                         }
                     }
-                    //start adding timeline
-                    foreach (var item in rfq.InvitedSupplier)
+                    else
                     {
-                        var timelineForInvitedSupplier = new Com.BudgetMetal.DBEntities.TimeLine()
+                        // send email admin to approve rfq
+                        var resultBuyerAdmin = repoUser.GetBuyerAdmin(rfq.Document.Company_Id);
+                        var sendMail = new SendingMail();
+                        if (resultBuyerAdmin != null)
                         {
-                            Company_Id = item.Company_Id,
-                            User_Id = rfq.Document.DocumentUser.FirstOrDefault().User_Id,
-                            Message = "RFQ is successfully updated.",
-                            MessageType = Constants_CodeTable.Code_TM_Rfq,
-                            Document_Id = dbDocument.Id,
-                            IsRead = false,
-                            CreatedBy = dbRFQ.CreatedBy,
-                            UpdatedBy = dbRFQ.CreatedBy
-                        };
-                        repoTimeLine.Add(timelineForInvitedSupplier);
-                        repoTimeLine.Commit();
+                            string emailSubject = rfq.Document.DocumentNo + " is pending for your action.";
+                            string emailBody = "Please approve..... Email Template need to provide. ";
+                            foreach (var item in resultBuyerAdmin)
+                            {
+                                sendMail.SendMail(item, "", emailSubject, emailBody);
+                            }
+                        }
                     }
-                    //end adding timeline
                 }
+                //if (rfq.Document.DocumentStatus_Id == Constants_CodeTable.Code_RFQ_Open)
+                //{
+                //    //get invited supplier email
+
+                //    var resultSupplierAdmin = repoUser.GetSupplierAdmin(rfq.InvitedSupplier.Select(e => e.Company_Id).Distinct().ToList());
+                //    var sendMail = new SendingMail();
+                //    if (resultSupplierAdmin != null)
+                //    {
+                //        string emailSubject = "You are intvited for Document " + rfq.Document.DocumentNo + ".";
+                //        string emailBody = "Email Template need to provide.";
+                //        foreach (var item in resultSupplierAdmin)
+                //        {
+                //            sendMail.SendMail(item, "", emailSubject, emailBody);
+                //        }
+                //    }
+                //    //start adding timeline
+                //    foreach (var item in rfq.InvitedSupplier)
+                //    {
+                //        var timelineForInvitedSupplier = new Com.BudgetMetal.DBEntities.TimeLine()
+                //        {
+                //            Company_Id = item.Company_Id,
+                //            User_Id = rfq.Document.DocumentUser.FirstOrDefault().User_Id,
+                //            Message = "RFQ is successfully updated.",
+                //            MessageType = Constants_CodeTable.Code_TM_Rfq,
+                //            Document_Id = dbDocument.Id,
+                //            IsRead = false,
+                //            CreatedBy = dbRFQ.CreatedBy,
+                //            UpdatedBy = dbRFQ.CreatedBy
+                //        };
+                //        repoTimeLine.Add(timelineForInvitedSupplier);
+                //        repoTimeLine.Commit();
+                //    }
+                //    //end adding timeline
+                //}
 
                 result.IsSuccess = true;
                 result.MessageToUser = "You have succesfully updated RFQ as Document No." + rfq.Document.DocumentNo;
@@ -913,6 +971,91 @@ namespace Com.BudgetMetal.Services.RFQ
                             Company_Id = item.Company_Id,
                             User_Id = userId,
                             Message = "Document " + dbDocument.DocumentNo + " is withdrawn.",
+                            MessageType = Constants_CodeTable.Code_TM_Rfq,
+                            Document_Id = documentId,
+                            IsRead = false,
+                            CreatedBy = userName,
+                            UpdatedBy = userName
+                        };
+                        repoTimeLine.Add(timelineForInvitedSupplier);
+                        repoTimeLine.Commit();
+                    }
+                }
+
+                result.IsSuccess = true;
+                result.MessageToUser = "Your Rfq is successfully updated.";
+            }
+            catch
+            {
+                result.IsSuccess = false;
+                result.MessageToUser = "Your Rfq is failed to update.";
+            }
+
+            return result;
+
+        }
+
+        public async Task<VmGenericServiceResult> ApproveRfq(int documentId, int userId, string userName)
+        {
+            var result = new VmGenericServiceResult();
+            try
+            {
+                //Change Status
+                var dbDocument = await repoDocument.Get(documentId);
+                dbDocument.DocumentStatus_Id = Constants_CodeTable.Code_RFQ_Open;
+                dbDocument.UpdatedBy = userName;
+                repoDocument.Update(dbDocument);
+
+                //Add Document Activity
+                var dbDocumentActivity = new Com.BudgetMetal.DBEntities.DocumentActivity()
+                {
+                    Action = "Approved",
+                    IsRfq = true,
+                    User_Id = userId,
+                    Document_Id = documentId,
+                    CreatedBy = userName,
+                    UpdatedBy = userName
+                };
+                repoDocumentActivity.Add(dbDocumentActivity);
+                repoDocumentActivity.Commit();
+
+                //Add Timeline
+                var timeline = new Com.BudgetMetal.DBEntities.TimeLine()
+                {
+                    Company_Id = dbDocument.Company_Id,
+                    User_Id = userId,
+                    Message = "Document " + dbDocument.DocumentNo + " is successfully approved.",
+                    MessageType = Constants_CodeTable.Code_TM_Rfq,
+                    IsRead = false,
+                    Document_Id = dbDocument.Id,
+                    CreatedBy = userName,
+                    UpdatedBy = userName
+                };
+                repoTimeLine.Add(timeline);
+                repoTimeLine.Commit();
+
+                var dbInvitedSupplierList = await repoInvitedSupplier.GetByDocumentId(documentId);
+                if (dbInvitedSupplierList != null)
+                {
+                    var resultSupplierAdmin = repoUser.GetSupplierAdmin(dbInvitedSupplierList.Select(e => e.Company_Id).Distinct().ToList());
+                    var sendMail = new SendingMail();
+                    if (resultSupplierAdmin != null)
+                    {
+                        string emailSubject = "You are intvited for RFQ " + dbDocument.DocumentNo + ".";
+                        string emailBody = "Email Template need to provide.";
+                        foreach (var item in resultSupplierAdmin)
+                        {
+                            sendMail.SendMail(item, "", emailSubject, emailBody);
+                        }
+                    }
+
+                    foreach (var item in dbInvitedSupplierList)
+                    {
+                        var timelineForInvitedSupplier = new Com.BudgetMetal.DBEntities.TimeLine()
+                        {
+                            Company_Id = item.Company_Id,
+                            User_Id = userId,
+                            Message = "You are invited for RFQ " + dbDocument.DocumentNo + ".",
                             MessageType = Constants_CodeTable.Code_TM_Rfq,
                             Document_Id = documentId,
                             IsRead = false,

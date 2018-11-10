@@ -29,10 +29,12 @@ namespace Com.BudgetMetal.Common
 
 
         public static readonly int Code_RFQ_Draft = 100031;
-        public static readonly int Code_RFQ_Submitted = 100032;
+        public static readonly int Code_RFQ_RequiredApproval = 100032;
         public static readonly int Code_RFQ_Closed = 100033;
         public static readonly int Code_RFQ_Withdrawn= 100034;
         public static readonly int Code_RFQ_Delete = 100035;
+        public static readonly int Code_RFQ_Open = 100036;
+        public static readonly int Code_RFQ_Award = 100037;
 
         public static readonly int Code_Quotation_Draft = 100041;
         public static readonly int Code_Quotation_Submitted = 100042;
