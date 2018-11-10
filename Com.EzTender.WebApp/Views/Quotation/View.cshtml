@@ -347,7 +347,7 @@
                     @{
                         if (Code_C_Buyer == currentCompanyType)
                         {
-                            if (Model.Document.DocumentStatus_Id == Com.BudgetMetal.Common.Constants_CodeTable.Code_Quotation_Submitted)
+                            if (Model.Document.DocumentStatus_Id == Com.BudgetMetal.Common.Constants_CodeTable.Code_Quotation_Submitted && ViewBag.CompanyAdmin)
                             {
                                 <a class="btn btn-success" id="btnAccept" href='#'>Accept</a>
                                 <a class="btn btn-danger" id="btnReject" href='#'>Reject</a>
@@ -386,7 +386,7 @@
             </div>
             <div class="body">
                 @{
-                    if (Model.Document.DocumentStatus_Id == Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Submitted && Code_C_Buyer == currentCompanyType)
+                    if (Model.Document.DocumentStatus_Id == Com.BudgetMetal.Common.Constants_CodeTable.Code_Quotation_Submitted && Code_C_Buyer == currentCompanyType)
                     {
                         <div class="row clearfix">
                             <div class="col-sm-11">
