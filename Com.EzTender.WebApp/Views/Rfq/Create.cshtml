@@ -148,14 +148,7 @@
                                     </div>
                                 </div>
 
-                                @*<div class="col-sm-3">
-                                    <input type="checkbox" asp-for="SupplierProvideMaterial" class="chk-col-red" />
-                                    <label for="SupplierProvideMaterial">Supplier to Provide Materials</label>
-                                </div>
-                                <div class="col-sm-3">
-                                    <input type="checkbox" asp-for="SupplierProvideTransport" class="chk-col-red" />
-                                    <label for="SupplierProvideTransport">Supplier to Provide Transport</label>
-                                </div>*@
+                               
                                 <div class="col-sm-3">
                                     <input type="checkbox" asp-for="IsPublic" class="chk-col-red" />
                                     <label for="IsPublic">Public</label>
@@ -177,7 +170,11 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                <div class="col-sm-6">
+                                    <span class="text-warning">Click <a href="#">Here</a> to Download Template</span><br /><br />
+                                    <label>Upload Template</label> 
+                                    <input type="file" name="fUpload" id="fUpload" value="" class="form-control" /> <br /><button type="button" class="btn btn-success" id="btnUploadFile">Upload Template</button>
+                                </div>
                             </div>
 
                         </div>
@@ -739,9 +736,46 @@ function loadIndustry() {
                 }
             });
         }
+    }
 
-
-}
+    $('#btnUploadFile').on('click', function () {
+        var ajaxurl = '@Url.Action("UploadTemplate", "Rfq")';
+        var fileExtension = ['xls', 'xlsx'];
+        var filename = $('#fUpload').val();
+        if (filename.length == 0) {
+            alert("Please select a file.");
+            return false;
+        }
+        else {
+            var extension = filename.replace(/^.*\./, '');
+            if ($.inArray(extension, fileExtension) == -1) {
+                alert("Please select only excel files.");
+                return false;
+            }
+        }
+        var fdata = new FormData();
+        var fileUpload = $("#fUpload").get(0);
+        var files = fileUpload.files;
+        fdata.append(files[0].name, files[0]);
+        $.ajax({
+            type: "POST",
+            url: ajaxurl,
+            data: fdata,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                //if (response.length == 0)
+                //    alert('Some error occured while uploading');
+                //else {
+                //    $('#dvData').html(response);
+                //}
+                console.log(response);
+            },
+            error: function (e) {
+                $('#dvData').html(e.responseText);
+            }
+        });
+    })
 </script>
 
 <!-- Create RFQ Js -->
