@@ -208,26 +208,33 @@ namespace Com.GenericPlatform.WebApp.Controllers
                 Rfq.UpdatedBy = HttpContext.Session.GetString("EmailAddress");
                 //var listAttachment = new List<VmAttachmentItem>();
                 int i = 0;
-                foreach (var itemFile in Request.Form.Files)
+
+                if (Request.Form.Files.Count() > 0)
                 {
-                    if (itemFile.Length > 0)
+                    Rfq.Document.Attachment = new List<VmAttachmentItem>();
+
+                    foreach (var itemFile in Request.Form.Files)
                     {
-                        var tmpFileNameArr = itemFile.FileName.ToString().Split("\\");
-                        string tmpFileName = tmpFileNameArr.Last();
-                        var att = new VmAttachmentItem
+                        if (itemFile.Length > 0)
                         {
-                            FileName = tmpFileName,
-                            FileSize = itemFile.Length,
-                            FileBinary = Convert.ToBase64String(ConvertFiletoBytes(itemFile)),
-                            Description = Request.Form["fileDescriptionRFQ[]"].ToArray()[i].ToString(),
-                            CreatedBy = Rfq.CreatedBy,
-                            UpdatedBy = Rfq.UpdatedBy
-                        };
+                            var tmpFileNameArr = itemFile.FileName.ToString().Split("\\");
+                            string tmpFileName = tmpFileNameArr.Last();
+                            var att = new VmAttachmentItem
+                            {
+                                FileName = tmpFileName,
+                                FileSize = itemFile.Length,
+                                FileBinary = Convert.ToBase64String(ConvertFiletoBytes(itemFile)),
+                                Description = Request.Form["fileDescriptionRFQ[]"].ToArray()[i].ToString(),
+                                CreatedBy = Rfq.CreatedBy,
+                                UpdatedBy = Rfq.UpdatedBy
+                            };
 
-                        Rfq.Document.Attachment.Add(att);
+                            Rfq.Document.Attachment.Add(att);
 
+                        }
+                        i++;
                     }
-                    i++;
+
                 }
 
                 //Rfq.Document.Attachment = listAttachment;

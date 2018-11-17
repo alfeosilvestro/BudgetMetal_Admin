@@ -667,7 +667,14 @@
                                     <button type="button" id="btnApprove" class="btn btn-primary">Approve</button>
                                 }
 
-                                <button type="button" id="btnWithdrawn" class="btn btn-danger">Reject</button>
+                                if (Model.Document.DocumentStatus_Id == Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Open && (ViewBag.isCompanyAdmin || ViewBag.isRfqApprover))
+                                {
+                                    <button type="button" id="btnWithdrawn" class="btn btn-danger">Withdraw RFQ and stop accepting quotes</button>
+                                }
+                                else
+                                {
+                                    <button type="button" id="btnWithdrawn" class="btn btn-danger">Reject</button>
+                                }
                             }
                         }
                     }
