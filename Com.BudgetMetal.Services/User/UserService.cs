@@ -562,7 +562,7 @@ namespace Com.BudgetMetal.Services.Users
                 result.MessageToUser = "This email is not registered.";
             }
             else
-            {
+            {   
                 dbresult.Password = Md5.Encrypt(newPassword);
                 repo.Update(dbresult);
                 repo.Commit();

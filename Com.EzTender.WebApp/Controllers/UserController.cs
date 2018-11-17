@@ -40,7 +40,6 @@ namespace Com.GenericPlatform.WebApp.Controllers
             TempData["RegisterUrl"] = _appSettings.App_Identity.PublicSiteUrl + "Registration";
             TempData["PublicSiteUrl"] = _appSettings.App_Identity.PublicSiteUrl ;
 
-
             var user_Id = HttpContext.Session.GetString("User_Id");
             if (user_Id != null)
             {
@@ -49,15 +48,16 @@ namespace Com.GenericPlatform.WebApp.Controllers
             return View();
         }
 
-
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult SignIn(VM_Sys_User_Sign_In user)
         {
             try
             {
-               
+                TempData["ForgotPasswordUrl"] = _appSettings.App_Identity.PublicSiteUrl + "Registration/ForgotPassword";
+                TempData["RegisterUrl"] = _appSettings.App_Identity.PublicSiteUrl + "Registration";
+                TempData["PublicSiteUrl"] = _appSettings.App_Identity.PublicSiteUrl;
+
                 var result = userService.ValidateUser(user);
 
                 var resultObj = result.Result;
@@ -109,7 +109,10 @@ namespace Com.GenericPlatform.WebApp.Controllers
             return View();
         }
 
-
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
 
         // GET: User
         public ActionResult Index()

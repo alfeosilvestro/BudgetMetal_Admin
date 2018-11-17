@@ -125,10 +125,13 @@ namespace Com.GenericPlatform.WebApp.Controllers
                     int tmpUserId = Convert.ToInt32(User_Id);
                     if (result.Document.DocumentUserDisplay != null)
                     {
-                        var tmpDocumentUser = result.Document.DocumentUserDisplay.Where(e => e.User_Id == tmpUserId).First();
-                        if (tmpDocumentUser.Roles.Contains("RFQ Approver"))
+                        var tmpDocumentUser = result.Document.DocumentUserDisplay.Where(e => e.User_Id == tmpUserId).FirstOrDefault();
+                        if(tmpDocumentUser != null)
                         {
-                            isRfqApprover = true;
+                            if (tmpDocumentUser.Roles.Contains("RFQ Approver"))
+                            {
+                                isRfqApprover = true;
+                            }
                         }
                     }
                     ViewBag.isRfqApprover = isRfqApprover;
