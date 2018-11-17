@@ -36,8 +36,8 @@ namespace Com.GenericPlatform.WebApp.Controllers
         
         public ActionResult SignIn()
         {
-            TempData["ForgotPasswordUrl"] = _appSettings.App_Identity.PublicSiteUrl + "Home/ForgotPassword";
-            TempData["RegisterUrl"] = _appSettings.App_Identity.PublicSiteUrl + "Home/Register";
+            TempData["ForgotPasswordUrl"] = _appSettings.App_Identity.PublicSiteUrl + "Registration/ForgotPassword";
+            TempData["RegisterUrl"] = _appSettings.App_Identity.PublicSiteUrl + "Registration";
             TempData["PublicSiteUrl"] = _appSettings.App_Identity.PublicSiteUrl ;
 
 
