@@ -49,7 +49,13 @@
                                 foreach (var item in Model.Result.Records)
                                 {
                                     <tr>
-                                        <td> <a type="button" class="btn btn-warning" href='@Url.Action("View","Rfq",new { id= item.Id })'>View</a></td>
+                                        <td>
+                                            <a type="button" class="btn btn-warning" href='@Url.Action("View","Rfq",new { id= item.Id })'>View</a>
+                                            @if (item.Document.DocumentStatus_Id == Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Draft)
+                                            {
+                                                <a type="button" class="btn btn-warning" href='@Url.Action("Edit","Rfq",new { id= item.Id })'>Edit</a>
+                                            }
+                                        </td>
                                         <td>@item.Document.DocumentNo</td>
                                         <td>@item.Document.Company.Name</td>
                                         <td>@item.Document.DocumentStatus.Name</td>
