@@ -188,7 +188,7 @@
                                         <th>&nbsp;</th>
                                     </tr>
                                 </thead>
-                                <tbody data-test="abc">
+                                <tbody id="requirementsTableBody" data-test="abc">
                                     <tr>
                                         <td>
                                             <input type="text" asp-for="Requirement[0].ServiceName" class="form-control" />
@@ -220,7 +220,7 @@
                                         <th>&nbsp;</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="slaTableBody">
                                     <tr>
                                         <td><input type="text" asp-for="Sla[0].Requirement" class="form-control" /></td>
                                         <td><input type="text" asp-for="Sla[0].Description" class="form-control" /></td>
@@ -246,7 +246,7 @@
                                         <th>&nbsp;</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="penaltyTableBody">
                                     <tr>
                                         <td><input type="text" asp-for="Penalty[0].BreachOfServiceDefinition" class="form-control" /></td>
                                         <td><input type="text" asp-for="Penalty[0].PenaltyAmount" class="form-control" /></td>
@@ -769,7 +769,64 @@ function loadIndustry() {
                 //else {
                 //    $('#dvData').html(response);
                 //}
+
+                    //"<td>" + "<input type='text' asp-for='Requirement[" + i + "].ServiceName' class='form-control'/><span asp-validation-for='Requirement[" + i + "].ServiceName' class='text-danger'></span></td>" +
+                    //"<td>" + "<input type='text' asp-for='Requirement[" + i + "].Description' class='form-control'/><span asp-validation-for='Requirement[" + i + "].Description' class='text-danger'></span></td>" +
+                    //"<td><button type='button' class='btn btn-danger waves-effect' onclick='RemoveRequirementRow(this)'>Remove</button></td>" +
+
                 console.log(response);
+
+                if (response.List_Requirement.length > 0) {
+                    
+                    $("#requirementsTableBody").empty();
+
+                    for (var i = 0; i < response.List_Requirement.length; i++) {
+                        $('#requirementsTableBody').append(
+                            "<tr> " +      
+                                "<td>" + "<input type='text' name='Requirement[" + i + "].ServiceName' class='form-control' value='" + response.List_Requirement[i].ServiceName + "'/></td>" +
+                                "<td>" + "<input type='text' name='Requirement[" + i + "].Description' class='form-control' value='" + response.List_Requirement[i].Description + "'/></td>" +
+                                "<td><button type='button' class='btn btn-danger waves-effect' onclick='RemoveRequirementRow(this)'>Remove</button></td>" +
+                             "<tr> "
+                        ); 
+                    }
+                    console.log(response.List_Requirement);
+                    
+                }
+
+                if (response.List_SLA.length > 0) {
+
+                    $("#slaTableBody").empty();
+
+                    for (var i = 0; i < response.List_SLA.length; i++) {
+                        $('#slaTableBody').append(
+                            "<tr> " +
+                            "<td>" + "<input type='text' asp-for='Sla[" + i + "].Requirement' class='form-control' value='" + response.List_SLA[i].Requirement + "'/> <span asp-validation-for='Sla[" + i + "].Requirement' class='text-danger'></span></td>" +
+                            "<td>" + "<input type='text' asp-for='Sla[" + i + "].Description' class='form-control' value='" + response.List_SLA[i].Description + "'/><span asp-validation-for='Sla[" + i + "].Description' class='text-danger'></span></td>" +
+                            "<td><button type='button' class='btn btn-danger waves-effect' onclick='RemoveSLARow(this)'>Remove</button></td>" +
+                            "<tr> "
+                        );
+                    }
+                    console.log(response.List_SLA);
+
+                }
+
+                if (response.List_Panalty.length > 0) {
+
+                    $("#penaltyTableBody").empty();
+
+                    for (var i = 0; i < response.List_Panalty.length; i++) {
+                        $('#penaltyTableBody').append(
+                            "<tr> " +
+                            "<td>" + "<input type='text' name='Penalty[" + i + "].BreachOfServiceDefinition' class='form-control' value='" + response.List_Panalty[i].BreachOfServiceDefinition + "'/></td>" +
+                            "<td>" + "<input type='text' name='Penalty[" + i + "].PenaltyAmount' class='form-control' value='" + response.List_Panalty[i].PenaltyAmount + "'/></td>" +
+                            "<td>" + "<input type='text' name='Penalty[" + i + "].Description' class='form-control' value='" + response.List_Panalty[i].Description + "'/></td>" +
+                            "<td><button type='button' class='btn btn-danger waves-effect' onclick='RemoveRequirementRow(this)'>Remove</button></td>" +
+                            "<tr> "
+                        );
+                    }
+                    console.log(response.List_Requirement);
+
+                }
             },
             error: function (e) {
                 $('#dvData').html(e.responseText);

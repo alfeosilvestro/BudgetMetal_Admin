@@ -713,30 +713,38 @@ namespace Com.GenericPlatform.WebApp.Controllers
         {
             var result = new List<VmRfqPriceScheduleItem>();
             IRow headerRow = sheet.GetRow(0); //Get Header Row
-            int cellCount = headerRow.LastCellNum;
 
-            for (int i = (sheet.FirstRowNum + 1); i <= sheet.LastRowNum; i++) //Read Excel File
+            try
+            {
+                int cellCount = headerRow.LastCellNum;
+
+                for (int i = (sheet.FirstRowNum + 1); i <= sheet.LastRowNum; i++) //Read Excel File
+                {
+
+                    IRow row = sheet.GetRow(i);
+                    if (row == null) continue;
+                    if (row.Cells.All(d => d.CellType == CellType.Blank)) continue;
+                    try
+                    {
+                        var resultItem = new VmRfqPriceScheduleItem();
+                        resultItem.ItemName = row.GetCell(0).ToString();
+                        resultItem.ItemDescription = row.GetCell(1).ToString();
+                        resultItem.InternalRefrenceCode = row.GetCell(2).ToString();
+                        resultItem.QuantityRequired = row.GetCell(3).ToString();
+
+                        result.Add(resultItem);
+                    }
+                    catch
+                    {
+                        //nothing
+                    }
+                }
+            }
+            catch
             {
 
-                IRow row = sheet.GetRow(i);
-                if (row == null) continue;
-                if (row.Cells.All(d => d.CellType == CellType.Blank)) continue;
-                try
-                {
-                    var resultItem = new VmRfqPriceScheduleItem();
-                    resultItem.ItemName = row.GetCell(0).ToString();
-                    resultItem.ItemDescription = row.GetCell(1).ToString();
-                    resultItem.InternalRefrenceCode = row.GetCell(2).ToString();
-                    resultItem.QuantityRequired = row.GetCell(3).ToString();
-
-                    result.Add(resultItem);
-                }
-                catch
-                {
-                    //nothing
-                }
-                
             }
+            
             return result;
         }
 
@@ -744,27 +752,34 @@ namespace Com.GenericPlatform.WebApp.Controllers
         {
             var result = new List<VmPenaltyItem>();
             IRow headerRow = sheet.GetRow(0); //Get Header Row
-            int cellCount = headerRow.LastCellNum;
 
-            for (int i = (sheet.FirstRowNum + 1); i <= sheet.LastRowNum; i++) //Read Excel File
+            try
             {
+                int cellCount = headerRow.LastCellNum;
 
-                IRow row = sheet.GetRow(i);
-                if (row == null) continue;
-                if (row.Cells.All(d => d.CellType == CellType.Blank)) continue;
-                try
+                for (int i = (sheet.FirstRowNum + 1); i <= sheet.LastRowNum; i++) //Read Excel File
                 {
-                    var resultItem = new VmPenaltyItem();
-                    resultItem.BreachOfServiceDefinition = row.GetCell(0).ToString();
-                    resultItem.Description = row.GetCell(1).ToString();
-                    resultItem.PenaltyAmount = row.GetCell(2).ToString();
 
-                    result.Add(resultItem);
+                    IRow row = sheet.GetRow(i);
+                    if (row == null) continue;
+                    if (row.Cells.All(d => d.CellType == CellType.Blank)) continue;
+                    try
+                    {
+                        var resultItem = new VmPenaltyItem();
+                        resultItem.BreachOfServiceDefinition = row.GetCell(0).ToString();
+                        resultItem.Description = row.GetCell(1).ToString();
+                        resultItem.PenaltyAmount = row.GetCell(2).ToString();
+
+                        result.Add(resultItem);
+                    }
+                    catch
+                    {
+                        //nothing
+                    }
                 }
-                catch
-                {
-                    //nothing
-                }
+            }
+            catch
+            {
 
             }
             return result;
@@ -774,28 +789,36 @@ namespace Com.GenericPlatform.WebApp.Controllers
         {
             var result = new List<VmSlaItem>();
             IRow headerRow = sheet.GetRow(0); //Get Header Row
-            int cellCount = headerRow.LastCellNum;
 
-            for (int i = (sheet.FirstRowNum + 1); i <= sheet.LastRowNum; i++) //Read Excel File
+            try
+            {
+                int cellCount = headerRow.LastCellNum;
+
+                for (int i = (sheet.FirstRowNum + 1); i <= sheet.LastRowNum; i++) //Read Excel File
+                {
+
+                    IRow row = sheet.GetRow(i);
+                    if (row == null) continue;
+                    if (row.Cells.All(d => d.CellType == CellType.Blank)) continue;
+                    try
+                    {
+                        var resultItem = new VmSlaItem();
+                        resultItem.Requirement = row.GetCell(0).ToString();
+                        resultItem.Description = row.GetCell(1).ToString();
+
+                        result.Add(resultItem);
+                    }
+                    catch
+                    {
+                        //nothing
+                    }
+                }
+            }
+            catch
             {
 
-                IRow row = sheet.GetRow(i);
-                if (row == null) continue;
-                if (row.Cells.All(d => d.CellType == CellType.Blank)) continue;
-                try
-                {
-                    var resultItem = new VmSlaItem();
-                    resultItem.Requirement = row.GetCell(0).ToString();
-                    resultItem.Description = row.GetCell(1).ToString();
-
-                    result.Add(resultItem);
-                }
-                catch
-                {
-                    //nothing
-                }
-
             }
+            
             return result;
         }
 
@@ -803,26 +826,32 @@ namespace Com.GenericPlatform.WebApp.Controllers
         {
             var result = new List<VmRequirementItem>();
             IRow headerRow = sheet.GetRow(0); //Get Header Row
-            int cellCount = headerRow.LastCellNum;
-
-            for (int i = (sheet.FirstRowNum + 1); i <= sheet.LastRowNum; i++) //Read Excel File
+            try
             {
+                int cellCount = headerRow.LastCellNum;
 
-                IRow row = sheet.GetRow(i);
-                if (row == null) continue;
-                if (row.Cells.All(d => d.CellType == CellType.Blank)) continue;
-                try
+                for (int i = (sheet.FirstRowNum + 1); i <= sheet.LastRowNum; i++) //Read Excel File
                 {
-                    var resultItem = new VmRequirementItem();
-                    resultItem.ServiceName = row.GetCell(0).ToString();
-                    resultItem.Description = row.GetCell(1).ToString();
 
-                    result.Add(resultItem);
+                    IRow row = sheet.GetRow(i);
+                    if (row == null) continue;
+                    if (row.Cells.All(d => d.CellType == CellType.Blank)) continue;
+                    try
+                    {
+                        var resultItem = new VmRequirementItem();
+                        resultItem.ServiceName = row.GetCell(0).ToString();
+                        resultItem.Description = row.GetCell(1).ToString();
+
+                        result.Add(resultItem);
+                    }
+                    catch
+                    {
+                        //nothing
+                    }
                 }
-                catch
-                {
-                    //nothing
-                }
+            }
+            catch
+            {
 
             }
             return result;
