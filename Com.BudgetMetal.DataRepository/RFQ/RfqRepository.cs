@@ -290,5 +290,37 @@ namespace Com.BudgetMetal.DataRepository.RFQ
                             );
             return record.Id;
         }
+
+        public async Task<PageResult<Com.BudgetMetal.DBEntities.Rfq>> GetLoadTenderNoticBoardPublicRFQ(int intCount)
+        {
+            var records = await this.entities
+                            .Include(e => e.Document)
+                            .Include(e => e.Document.DocumentStatus)
+                            .Include(e => e.Document.DocumentType)
+                            .Include(e => e.Document.Company)
+                            .Where(e =>
+                              (e.IsActive == true)
+                              && (e.Document.IsActive == true)
+                              && e.IsPublic == true
+                              && (e.Document.DocumentStatus_Id == Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Open)
+                            )
+                            .OrderByDescending(e => e.CreatedDate)
+                            .ToListAsync();
+            var recordList = records
+                .Take(intCount).ToList();
+
+            var count = records.Count();
+            var result = new PageResult<Com.BudgetMetal.DBEntities.Rfq>()
+            {
+                Records = recordList,
+                TotalPage = 1,
+                CurrentPage = 1,
+                PreviousPage = 1,
+                NextPage = 1,
+                TotalRecords = intCount
+            };
+
+            return result;
+        }
     }
 }

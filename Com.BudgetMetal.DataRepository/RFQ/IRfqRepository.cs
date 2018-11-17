@@ -23,8 +23,8 @@ namespace Com.BudgetMetal.DataRepository.RFQ
 
         Task<int> GetSingleRfqByDocumentId(int documentId);
 
-
-
         Task<Com.BudgetMetal.DBEntities.Rfq> GetRfqByQuotation_DocumentId(int documentId);
+
+        Task<PageResult<Com.BudgetMetal.DBEntities.Rfq>> GetLoadTenderNoticBoardPublicRFQ(int count);
     }
 }

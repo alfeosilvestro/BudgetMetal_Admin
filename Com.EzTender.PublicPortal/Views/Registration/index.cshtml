@@ -11,7 +11,7 @@
                 <h2>Registration</h2>
             </div>
             <div class="body">
-                <form id="wizard_with_validation" method="POST" asp-controller="Home" asp-action="Register" enctype="multipart/form-data">
+                <form id="wizard_with_validation" method="POST" asp-controller="Registration" asp-action="Index" enctype="multipart/form-data">
                     <h3>Company Information</h3>
                     <fieldset>
                         <div class="form-group form-float">
@@ -109,8 +109,6 @@
 <script>
    
     $(function () {
-
-
         //Advanced form with validation
         var form = $('#wizard_with_validation').show();
         form.steps({
@@ -191,7 +189,7 @@
     });
     function checkEmail() {
         var email = $('input[id="EmailAddress"]').val();
-         var ajaxurl = '@Url.Action("CheckEmail", "Home")';
+         var ajaxurl = '@Url.Action("CheckEmail", "Registration")';
 
         $.ajax({
             url: ajaxurl,
@@ -213,7 +211,7 @@
     }
 
     function loadServiceTags() {
-        var ajaxurl = '@Url.Action("LoadServiceTags", "Home")';
+        var ajaxurl = '@Url.Action("LoadServiceTags", "Registration")';
         $.ajax({
             url: ajaxurl,
             dataType: 'text',
@@ -239,7 +237,7 @@
             var regex = new RegExp(/^[0-9]{9}[a-z]{1}$/i);
             if (regex.test(company_uen)) {
                 //check uen at server site
-                var ajaxurl = '@Url.Action("CheckUEN", "Home")';
+                var ajaxurl = '@Url.Action("CheckUEN", "Registration")';
 
                 $.ajax({
                     url: ajaxurl,
@@ -276,7 +274,4 @@
             //$("#notify").hide();
         }
     }
-
-
-
 </script>

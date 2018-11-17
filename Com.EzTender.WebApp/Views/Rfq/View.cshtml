@@ -662,7 +662,7 @@
                             }
                             else if (Model.Document.DocumentStatus_Id == Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_RequiredApproval || Model.Document.DocumentStatus_Id == Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Open)
                             {
-                                if (ViewBag.isCompanyAdmin || ViewBag.isRfqApprover)
+                                if (Model.Document.DocumentStatus_Id == Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_RequiredApproval && (ViewBag.isCompanyAdmin || ViewBag.isRfqApprover))
                                 {
                                     <button type="button" id="btnApprove" class="btn btn-primary">Approve</button>
                                 }
