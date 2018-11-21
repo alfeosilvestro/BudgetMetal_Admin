@@ -59,6 +59,29 @@ namespace Com.BudgetMetal.Services.Users
             }
         }
 
+        public async Task<bool> CheckCurrentPassword(int id, string currentPassword)
+        {
+            var dbresult = await repo.GetUserById(id);
+
+            if (dbresult == null)
+            {
+                return false;
+            }
+            else
+            {
+                if (dbresult.Password == Md5.Encrypt(currentPassword))
+                {
+                    var result = new VmUserItem();
+                    Copy<Com.BudgetMetal.DBEntities.User, VmUserItem>(dbresult, result);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
         public async Task<VmUserItem> ValidateUser(VM_Sys_User_Sign_In user)
         {
             var dbresult = await repo.GetUser(user.UserName, Md5.Encrypt(user.Password));
@@ -572,5 +595,29 @@ namespace Com.BudgetMetal.Services.Users
 
             return result;
         }
+
+        public async Task<VmGenericServiceResult> ChangePassword(int id, string password)
+        {
+            var result = new VmGenericServiceResult();
+
+            var dbresult = await repo.GetUserById(id);
+
+            if (dbresult == null)
+            {
+                result.IsSuccess = false;
+                result.MessageToUser = "This email is not registered.";
+            }
+            else
+            {
+                dbresult.Password = Md5.Encrypt(password);
+                repo.Update(dbresult);
+                repo.Commit();
+                result.IsSuccess = true;
+                result.MessageToUser = "Successful";
+            }
+
+            return result;
+        }
+
     }
 }

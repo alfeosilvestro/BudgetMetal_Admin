@@ -114,6 +114,32 @@ namespace Com.GenericPlatform.WebApp.Controllers
             return View();
         }
 
+        [HttpGet]
+        public async Task<JsonResult> ChangesPassword(string Password)
+        {
+            var User_Id = HttpContext.Session.GetString("User_Id");
+
+            var result = await userService.ChangePassword(int.Parse(User_Id), Password);
+
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> CheckCurrentPassword(string CurrentPassword)
+        {
+            var User_Id = HttpContext.Session.GetString("User_Id");
+            
+            var result = await userService.CheckCurrentPassword(int.Parse(User_Id), CurrentPassword);
+
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
+
         // GET: User
         public ActionResult Index()
         {
