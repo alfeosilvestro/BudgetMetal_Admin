@@ -8,6 +8,6 @@ namespace Com.BudgetMetal.DataRepository.SupplierServiceTags
 {
     public interface ISupplierServiceTagsRepository : IGenericRepository<Com.BudgetMetal.DBEntities.SupplierServiceTags>
     {
-      
+        Task<List<Com.BudgetMetal.DBEntities.SupplierServiceTags>> GetServiceTagByCompanyID(int companyId);
     }
 }

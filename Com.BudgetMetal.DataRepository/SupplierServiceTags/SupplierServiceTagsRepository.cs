@@ -17,6 +17,10 @@ namespace Com.BudgetMetal.DataRepository.SupplierServiceTags
         {
         }
 
+        public async Task<List<Com.BudgetMetal.DBEntities.SupplierServiceTags>> GetServiceTagByCompanyID(int companyId)
+        {
+            return await this.entities.Where(e => e.IsActive == true && e.Company_Id == companyId).ToListAsync();
+        }
         
     }
 }

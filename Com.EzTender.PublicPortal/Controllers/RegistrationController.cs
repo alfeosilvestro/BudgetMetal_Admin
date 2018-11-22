@@ -14,6 +14,8 @@ using Com.BudgetMetal.Common;
 using Newtonsoft.Json;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
+using Com.BudgetMetal.ViewModels.SupplierServiceTag;
+using System.Collections.Generic;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -120,6 +122,17 @@ namespace Com.EzTender.PublicPortal.Controllers
         public async Task<JsonResult> CheckUEN(string RegNo)
         {
             var result = await companyService.GetCompanyByUEN(RegNo);
+
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetServiceTagsByCompanyId(int companyId)
+        {
+            List<VmSupplierServiceTag> result = await companyService.GetCompanyServiceTagById(companyId);
 
             return new JsonResult(result, new JsonSerializerSettings()
             {

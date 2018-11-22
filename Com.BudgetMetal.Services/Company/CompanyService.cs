@@ -17,6 +17,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Com.BudgetMetal.DataRepository.SupplierServiceTags;
+using Com.BudgetMetal.ViewModels.SupplierServiceTag;
 
 namespace Com.BudgetMetal.Services.Company
 {
@@ -29,8 +31,12 @@ namespace Com.BudgetMetal.Services.Company
         private readonly ICompanySupplierRepository companySupplierRepo;
         private readonly IRoleRepository roleRepository;
         private readonly IUserRolesRepository userRoleRepository;
+        private readonly ISupplierServiceTagsRepository supplierServiceTagRepo;
 
-        public CompanyService(ICompanyRepository repo, ICodeTableRepository companyRepo, IUserRepository repoUser, IRatingRepository ratingRepo, ICompanySupplierRepository companySupplierRepo, IRoleRepository roleRepository, IUserRolesRepository userRoleRepository)
+        public CompanyService(ICompanyRepository repo, ICodeTableRepository companyRepo, IUserRepository repoUser, 
+            IRatingRepository ratingRepo, ICompanySupplierRepository companySupplierRepo, IRoleRepository roleRepository, 
+            IUserRolesRepository userRoleRepository,
+            ISupplierServiceTagsRepository supplierSvsTagRepo)
         {
             this.repo = repo;
             this.codeTableRepo = companyRepo;
@@ -39,6 +45,7 @@ namespace Com.BudgetMetal.Services.Company
             this.companySupplierRepo = companySupplierRepo;
             this.roleRepository = roleRepository;
             this.userRoleRepository = userRoleRepository;
+            this.supplierServiceTagRepo = supplierSvsTagRepo;
         }
 
         public async Task<VmCompanyPage> GetCompanyByPage(string keyword, int page, int totalRecords)
@@ -335,6 +342,30 @@ namespace Com.BudgetMetal.Services.Company
 
            
             return resultObj;
+        }
+
+        public async Task<List<VmSupplierServiceTag>> GetCompanyServiceTagById(int companyId)
+        {
+            var dbResult = await supplierServiceTagRepo.GetServiceTagByCompanyID(companyId);
+
+            if (dbResult == null)
+            {
+                return null;
+            }
+
+            List<VmSupplierServiceTag> result = new List<VmSupplierServiceTag>();
+
+            foreach (var tag in dbResult)
+            {
+                result.Add(new VmSupplierServiceTag() {
+                    Id = tag.Id,
+                    ServiceTagId = tag.ServiceTags_Id,
+                    Name = ""
+                });
+            }
+
+            return result;
+
         }
 
         public async Task<VmCompanyPage> GetSupplierByCompany(int companyId, int page, string keyword)

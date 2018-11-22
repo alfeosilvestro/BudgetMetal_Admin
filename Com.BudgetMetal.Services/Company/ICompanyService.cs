@@ -1,5 +1,6 @@
 ﻿using Com.BudgetMetal.ViewModels;
 using Com.BudgetMetal.ViewModels.Company;
+using Com.BudgetMetal.ViewModels.SupplierServiceTag;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,6 +27,8 @@ namespace Com.BudgetMetal.Services.Company
         Task<List<VmCompanyItem>> GetActiveCompanies();
 
         Task<VmCompanyItem> GetCompanyByUEN(string RegNo);
+
+        Task<List<VmSupplierServiceTag>> GetCompanyServiceTagById(int companyId);
 
         Task<VmCompanyPage> GetSupplierByCompany(int companyId, int page, string keyword);
 
