@@ -336,9 +336,8 @@ namespace Com.BudgetMetal.Services.Quotation
                     CreatedBy = userName,
                     UpdatedBy = userName
                 };
-                repoDocumentActivity.Add(dbDocumentActivity);
+                repoDocumentActivity.Add(dbRfqDocumentActivity);
                 repoDocumentActivity.Commit();
-
 
                 result.IsSuccess = true;
                 result.MessageToUser = "Your Quotation is successfully updated.";
