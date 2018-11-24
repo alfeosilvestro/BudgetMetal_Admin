@@ -148,7 +148,7 @@
                                     </div>
                                 </div>
 
-                               
+
                                 <div class="col-sm-3">
                                     <input type="checkbox" asp-for="IsPublic" class="chk-col-red" />
                                     <label for="IsPublic">Public</label>
@@ -188,16 +188,10 @@
                                         <th>&nbsp;</th>
                                     </tr>
                                 </thead>
-                                <tbody id="requirementsTableBody" data-test="abc">
+                                <tbody id="requirementsTableBody">
                                     <tr>
-                                        <td>
-                                            <input type="text" asp-for="Requirement[0].ServiceName" class="form-control" />
-                                            <span asp-validation-for="Requirement[0].ServiceName" class="text-danger"></span>
-                                        </td>
-                                        <td>
-                                            <input type="text" asp-for="Requirement[0].Description" class="form-control" />
-                                            <span asp-validation-for="Requirement[0].Description" class="text-danger"></span>
-                                        </td>
+                                        <td><input type="text" asp-for="Requirement[0].ServiceName" class="form-control" /></td>
+                                        <td><input type="text" asp-for="Requirement[0].Description" class="form-control" /></td>
                                         <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveRequirementRow(this)'>Remove</button></td>
                                     </tr>
                                 </tbody>
@@ -338,7 +332,7 @@
                         </div>
 
                         <div role="tabpanel" class="tab-pane fade" id="attachments">
-                            
+
                             <table id="attachmentTable" class="table table-striped">
                                 <thead>
                                     <tr>
@@ -764,34 +758,26 @@ function loadIndustry() {
             contentType: false,
             processData: false,
             success: function (response) {
-                //if (response.length == 0)
-                //    alert('Some error occured while uploading');
-                //else {
-                //    $('#dvData').html(response);
-                //}
-
-                    //"<td>" + "<input type='text' asp-for='Requirement[" + i + "].ServiceName' class='form-control'/><span asp-validation-for='Requirement[" + i + "].ServiceName' class='text-danger'></span></td>" +
-                    //"<td>" + "<input type='text' asp-for='Requirement[" + i + "].Description' class='form-control'/><span asp-validation-for='Requirement[" + i + "].Description' class='text-danger'></span></td>" +
-                    //"<td><button type='button' class='btn btn-danger waves-effect' onclick='RemoveRequirementRow(this)'>Remove</button></td>" +
 
                 console.log(response);
 
                 if (response.List_Requirement.length > 0) {
-                    
+
                     $("#requirementsTableBody").empty();
 
                     for (var i = 0; i < response.List_Requirement.length; i++) {
                         $('#requirementsTableBody').append(
-                            "<tr> " +      
+                            "<tr> " +
                                 "<td>" + "<input type='text' name='Requirement[" + i + "].ServiceName' class='form-control' value='" + response.List_Requirement[i].ServiceName + "'/></td>" +
                                 "<td>" + "<input type='text' name='Requirement[" + i + "].Description' class='form-control' value='" + response.List_Requirement[i].Description + "'/></td>" +
                                 "<td><button type='button' class='btn btn-danger waves-effect' onclick='RemoveRequirementRow(this)'>Remove</button></td>" +
                              "<tr> "
-                        ); 
+                        );
                     }
+
                     $("#detailRequirementLastId").val(response.List_Requirement.length);
                     console.log(response.List_Requirement);
-                    
+
                 }
 
                 if (response.List_SLA.length > 0) {
@@ -805,7 +791,7 @@ function loadIndustry() {
                             "<td>" + "<input type='text' name='Sla[" + i + "].Description' class='form-control' value='" + response.List_SLA[i].Description + "'/></td>" +
                             "<td><button type='button' class='btn btn-danger waves-effect' onclick='RemoveSLARow(this)'>Remove</button></td>" +
                             "<tr> "
-                        );  
+                        );
                     }
                     $("#detailSLALastId").val(response.List_SLA.length);
                     console.log(response.List_SLA);
@@ -850,7 +836,7 @@ function loadIndustry() {
                     console.log(response.List_Requirement);
 
                 }
-                
+
             },
             error: function (e) {
                 $('#dvData').html(e.responseText);

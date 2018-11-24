@@ -96,7 +96,7 @@ namespace Com.EzTender.PublicPortal.Controllers
         [HttpGet]
         public async Task<JsonResult> GetPublicRFQ(int page, string status, string skeyword)
         {
-            var result = await rfqService.GetPublicRfqByPage(page, 2, Convert.ToInt32(status),
+            var result = await rfqService.GetPublicRfqByPage(page, 12, Convert.ToInt32(status),
                 skeyword == null ? "" : skeyword);
 
             return new JsonResult(result, new JsonSerializerSettings()

@@ -357,7 +357,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
                     {
                         foreach (var fileAttachment in attachedFiles)
                         {
-                            if (fileAttachment.Name.ToLower() != "fUpload")
+                            if (fileAttachment.Name.ToLower() != "fupload")
                             {
                                 if (fileAttachment.Length > 0)
                                 {
@@ -375,10 +375,13 @@ namespace Com.GenericPlatform.WebApp.Controllers
                                         UpdatedBy = Rfq.UpdatedBy
                                     };
                                     listAttachment.Add(att);
+
                                 }
+
+                                i++;
                             }
 
-                            i++;
+                            
                         }
                     }
 

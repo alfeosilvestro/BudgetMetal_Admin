@@ -21,7 +21,7 @@ $("#btnNewRequirement").click(function () {
 });
 
 function RemoveRequirementRow(item) {
-    $(item).parent().parent().remove();
+    $(item).parent().parent().remove();    
 }
 
 // Add and Remove SLA
