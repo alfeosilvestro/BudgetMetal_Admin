@@ -171,8 +171,8 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
-                                    <span class="text-warning">Click <a href="#">Here</a> to Download Template</span><br /><br />
-                                    <label>Upload Template</label> 
+                                    <span class="text-warning">Click <a href='@Url.Action("DownloadExcelTemplate","Rfq")'>Here</a> to Download Template</span><br /><br />
+                                    <label>Upload Template</label>
                                     <input type="file" name="fUpload" id="fUpload" value="" class="form-control" /> <br /><button type="button" class="btn btn-success" id="btnUploadFile">Upload Template</button>
                                 </div>
                             </div>
@@ -276,7 +276,7 @@
                                         <th>&nbsp;</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="pricingTableBody">
                                     <tr>
                                         <td><input type="text" asp-for="RfqPriceSchedule[0].ItemName" class="form-control" /></td>
                                         <td><input type="text" asp-for="RfqPriceSchedule[0].ItemDescription" class="form-control" /></td>
@@ -789,6 +789,7 @@ function loadIndustry() {
                              "<tr> "
                         ); 
                     }
+                    $("#detailRequirementLastId").val(response.List_Requirement.length);
                     console.log(response.List_Requirement);
                     
                 }
@@ -800,12 +801,13 @@ function loadIndustry() {
                     for (var i = 0; i < response.List_SLA.length; i++) {
                         $('#slaTableBody').append(
                             "<tr> " +
-                            "<td>" + "<input type='text' asp-for='Sla[" + i + "].Requirement' class='form-control' value='" + response.List_SLA[i].Requirement + "'/> <span asp-validation-for='Sla[" + i + "].Requirement' class='text-danger'></span></td>" +
-                            "<td>" + "<input type='text' asp-for='Sla[" + i + "].Description' class='form-control' value='" + response.List_SLA[i].Description + "'/><span asp-validation-for='Sla[" + i + "].Description' class='text-danger'></span></td>" +
+                            "<td>" + "<input type='text' name='Sla[" + i + "].Requirement' class='form-control' value='" + response.List_SLA[i].Requirement + "'/></td>" +
+                            "<td>" + "<input type='text' name='Sla[" + i + "].Description' class='form-control' value='" + response.List_SLA[i].Description + "'/></td>" +
                             "<td><button type='button' class='btn btn-danger waves-effect' onclick='RemoveSLARow(this)'>Remove</button></td>" +
                             "<tr> "
-                        );
+                        );  
                     }
+                    $("#detailSLALastId").val(response.List_SLA.length);
                     console.log(response.List_SLA);
 
                 }
@@ -820,13 +822,35 @@ function loadIndustry() {
                             "<td>" + "<input type='text' name='Penalty[" + i + "].BreachOfServiceDefinition' class='form-control' value='" + response.List_Panalty[i].BreachOfServiceDefinition + "'/></td>" +
                             "<td>" + "<input type='text' name='Penalty[" + i + "].PenaltyAmount' class='form-control' value='" + response.List_Panalty[i].PenaltyAmount + "'/></td>" +
                             "<td>" + "<input type='text' name='Penalty[" + i + "].Description' class='form-control' value='" + response.List_Panalty[i].Description + "'/></td>" +
-                            "<td><button type='button' class='btn btn-danger waves-effect' onclick='RemoveRequirementRow(this)'>Remove</button></td>" +
+                            "<td><button type='button' class='btn btn-danger waves-effect' onclick='RemovePenaltyRow(this)'>Remove</button></td>" +
                             "<tr> "
                         );
                     }
+                    $("#PenaltyLastId").val(response.List_Panalty.length);
                     console.log(response.List_Requirement);
 
                 }
+
+                if (response.List_Pricing.length > 0) {
+
+                    $("#pricingTableBody").empty();
+
+                    for (var i = 0; i < response.List_Pricing.length; i++) {
+                        $('#pricingTableBody').append(
+                            "<tr> " +
+                            "<td>" + "<input type='text' name='RfqPriceSchedule[" + i + "].ItemName' class='form-control' value='" + response.List_Pricing[i].ItemName + "'/></td>" +
+                            "<td>" + "<input type='text' name='RfqPriceSchedule[" + i + "].ItemDescription' class='form-control' value='" + response.List_Pricing[i].ItemDescription + "'/></td>" +
+                            "<td>" + "<input type='text' name='RfqPriceSchedule[" + i + "].InternalRefrenceCode' class='form-control' value='" + response.List_Pricing[i].InternalRefrenceCode + "'/></td>" +
+                            "<td>" + "<input type='text' name='RfqPriceSchedule[" + i + "].QuantityRequired' class='form-control' value='" + response.List_Pricing[i].QuantityRequired + "'/></td>" +
+                            "<td><button type='button' class='btn btn-danger waves-effect' onclick='RemovePricingRow(this)'>Remove</button></td>" +
+                            "<tr> "
+                        );
+                    }
+                    $("#PricingLastId").val(response.List_Pricing.length);
+                    console.log(response.List_Requirement);
+
+                }
+                
             },
             error: function (e) {
                 $('#dvData').html(e.responseText);

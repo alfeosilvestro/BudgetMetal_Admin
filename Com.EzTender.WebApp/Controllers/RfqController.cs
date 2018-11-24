@@ -126,7 +126,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
                     if (result.Document.DocumentUserDisplay != null)
                     {
                         var tmpDocumentUser = result.Document.DocumentUserDisplay.Where(e => e.User_Id == tmpUserId).FirstOrDefault();
-                        if(tmpDocumentUser != null)
+                        if (tmpDocumentUser != null)
                         {
                             if (tmpDocumentUser.Roles.Contains("RFQ Approver"))
                             {
@@ -342,7 +342,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
                     documentAction = "Submitted";
                 }
                 Rfq.SelectedTags = Request.Form["SelectedTags"].ToString();
-                
+
                 // check attachments
                 if (Request.Form.Files.Count() > 0)
                 {
@@ -353,7 +353,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
 
                     var attachedFiles = Request.Form.Files.Where(f => f.Length > 0);
 
-                    if (attachedFiles.Count() > 0)
+                    if (attachedFiles.Count() > 0 && fileInfoArray.Length > 0)
                     {
                         foreach (var fileAttachment in attachedFiles)
                         {
@@ -385,7 +385,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
                     // assign attachment list
                     Rfq.Document.Attachment = listAttachment;
                 }
-                
+
 
                 var listInvitedSupplier = new List<VmInvitedSupplierItem>();
                 var arrInvitedSupplier = Request.Form["supplier_list"].ToArray();
@@ -660,31 +660,31 @@ namespace Com.GenericPlatform.WebApp.Controllers
                         {
                             HSSFWorkbook hssfwb = new HSSFWorkbook(stream); //This will read the Excel 97-2000 formats  
                             countSheet = hssfwb.NumberOfSheets;
-                            for (int i = 0; i < countSheet - 1; i++)
+                            for (int i = 0; i < countSheet; i++)
                             {
-                                ISheet sheet;
-                                sheet = hssfwb.GetSheetAt(i);
+                                ISheet sheet = hssfwb.GetSheetAt(i);
+                                GetResultTemplate(resultTemplate, sheet);
 
-                                if (sheet.SheetName.ToString().ToLower() == "requirements")
-                                {
-                                    resultTemplate.List_Requirement = getRequirementsFromTemplate(sheet);
-                                }
-                                else if (sheet.SheetName.ToString().ToLower() == "sla")
-                                {
-                                    resultTemplate.List_SLA = getSLAFromTemplate(sheet);
-                                }
-                                else if (sheet.SheetName.ToString().ToLower() == "penalty")
-                                {
-                                    resultTemplate.List_Panalty = getPaneltyFromTemplate(sheet);
-                                }
-                                else if (sheet.SheetName.ToString().ToLower() == "pricing")
-                                {
-                                    resultTemplate.List_Pricing = getPricingFromTemplate(sheet);
-                                }
-                                else
-                                {
-                                    //nothing
-                                }
+                                //if (sheet.SheetName.ToString().ToLower() == "requirements")
+                                //{
+                                //    resultTemplate.List_Requirement = getRequirementsFromTemplate(sheet);
+                                //}
+                                //else if (sheet.SheetName.ToString().ToLower() == "sla")
+                                //{
+                                //    resultTemplate.List_SLA = getSLAFromTemplate(sheet);
+                                //}
+                                //else if (sheet.SheetName.ToString().ToLower() == "penalty")
+                                //{
+                                //    resultTemplate.List_Panalty = getPaneltyFromTemplate(sheet);
+                                //}
+                                //else if (sheet.SheetName.ToString().ToLower() == "pricing")
+                                //{
+                                //    resultTemplate.List_Pricing = getPricingFromTemplate(sheet);
+                                //}
+                                //else
+                                //{
+                                //    //nothing
+                                //}
                             }
 
                         }
@@ -692,31 +692,12 @@ namespace Com.GenericPlatform.WebApp.Controllers
                         {
                             XSSFWorkbook hssfwb = new XSSFWorkbook(stream); //This will read 2007 Excel format  
                             countSheet = hssfwb.NumberOfSheets;
-                            for (int i = 0; i < countSheet - 1; i++)
+                            for (int i = 0; i < countSheet; i++)
                             {
-                                ISheet sheet;
-                                sheet = hssfwb.GetSheetAt(i);
+                                ISheet sheet = hssfwb.GetSheetAt(i);
 
-                                if (sheet.SheetName.ToString().ToLower() == "requirements")
-                                {
-                                    resultTemplate.List_Requirement = getRequirementsFromTemplate(sheet);
-                                }
-                                else if (sheet.SheetName.ToString().ToLower() == "sla")
-                                {
-                                    resultTemplate.List_SLA = getSLAFromTemplate(sheet);
-                                }
-                                else if (sheet.SheetName.ToString().ToLower() == "penalty")
-                                {
-                                    resultTemplate.List_Panalty = getPaneltyFromTemplate(sheet);
-                                }
-                                else if (sheet.SheetName.ToString().ToLower() == "pricing")
-                                {
-                                    resultTemplate.List_Pricing = getPricingFromTemplate(sheet);
-                                }
-                                else
-                                {
-                                    //nothing
-                                }
+                                GetResultTemplate(resultTemplate, sheet);
+
                             }
                         }
                     }
@@ -734,6 +715,28 @@ namespace Com.GenericPlatform.WebApp.Controllers
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             });
+        }
+
+        private void GetResultTemplate(VmTemplate resultTemplate, ISheet sheet)
+        {
+            switch (sheet.SheetName.ToString().ToLower())
+            {
+                case "requirements":
+                    resultTemplate.List_Requirement = getRequirementsFromTemplate(sheet);
+                    break;
+
+                case "sla":
+                    resultTemplate.List_SLA = getSLAFromTemplate(sheet);
+                    break;
+
+                case "penalty":
+                    resultTemplate.List_Panalty = getPaneltyFromTemplate(sheet);
+                    break;
+
+                case "pricing":
+                    resultTemplate.List_Pricing = getPricingFromTemplate(sheet);
+                    break;
+            }
         }
 
         private List<VmRfqPriceScheduleItem> getPricingFromTemplate(ISheet sheet)
@@ -771,7 +774,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
             {
 
             }
-            
+
             return result;
         }
 
@@ -845,7 +848,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
             {
 
             }
-            
+
             return result;
         }
 
@@ -882,6 +885,17 @@ namespace Com.GenericPlatform.WebApp.Controllers
 
             }
             return result;
+        }
+
+        public ActionResult DownloadExcelTemplate()
+        {
+            string filePath = "wwwroot/Upload/RFQ Template.xlsx";
+            string fileName = "RFQ Template.xlsx";
+
+            byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+
+            return File(fileBytes, "application/force-download", fileName);
+
         }
     }
 }
