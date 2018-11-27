@@ -34,5 +34,6 @@ namespace Com.BudgetMetal.DBEntities
         public virtual ICollection<Requirement> Requirement { get; set; }
         public virtual ICollection<RfqPriceSchedule> RfqPriceSchedule { get; set; }
         public virtual ICollection<Sla> Sla { get; set; }
+        public virtual ICollection<RfqInvites> RfqInvites { get; set; }
     }
 }

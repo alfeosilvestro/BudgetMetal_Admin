@@ -21,6 +21,7 @@ using Com.BudgetMetal.DataRepository.QuotationRequirement;
 using Com.BudgetMetal.DataRepository.Rating;
 using Com.BudgetMetal.DataRepository.Requirement;
 using Com.BudgetMetal.DataRepository.RFQ;
+using Com.BudgetMetal.DataRepository.RfqInvites;
 using Com.BudgetMetal.DataRepository.RfqPriceSchedule;
 using Com.BudgetMetal.DataRepository.Roles;
 using Com.BudgetMetal.DataRepository.ServiceTags;
@@ -176,6 +177,8 @@ namespace Com.EzTender.WebApp
 
             //CompanySupplier
             services.AddScoped<ICompanySupplierRepository, CompanySupplierRepository>();
+
+            services.AddScoped<IRfqInvitesRepository, RfqInvitesRepository>();
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

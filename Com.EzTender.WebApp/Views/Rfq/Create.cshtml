@@ -381,9 +381,38 @@
                                         </td>
                                         <td></td>
                                     </tr>
-
                                 </tbody>
                             </table>
+
+                            <div id="rfq_Email_Invites">
+                                <input type="hidden" id="detailEmalsInviteLastId" value="1" />
+                                <table id="reqEmailInvitesTable" class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th width="30%">Name</th>
+                                            <th width="50%">Email Address</th>
+                                            @*<th width="50%">AccessCode</th>*@
+                                            <th>&nbsp;</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="rfqEmailInvites">
+                                        <tr>
+                                            <td><input type="text" asp-for="RfqEmailInvites[0].Name" class="form-control" /></td>
+                                            <td><input type="text" asp-for="RfqEmailInvites[0].EmailAddress" class="form-control" /></td>
+                                            @*<td><input type="text" asp-for="RfqEmailInvites[0].AccessCode" class="form-control" /></td>*@
+                                            <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveRfqEmailInvites(this)'>Remove</button></td>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+                                <div class="row">
+                                    <div class="form-group col-sm-12">
+                                        <a class="btn btn-success" id="btnRfqEmailsInvites"> New Email Invite </a>
+                                    </div>
+
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>

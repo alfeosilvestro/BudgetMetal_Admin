@@ -504,6 +504,43 @@
 
                                 </tbody>
                             </table>
+
+                            <div id="rfq_Email_Invites">
+                                <input type="hidden" id="detailEmalsInviteLastId" value="@Model.RfqEmailInvites.Count" />
+                                <table id="reqEmailInvitesTable" class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th width="30%">Name</th>
+                                            <th width="50%">Email Address</th>
+                                            <th>&nbsp;</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="rfqEmailInvites">
+                                        @{
+                                            if (Model.RfqEmailInvites != null)
+                                            {
+                                                int i = 0;
+                                                foreach (var item in Model.RfqEmailInvites)
+                                                {
+                                                    <tr>
+                                                        <td><input type="text" name="RfqEmailInvites[@i].Name" class="form-control" value="@item.Name" /></td>
+                                                        <td><input type="text" name="RfqEmailInvites[@i].EmailAddress" class="form-control" value="@item.EmailAddress" /></td>
+                                                        <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveRfqEmailInvites(this)'>Remove</button></td>
+                                                    </tr>
+                                                    i++;
+                                                }
+                                            }
+                                        }
+                                    </tbody>
+
+                                </table>
+                                <div class="row">
+                                    <div class="form-group col-sm-12">
+                                        <a class="btn btn-success" id="btnRfqEmailsInvites"> New Email Invite </a>
+                                    </div>
+
+                                </div>
+                            </div>
                         </div>
 
                         <div role="tabpanel" class="tab-pane fade in" id="DocumentActivity">

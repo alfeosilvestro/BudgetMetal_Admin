@@ -49,6 +49,7 @@ using Com.BudgetMetal.DataRepository.CompanySupplier;
 using Com.BudgetMetal.DataRepository.TimeLine;
 using Com.BudgetMetal.Services.TimeLine;
 using Com.BudgetMetal.DataRepository.Clarification;
+using Com.BudgetMetal.DataRepository.RfqInvites;
 
 namespace Com.EzTender.PublicPortal
 {
@@ -177,6 +178,8 @@ namespace Com.EzTender.PublicPortal
             services.AddScoped<ICompanySupplierRepository, CompanySupplierRepository>();
 
             services.AddScoped<IClarificationRepository, ClarificationRepository>();
+
+            services.AddScoped<IRfqInvitesRepository, RfqInvitesRepository>();
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

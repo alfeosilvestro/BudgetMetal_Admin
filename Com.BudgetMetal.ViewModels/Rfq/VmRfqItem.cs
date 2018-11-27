@@ -3,6 +3,7 @@ using Com.BudgetMetal.ViewModels.DocumentActivity;
 using Com.BudgetMetal.ViewModels.InvitedSupplier;
 using Com.BudgetMetal.ViewModels.Quotation;
 using Com.BudgetMetal.ViewModels.Requirement;
+using Com.BudgetMetal.ViewModels.RfqInvites;
 using Com.BudgetMetal.ViewModels.RfqPenalty;
 using Com.BudgetMetal.ViewModels.RfqPriceSchedule;
 using Com.BudgetMetal.ViewModels.Sla;
@@ -62,6 +63,7 @@ namespace Com.BudgetMetal.ViewModels.Rfq
         public List<VmDocumentItem> DocumentList { get; set; }
         //public List<VmDocumentActivityItem> DocumentActivityList { get; set; }
         public virtual List<VmQuotationItem> Quotation { get; set; }
+        public virtual List<VmRfqInvitesItem> RfqEmailInvites { get; set; }
 
         public List<List<string>> RequirementComparison { get; set; }
         public List<List<string>> PriceComparison { get; set; }

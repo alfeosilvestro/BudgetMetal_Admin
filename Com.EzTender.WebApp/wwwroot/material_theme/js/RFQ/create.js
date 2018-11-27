@@ -128,3 +128,27 @@ $("#btnNewFile").click(function () {
 function RemoveAttachmentRFQRow(item) {
     $(item).parent().parent().remove();
 }
+
+$("#btnRfqEmailsInvites").click(function () {
+    var detailEmalsInviteLastId = $("#detailEmalsInviteLastId").val();
+
+    var newRow = "<tr>" +
+        "<td> " +
+        "<input type='text' name='RfqEmailInvites[" + detailEmalsInviteLastId + "].Name' class='form-control' />" +
+        "</td> " +
+        "<td> " +
+        "<input type='text' name='RfqEmailInvites[" + detailEmalsInviteLastId + "].EmailAddress' class='form-control' />" +
+        "</td> " +
+        "<td> " +
+        "<button type='button' class='btn btn-danger waves-effect' onclick='RemoveRfqEmailInvites(this)'> Remove</button >" +
+        "</td> " +
+        "</tr> ";
+
+    $("#reqEmailInvitesTable > tbody").append(newRow);
+    detailRequirementLastId = parseInt(detailEmalsInviteLastId) + 1;
+    $("#detailEmalsInviteLastId").val(detailEmalsInviteLastId);
+});
+
+function RemoveRfqEmailInvites(item) {
+    $(item).parent().parent().remove();
+}
