@@ -514,6 +514,7 @@ namespace Com.BudgetMetal.Services.RFQ
                                 string accessCode = Md5.Encrypt(string.Format("{0}{1}",dbRFQ.Id, item.EmailAddress));
                                 dbRfqEmailsInvites.AccessCode = accessCode;
                                 dbRfqEmailsInvites.CreatedBy = dbRfqEmailsInvites.UpdatedBy = dbRFQ.CreatedBy;
+                                dbRfqEmailsInvites.Status = "";
                                 rfqInvitesRepository.Add(dbRfqEmailsInvites);
 
                                 //Email Sending
