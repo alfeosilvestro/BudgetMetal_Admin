@@ -1,0 +1,35 @@
+﻿@using Microsoft.AspNetCore.Http;
+@{
+    ViewData["Title"] = "ConfirmUser";
+    Layout = "~/Views/Shared/_Public_Layout.cshtml";
+}
+
+<h2>User Confirmation</h2>
+
+<section>
+    <div class="row">
+        <div class="card">
+            <div class="body">
+                @{
+                    string webAppUrl = Context.Session.GetString("WebAppUrl") + "user/signin";
+                    if (TempData["IsSuccess"] != null)
+                    {
+                        if (TempData["IsSuccess"].ToString() == "True")
+                        {
+                            <div class="alert alert-success">
+                                @TempData["Message"] <strong> <a href="@webAppUrl" style="color:navajowhite;">Click Here</a></strong>  to Login.
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-danger">
+                                @TempData["Message"]
+                            </div>
+                        }
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</section>
+

@@ -199,7 +199,7 @@ namespace Com.EzTender.WebApp
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=User}/{action=SignIn}/{id?}");
+                    template: "{controller=Public}/{action=Index}/{id?}");
             });
         }
     }

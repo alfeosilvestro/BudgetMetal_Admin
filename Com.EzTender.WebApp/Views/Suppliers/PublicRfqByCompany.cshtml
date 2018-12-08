@@ -1,0 +1,160 @@
+﻿@{
+    ViewData["Title"] =  "Home Page";
+}
+
+<div class="block-header">
+    <h2>DASHBOARD - OPEN TENDERS</h2>
+</div>
+
+<!-- Basic Alerts -->
+<div class="row">
+    <div class="col-sm-6">
+        <div class="btn-group" role="group" aria-label="Justified button group">
+            <button id="btn_tender_open" class="btn btn-default waves-effect btnStatus" data-item-id="100032" type="button">Open</button>
+            <button id="btn_tender_close" class="btn btn-primary waves-effect btnStatus" data-item-id="100033" type="button">Closed</button>
+        </div>
+    </div>
+    <div class="col-sm-6"></div>
+
+</div>
+<div class="row clearfix">
+
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+
+            <div class="body">
+                <div class="row">
+                    <div class="col-sm-11">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="text" id="keyword" name="keyword" class="form-control" placeholder="<RFQ No, Company Name, Estimate Project Value>" value="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="hidden" name="statusId" id="statusId" value="0" />
+                        <input type="hidden" name="Company_Id" id="Company_Id" value="@(ViewBag.Company_Id)" />
+                        <button type="button" class="btn bg-indigo pull-right" id="btnSearch"> Search </button>
+                    </div>
+                </div>
+                <div class="row" id="RFQList"></div>
+                <div class="row">
+                    <div class="pagination" style="padding:10px;">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*<div class="row" id="RFQList"></div>
+            <div class="row">
+                <div class="pagination" style="padding:10px;">
+
+                </div>
+            </div>*@
+    </div>
+</div>
+<script>
+    $(function () {
+
+        loadRFQ(1);
+
+    });
+
+    $("button.btnStatus").on({
+        click: function () {
+            $('.btnStatus').removeClass("btn-default").removeClass("btn-primary").addClass("btn-primary");
+            $(this).removeClass("btn-default").removeClass("btn-primary").addClass("btn-default");
+            var statusId = $(this).data("item-id");
+            $('#statusId').val(statusId);
+            $('#RFQList').empty();
+            loadRFQ(1);
+        }
+    });
+
+    $("#btnSearch").on({
+        click: function () {
+            $('#RFQList').empty();
+            loadRFQ(1);
+        }
+    });
+
+    $("#keyword").keyup(function (event) {
+        if (event.keyCode === 13) {
+            $("#btnSearch").click();
+        }
+    });
+
+    function loadRFQ(page) {
+        var keyword = $('#keyword').val();
+        var statusId = $('#statusId').val();
+        var company = $('#Company_Id').val();
+        var ajaxurl = "/Suppliers/GetPublicRFQByCompany?page=" + page + "&status=100032&Company_Id=" + company + "&skeyword=" + encodeURIComponent(keyword);
+        $.ajax({
+            url: ajaxurl,
+            data: { page: page, status: statusId, Company_Id: company, skeyword: keyword},
+            dataType: 'json',
+            success: function (response) {
+                var obj = response.Result.Records;
+                for (var k in obj) {
+                    var item = obj[k];
+                    var rfqUrl = '@Url.Action("Detail", "Home")';
+                    $('#RFQList').append(
+                        "<div class='clearfix' style='padding-left: 20px; padding-right: 20px;'> " +
+                            "<div class='row'> " +
+                                "<div class='col-sm-6'>RFQ No. " + item.Document.DocumentNo + "</div> " +
+                                "<div class='col-sm-6'><span class='btn btn-success pull-right'>" + item.Document.DocumentStatus.Name + "</span></div> " +
+                            "</div> " +
+                        "<div class='row'> " +
+                        "<div class='col-sm-12'><b>Title. <a href='" + rfqUrl + "/"+ item.Id + "'>" + item.Document.Title + "</a></b></div> " +
+
+                            "</div> " +
+                            "<div class='row'> " +
+                                "<div class='col-sm-4'>Company: " + item.Document.Company.Name + "</div> " +
+                                "<div class='col-sm-4'>Estimated Project Value : $" + item.ContractValue+"</div> " +
+                                "<div class='col-sm-4'></div> " +
+                            "</div> " +
+                            "<div class='row'> " +
+                                "<div class='col-sm-4'>Open Date: " + item.StartRfqdate + "</div> " +
+                                "<div class='col-sm-4'>Close Date: " + item.ValidRfqdate + "</div> " +
+                                "<div class='col-sm-4'></div> " +
+                                //"<div class='col-sm-4'><a href='" + item.Document.Id +"' class='btn btn-primary waves-effect pull-right'>View</a></div> " +
+                            " </div> " +
+                        " </div> " +
+                        " <hr/> "
+                    );
+
+                }
+                var totalRecord = response.Result.TotalRecords;
+
+                var openTab = $('#btn_tender_open');
+                var openTabClass = openTab.prop('class');
+                if (openTabClass.includes('btn-default')) {
+
+                    openTab.html("Open (" + totalRecord + ")")
+                }
+
+                var closeTab = $('#btn_tender_close');
+                var closeTabClass = closeTab.prop('class');
+                if (closeTabClass.includes('btn-default')) {
+
+                    closeTab.html("Close (" + totalRecord + ")")
+                }
+
+                var totalpage = response.Result.TotalPage;
+                var currentpage = response.Result.CurrentPage;
+                if (totalpage > currentpage) {
+                    $(".pagination").empty();
+                    $(".pagination").append(" <a class='btn btn-md btn-default' OnClick='loadRFQ(" + response.Result.NextPage + ")'> Load More </a> ");
+                } else {
+                    $(".pagination").empty();
+
+                }
+
+            },
+            error: function (response) {
+                alert(response)
+            }
+        });
+    }
+</script>
