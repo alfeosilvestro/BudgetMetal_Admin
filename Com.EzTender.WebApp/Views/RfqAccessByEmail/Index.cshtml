@@ -1,0 +1,83 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<section>
+    <div class="row">
+        <div class="card">
+            <div class="header">
+                <strong>Reset Password</strong>
+            </div>
+            <div class="body">
+                <div class="row" id="messageToUser">
+
+                </div>
+                <div class="row" id="OldPassword">
+                    <div class="col-sm-3">
+                        <label for="currentPassword">Email :</label>
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" name="email" id="email" value="" class="form-control" required onfocusout="CheckEmail()" />
+                        <span class="text-danger" id="emailInfo">Email is wrong.</span>
+                    </div>
+                </div>
+                <div class="row" id="NewPassword">
+                    <div class="col-sm-3">
+                        <label for="email">Access Code :</label>
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" name="accessCode" id="accessCode" value="" class="form-control" />
+                    </div>
+                </div>
+                <div class="row">                    
+                    <div class="col-sm-4">
+                        <br />
+                        <button class="btn btn-primary" id="btnViewRfqInvites">View</button>
+                    </div>
+                    <div class="col-sm-5">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    $(document).ready(function () {
+        //$('#emailInfo').hide();
+        alert("tks");
+    });
+
+    $("#btnViewRfqInvites").click(function () {
+        alert("tks");
+        var email = $("#email").val();
+        var accessCode = $("#accessCode").val();
+        var ajaxurl = '@Url.Action("CheckRfqEmailandAccessCode", "RfqAccessByEmail")';
+
+        $.ajax({
+            url: ajaxurl,
+            data: { Email: email, AccessCode = accessCode},
+            dataType: 'json',
+            success: function (response) {
+                console.log(response);
+                $("#messageToUser").empty();
+                var message = "";
+                if (response.IsSuccess == true) {
+                    message = "<div class='alert alert-success'> You have successfully reset password. Please check your email ("+ email +").</div>";
+                    $("#resetPassword").hide();
+                } else {
+                    message = "<div class='alert alert-danger'> " + email + " is invalid.</div>";
+                    $("#email").select();
+                }
+                $("#messageToUser").append(message);
+            },
+            error: function (response) {
+                alert(response)
+            }
+        });
+        //alert(email);
+    });
+</script>
