@@ -29,85 +29,87 @@
                     }
                 }
 
-                <div class="row clearfix">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>RFQ No</th>
-                                <th>Company</th>
-                                <th>Status</th>
-                                <th>Industry</th>
-                                <th>Start Date</th>
-                                <th>Closing Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @{
-                                foreach (var item in Model.Result.Records)
-                                {
-                                    <tr>
-                                        <td> <a type="button" class="btn btn-warning" href='@Url.Action("View","Rfq",new { id= item.Id })'>View</a></td>
-                                        <td>@item.Document.DocumentNo</td>
-                                        <td>@item.Document.Company.Name</td>
-                                        <td>@item.Document.DocumentStatus.Name</td>
-                                        <td>@item.IndustryOfRfq</td>
-                                        <td>@Html.DisplayFor(modelitem => item.StartRfqdate)</td>
-                                        <td>@Html.DisplayFor(modelitem => item.ValidRfqdate)</td>
-                                    </tr>
-                                }
-                            }
-                        </tbody>
-                    </table>
-                    <div class="row">
-                        <div class="col-sm-12">
-
-                            @if (Model.Result.TotalPage > 1)
-                            {
-                                int currentPage = Model.Result.CurrentPage;
-                                int totalPage = Model.Result.TotalPage;
-                                int previousPage = Model.Result.PreviousPage;
-                                int nextPage = Model.Result.NextPage;
-
-                                var startPage = currentPage - 5;
-                                var endPage = currentPage + 4;
-                                if (currentPage < 6)
-                                {
-                                    startPage = 1;
-                                }
-                                if (totalPage < endPage)
-                                {
-                                    endPage = totalPage;
-                                }
-                                <ul class="pagination">
-                                    @if (Model.Result.CurrentPage > 1)
+                <div class="row clearfix table-responsive">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>RFQ No</th>
+                                    <th>Company</th>
+                                    <th>Status</th>
+                                    <th>Industry</th>
+                                    <th>Start Date</th>
+                                    <th>Closing Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    foreach (var item in Model.Result.Records)
                                     {
-                                        <li>
-                                            <a href="?page=1">First</a>
-                                        </li>
-                                        <li>
-                                            <a href="?page=@(Model.Result.CurrentPage - 1)">Previous</a>
-                                        </li>
+                                        <tr>
+                                            <td> <a type="button" class="btn btn-warning" href='@Url.Action("View","Rfq",new { id= item.Id })'>View</a></td>
+                                            <td>@item.Document.DocumentNo</td>
+                                            <td>@item.Document.Company.Name</td>
+                                            <td>@item.Document.DocumentStatus.Name</td>
+                                            <td>@item.IndustryOfRfq</td>
+                                            <td>@Html.DisplayFor(modelitem => item.StartRfqdate)</td>
+                                            <td>@Html.DisplayFor(modelitem => item.ValidRfqdate)</td>
+                                        </tr>
                                     }
+                                }
+                            </tbody>
+                        </table>
+                        <div class="row">
+                            <div class="col-sm-12">
 
-                                    @for (var page = startPage; page <= endPage; page++)
-                                    {
-                                        <li class="@(page == currentPage ? "active" : "")">
-                                            <a href="?page=@(page)"> @(page) </a>
-                                        </li>
-                                    }
+                                @if (Model.Result.TotalPage > 1)
+                                {
+                                    int currentPage = Model.Result.CurrentPage;
+                                    int totalPage = Model.Result.TotalPage;
+                                    int previousPage = Model.Result.PreviousPage;
+                                    int nextPage = Model.Result.NextPage;
 
-                                    @if (currentPage < totalPage)
+                                    var startPage = currentPage - 5;
+                                    var endPage = currentPage + 4;
+                                    if (currentPage < 6)
                                     {
-                                        <li>
-                                            <a href="?page=@(currentPage + 1)">Next</a>
-                                        </li>
-                                        <li>
-                                            <a href="?page=@(totalPage)">Last</a>
-                                        </li>
+                                        startPage = 1;
                                     }
-                                </ul>
-                            }
+                                    if (totalPage < endPage)
+                                    {
+                                        endPage = totalPage;
+                                    }
+                                    <ul class="pagination">
+                                        @if (Model.Result.CurrentPage > 1)
+                                        {
+                                            <li>
+                                                <a href="?page=1">First</a>
+                                            </li>
+                                            <li>
+                                                <a href="?page=@(Model.Result.CurrentPage - 1)">Previous</a>
+                                            </li>
+                                        }
+
+                                        @for (var page = startPage; page <= endPage; page++)
+                                        {
+                                            <li class="@(page == currentPage ? "active" : "")">
+                                                <a href="?page=@(page)"> @(page) </a>
+                                            </li>
+                                        }
+
+                                        @if (currentPage < totalPage)
+                                        {
+                                            <li>
+                                                <a href="?page=@(currentPage + 1)">Next</a>
+                                            </li>
+                                            <li>
+                                                <a href="?page=@(totalPage)">Last</a>
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>
