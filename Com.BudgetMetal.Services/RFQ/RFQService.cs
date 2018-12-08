@@ -867,6 +867,7 @@ namespace Com.BudgetMetal.Services.RFQ
                                 dbRfqEmailsInvites.RfqId = dbRFQ.Id;
                                 string accessCode = Md5.Encrypt(string.Format("{0}{1}", dbRFQ.Id, item.EmailAddress));
                                 dbRfqEmailsInvites.AccessCode = accessCode;
+                                dbRfqEmailsInvites.Status = "";
                                 dbRfqEmailsInvites.CreatedBy = dbRfqEmailsInvites.UpdatedBy = dbRFQ.CreatedBy;
                                 rfqInvitesRepository.Add(dbRfqEmailsInvites);
 
@@ -1450,6 +1451,18 @@ namespace Com.BudgetMetal.Services.RFQ
             resultDocument.DocumentUserDisplay = listDocumentUser;
 
             resultObject.Document = resultDocument;
+
+            var listRfqEmailInvites = new List<VmRfqInvitesItem>();
+            if (dbResult.RfqInvites != null)
+            {
+                foreach (var item in dbResult.RfqInvites.Where(e => e.IsActive == true).ToList())
+                {
+                    var itemRfqItems = new VmRfqInvitesItem();
+                    Copy<Com.BudgetMetal.DBEntities.RfqInvites, VmRfqInvitesItem>(item, itemRfqItems, new string[] { "Rfq" });
+                    listRfqEmailInvites.Add(itemRfqItems);
+                }
+            }
+            resultObject.RfqEmailInvites = listRfqEmailInvites;
 
             var listRequirement = new List<VmRequirementItem>();
             if (dbResult.Requirement != null)

@@ -137,7 +137,7 @@ $("#btnRfqEmailsInvites").click(function () {
         "<input type='text' name='RfqEmailInvites[" + detailEmalsInviteLastId + "].Name' class='form-control' />" +
         "</td> " +
         "<td> " +
-        "<input type='text' name='RfqEmailInvites[" + detailEmalsInviteLastId + "].EmailAddress' class='form-control' />" +
+        "<input type='email' placeholder='Enter your email' name='RfqEmailInvites[" + detailEmalsInviteLastId + "].EmailAddress' class='form-control' />" +
         "</td> " +
         "<td> " +
         "<button type='button' class='btn btn-danger waves-effect' onclick='RemoveRfqEmailInvites(this)'> Remove</button >" +
