@@ -566,6 +566,30 @@
 
                                 </tbody>
                             </table>
+                            <br />
+                            <table id="reqEmailInvitesTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="30%">Name</th>
+                                        <th width="50%">Email Address</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="rfqEmailInvites">
+                                    @{
+                                        if (Model.RfqEmailInvites != null)
+                                        {
+                                            int i = 0;
+                                            foreach (var item in Model.RfqEmailInvites)
+                                            {
+                                                <tr>
+                                                    <td> @item.Name </td>
+                                                    <td> @item.EmailAddress </td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
                         </div>
                         <div role="tabpanel" class="tab-pane fade in" id="DocumentActivity">
 
