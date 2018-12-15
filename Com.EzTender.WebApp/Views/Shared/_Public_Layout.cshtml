@@ -51,14 +51,14 @@
                                                 <a href="@Url.Action("About","Public")"><span>About us</span></a>
                                             </li>
                                             <!-- <li>
-        <a href="index.html"><span>Opportunities</span></a>
-    </li>
-    <li>
-        <a href="index.html"><span>Supplier Directory</span></a>
-    </li>
-    <li>
-        <a href="index.html"><span>Announcements</span></a>
-    </li> -->
+                                            <a href="index.html"><span>Opportunities</span></a>
+                                        </li>
+                                        <li>
+                                            <a href="index.html"><span>Supplier Directory</span></a>
+                                        </li>
+                                        <li>
+                                            <a href="index.html"><span>Announcements</span></a>
+                                        </li> -->
                                             <li>
                                                 <a href="@Url.Action("TenderBoard","Public")"><span>Tender Board</span></a>
                                             </li>
@@ -71,22 +71,31 @@
                                             <li>
                                                 <a href="@Url.Action("SignIn","Public")"><span>Sign In</span></a>
                                             </li>
-
+                                            <li>
+                                                <a href="@Url.Action("Registration","Public")"><span>Sign Up</span></a>
+                                            </li>
                                         </ul>
                                     </nav>
                                     <a class="responsive-menu-toggle" href="#"><i class="icon-menu-fine"></i></a>
                                 </div>
                             </div>
-                            <div class="top_bar_right">
+                            @*<div class="top_bar_right">
                                 <div class="top_bar_right_wrapper">
                                     <a href="@Url.Action("Registration","Public")" class="action_button" target="_blank">Sign up</a>
                                 </div>
-                            </div>
+                            </div>*@
                         </div>
                     </div>
                 </div>
             </header>
-       
+            <div id="Subheader" style="padding:30px 0 80px">
+                @*<div class="container">
+                    <div class="column one">
+                        <h1 class="title">SignIn</h1>
+                    </div>
+                </div>*@
+            </div>
+        </div>
         <script src="~/public_site/js/jquery-2.1.4.min.js"></script>
 
         @RenderBody()

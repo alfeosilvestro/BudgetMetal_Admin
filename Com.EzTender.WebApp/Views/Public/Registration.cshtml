@@ -3,14 +3,14 @@
     Layout = "~/Views/Shared/_Public_Layout.cshtml";
 }
 
-<div id="Subheader" style="padding:290px 0 190px">
+@*<div id="Subheader" style="padding:290px 0 190px">
     <div class="container">
         <div class="column one">
             <h1 class="title">Registration</h1>
         </div>
     </div>
 </div>
-        </div>
+        </div>*@
 <div id="Content">
     <div class="content_wrapper clearfix">
         <div class="sections_group">
@@ -29,6 +29,7 @@
 
 <script>
     function resizeIframe(obj) {
-        obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+        var h = obj.contentWindow.document.body.scrollHeight + 200;
+        obj.style.height = h + 'px';
     }
 </script>
