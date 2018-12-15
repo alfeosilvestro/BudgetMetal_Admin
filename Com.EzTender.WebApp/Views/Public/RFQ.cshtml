@@ -1,99 +1,80 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
-    Layout = "~/Views/Shared/_Public_Layout.cshtml";
+    Layout = "~/Views/Shared/_Empty_Layout.cshtml";
 }
-<div id="Subheader" style="padding:290px 0 190px">
-    <div class="container">
-        <div class="column one">
-            <h1 class="title">TENDER NOTICE BOARD</h1>
-        </div>
-    </div>
-</div>
-</div>
-<div id="Content">
-    <div class="content_wrapper clearfix">
-        <div class="sections_group">
-            <div class="entry-content">
-                <div class="section mcb-section" style="padding-top:120px; padding-bottom:20px; padding-left:200px; padding-right:200px; border-radius:3px 4px;" data-parallax="3d">
-
-
-
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="btn-group" role="group" aria-label="Justified button group">
-                                <button id="btn_tender_open" style="margin-right:0px; width:150px; background-color:blue;" class="btn btn-default waves-effect btnStatus" data-item-id="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Open)" type="button">Open</button> <button id="btn_tender_close" style="width:150px; background-color:gray;" class="btn btn-primary waves-effect btnStatus" data-item-id="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Closed)" type="button">Closed</button>
-                            </div>
-                        </div>
-                        <div class="col-sm-6"></div>
-
-                    </div>
-                    <div class="row clearfix">
-
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <div class="card">
-
-                                <div class="body">
-                                    <div class="row">
-                                        <div class="col-sm-11">
-
-                                            <input type="text" style="width:500px" id="keyword" name="keyword" class="form-control" placeholder="<RFQ No, Company Name, Estimate Project Value>" value="">
-                                        </div>
-
-                                        <div class="col-sm-1">
-                                            <input type="hidden" name="statusId" id="statusId" value="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Open)" />
-                                            @*<input type="hidden" name="Company_Id" id="Company_Id" value="@(ViewBag.Company_Id)" />*@
-                                            <button type="button" class="btn bg-indigo pull-right" id="btnSearch"> Search </button>
-                                        </div>
-                                    </div>
-                                    <div class="row" id="RFQList"></div>
-                                    <div class="row">
-                                        <div class="pagination" style="padding:10px;">
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            @*<div class="row" id="RFQList"></div>
-                                <div class="row">
-                                    <div class="pagination" style="padding:10px;">
-
-                                    </div>
-                                </div>*@
-                        </div>
-                    </div>
-
-
-                    <div class="block-header">
-                        <h2>TENDER NOTICE BOARD</h2>
-                    </div>
-                    <div class="row clearfix">
-                        <div class="row" id="TenderList"></div>
-                    </div>
 
 
 
 
-
-                    @*<div style="background-position: 50% -206px;">
-                            <div style="position:fixed;top:70px;width: 90%;height:70px;text-align: left;z-index: 10000;">
-                                <div style="background-color:  rgba(1,1,1,0.5);width: 25%;float: right;padding: 5px;/* color: white; */">
-                                    <h5 style="color:  white !important; line-height: 2;">
-                                        Contact us at quote@ezytender.com
-                                        <br>
-                                        or Call +65 6519 0961
-                                    </h5>
-                                </div>
-                            </div>
-                        </div>*@
-                    <!-- Basic Alerts -->
-
-                </div>
-
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="btn-group" role="group" aria-label="Justified button group">
+                <button id="btn_tender_open" style="margin-right:0px; width:150px; background-color:blue;" class="btn btn-default waves-effect btnStatus" data-item-id="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Open)" type="button">Open</button> <button id="btn_tender_close" style="width:150px; background-color:gray;" class="btn btn-primary waves-effect btnStatus" data-item-id="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Closed)" type="button">Closed</button>
             </div>
         </div>
+        <div class="col-sm-6"></div>
+
     </div>
-</div>
+    <div class="row clearfix">
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+
+                <div class="body">
+                    <div class="row">
+                        <div class="col-sm-11">
+
+                            <input type="text" style="width:500px" id="keyword" name="keyword" class="form-control" placeholder="<RFQ No, Company Name, Estimate Project Value>" value="">
+                        </div>
+
+                        <div class="col-sm-1">
+                            <input type="hidden" name="statusId" id="statusId" value="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Open)" />
+                            @*<input type="hidden" name="Company_Id" id="Company_Id" value="@(ViewBag.Company_Id)" />*@
+                            <button type="button" class="btn bg-indigo pull-right" id="btnSearch"> Search </button>
+                        </div>
+                    </div>
+                    <div class="row" id="RFQList"></div>
+                    <div class="row">
+                        <div class="pagination" style="padding:10px;">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*<div class="row" id="RFQList"></div>
+                <div class="row">
+                    <div class="pagination" style="padding:10px;">
+
+                    </div>
+                </div>*@
+        </div>
+    </div>
+
+
+    @*<div class="block-header">
+            <h2>TENDER NOTICE BOARD</h2>
+        </div>
+        <div class="row clearfix">
+            <div class="row" id="TenderList"></div>
+        </div>*@
+
+
+
+
+
+    @*<div style="background-position: 50% -206px;">
+            <div style="position:fixed;top:70px;width: 90%;height:70px;text-align: left;z-index: 10000;">
+                <div style="background-color:  rgba(1,1,1,0.5);width: 25%;float: right;padding: 5px;/* color: white; */">
+                    <h5 style="color:  white !important; line-height: 2;">
+                        Contact us at quote@ezytender.com
+                        <br>
+                        or Call +65 6519 0961
+                    </h5>
+                </div>
+            </div>
+        </div>*@
+    <!-- Basic Alerts -->
 
 
 
@@ -102,7 +83,7 @@
     $(function () {
 
         loadRFQ(1);
-        loadTenderNoticBoard(1);
+        //loadTenderNoticBoard(1);
     });
 
     $("button.btnStatus").on({
@@ -142,7 +123,7 @@
                 var obj = response.Result.Records;
                 for (var k in obj) {
                     var item = obj[k];
-                    var rfqUrl = '@Url.Action("Detail", "Public")';
+                    var rfqUrl = '@Url.Action("SingleRFQ", "Public")';
                     $('#RFQList').append(
                         "<div class='clearfix' style='padding-left: 20px; padding-right: 20px;'> " +
                             "<div class='row'> " +
@@ -213,7 +194,7 @@
                 var obj = response.Result.Records;
                 for (var k in obj) {
                     var item = obj[k];
-                    var rfqUrl = '@Url.Action("Detail", "Public")';
+                    var rfqUrl = '@Url.Action("SingleRFQ", "Public")';
                     $('#TenderList').append(
                         //"<div class='clearfix' style='padding-left: 20px; padding-right: 20px;'> " +
                         //    "<div class='row'> " +

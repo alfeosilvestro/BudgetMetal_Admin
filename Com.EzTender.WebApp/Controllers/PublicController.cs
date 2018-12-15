@@ -61,6 +61,42 @@ namespace Com.EzTender.WebApp.Controllers
 
             return View();
         }
+
+        public IActionResult TenderBoard()
+        {
+
+            return View();
+        }
+
+        public IActionResult CompanyPortal()
+        {
+
+            return View();
+        }
+
+        public IActionResult Registration()
+        {
+
+            return View();
+        }
+
+        public IActionResult ForgotPassword()
+        {
+
+            return View();
+        }
+
+        public IActionResult SignIn()
+        {
+
+            return View();
+        }
+
+        public IActionResult SingleRFQ(int id)
+        {
+            ViewBag.Id = id;
+            return View();
+        }
         // GET: Rfq/Edit/5
         [HttpGet]
         public async Task<ActionResult> Detail(int id)

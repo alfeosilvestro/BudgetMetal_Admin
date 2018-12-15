@@ -6,10 +6,7 @@
 }
 
 <div class="login-box">
-    <div class="logo">
-        <a href="javascript:void(0);">Ezy<b>Tender</b></a>
-        <small>1 Request - Many Quotes</small>
-    </div>
+    
     <div class="card">
         <div class="body">
             <form asp-action="SignIn" method="post">
@@ -49,13 +46,10 @@
                 </div>
                 <div class="row m-t-15 m-b--20">
                     <div class="col-xs-6">
-                        <a href="@TempData["RegisterUrl"]">Register Now!</a>
+                        <a href="@TempData["RegisterUrl"]" target="_parent">Register Now!</a>
                     </div>
                     <div class="col-xs-6 align-right">
-                        <a href="@TempData["ForgotPasswordUrl"]">Forgot Password?</a>
-                    </div>
-                    <div class="col-xs-12 align-right">
-                        <a href="@TempData["PublicSiteUrl"]">Back to Home</a>
+                        <a href="@TempData["ForgotPasswordUrl"]" target="_parent">Forgot Password?</a>
                     </div>
                 </div>
             </form>

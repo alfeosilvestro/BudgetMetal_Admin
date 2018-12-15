@@ -36,9 +36,9 @@ namespace Com.GenericPlatform.WebApp.Controllers
         
         public ActionResult SignIn()
         {
-            TempData["ForgotPasswordUrl"] = _appSettings.App_Identity.PublicSiteUrl + "Registration/ForgotPassword";
-            TempData["RegisterUrl"] = _appSettings.App_Identity.PublicSiteUrl + "Registration";
-            TempData["PublicSiteUrl"] = _appSettings.App_Identity.PublicSiteUrl ;
+            TempData["ForgotPasswordUrl"] = _appSettings.App_Identity.WebAppUrl + "Public/ForgotPassword";
+            TempData["RegisterUrl"] = _appSettings.App_Identity.WebAppUrl + "Public/Registration";
+            TempData["PublicSiteUrl"] = _appSettings.App_Identity.PublicSiteUrl;
 
             var user_Id = HttpContext.Session.GetString("User_Id");
             if (user_Id != null)
@@ -54,8 +54,8 @@ namespace Com.GenericPlatform.WebApp.Controllers
         {
             try
             {
-                TempData["ForgotPasswordUrl"] = _appSettings.App_Identity.PublicSiteUrl + "Registration/ForgotPassword";
-                TempData["RegisterUrl"] = _appSettings.App_Identity.PublicSiteUrl + "Registration";
+                TempData["ForgotPasswordUrl"] = _appSettings.App_Identity.WebAppUrl + "Public/ForgotPassword";
+                TempData["RegisterUrl"] = _appSettings.App_Identity.WebAppUrl + "Public/Registration";
                 TempData["PublicSiteUrl"] = _appSettings.App_Identity.PublicSiteUrl;
 
                 var result = userService.ValidateUser(user);
