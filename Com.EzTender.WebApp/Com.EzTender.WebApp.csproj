@@ -93,6 +93,9 @@
     <Content Update="Views\Suppliers\PublicRfqByCompany.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="wwwroot\Template\RFQ_Template.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="wwwroot\Upload\RFQ_Template.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

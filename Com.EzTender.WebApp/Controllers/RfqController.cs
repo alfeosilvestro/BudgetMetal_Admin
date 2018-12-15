@@ -892,7 +892,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
 
         public ActionResult DownloadExcelTemplate()
         {
-            string filePath = "wwwroot/Upload/RFQ_Template.xlsx";
+            string filePath = "wwwroot/Template/RFQ_Template.xlsx";
             string fileName = "RFQ_Template.xlsx";
 
             byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
