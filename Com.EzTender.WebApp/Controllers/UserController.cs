@@ -29,7 +29,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
         public ActionResult SignOut()
         {
             HttpContext.Session.Clear();
-            return RedirectToAction("SignIn", "User");
+            return RedirectToAction("SignIn", "Public");
         }
 
         // GET: User
@@ -86,7 +86,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
                         ViewBag.ErrorMessage = "Email not confiremed";
                         return View(user);
                     }
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("CompletedSignIn", "Public");
                 }
 
             }

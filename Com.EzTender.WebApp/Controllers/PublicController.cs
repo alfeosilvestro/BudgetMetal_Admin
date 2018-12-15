@@ -92,6 +92,12 @@ namespace Com.EzTender.WebApp.Controllers
             return View();
         }
 
+        public IActionResult CompletedSignIn()
+        {
+
+            return View();
+        }
+
         public IActionResult SingleRFQ(int id)
         {
             ViewBag.Id = id;
