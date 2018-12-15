@@ -38,5 +38,12 @@ namespace Com.BudgetMetal.DataRepository.RfqInvites
             return result;
         }
 
+        public async Task<List<Com.BudgetMetal.DBEntities.RfqInvites>> GetByDocumentId(int documentId)
+        {
+            var result = await this.entities.Include(e => e.Rfq).Where(e => e.Rfq.Document_Id == documentId && e.IsActive == true).ToListAsync();
+
+            return result;
+        }
+
     }
 }

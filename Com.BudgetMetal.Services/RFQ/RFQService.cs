@@ -43,6 +43,8 @@ using Com.BudgetMetal.ViewModels.Industries;
 using Com.BudgetMetal.DataRepository.Industries;
 using Com.BudgetMetal.ViewModels.RfqInvites;
 using Com.BudgetMetal.DataRepository.RfqInvites;
+using Microsoft.Extensions.Options;
+using Com.BudgetMetal.DataRepository.Code_Table;
 
 namespace Com.BudgetMetal.Services.RFQ
 {
@@ -67,6 +69,7 @@ namespace Com.BudgetMetal.Services.RFQ
         private readonly IClarificationRepository repoClarification;
         private readonly IIndustryRepository industryRepository;
         private readonly IRfqInvitesRepository rfqInvitesRepository;
+        private readonly ICodeTableRepository CTRepo;
 
         public RFQService(IDocumentRepository repoDocument, IRfqRepository repoRfq, 
             IAttachmentRepository repoAttachment, IRequirementRepository repoRequirement, 
@@ -75,7 +78,8 @@ namespace Com.BudgetMetal.Services.RFQ
             IDocumentUserRepository repoDocumentUser, IUserRepository repoUser, 
             IRoleRepository repoRole, ICompanyRepository repoCompany, 
             IDocumentActivityRepository repoDocumentActivity, IQuotationRepository repoQuotation, 
-            ITimeLineRepository repoTimeLine, ICompanySupplierRepository repoCompanySupplier, 
+            ITimeLineRepository repoTimeLine, ICompanySupplierRepository repoCompanySupplier,
+            ICodeTableRepository CTRepo,
             IClarificationRepository repoClarification, IRfqInvitesRepository rfqInvitesRepository, IIndustryRepository industryRepository)
         {
             this.repoDocument = repoDocument;
@@ -97,6 +101,7 @@ namespace Com.BudgetMetal.Services.RFQ
             this.repoClarification = repoClarification;
             this.industryRepository = industryRepository;
             this.rfqInvitesRepository = rfqInvitesRepository;
+            this.CTRepo = CTRepo;
         }
 
         public async Task<VmRfqPage> GetRfqByPage(int userId, int documentOwner, int page, int totalRecords, bool isCompanyAdmin, int statusId = 0, string keyword = "")
@@ -511,18 +516,18 @@ namespace Com.BudgetMetal.Services.RFQ
 
                                 Copy<VmRfqInvitesItem, Com.BudgetMetal.DBEntities.RfqInvites>(item, dbRfqEmailsInvites);
                                 dbRfqEmailsInvites.RfqId = dbRFQ.Id;
-                                string accessCode = Md5.Encrypt(string.Format("{0}{1}",dbRFQ.Id, item.EmailAddress));
+                                string accessCode = Md5.Encrypt(string.Format("{0}{1}", dbRFQ.Id, item.EmailAddress));
                                 dbRfqEmailsInvites.AccessCode = accessCode;
                                 dbRfqEmailsInvites.CreatedBy = dbRfqEmailsInvites.UpdatedBy = dbRFQ.CreatedBy;
                                 dbRfqEmailsInvites.Status = "";
                                 rfqInvitesRepository.Add(dbRfqEmailsInvites);
 
                                 //Email Sending
-                                var sendMail = new SendingMail();
-                                string emailSubject = "Rfq Invitation";
-                                string emailBody = string.Format("Hi {0}, you can view rfq with this access code {1}", item.Name, accessCode);
+                                //var sendMail = new SendingMail();
+                                //string emailSubject = "Rfq Invitation";
+                                //string emailBody = string.Format("Hi {0}, you can view rfq with this access code {1}", item.Name, accessCode);
 
-                                sendMail.SendMail(item.EmailAddress, "", emailSubject, emailBody);
+                                //sendMail.SendMail(item.EmailAddress, "", emailSubject, emailBody);
                             }
                         }
                         rfqInvitesRepository.Commit();
@@ -872,11 +877,11 @@ namespace Com.BudgetMetal.Services.RFQ
                                 rfqInvitesRepository.Add(dbRfqEmailsInvites);
 
                                 //Email Sending
-                                var sendMail = new SendingMail();
-                                string emailSubject = "Rfq Invitation";
-                                string emailBody = string.Format("Hi {0}, you can view rfq with this access code {1}", item.Name, accessCode);
+                                //var sendMail = new SendingMail();
+                                //string emailSubject = "Rfq Invitation";
+                                //string emailBody = string.Format("Hi {0}, you can view rfq with this access code {1}", item.Name, accessCode);
 
-                                sendMail.SendMail(item.EmailAddress, "", emailSubject, emailBody);
+                                //sendMail.SendMail(item.EmailAddress, "", emailSubject, emailBody);
                             }
                         }
                         rfqInvitesRepository.Commit();
@@ -1139,6 +1144,31 @@ namespace Com.BudgetMetal.Services.RFQ
                         };
                         repoTimeLine.Add(timelineForInvitedSupplier);
                         repoTimeLine.Commit();
+                    }
+                }
+
+                var dbRfqInvitedWithEmail = await rfqInvitesRepository.GetByDocumentId(documentId);
+                if (dbRfqInvitedWithEmail != null)
+                {
+                    if (dbRfqInvitedWithEmail.Count > 0)
+                    {
+                        foreach (var item in dbRfqInvitedWithEmail)
+                        {
+                            if (item.Name != null && item.EmailAddress != null)
+                            {
+                                //Email Sending
+                                var sendMail = new SendingMail();
+                                string emailSubject = "Rfq Invitation";
+                                string accessCode = Md5.Encrypt(string.Format("{0}{1}", item.RfqId, item.EmailAddress));
+                                var dbWebAppUrl = await CTRepo.Get(Constants_CodeTable.Code_SiteOption_WebUrl);
+                                string url = dbWebAppUrl.Value + "Public/RfqAccess/";
+
+                                string emailBody = string.Format("Hi {0}, you can view rfq with this access code {1} \n\n Please click the below links \n {2}", item.Name, accessCode, url);
+
+                                sendMail.SendMail(item.EmailAddress, "", emailSubject, emailBody);
+                            }
+                        }
+                        rfqInvitesRepository.Commit();
                     }
                 }
 

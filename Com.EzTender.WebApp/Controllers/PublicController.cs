@@ -52,49 +52,46 @@ namespace Com.EzTender.WebApp.Controllers
 
         public IActionResult Index()
         {
-
             return View();
         }
 
         public IActionResult RFQ()
         {
-
             return View();
         }
 
         public IActionResult TenderBoard()
         {
-
             return View();
         }
 
         public IActionResult CompanyPortal()
         {
-
             return View();
         }
 
         public IActionResult Registration()
         {
-
             return View();
         }
 
         public IActionResult ForgotPassword()
         {
-
             return View();
         }
 
         public IActionResult SignIn()
         {
-
             return View();
         }
 
         public IActionResult CompletedSignIn()
         {
+            return View();
+        }
 
+        public IActionResult RfqAccess()
+        {
             return View();
         }
 

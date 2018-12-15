@@ -65,8 +65,7 @@
                 var message = "";
                 if (response.IsActive == true) {
                     window.location.href = '/Home/Detail/' + response.RfqId;
-                    //message = "<div class='alert alert-success'> You have successfully reset password. Please check your email ("+ email +").</div>";
-                    //$("#resetPassword").hide();
+                    
                 } else {
                     message = "<div class='alert alert-danger'>Email and code does not match.</div>";
                     $("#email").select();

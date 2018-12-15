@@ -11,5 +11,7 @@ namespace Com.BudgetMetal.DataRepository.RfqInvites
         void InactiveByRFQId(int rfqId, string UpdatedBy);
 
         Task<Com.BudgetMetal.DBEntities.RfqInvites> GetRfqInvitesWithEmailandAccessCode(string email, string accessCode);
+
+        Task<List<Com.BudgetMetal.DBEntities.RfqInvites>> GetByDocumentId(int documentId);
     }
 }

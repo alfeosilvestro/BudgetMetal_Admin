@@ -14,7 +14,8 @@ namespace Com.BudgetMetal.Common
         public static readonly int CodeCat_QuotationStatus = 100040;
         public static readonly int CodeCat_ToleranceLevels = 10100000;
         public static readonly int CodeCat_Company = 100050;
-        public static readonly int CodeCat_TimeLineMessageType = 100050;
+        public static readonly int CodeCat_TimeLineMessageType = 100060;
+        public static readonly int CodeCat_SiteOption = 100070;
         #endregion
 
         #region Code Table
@@ -25,8 +26,7 @@ namespace Com.BudgetMetal.Common
 
         public static readonly int Code_RFQ = 100021;
         public static readonly int Code_Quotation = 100022;
-
-
+        
 
         public static readonly int Code_RFQ_Draft = 100031;
         public static readonly int Code_RFQ_RequiredApproval = 100032;
@@ -42,16 +42,16 @@ namespace Com.BudgetMetal.Common
         public static readonly int Code_Quotation_Rejected = 100044;
         public static readonly int Code_Quotation_Cancelled = 100045;
 
-
         public static readonly int Code_MaxDefaultRFQPerWeek = 10100001;
         public static readonly int Code_MaxDefaultQuotePerWeek = 10100002;
-
 
         public static readonly int Code_C_Buyer = 100051;
         public static readonly int Code_C_Supplier = 100052;
 
         public static readonly int Code_TM_Rfq = 100061;
         public static readonly int Code_TM_Quotation = 100062;
+
+        public static readonly int Code_SiteOption_WebUrl = 100071;
         #endregion
     }
 }
