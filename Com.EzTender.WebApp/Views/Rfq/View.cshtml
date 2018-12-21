@@ -648,6 +648,7 @@
                                             <th>Document No</th>
                                             <th>Company</th>
                                             <th>Status</th>
+                                            <th>Price</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -1182,6 +1183,7 @@ function loadIndustry() {
                         "<td>" + item.Document.DocumentNo + "</td>" +
                         "<td>" + item.Document.Company.Name+ "</td>" +
                         "<td>" + item.Document.DocumentStatus.Name + "</td>" +
+                        "<td class='align-right'>" + item.QuotedFigure + "</td>" +
                         "</tr>"
                     );
 

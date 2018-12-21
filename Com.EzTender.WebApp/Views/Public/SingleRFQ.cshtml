@@ -16,7 +16,7 @@
         <div class="sections_group">
             <div class="entry-content">
 
-                <iframe src="@(Url.Action("Detail", "Public"))/@(ViewBag.Id)" width="100%" frameborder="0" scrolling="no" onload="resizeIframe(this)"></iframe>
+                <iframe src="@(Url.Action("Detail", "Public"))/@(ViewBag.Id)?code=@(ViewBag.Code)" width="100%" frameborder="0" scrolling="no" onload="resizeIframe(this)"></iframe>
 
 
             </div>

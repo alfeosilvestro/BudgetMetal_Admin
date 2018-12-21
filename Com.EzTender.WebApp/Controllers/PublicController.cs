@@ -113,15 +113,19 @@ namespace Com.EzTender.WebApp.Controllers
 
         public IActionResult SingleRFQ(int id)
         {
+            string code = Request.Query["c"];
             ViewBag.Id = id;
+            ViewBag.Code = code;
             return View();
         }
         // GET: Rfq/Edit/5
         [HttpGet]
         public async Task<ActionResult> Detail(int id)
-        {
+        {            
             try
             {
+                string code = Request.Query["code"];
+                ViewBag.Code = code;
                 var result = await rfqService.GetPublicPortalSingleRfqById(id);
 
                 return View(result);
