@@ -129,6 +129,12 @@ function RemoveAttachmentRFQRow(item) {
     $(item).parent().parent().remove();
 }
 
+
+$("input:file").change(function () {
+    var fileName = $(this).val();
+    alert(fileName);
+});
+
 $("#btnRfqEmailsInvites").click(function () {
     var detailEmalsInviteLastId = $("#detailEmalsInviteLastId").val();
 
