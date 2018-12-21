@@ -112,7 +112,7 @@ function RemovePricingRow(item) {
 $("#btnNewFile").click(function () {
     var newRow = "<tr>" +
         "<td> " +
-        "<input type='file' name='attachmentRFQ[]' class='form-control' />" +
+        "<input type='file' name='attachmentRFQ[]' class='form-control' onchange='getFilename(this)' />" +
         "</td> " +
         "<td> " +
         "<input type='text' name='fileDescriptionRFQ[]' class='form-control' />" +
@@ -127,6 +127,12 @@ $("#btnNewFile").click(function () {
 
 function RemoveAttachmentRFQRow(item) {
     $(item).parent().parent().remove();
+}
+
+function getFileName(elm) {
+    var fn = $(elm).val();
+    var filename = fn.match(/[^\\/]*$/)[0]; // remove C:\fakename
+    alert(filename);
 }
 
 $("#btnRfqEmailsInvites").click(function () {

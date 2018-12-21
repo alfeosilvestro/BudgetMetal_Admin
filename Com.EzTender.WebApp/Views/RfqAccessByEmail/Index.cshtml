@@ -19,7 +19,7 @@
                         <label for="currentPassword">Email :</label>
                     </div>
                     <div class="col-sm-4">
-                        <input type="text" name="email" id="email" value="" class="form-control" required onfocusout="CheckEmail()" />
+                        <input type="text" name="email" id="email" value="" class="form-control" />
                         <span class="text-danger" id="emailInfo">Email is wrong.</span>
                     </div>
                 </div>
@@ -61,14 +61,20 @@
                 console.log(response);
                 $("#messageToUser").empty();
                 var message = "";
-                if (response.IsActive == true) {
-                    top.location.href = '@Url.Action("SingleRFQ", "Public")' + '/' + response.RfqId ;
+                if (response != null) {
+                    if (response.IsActive == true) {
+                        top.location.href = '@Url.Action("SingleRFQ", "Public")' + '/' + response.RfqId + "?c=" + accessCode;
 
+                    } else {
+                        message = "<div class='alert alert-danger'>Email and code does not match.</div>";
+                        $("#email").select();
+                    }
+                    $("#messageToUser").append(message);
                 } else {
                     message = "<div class='alert alert-danger'>Email and code does not match.</div>";
                     $("#email").select();
-                }
-                $("#messageToUser").append(message);
+                    $("#messageToUser").append(message);
+                }              
             },
             error: function (response) {
                 alert(response)

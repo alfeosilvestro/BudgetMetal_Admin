@@ -7,7 +7,7 @@
 
 <form asp-controller="Rfq" asp-action="View" method="post" enctype="multipart/form-data" id="frmCreateRFQ">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    
+
     <!-- Input -->
     <div class="row clearfix">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -394,48 +394,59 @@
             </div>
         </div>
     </div>
-    @*<div class="row clearfix">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="card">
-                    <div class="header">
-                        <h2>
-                            Quotation List
-                        </h2>
-                    </div>
-                    <div class="body">
+    @{
+        if (ViewBag.Code != "")
+        {
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>
+                                Quotation List
+                            </h2>
+                        </div>
+                        <div class="body">
 
-                        <div class="row clearfix">
-                            <table class="table table-striped" id="tbQuotation">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>Document No</th>
-                                        <th>Company</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                            <div class="row" id="pagination">
-                                <div class="col-sm-12" id="divPagination">
+                            <div class="row clearfix">
+                                <table class="table table-striped" id="tbQuotation">
+                                    <thead>
+                                        <tr>
+                                            <th>Document No</th>
+                                            <th>Company</th>
+                                            <th>Status</th>
+                                            <th>Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                                <div class="row" id="pagination">
+                                    <div class="col-sm-12" id="divPagination">
 
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>*@
-    <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="card">
-                <div class="body">
-                    <a type="button" class="btn btn-danger" href='http://localhost:60735/user/signIn'>Register Interest</a>
-                    <input type="hidden" id="loadinvitedsupplier" value="0" />
+        }
+    }
+
+    @{
+        if (ViewBag.Code == "")
+        {
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="body">
+                            <a type="button" class="btn btn-danger" href='http://localhost:60735/user/signIn'>Register Interest</a>
+                            <input type="hidden" id="loadinvitedsupplier" value="0" />
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+        }
+    }
 </form>
 
 
@@ -473,9 +484,17 @@
 
         //loadUser();
         //loadRole();
-        //loadQuotation(1);
+        @{
+            string temp = "";
+            if (ViewBag.Code != "")
+            {
+                temp = "loadQuotation(1);";
+            }
+        } 
+        @(temp)
+
         $('#frmCreateRFQ input').attr('readonly', 'readonly');
-       // $('#StartRfqdate').datepicker("setDate", new Date(2008, 9, 03));
+            // $('#StartRfqdate').datepicker("setDate", new Date(2008, 9, 03));
     });
 
 
@@ -803,10 +822,10 @@ function loadIndustry() {
                     var url = '@Url.Action("View", "Quotation")';
                     $('#tbQuotation > tbody').append(
                         "<tr>" +
-                        "<td> <a type='button' class='btn btn-warning' href='" + url+"/"+item.Id+"' target='_blank'>View</a>  </td>" +
                         "<td>" + item.Document.DocumentNo + "</td>" +
                         "<td>" + item.Document.Company.Name+ "</td>" +
                         "<td>" + item.Document.DocumentStatus.Name + "</td>" +
+                        "<td class='align-right'>" + item.QuotedFigure + "</td>" +
                         "</tr>"
                     );
                 }
