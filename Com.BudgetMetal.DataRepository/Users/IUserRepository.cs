@@ -15,13 +15,15 @@ namespace Com.BudgetMetal.DataRepository.Users
         //User GetUserById(int Id );
 
         //Role GetRoleFileById(int Id);
-        Task<User> GetUser(string email, string password);
+        Task<User> GetUser(string username, string password);
 
         Task<List<User>> GetUserByCompany(int Id);
 
         Task<Com.BudgetMetal.DBEntities.User> GetUserById(int id);
 
         Task<Com.BudgetMetal.DBEntities.User> GetUserByEmail(string email);
+
+        Task<Com.BudgetMetal.DBEntities.User> GetUserByUserName(string UserName);
 
         List<string> GetSupplierAdmin(List<int> supplierList);
 

@@ -64,11 +64,11 @@ namespace Com.EzTender.WebApp.Controllers
                 //var location = new Uri($"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}");
                 var location = new Uri($"{Request.Scheme}://{Request.Host}");
                 var url = location.AbsoluteUri;
-                string encodeEmail = user.EmailAddress.EncodeString(); // Convert.ToBase64String(Encoding.UTF8.GetBytes(user.EmailAddress));
+                string encodeUserName = user.UserName.EncodeString(); // Convert.ToBase64String(Encoding.UTF8.GetBytes(user.EmailAddress));
                 string token = _appSettings.App_Identity.Identity;
                 //var byte_time = Encoding.UTF8.GetBytes(DateTime.Now.AddDays(2).ToString());
                 string encodeTimeLimit = DateTime.Now.AddDays(2).ToString().EncodeString(); // Convert.ToBase64String(byte_time);
-                confirmationLink = url + "Registration/ConfirmUser?token=" + token + "&e=" + encodeEmail + "&t=" + encodeTimeLimit;
+                confirmationLink = url + "Public/ConfirmUser?token=" + token + "&e=" + encodeUserName + "&t=" + encodeTimeLimit;
 
                 mailBody = "Please confirm your account by clicking the following link \n " + confirmationLink;
                 SendingMail sm = new SendingMail();
@@ -119,6 +119,17 @@ namespace Com.EzTender.WebApp.Controllers
         }
 
         [HttpGet]
+        public async Task<JsonResult> CheckUserName(string UserName)
+        {
+            var result = await userService.CheckUserName(UserName);
+
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
+
+        [HttpGet]
         public async Task<JsonResult> CheckUEN(string RegNo)
         {
             var result = await companyService.GetCompanyByUEN(RegNo);
@@ -128,6 +139,8 @@ namespace Com.EzTender.WebApp.Controllers
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             });
         }
+
+
 
         [HttpGet]
         public async Task<JsonResult> GetServiceTagsByCompanyId(int companyId)
@@ -191,16 +204,16 @@ namespace Com.EzTender.WebApp.Controllers
             //HttpContext.Session.SetString("WebAppUrl", _appSettings.App_Identity.WebAppUrl);
             if (token == _token)
             {
-                string email = Request.Query["e"];
+                string username = Request.Query["e"];
                 string timeLimit = Request.Query["t"];
-                if (timeLimit != null && email != null)
+                if (timeLimit != null && username != null)
                 {
-                    email = email.DecodeString(); // Encoding.UTF8.GetString(Convert.FromBase64String(email));
+                    username = username.DecodeString(); // Encoding.UTF8.GetString(Convert.FromBase64String(email));
                     timeLimit = timeLimit.DecodeString(); // Encoding.UTF8.GetString(Convert.FromBase64String(timeLimit));
 
                     if (DateTime.Now < Convert.ToDateTime(timeLimit))
                     {
-                        var result = await userService.ConfirmEmail(email);
+                        var result = await userService.ConfirmUserName(username);
 
                         if (result.IsSuccess)
                         {

@@ -129,6 +129,12 @@ function RemoveAttachmentRFQRow(item) {
     $(item).parent().parent().remove();
 }
 
+
+$("input:file").change(function () {
+    var fileName = $(this).val();
+    alert(fileName);
+});
+
 function getFileName(elm) {
     var fn = $(elm).val();
     var filename = fn.match(/[^\\/]*$/)[0]; // remove C:\fakename

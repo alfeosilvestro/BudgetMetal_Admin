@@ -11,13 +11,13 @@
         <div class="card">
             <div class="body">
                 @{
-                    string webAppUrl = Context.Session.GetString("WebAppUrl") + "user/signin";
+                    string webAppUrl = Context.Session.GetString("WebAppUrl") + "public/signin";
                     if (TempData["IsSuccess"] != null)
                     {
                         if (TempData["IsSuccess"].ToString() == "True")
                         {
                             <div class="alert alert-success">
-                                @TempData["Message"] <strong> <a href="@webAppUrl" style="color:navajowhite;">Click Here</a></strong>  to Login.
+                                @TempData["Message"] <strong> <a href="@(webAppUrl)" style="color:navajowhite;">Click Here</a></strong>  to Login.
                             </div>
                         }
                         else

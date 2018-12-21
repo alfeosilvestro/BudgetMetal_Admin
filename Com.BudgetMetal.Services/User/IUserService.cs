@@ -28,11 +28,13 @@ namespace Com.BudgetMetal.Services.Users
 
         Task<bool> CheckEmail(string email);
 
+        Task<bool> CheckUserName(string Username);
+
         Task<bool> CheckCurrentPassword(int id, string currentPssword);
 
         Task<VmGenericServiceResult> Register(VmUserItem user, string[] serviceTags);
 
-        Task<VmGenericServiceResult> ConfirmEmail(string email);
+        Task<VmGenericServiceResult> ConfirmUserName(string Username);
 
         Task<VmGenericServiceResult> ResetPassword(string email, string newPassword);
 

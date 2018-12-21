@@ -80,6 +80,17 @@ namespace Com.EzTender.WebApp.Controllers
             return View();
         }
 
+        public IActionResult ConfirmUser()
+        {
+            string _token = Request.Query["token"];
+            string username = Request.Query["e"];
+            string timeLimit = Request.Query["t"];
+            ViewBag.token = _token;
+            ViewBag.e = username;
+            ViewBag.t = timeLimit;
+            return View();
+        }
+
         public IActionResult SignIn()
         {
             return View();

@@ -52,9 +52,17 @@
                     <h3>User Information</h3>
                     <fieldset>
                         <div class="form-group form-float">
-                            <label for="EmailAddress">Email Address</label> <span class="text-danger" id="error_email">Email already in use. Please use different email address.</span>
+                            <label for="UserName">User Name</label> <span class="text-danger" id="error_username">User Name already in use. Please use different user name.</span>
                             <div class="form-line">
-                                <input type="email" asp-for="EmailAddress" class="form-control" placeholder="Email" required onfocusout="checkEmail()">
+                                <input type="text" asp-for="UserName" class="form-control" placeholder="UserName" required onfocusout="checkUserName()">
+
+                            </div>
+                        </div>
+                        <div class="form-group form-float">
+                            <label for="EmailAddress">Email Address</label> 
+                            @*<span class="text-danger" id="error_email">Email already in use. Please use different email address.</span>*@
+                            <div class="form-line">
+                                <input type="email" asp-for="EmailAddress" class="form-control" placeholder="Email" required>
 
                             </div>
                         </div>
@@ -247,7 +255,7 @@
             checkUEN();
         });
 
-        $('#error_email').hide();
+        $('#error_username').hide();
 
         //$('input[id="EmailAddress"]').blur(function () {
         //    var email = $('input[id="EmailAddress"]').val();
@@ -256,6 +264,34 @@
 
 
     });
+
+    function checkUserName() {
+        var un = $('input[id="UserName"]').val();
+        var ajaxurl = '@Url.Action("CheckUserName", "Registration")';
+
+        $('#error_username').hide();
+
+        $.ajax({
+            url: ajaxurl,
+            data: { Username: un},
+            dataType: 'json',
+            success: function (response) {
+                console.log(response);
+                if (response == false) {
+                    //alert("ok");
+                } else {
+                    $('#error_username').show();
+
+                    //alert("Error, already exist");
+                    $('input[id="UserName"]').select();
+                }
+            },
+            error: function (response) {
+                alert(response)
+            }
+        });
+    }
+
     function checkEmail() {
         var email = $('input[id="EmailAddress"]').val();
         var ajaxurl = '@Url.Action("CheckEmail", "Registration")';
