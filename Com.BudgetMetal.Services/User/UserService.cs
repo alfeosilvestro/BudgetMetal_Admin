@@ -59,6 +59,23 @@ namespace Com.BudgetMetal.Services.Users
             }
         }
 
+        public async Task<bool> CheckUserName(string UserName)
+        {
+            var dbresult = await repo.GetUserByUserName(UserName);
+
+            if (dbresult == null)
+            {
+                return false;
+            }
+            else
+            {
+                var result = new VmUserItem();
+                Copy<Com.BudgetMetal.DBEntities.User, VmUserItem>(dbresult, result);
+
+                return true;
+            }
+        }
+
         public async Task<bool> CheckCurrentPassword(int id, string currentPassword)
         {
             var dbresult = await repo.GetUserById(id);
@@ -495,7 +512,7 @@ namespace Com.BudgetMetal.Services.Users
                     dbCompany.IsVerified = false;
                     dbCompany.SupplierAvgRating = dbCompany.BuyerAvgRating = dbCompany.AwardedQuotation = dbCompany.SubmittedQuotation = 0;
                     dbCompany.C_BusinessType = Constants_CodeTable.Code_C_Supplier;
-                    dbCompany.CreatedBy = dbCompany.UpdatedBy = user.EmailAddress;
+                    dbCompany.CreatedBy = dbCompany.UpdatedBy = user.UserName;
                     var dbResultCompany = cRepo.Add(dbCompany);
                     cRepo.Commit();
                     companyId = dbResultCompany.Id;
@@ -507,7 +524,7 @@ namespace Com.BudgetMetal.Services.Users
                             var dbSupplierServicTags = new SupplierServiceTags();
                             dbSupplierServicTags.Company_Id = companyId;
                             dbSupplierServicTags.ServiceTags_Id = Convert.ToInt32(item);
-                            dbSupplierServicTags.CreatedBy = dbSupplierServicTags.UpdatedBy = user.EmailAddress;
+                            dbSupplierServicTags.CreatedBy = dbSupplierServicTags.UpdatedBy = user.UserName;
 
                             supplierServiceTagsRepo.Add(dbSupplierServicTags);
 
@@ -520,8 +537,7 @@ namespace Com.BudgetMetal.Services.Users
                 Copy<VmUserItem, Com.BudgetMetal.DBEntities.User>(user, dbUser, new string[] { "Company" });
                 dbUser.Company_Id = companyId;
                 dbUser.Password = Common.Md5.Encrypt(dbUser.Password);
-                dbUser.CreatedBy = dbUser.UpdatedBy = user.EmailAddress;
-                dbUser.UserName = user.ContactName;
+                dbUser.CreatedBy = dbUser.UpdatedBy = user.UserName;
                 dbUser.IsConfirmed = false;
                 dbUser.UserType = Constants_CodeTable.Code_Supplier;
 
@@ -541,23 +557,23 @@ namespace Com.BudgetMetal.Services.Users
             return result;
         }
 
-        public async Task<VmGenericServiceResult> ConfirmEmail(string email)
+        public async Task<VmGenericServiceResult> ConfirmUserName(string Username)
         {
             var result = new VmGenericServiceResult();
 
-            var dbresult = await repo.GetUserByEmail(email);
+            var dbresult = await repo.GetUserByUserName(Username);
 
             if (dbresult == null)
             {
                 result.IsSuccess = false;
-                result.MessageToUser = "This email is not registered.";
+                result.MessageToUser = "This user is not registered.";
             }
             else
             {
                 if (dbresult.IsConfirmed)
                 {
                     result.IsSuccess = false;
-                    result.MessageToUser = "This email is already confirmed.";
+                    result.MessageToUser = "This user is already confirmed.";
                 }
                 else
                 {
