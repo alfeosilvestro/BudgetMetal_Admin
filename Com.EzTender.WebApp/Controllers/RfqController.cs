@@ -207,8 +207,8 @@ namespace Com.GenericPlatform.WebApp.Controllers
                     documentAction = "Submitted";
                 }
                 Rfq.SelectedTags = Request.Form["SelectedTags"].ToString();
-                Rfq.Document.UpdatedBy = HttpContext.Session.GetString("EmailAddress");
-                Rfq.UpdatedBy = HttpContext.Session.GetString("EmailAddress");
+                Rfq.Document.UpdatedBy = HttpContext.Session.GetString("UserName");
+                Rfq.UpdatedBy = HttpContext.Session.GetString("UserName");
                 //var listAttachment = new List<VmAttachmentItem>();
                 int i = 0;
 
@@ -910,6 +910,22 @@ namespace Com.GenericPlatform.WebApp.Controllers
                 rfqId = int.Parse(RfqId);
             }
             var result = await rfqService.ResendEmail(Email, rfqId);
+
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> AddInvitationUser(string RfqId, string name, string email)
+        {
+            int rfqId = 0;
+            if (!string.IsNullOrEmpty(RfqId))
+            {
+                rfqId = int.Parse(RfqId);
+            }
+            var result = await rfqService.AddInvitationUser(rfqId,name,email, HttpContext.Session.GetString("UserName"));
 
             return new JsonResult(result, new JsonSerializerSettings()
             {

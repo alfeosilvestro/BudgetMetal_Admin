@@ -57,5 +57,7 @@ namespace Com.BudgetMetal.Services.RFQ
         Task<VmRfqPage> GetLoadTenderNoticBoardPublicRFQ(int page);
 
         Task<string> ResendEmail(string email, int rfqId);
+
+        Task<VmGenericServiceResult> AddInvitationUser(int rfqId, string name, string email, string createdBy);
     }
 }

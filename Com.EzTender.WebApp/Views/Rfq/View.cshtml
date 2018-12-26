@@ -582,7 +582,14 @@
                                                 <tr>
                                                     <td> @item.Name </td>
                                                     <td> @item.EmailAddress </td>
-                                                    <td> <input type="button" class='btn btn-primary' value="Resend" onclick="ResendEmail('@item.EmailAddress')"> </td>
+                                                    <td> 
+                                                    @{ 
+                                                        if (Model.Document.DocumentStatus_Id == Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Open)
+                                                        {
+                                                            <input type="button" class='btn btn-primary' value="Resend" onclick="ResendEmail('@item.EmailAddress')">
+                                                        }
+                                                    }
+                                                     </td>
                                                 </tr>
                                             }
                                         }
@@ -800,20 +807,28 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Resend Email</h4>
+                <h4 class="modal-title">User Invitation</h4>
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="form-group col-md-12">
-                        <textarea hidden name="userId" id="userId" rows="1" style="width:100%; resize: none;"></textarea>
-                        Name: <textarea name="Name" id="name" rows="1" style="width:100%; resize: none;"></textarea>
+                    <div class="col-sm-7">
+                        <label for="invite_name">Name</label>
+                        <input type="text" name="invite_name" class="form-control" id="invite_name" value="" />
                         <br />
-                        Email: <textarea name="EmailAddress" id="emailAddress" rows="1" style="width:100%; resize: none;"></textarea>
+                    </div>
+                    <div class="col-sm-7">
+                        <label for="invite_name">Email</label>
+                        <input type="email" name="invite_email" class="form-control" id="invite_email" value="" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <span class="text-danger" id="error_invitation"></span>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="btnAdd">Add</button>
+                <button type="button" class="btn btn-primary" id="btnAddInvitation">Save &amp; Invite</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             </div>
         </div>
@@ -865,7 +880,37 @@
         $('#frmCreateRFQ input').attr('readonly', 'readonly');
     });
 
-
+    $("#btnAddInvitation").click(function () {
+        var ajaxurl = '@Url.Action("AddInvitationUser", "Rfq")';
+        var username = $("#invite_name").val();
+        var useremail = $("#invite_email").val();
+        $('.page-loader-wrapper').fadeIn();
+            $.ajax({
+                url: ajaxurl,
+                data: { RfqId: @(Model.Id), name: username, email: useremail},
+                dataType: 'json',
+                success: function (response) {
+                    //console.log(response);
+                    var obj = response;
+                    if (obj.IsSuccess) {
+                        var trString = "";
+                        trString = "<tr><td>" + username + "</td><td>" + useremail + "</td><td><input type='button' class='btn btn-primary' value='Resend' onclick=\"ResendEmail('" + useremail + "')\"></td>" + "</tr>";
+                        $("#reqEmailInvitesTable tbody").append(trString);
+                        $("#invite_name").val("");
+                        $("#invite_email").val("");
+                        $("#resendEmailModal").modal("hide");
+                        $("#error_invitation").empty();
+                    } else {
+                        $("#error_invitation").empty();
+                        $("#error_invitation").append(obj.MessageToUser);
+                    }
+                    $('.page-loader-wrapper').fadeOut();
+                },
+                error: function (response) {
+                    alert(response)
+                }
+            });
+    });
 
     $("#btnDelete").click(function () {
         var ajaxurl = '@Url.Action("DeleteRfq", "Rfq")';

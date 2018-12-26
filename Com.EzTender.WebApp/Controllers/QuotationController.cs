@@ -314,7 +314,7 @@ var result = await quotationService.GetSingleQuotationById(id);
                 result.Document.DocumentType_Id = Constants_CodeTable.Code_Quotation;
                 result.Document.Company_Id = Convert.ToInt32(HttpContext.Session.GetString("Company_Id"));
                 result.Document.ContactPersonName = HttpContext.Session.GetString("ContactName");
-                result.Document.CreatedBy = result.Document.UpdatedBy = result.CreatedBy = result.UpdatedBy = HttpContext.Session.GetString("EmailAddress");
+                result.Document.CreatedBy = result.Document.UpdatedBy = result.CreatedBy = result.UpdatedBy = HttpContext.Session.GetString("UserName");
                 result.Document.DocumentUser = new List<VmDocumentUserItem>();
                 var documentUser = new VmDocumentUserItem
                 {

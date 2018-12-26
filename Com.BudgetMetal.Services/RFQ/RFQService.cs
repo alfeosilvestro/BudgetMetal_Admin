@@ -2038,5 +2038,30 @@ namespace Com.BudgetMetal.Services.RFQ
 
             return "Error";
         }
+
+        public async Task<VmGenericServiceResult> AddInvitationUser(int rfqId, string name, string email, string createdBy)
+        {
+            var result = new VmGenericServiceResult();
+            try
+            {
+                result.IsSuccess = true;
+                var dbItem = new Com.BudgetMetal.DBEntities.RfqInvites()
+                {
+                    RfqId = rfqId,
+                    Name = name,
+                    EmailAddress = email,
+                    CreatedBy = createdBy,
+                    UpdatedBy = createdBy
+                };
+                rfqInvitesRepository.Add(dbItem);
+                result.MessageToUser = await ResendEmail(email, rfqId);
+            }
+            catch(Exception ex)
+            {
+                result.IsSuccess = false;
+                result.MessageToUser = ex.Message;
+            }
+            return result;
+        }
     }
 }
