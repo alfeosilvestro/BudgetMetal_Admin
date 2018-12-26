@@ -13,5 +13,7 @@ namespace Com.BudgetMetal.DataRepository.RfqInvites
         Task<Com.BudgetMetal.DBEntities.RfqInvites> GetRfqInvitesWithEmailandAccessCode(string email, string accessCode);
 
         Task<List<Com.BudgetMetal.DBEntities.RfqInvites>> GetByDocumentId(int documentId);
+
+        Task<Com.BudgetMetal.DBEntities.RfqInvites> GetByEmailAndRfqId(string email, int rfqId);
     }
 }

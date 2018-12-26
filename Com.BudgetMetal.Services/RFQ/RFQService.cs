@@ -2016,5 +2016,27 @@ namespace Com.BudgetMetal.Services.RFQ
 
             return resultObj;
         }
+
+        public async Task<string> ResendEmail(string email, int rfqId)
+        {
+            if (email != null && rfqId >0)
+            {
+                var dbRfqInvitedWithEmail = await rfqInvitesRepository.GetByEmailAndRfqId(email, rfqId);
+                //Email Sending
+                var sendMail = new SendingMail();
+                string emailSubject = "Rfq Invitation";
+                string accessCode = Md5.Encrypt(string.Format("{0}{1}", dbRfqInvitedWithEmail.RfqId, dbRfqInvitedWithEmail.EmailAddress));
+                var dbWebAppUrl = await CTRepo.Get(Constants_CodeTable.Code_SiteOption_WebUrl);
+                string url = dbWebAppUrl.Value + "/Public/RfqAccess/";
+
+                string emailBody = string.Format("Hi {0}, you can view rfq with this access code {1} \n\n Please click the below links \n {2}", dbRfqInvitedWithEmail.Name, accessCode, url);
+
+                sendMail.SendMail(email, "", emailSubject, emailBody);
+
+                return "Success";
+            }
+
+            return "Error";
+        }
     }
 }

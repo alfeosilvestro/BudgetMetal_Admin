@@ -200,7 +200,7 @@ namespace Com.EzTender.PublicPortal.Controllers
 
                     if (DateTime.Now < Convert.ToDateTime(timeLimit))
                     {
-                        var result = await userService.ConfirmEmail(email);
+                        var result = await userService.ConfirmUserName(email);
 
                         if (result.IsSuccess)
                         {

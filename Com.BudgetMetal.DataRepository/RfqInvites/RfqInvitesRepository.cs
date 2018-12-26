@@ -45,5 +45,11 @@ namespace Com.BudgetMetal.DataRepository.RfqInvites
             return result;
         }
 
+        public async Task<Com.BudgetMetal.DBEntities.RfqInvites> GetByEmailAndRfqId(string email, int rfqId)
+        {
+            var result = await this.entities.Where(e =>e.RfqId == rfqId && e.EmailAddress == email && e.IsActive == true).FirstOrDefaultAsync();
+
+            return result;
+        }
     }
 }

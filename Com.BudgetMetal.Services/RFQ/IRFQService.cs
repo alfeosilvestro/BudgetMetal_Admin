@@ -55,5 +55,7 @@ namespace Com.BudgetMetal.Services.RFQ
         Task<VmGenericServiceResult> CheckPermissionForRFQ(int companyId, int C_BussinessType, int userId, int RfqId, bool companyAdmin);
 
         Task<VmRfqPage> GetLoadTenderNoticBoardPublicRFQ(int page);
+
+        Task<string> ResendEmail(string email, int rfqId);
     }
 }

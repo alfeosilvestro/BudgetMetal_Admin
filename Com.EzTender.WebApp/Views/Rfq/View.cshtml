@@ -556,10 +556,7 @@
                                                         }
 
                                                     </td>
-
-
                                                 </tr>
-
                                             }
                                         }
                                     }
@@ -572,6 +569,7 @@
                                     <tr>
                                         <th width="30%">Name</th>
                                         <th width="50%">Email Address</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody id="rfqEmailInvites">
@@ -584,12 +582,22 @@
                                                 <tr>
                                                     <td> @item.Name </td>
                                                     <td> @item.EmailAddress </td>
+                                                    <td> <input type="button" class='btn btn-primary' value="Resend" onclick="ResendEmail('@item.EmailAddress')"> </td>
                                                 </tr>
                                             }
                                         }
                                     }
                                 </tbody>
                             </table>
+                            @{
+                                if (Model.Document.DocumentStatus_Id == Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Open)
+                                {
+                                    <div>
+                                        <br />
+                                        <button type="button" data-toggle="modal" data-target="#resendEmailModal" id="btnEmailInvite" class="btn btn-primary">Email Invite</button>
+                                    </div>
+                                }
+                            }
                         </div>
                         <div role="tabpanel" class="tab-pane fade in" id="DocumentActivity">
 
@@ -741,7 +749,6 @@
                     }
                 }
 
-
                 <div class="row clearfix">
                     <div class="col-sm-12" id="divClarificationList">
                         @{
@@ -783,6 +790,31 @@
                     </div>
 
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="resendEmailModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Resend Email</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <textarea hidden name="userId" id="userId" rows="1" style="width:100%; resize: none;"></textarea>
+                        Name: <textarea name="Name" id="name" rows="1" style="width:100%; resize: none;"></textarea>
+                        <br />
+                        Email: <textarea name="EmailAddress" id="emailAddress" rows="1" style="width:100%; resize: none;"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnAdd">Add</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>
@@ -1133,7 +1165,6 @@ function loadIndustry() {
                             }
                         });
 
-
                         var tmpstring = "<option value='" + item.Id + "' " + selected + ">" + item.Name + "</option>"
                         $('#ddlServiceTags').append(tmpstring);
                     }
@@ -1224,6 +1255,26 @@ function loadIndustry() {
             },
             error: function (response) {
                 alert(response)
+            }
+        });
+    }
+
+    function ResendEmail(email) {
+        var _rfqId = parseInt($('#RfqId').val());
+        var _email = '';
+        var ajaxurl = '@Url.Action("ResendEmail", "Rfq")';
+        $.ajax({
+            url: ajaxurl,
+            data: { Email: email, RfqId: _rfqId},
+            dataType: 'json',
+            success: function (response) {
+                console.log(response);
+                if (response =="Success"){
+                    alert(response);
+                }
+            },
+            error: function (response) {
+                alert(response);
             }
         });
     }

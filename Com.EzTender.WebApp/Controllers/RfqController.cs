@@ -900,5 +900,21 @@ namespace Com.GenericPlatform.WebApp.Controllers
             return File(fileBytes, "application/force-download", fileName);
 
         }
+
+        [HttpGet]
+        public async Task<JsonResult> ResendEmail(string Email, string RfqId)
+        {
+            int rfqId = 0;
+            if (!string.IsNullOrEmpty(RfqId))
+            {
+                rfqId = int.Parse(RfqId);
+            }
+            var result = await rfqService.ResendEmail(Email, rfqId);
+
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
     }
 }
