@@ -71,13 +71,13 @@ namespace Com.BudgetMetal.Services.RFQ
         private readonly IRfqInvitesRepository rfqInvitesRepository;
         private readonly ICodeTableRepository CTRepo;
 
-        public RFQService(IDocumentRepository repoDocument, IRfqRepository repoRfq, 
-            IAttachmentRepository repoAttachment, IRequirementRepository repoRequirement, 
-            ISlaRepository repoSla, IRfqPriceScheduleRepository repoRfqPriceSchedule, 
-            IPenaltyRepository repoPenalty, IInvitedSupplierRepository repoInvitedSupplier, 
-            IDocumentUserRepository repoDocumentUser, IUserRepository repoUser, 
-            IRoleRepository repoRole, ICompanyRepository repoCompany, 
-            IDocumentActivityRepository repoDocumentActivity, IQuotationRepository repoQuotation, 
+        public RFQService(IDocumentRepository repoDocument, IRfqRepository repoRfq,
+            IAttachmentRepository repoAttachment, IRequirementRepository repoRequirement,
+            ISlaRepository repoSla, IRfqPriceScheduleRepository repoRfqPriceSchedule,
+            IPenaltyRepository repoPenalty, IInvitedSupplierRepository repoInvitedSupplier,
+            IDocumentUserRepository repoDocumentUser, IUserRepository repoUser,
+            IRoleRepository repoRole, ICompanyRepository repoCompany,
+            IDocumentActivityRepository repoDocumentActivity, IQuotationRepository repoQuotation,
             ITimeLineRepository repoTimeLine, ICompanySupplierRepository repoCompanySupplier,
             ICodeTableRepository CTRepo,
             IClarificationRepository repoClarification, IRfqInvitesRepository rfqInvitesRepository, IIndustryRepository industryRepository)
@@ -485,7 +485,7 @@ namespace Com.BudgetMetal.Services.RFQ
                         repoInvitedSupplier.Commit();
                     }
                 }
-                
+
 
                 if (rfq.Document.DocumentActivityList != null)
                 {
@@ -549,16 +549,16 @@ namespace Com.BudgetMetal.Services.RFQ
                 repoTimeLine.Add(timeline);
                 repoTimeLine.Commit();
                 //send email to admin or rfq approver
-                if(rfq.Document.DocumentStatus_Id == Constants_CodeTable.Code_RFQ_RequiredApproval)
+                if (rfq.Document.DocumentStatus_Id == Constants_CodeTable.Code_RFQ_RequiredApproval)
                 {
 
-                    if(rfq.Document.DocumentUser.Where(e=>e.Role_Id == Constants.RFQApproverRoleId).ToList().Count >0)
+                    if (rfq.Document.DocumentUser.Where(e => e.Role_Id == Constants.RFQApproverRoleId).ToList().Count > 0)
                     {
                         var sendMail = new SendingMail();
                         string emailSubject = documentNo + " is pending for your action.";
                         string emailBody = "Please approve..... Email Template need to provide. ";
-                       
-                        foreach (var item in rfq.Document.DocumentUser.Where(e=>e.Role_Id == Constants.RFQApproverRoleId).ToList())
+
+                        foreach (var item in rfq.Document.DocumentUser.Where(e => e.Role_Id == Constants.RFQApproverRoleId).ToList())
                         {
                             var dbuser = await repoUser.Get(item.User_Id);
                             sendMail.SendMail(dbuser.EmailAddress, "", emailSubject, emailBody);
@@ -571,7 +571,7 @@ namespace Com.BudgetMetal.Services.RFQ
                         var sendMail = new SendingMail();
                         if (resultBuyerAdmin != null)
                         {
-                            string emailSubject = documentNo +" is pending for your action.";
+                            string emailSubject = documentNo + " is pending for your action.";
                             string emailBody = "Please approve..... Email Template need to provide. ";
                             foreach (var item in resultBuyerAdmin)
                             {
@@ -1870,6 +1870,23 @@ namespace Com.BudgetMetal.Services.RFQ
             return result;
         }
 
+        public async Task<VmGenericServiceResult> NotRelevantRfq(int rfqId, int companyId, string UpdatedBy)
+        {
+            var result = new VmGenericServiceResult();
+            try
+            {
+                repoInvitedSupplier.NotRelevantRfq(rfqId, companyId, UpdatedBy);
+                result.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.MessageToUser = ex.Message;
+            }
+
+            return result;
+        }
+
         public async Task<VmGenericServiceResult> AddClarification(int documentId, int userId, string userName, string clarification, int commentId)
         {
             var result = new VmGenericServiceResult();
@@ -1930,37 +1947,38 @@ namespace Com.BudgetMetal.Services.RFQ
                 {
                     result.IsSuccess = true;
                 }
-                else { 
-                if (C_BussinessType == Constants_CodeTable.Code_C_Buyer)
+                else
                 {
-                    if (rfq.Document.Company_Id == companyId)
+                    if (C_BussinessType == Constants_CodeTable.Code_C_Buyer)
                     {
-                        if (companyAdmin)
+                        if (rfq.Document.Company_Id == companyId)
                         {
-                            result.IsSuccess = true;
-                        }
-                        else
-                        {
-                            if (rfq.Document.DocumentUser != null)
+                            if (companyAdmin)
                             {
-                                if (rfq.Document.DocumentUser.Where(e => e.IsActive == true && e.User_Id == userId).ToList().Count > 0)
+                                result.IsSuccess = true;
+                            }
+                            else
+                            {
+                                if (rfq.Document.DocumentUser != null)
                                 {
-                                    result.IsSuccess = true;
+                                    if (rfq.Document.DocumentUser.Where(e => e.IsActive == true && e.User_Id == userId).ToList().Count > 0)
+                                    {
+                                        result.IsSuccess = true;
+                                    }
                                 }
                             }
                         }
                     }
-                }
-                else if (C_BussinessType == Constants_CodeTable.Code_C_Supplier)
-                {
-                    if(rfq.InvitedSupplier != null)
+                    else if (C_BussinessType == Constants_CodeTable.Code_C_Supplier)
                     {
-                        if (rfq.InvitedSupplier.Where(e => e.IsActive == true && e.Company_Id == companyId).ToList().Count > 0)
+                        if (rfq.InvitedSupplier != null)
                         {
-                            result.IsSuccess = true;
+                            if (rfq.InvitedSupplier.Where(e => e.IsActive == true && e.Company_Id == companyId).ToList().Count > 0)
+                            {
+                                result.IsSuccess = true;
+                            }
                         }
                     }
-                }
                 }
             }
             return result;
@@ -2019,7 +2037,7 @@ namespace Com.BudgetMetal.Services.RFQ
 
         public async Task<string> ResendEmail(string email, int rfqId)
         {
-            if (email != null && rfqId >0)
+            if (email != null && rfqId > 0)
             {
                 var dbRfqInvitedWithEmail = await rfqInvitesRepository.GetByEmailAndRfqId(email, rfqId);
                 //Email Sending
@@ -2056,7 +2074,7 @@ namespace Com.BudgetMetal.Services.RFQ
                 rfqInvitesRepository.Add(dbItem);
                 result.MessageToUser = await ResendEmail(email, rfqId);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 result.IsSuccess = false;
                 result.MessageToUser = ex.Message;

@@ -1,8 +1,12 @@
 ﻿@model Com.BudgetMetal.ViewModels.Rfq.VmRfqItem
+
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Revise";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<form asp-controller="Rfq" asp-action="Create" method="post" enctype="multipart/form-data" id="frmCreateRFQ">
+
+
+<form asp-controller="Rfq" asp-action="Revise" method="post" enctype="multipart/form-data" id="frmCreateRFQ">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="block-header">
         <h2>Prepare Request for Quotation</h2>
@@ -44,7 +48,7 @@
                         </div>
                         <div class="col-sm-2">
                             <label for="status">Status</label>
-                            <h4><span class="label label-info">New</span></h4>
+                            <h4><span class="label label-info">@Model.Document.DocumentStatus.Name</span></h4>
                         </div>
                         <div class="col-sm-6">
                             <label for="quote_no">Internal Reference No</label>
@@ -82,15 +86,17 @@
                         <li role="presentation" class="active"><a href="#basic_requirements" data-toggle="tab">Info</a></li>
                         <li role="presentation"><a href="#detailed_requirements" data-toggle="tab">Requirements</a></li>
                         <li role="presentation"><a href="#service_level_agreement" data-toggle="tab">SLA</a></li>
-                        <li role="presentation"><a href="#penalty" data-toggle="tab">Commercial terms</a></li>
+                        <li role="presentation"><a href="#penalty" data-toggle="tab">Commercial terms ( need to confirm)</a></li>
                         <li role="presentation"><a href="#pricing" data-toggle="tab">Pricing Table</a></li>
-                        <li role="presentation"><a href="#invited_suppliers" data-toggle="tab">Invited Suppliers</a></li>
+                        <li role="presentation" id="tabinvited_suppliers"><a href="#invited_suppliers" data-toggle="tab">Invited Suppliers</a></li>
                         <li role="presentation"><a href="#attachments" data-toggle="tab">Files</a></li>
                         <li role="presentation"><a href="#settings" data-toggle="tab">Users</a></li>
+                        <li role="presentation"><a href="#DocumentActivity" data-toggle="tab">Activity</a></li>
                     </ul>
                     <!-- Tab panes -->
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane fade in active" id="basic_requirements">
+
                             <div class="row clearfix">
                                 <div class="col-sm-3">
                                     <label for="StartRfqdate">Start RFQ Date</label>
@@ -148,7 +154,14 @@
                                     </div>
                                 </div>
 
-
+                                @*<div class="col-sm-3">
+                                        <input type="checkbox" asp-for="SupplierProvideMaterial" class="chk-col-red" />
+                                        <label for="SupplierProvideMaterial">Supplier to Provide Materials</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input type="checkbox" asp-for="SupplierProvideTransport" class="chk-col-red" />
+                                        <label for="SupplierProvideTransport">Supplier to Provide Transport</label>
+                                    </div>*@
                                 <div class="col-sm-3">
                                     <input type="checkbox" asp-for="IsPublic" class="chk-col-red" />
                                     <label for="IsPublic">Public</label>
@@ -165,23 +178,17 @@
                                     <label for="quote_no">Messages to Suppliers</label>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <textarea rows="3" asp-for="MessageToSupplier" class="form-control no-resize" placeholder="Messages to Suppliers"></textarea>
+                                            <textarea rows="3" asp-for="MessageToSupplier" placeholder="Messages to Suppliers" class="form-control no-resize"></textarea>
                                             <span asp-validation-for="MessageToSupplier" class="text-danger"></span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
-                                    <span class="text-warning">Click <a href='@Url.Action("DownloadExcelTemplate","Rfq")'>Here</a> to Download Template</span><br /><br />
-                                    <label>Upload Template</label>
-                                    <input type="file" name="fUpload" id="fUpload" value="" class="form-control" /> 
-                                    <br />
-                                    <button type="button" class="btn btn-success" id="btnUploadFile">Upload Template</button>
-                                </div>
+
                             </div>
 
                         </div>
                         <div role="tabpanel" class="tab-pane fade in" id="detailed_requirements">
-                            <input type="hidden" id="detailRequirementLastId" value="1" />
+                            <input type="hidden" id="detailRequirementLastId" value="@Model.Requirement.Count" />
                             <table id="requirementsTable" class="table table-striped">
                                 <thead>
                                     <tr>
@@ -190,12 +197,28 @@
                                         <th>&nbsp;</th>
                                     </tr>
                                 </thead>
-                                <tbody id="requirementsTableBody">
-                                    <tr>
-                                        <td><input type="text" asp-for="Requirement[0].ServiceName" class="form-control" /></td>
-                                        <td><input type="text" asp-for="Requirement[0].Description" class="form-control" /></td>
-                                        <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveRequirementRow(this)'>Remove</button></td>
-                                    </tr>
+                                <tbody>
+                                    @{
+                                        if (Model.Requirement != null)
+                                        {
+                                            int i = 0;
+                                            foreach (var item in Model.Requirement)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <input type="text" name="Requirement[@i].ServiceName" class="form-control" value="@item.ServiceName" />
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" name="Requirement[@i].Description" class="form-control" value="@item.Description" />
+                                                    </td>
+
+                                                    <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveRequirementRow(this)'>Remove</button></td>
+                                                </tr>
+                                                i++;
+                                            }
+                                        }
+                                    }
+
                                 </tbody>
 
                             </table>
@@ -207,7 +230,7 @@
                             </div>
                         </div>
                         <div role="tabpanel" class="tab-pane fade in" id="service_level_agreement">
-                            <input type="hidden" id="detailSLALastId" value="1" />
+                            <input type="hidden" id="detailSLALastId" value="@Model.Sla.Count" />
                             <table id="slaTable" class="table table-striped">
                                 <thead>
                                     <tr>
@@ -216,12 +239,23 @@
                                         <th>&nbsp;</th>
                                     </tr>
                                 </thead>
-                                <tbody id="slaTableBody">
-                                    <tr>
-                                        <td><input type="text" asp-for="Sla[0].Requirement" class="form-control" /></td>
-                                        <td><input type="text" asp-for="Sla[0].Description" class="form-control" /></td>
-                                        <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveSLARow(this)'>Remove</button></td>
-                                    </tr>
+                                <tbody>
+                                    @{
+                                        if (Model.Sla != null)
+                                        {
+                                            int i = 0;
+                                            foreach (var item in Model.Sla)
+                                            {
+                                                <tr>
+                                                    <td><input type="text" name="Sla[@i].Requirement" class="form-control" value="@item.Requirement" /></td>
+                                                    <td><input type="text" name="Sla[@i].Description" class="form-control" value="@item.Description" /></td>
+                                                    <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveSLARow(this)'>Remove</button></td>
+                                                </tr>
+                                                i++;
+                                            }
+                                        }
+                                    }
+
                                 </tbody>
                             </table>
                             <div class="row">
@@ -232,23 +266,34 @@
                             </div>
                         </div>
                         <div role="tabpanel" class="tab-pane fade in" id="penalty">
-                            <input type="hidden" id="PenaltyLastId" value="1" />
+                            <input type="hidden" id="PenaltyLastId" value="@Model.Penalty.Count" />
                             <table id="penaltyTable" class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th width="30%">Phase(s)</th>
-                                        <th width="20%">Milestone(s)</th>
+                                        <th width="30%">Breach of Service Definition</th>
+                                        <th width="20%">Milestone</th>
                                         <th width="45%">Commercial term and description</th>
                                         <th>&nbsp;</th>
                                     </tr>
                                 </thead>
-                                <tbody id="penaltyTableBody">
-                                    <tr>
-                                        <td><input type="text" asp-for="Penalty[0].BreachOfServiceDefinition" class="form-control" /></td>
-                                        <td><input type="text" asp-for="Penalty[0].PenaltyAmount" class="form-control" /></td>
-                                        <td><input type="text" asp-for="Penalty[0].Description" class="form-control" /></td>
-                                        <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePenaltyRow(this)'>Remove</button></td>
-                                    </tr>
+                                <tbody>
+                                    @{
+                                        if (Model.Penalty != null)
+                                        {
+                                            int i = 0;
+                                            foreach (var item in Model.Penalty)
+                                            {
+                                                <tr>
+                                                    <td><input type="text" name="Penalty[@i].BreachOfServiceDefinition" class="form-control" value="@item.BreachOfServiceDefinition" /></td>
+                                                    <td><input type="text" name="Penalty[@i].PenaltyAmount" class="form-control" value="@item.PenaltyAmount" /></td>
+                                                    <td><input type="text" name="Penalty[@i].Description" class="form-control" value="@item.Description" /></td>
+                                                    <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePenaltyRow(this)'>Remove</button></td>
+                                                </tr>
+                                                i++;
+                                            }
+                                        }
+                                    }
+
                                 </tbody>
 
                             </table>
@@ -261,7 +306,7 @@
                         </div>
 
                         <div role="tabpanel" class="tab-pane fade in" id="pricing">
-                            <input type="hidden" id="PricingLastId" value="1" />
+                            <input type="hidden" id="PricingLastId" value="@Model.RfqPriceSchedule.Count" />
                             <table id="pricingTable" class="table table-striped">
                                 <thead>
                                     <tr>
@@ -272,14 +317,25 @@
                                         <th>&nbsp;</th>
                                     </tr>
                                 </thead>
-                                <tbody id="pricingTableBody">
-                                    <tr>
-                                        <td><input type="text" asp-for="RfqPriceSchedule[0].ItemName" class="form-control" /></td>
-                                        <td><input type="text" asp-for="RfqPriceSchedule[0].ItemDescription" class="form-control" /></td>
-                                        <td><input type="text" asp-for="RfqPriceSchedule[0].InternalRefrenceCode" class="form-control" /></td>
-                                        <td><input type="text" asp-for="RfqPriceSchedule[0].QuantityRequired" class="form-control" /></td>
-                                        <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePricingRow(this)'>Remove</button></td>
-                                    </tr>
+                                <tbody>
+                                    @{
+                                        if (Model.RfqPriceSchedule != null)
+                                        {
+                                            int i = 0;
+                                            foreach (var item in Model.RfqPriceSchedule)
+                                            {
+                                                <tr>
+                                                    <td><input type="text" name="RfqPriceSchedule[@i].ItemName" class="form-control" value="@item.ItemName" /> </td>
+                                                    <td><input type="text" name="RfqPriceSchedule[@i].ItemDescription" class="form-control" value="@item.ItemDescription" /></td>
+                                                    <td><input type="text" name="RfqPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>
+                                                    <td><input type="text" name="RfqPriceSchedule[@i].QuantityRequired" class="form-control" value="@item.QuantityRequired" /></td>
+                                                    <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePricingRow(this)'>Remove</button></td>
+                                                </tr>
+                                                i++;
+                                            }
+                                        }
+                                    }
+
                                 </tbody>
 
                             </table>
@@ -298,7 +354,9 @@
                                     <input type="hidden" asp-for="IndustryOfRfq" id="hdIndustry" />
                                 </div>
                                 <div class="col-sm-8">
+                                    @*<select id="ddlServiceTags" class="form-control"></select>*@
                                     <select asp-for="SelectedTags" class="form-control show-tick" id="ddlServiceTags" data-live-search="true" multiple></select>
+                                    <input type="hidden" value="@Model.SelectedTags" id="hdSelectedTags" />
                                 </div>
                                 <div class="col-sm-1">
 
@@ -314,6 +372,10 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
+                                    @{
+                                        string selectedSuppliers = string.Join(",", Model.InvitedSupplier.Select(m => m.Company_Id).ToArray());
+                                    }
+                                    <input type="hidden" id="hdSelectedSuppliers" value="@selectedSuppliers" />
                                     <a class="btn btn-success" id="btnLoadSupplier">Search Supplier</a>
                                 </div>
                             </div>
@@ -343,9 +405,12 @@
                                         <th width="*">&nbsp;</th>
                                     </tr>
                                 </thead>
-                                <tbody></tbody>
+                                <tbody>
+                                    
+                                </tbody>
 
                             </table>
+                            <iframe id="iframe_download_file" style="display:none" src=""></iframe>
                             <div class="row">
                                 <div class="form-group col-sm-12">
                                     <a class="btn btn-success" id="btnNewFile"> New </a>
@@ -374,36 +439,70 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>
-                                            <input type="hidden" name="documentUserId[]" value="@ViewBag.User_Id" />
-                                            <h5> @ViewBag.FullName </h5>
-                                            <input type="hidden" name="documentUserRole[]" value="3" />
-                                            <span class="label bg-deep-purple">RFQ Creator</span>
-                                        </td>
-                                        <td></td>
-                                    </tr>
+                                    @{
+                                        if (Model.Document.DocumentUserDisplay != null)
+                                        {
+                                            int i = 0;
+                                            foreach (var item in Model.Document.DocumentUserDisplay)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <input type="hidden" name='documentUserId[]' value="@item.User_Id" />
+                                                        <h5>@item.UserName</h5>
+                                                        <input type='hidden' name='documentUserRole[]' value='@item.Roles_Id' />
+                                                        @{
+                                                            foreach (string tmpRole in item.Roles)
+                                                            {
+
+                                                                <span class='label bg-deep-purple'>@tmpRole</span>
+                                                            }
+                                                        }
+
+                                                    </td>
+
+                                                    <td>
+                                                        @{
+                                                            if (i > 0)
+                                                            {
+                                                                <button type="button" class="btn btn-danger waves-effect" onclick='RemoveUserRow(this)'>Remove</button>
+                                                            }
+                                                        }
+                                                    </td>
+                                                </tr>
+                                                i++;
+                                            }
+                                        }
+                                    }
+
                                 </tbody>
                             </table>
 
                             <div id="rfq_Email_Invites">
-                                <input type="hidden" id="detailEmalsInviteLastId" value="1" />
+                                <input type="hidden" id="detailEmalsInviteLastId" value="@Model.RfqEmailInvites.Count" />
                                 <table id="reqEmailInvitesTable" class="table table-striped">
                                     <thead>
                                         <tr>
                                             <th width="30%">Name</th>
                                             <th width="50%">Email Address</th>
-                                            @*<th width="50%">AccessCode</th>*@
                                             <th>&nbsp;</th>
                                         </tr>
                                     </thead>
                                     <tbody id="rfqEmailInvites">
-                                        <tr>
-                                            <td><input type="text" asp-for="RfqEmailInvites[0].Name" class="form-control" /></td>
-                                            <td><input type="text" asp-for="RfqEmailInvites[0].EmailAddress" class="form-control" /></td>
-                                            @*<td><input type="text" asp-for="RfqEmailInvites[0].AccessCode" class="form-control" /></td>*@
-                                            <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveRfqEmailInvites(this)'>Remove</button></td>
-                                        </tr>
+                                        @{
+                                            if (Model.RfqEmailInvites != null)
+                                            {
+                                                int i = 0;
+                                                foreach (var item in Model.RfqEmailInvites)
+                                                {
+                                                    <tr>
+                                                        <td><input type="text" name="RfqEmailInvites[@i].Name" class="form-control" value="@item.Name" /></td>
+                                                        <td><input type="text" name="RfqEmailInvites[@i].EmailAddress" class="form-control" value="@item.EmailAddress" /></td>
+                                                        <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveRfqEmailInvites(this)'>Remove</button></td>
+                                                    </tr>
+                                                    i++;
+                                                }
+                                            }
+                                        }
                                     </tbody>
 
                                 </table>
@@ -414,6 +513,24 @@
 
                                 </div>
                             </div>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane fade in" id="DocumentActivity">
+
+                            <table id="pricingTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="25%">Action</th>
+                                        <th width="35%">Created By</th>
+                                        <th width="20%">Created Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                   
+
+                                </tbody>
+
+                            </table>
 
                         </div>
                     </div>
@@ -429,7 +546,7 @@
                     <input type="hidden" name="btnType" id="btnType" value="" />
                     <button type="button" id="btnDraft" class="btn btn-info btn-lg">Draft</button>
                     <button type="button" id="btnSubmit" class="btn btn-primary  btn-lg">Submit</button>
-                    <button type="button" onclick='window.location.href = "@Url.Action("Index", "Rfq")";' class="btn btn-default  btn-lg">Cancel</button>
+                    <input type="hidden" id="loadinvitedsupplier" value="0" />
                 </div>
             </div>
         </div>
@@ -439,7 +556,7 @@
 
 <!-- Editable Table Plugin Js
 <script src="~/material_theme/plugins/editable-table/mindmup-editabletable.js"></script>
-<script src="~/material_theme/js/pages/tables/editable-table.js"></script>-->
+<script src="~/material_theme/js/pages/tables/editable-table.js"></script> -->
 <!-- Moment Plugin Js -->
 <script src="~/material_theme/plugins/momentjs/moment.js"></script>
 <!-- Bootstrap Material Datetime Picker Plugin Js -->
@@ -468,8 +585,35 @@
     $(function () {
         loadIndustry();
         loadUser();
-        loadRole();
+        loadRole()
+       // $('#StartRfqdate').datepicker("setDate", new Date(2008, 9, 03));
     });
+
+    $("#tabinvited_suppliers").click(function () {
+        //alert($('#ddlIndustry').val());
+
+
+
+    });
+
+    //$("#btnSubmit").click(function () {
+    //    //alert($('.supplier:checkbox:checked'));
+    //    var haveInvitedSupplier = false;
+    //    $('input:checkbox.supplier').each(function () {
+    //        var sThisVal = (this.checked ? $(this).val() : "");
+    //        if (sThisVal != "") {
+    //            haveInvitedSupplier = true;
+    //        }
+    //    });
+
+    //    if (haveInvitedSupplier) {
+    //        $("#frmCreateRFQ").submit();
+    //    } else {
+    //        alert("Please invite at least one supplier.");
+    //    }
+
+
+    //});
 
     $("#btnSubmit").click(function () {
         $("#btnType").val("submit");
@@ -491,7 +635,6 @@
         //        isValid = false;
         //    }
         //});
-
         isValid = $("form#frmCreateRFQ").valid();
         if (isValid) {
             var haveInvitedSupplier = false;
@@ -513,8 +656,6 @@
         }
     }
 
-
-
     function loadUser() {
         var ajaxurl = '@Url.Action("GetActiveUserByCompany", "Rfq")';
 
@@ -525,7 +666,7 @@
 
         $.ajax({
             url: ajaxurl,
-            data: { CompanyId: @ViewBag.Company_Id },
+            data: { CompanyId: @Model.Document.Company_Id },
             dataType: 'json',
             success: function (response) {
                 //console.log(response);
@@ -608,15 +749,12 @@
                         value: item.Id,
                         text: item.Name
                     }));
-
                 }
                 $("#ddlRole").selectpicker('refresh');
-
             },
             error: function (response) {
                 alert(response)
             }
-
         });
     }
 
@@ -633,30 +771,43 @@
 
      if (serviceTagsId == null) {
             alert("Please select the service tags!")
-     } else {
-         $('.page-loader-wrapper').fadeIn();
+        } else {
             var ajaxurl = '@Url.Action("GetSupplierByServiceTagsId", "Rfq")';
             $.ajax({
                 url: ajaxurl,
-                data: { serviceTagsId: stringServiceTagsId, page: page, searchKeyword: searchSupplier},
+                data: { serviceTagsId: stringServiceTagsId, page: page, searchKeyword: searchSupplier },
                 dataType: 'json',
                 success: function (response) {
                     var obj = response.Result.Records;
                     for (var k in obj) {
                         var item = obj[k];
+                        var selected = "";
+                        var selectedClass = "btn-danger";
+                        var invited = "Select";
+                        var invitedSupplier = $("#hdSelectedSuppliers").val();
+
+                        var array = invitedSupplier.split(',');
+                        array.forEach(function (i) {
+                            if (i == item.Id) {
+                                selected = "checked='checked'";
+                                selectedClass = "btn-success";
+                                invited = "Selected";
+                            }
+                        });
+
                         var verifyBadge = "<span class='label label-danger'>Unverified</span>";
                         if (item.IsVerified) {
                             verifyBadge = "<span class='label label-success'>Verified</span>";
                         }
                         $('#invitedSupplierTable > tbody').append(
                             "<tr>" +
-                            "<td> <h5>" + item.Name + "</h5>" + verifyBadge+
+                            "<td> <h5>" + item.Name + "</h5>" + verifyBadge +
                             " <p class='m-t-15 m-b-30'>" + item.About + "</p></td>" +
-                            "<td><input type='checkbox' class='filled-in supplier' id='chkSupplier_" + item.Id + "'  name='supplier_list' value='" + item.Id + "'> <button type='button' id='btnInvite_" + item.Id + "' class='btn btn-danger' onclick='checkSupplier(" + item.Id + ")'>Select</button></td>" +
+                            "<td><input type='checkbox' class='filled-in supplier' id='chkSupplier_" + item.Id + "'  name='supplier_list' value='" + item.Id + "' " + selected + "> <button type='button' id='btnInvite_" + item.Id + "' class='btn " + selectedClass +"' onclick='checkSupplier(" + item.Id + ")'>"+invited+"</button></td>" +
                             "</tr>");
 
-
                     }
+                    $("#hdSelectedSuppliers").val("0");
                     var totalpage = response.Result.TotalPage;
                     var currentpage = response.Result.CurrentPage;
                     if (totalpage > currentpage) {
@@ -664,13 +815,10 @@
                         $(".pagination").append(" <a class='btn btn-md btn-default' OnClick='loadSupplier(" + response.Result.NextPage + ")'> Load More </a> ");
                     } else {
                         $(".pagination").empty();
-
                     }
-                    $('.page-loader-wrapper').fadeOut();
                 },
                 error: function (response) {
-                    alert(response);
-                    $('.page-loader-wrapper').fadeOut();
+                    alert(response)
                 }
             });
      }
@@ -687,10 +835,18 @@
         } else {
             $("#chkSupplier_" + n).prop("checked", true);
             $("#btnInvite_" + n).removeClass("btn btn-danger").addClass("btn btn-success");
-
             $("#btnInvite_" + n).text("Selected");
         }
-
+        var selectedSupplier = "";
+        $('input[name="supplier_list"]:checked').each(function () {
+            if (selectedSupplier == "") {
+                selectedSupplier = this.value;
+            } else {
+                selectedSupplier = selectedSupplier + "," + this.value;
+            }
+        });
+        console.log(selectedSupplier);
+        $("#hdSelectedSuppliers").val(selectedSupplier);
     }
 function loadIndustry() {
     var ajaxurl = '@Url.Action("GetActiveIndustries", "Rfq")';
@@ -713,8 +869,12 @@ function loadIndustry() {
                     text: item.Name
                 }));
             }
+            $("#ddlIndustry").val($("#hdIndustry").val());
             $("#ddlIndustry").selectpicker('refresh');
+            if ($("#loadinvitedsupplier").val() == "0") {
 
+                loadServiceTags($('#ddlIndustry').val());
+            }
         },
         error: function (response) {
             alert(response)
@@ -731,6 +891,8 @@ function loadIndustry() {
     });
 
     function loadServiceTags(industryId) {
+        var industryId = $('#ddlIndustry').val();
+        //alert(industryId);
         $('#ddlServiceTags').empty();
         if (industryId == "0") {
 
@@ -749,12 +911,27 @@ function loadIndustry() {
                     var obj = response;
                     for (var k in obj) {
                         var item = obj[k];
-                        $('#ddlServiceTags').append($('<option>', {
-                            value: item.Id,
-                            text: item.Name
-                        }));
+                        var selected = "";
+                        var selectedTags = $("#hdSelectedTags").val();
+                        //alert(selectedTags);
+                        var array = selectedTags.split(',');
+                        array.forEach(function (i) {
+                            if (i == item.Id) {
+                                selected = "selected";
+                            }
+                        });
+
+
+                        var tmpstring = "<option value='" + item.Id + "' " + selected + ">" + item.Name + "</option>"
+                        $('#ddlServiceTags').append(tmpstring);
                     }
+
                     $("#ddlServiceTags").selectpicker('refresh');
+                    $("#hdSelectedTags").val("0");
+                    if ($("#loadinvitedsupplier").val() == "0") {
+                        loadSupplier(1);
+                        $("#loadinvitedsupplier").val("1");
+                    }
                 },
                 error: function (response) {
                     alert(response)
@@ -763,117 +940,15 @@ function loadIndustry() {
         }
     }
 
-    $('#btnUploadFile').on('click', function () {
-        var ajaxurl = '@Url.Action("UploadTemplate", "Rfq")';
-        var fileExtension = ['xls', 'xlsx'];
-        var filename = $('#fUpload').val();
-        if (filename.length == 0) {
-            alert("Please select a file.");
-            return false;
-        }
-        else {
-            var extension = filename.replace(/^.*\./, '');
-            if ($.inArray(extension, fileExtension) == -1) {
-                alert("Please select only excel files.");
-                return false;
-            }
-        }
-        var fdata = new FormData();
-        var fileUpload = $("#fUpload").get(0);
-        var files = fileUpload.files;
-        fdata.append(files[0].name, files[0]);
-        $.ajax({
-            type: "POST",
-            url: ajaxurl,
-            data: fdata,
-            contentType: false,
-            processData: false,
-            success: function (response) {
+    $(".btn_download").on("click", function () {
 
-                console.log(response);
+        var fileId = $(this).data('fileid');
+         var ajaxurl = '@Url.Action("AttachmentDownload", "Rfq")';
+        var url = ajaxurl+ "?fileid=" + fileId;
+        $('#iframe_download_file').attr('src', url)
+        //alert('download - ' + $('#iframe_download_file').attr('src'));
 
-                if (response.List_Requirement.length > 0) {
-
-                    $("#requirementsTableBody").empty();
-
-                    for (var i = 0; i < response.List_Requirement.length; i++) {
-                        $('#requirementsTableBody').append(
-                            "<tr> " +
-                                "<td>" + "<input type='text' name='Requirement[" + i + "].ServiceName' class='form-control' value='" + response.List_Requirement[i].ServiceName + "'/></td>" +
-                                "<td>" + "<input type='text' name='Requirement[" + i + "].Description' class='form-control' value='" + response.List_Requirement[i].Description + "'/></td>" +
-                                "<td><button type='button' class='btn btn-danger waves-effect' onclick='RemoveRequirementRow(this)'>Remove</button></td>" +
-                             "<tr> "
-                        );
-                    }
-
-                    $("#detailRequirementLastId").val(response.List_Requirement.length);
-                    console.log(response.List_Requirement);
-
-                }
-
-                if (response.List_SLA.length > 0) {
-
-                    $("#slaTableBody").empty();
-
-                    for (var i = 0; i < response.List_SLA.length; i++) {
-                        $('#slaTableBody').append(
-                            "<tr> " +
-                            "<td>" + "<input type='text' name='Sla[" + i + "].Requirement' class='form-control' value='" + response.List_SLA[i].Requirement + "'/></td>" +
-                            "<td>" + "<input type='text' name='Sla[" + i + "].Description' class='form-control' value='" + response.List_SLA[i].Description + "'/></td>" +
-                            "<td><button type='button' class='btn btn-danger waves-effect' onclick='RemoveSLARow(this)'>Remove</button></td>" +
-                            "<tr> "
-                        );
-                    }
-                    $("#detailSLALastId").val(response.List_SLA.length);
-                    console.log(response.List_SLA);
-
-                }
-
-                if (response.List_Panalty.length > 0) {
-
-                    $("#penaltyTableBody").empty();
-
-                    for (var i = 0; i < response.List_Panalty.length; i++) {
-                        $('#penaltyTableBody').append(
-                            "<tr> " +
-                            "<td>" + "<input type='text' name='Penalty[" + i + "].BreachOfServiceDefinition' class='form-control' value='" + response.List_Panalty[i].BreachOfServiceDefinition + "'/></td>" +
-                            "<td>" + "<input type='text' name='Penalty[" + i + "].PenaltyAmount' class='form-control' value='" + response.List_Panalty[i].PenaltyAmount + "'/></td>" +
-                            "<td>" + "<input type='text' name='Penalty[" + i + "].Description' class='form-control' value='" + response.List_Panalty[i].Description + "'/></td>" +
-                            "<td><button type='button' class='btn btn-danger waves-effect' onclick='RemovePenaltyRow(this)'>Remove</button></td>" +
-                            "<tr> "
-                        );
-                    }
-                    $("#PenaltyLastId").val(response.List_Panalty.length);
-                    console.log(response.List_Requirement);
-
-                }
-
-                if (response.List_Pricing.length > 0) {
-
-                    $("#pricingTableBody").empty();
-
-                    for (var i = 0; i < response.List_Pricing.length; i++) {
-                        $('#pricingTableBody').append(
-                            "<tr> " +
-                            "<td>" + "<input type='text' name='RfqPriceSchedule[" + i + "].ItemName' class='form-control' value='" + response.List_Pricing[i].ItemName + "'/></td>" +
-                            "<td>" + "<input type='text' name='RfqPriceSchedule[" + i + "].ItemDescription' class='form-control' value='" + response.List_Pricing[i].ItemDescription + "'/></td>" +
-                            "<td>" + "<input type='text' name='RfqPriceSchedule[" + i + "].InternalRefrenceCode' class='form-control' value='" + response.List_Pricing[i].InternalRefrenceCode + "'/></td>" +
-                            "<td>" + "<input type='text' name='RfqPriceSchedule[" + i + "].QuantityRequired' class='form-control' value='" + response.List_Pricing[i].QuantityRequired + "'/></td>" +
-                            "<td><button type='button' class='btn btn-danger waves-effect' onclick='RemovePricingRow(this)'>Remove</button></td>" +
-                            "<tr> "
-                        );
-                    }
-                    $("#PricingLastId").val(response.List_Pricing.length);
-                    console.log(response.List_Requirement);
-
-                }
-                alert("File upload success!");
-            },
-            error: function (e) {
-                $('#dvData').html(e.responseText);
-            }
-        });
-    })
+    });
 </script>
 
 <!-- Create RFQ Js -->

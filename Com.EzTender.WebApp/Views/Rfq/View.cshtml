@@ -689,8 +689,8 @@
                     @{
                         if (Code_C_Buyer != currentCompanyType)
                         {
-                            <a class="btn btn-danger" id="btnCreateQuotation" href='@Url.Action("Create","Quotation",new { id= Model.Id })'>Register &amp; Interest</a>
-
+                            <a class="btn btn-success" id="btnCreateQuotation" href='@Url.Action("Create","Quotation",new { id= Model.Id })'>Register &amp; Interest</a>
+                            <button type="button" class="btn btn-danger" id="btnNotRelevant" >Not Relevant</button>
                             <div id="divViewQuotionForSupplier"></div>
                         }
                         else
@@ -715,6 +715,10 @@
                                 {
                                     <button type="button" id="btnWithdrawn" class="btn btn-danger">Reject</button>
                                 }
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("Revise", "Rfq", new { id = Model.Id })" id="btnRevise" class="btn btn-danger" >Revise</a>
                             }
                         }
                     }
@@ -878,6 +882,30 @@
 
 
         $('#frmCreateRFQ input').attr('readonly', 'readonly');
+    });
+
+    $("#btnNotRelevant").click(function () {
+       var ajaxurl = '@Url.Action("NotRelevantRfq", "Rfq")';
+        $('.page-loader-wrapper').fadeIn();
+            $.ajax({
+                url: ajaxurl,
+                data: {rfqId: @(Model.Id)},
+                dataType: 'json',
+                success: function (response) {
+                    //console.log(response);
+                    var obj = response;
+                    if (obj.IsSuccess) {
+                        var redirecturl = '@Url.Action("Listing", "Rfq")';
+                        window.location.href = redirecturl;
+                    } else {
+                        alert(obj.MessageToUser);
+                    }
+                    $('.page-loader-wrapper').fadeOut();
+                },
+                error: function (response) {
+                    alert(response)
+                }
+            });
     });
 
     $("#btnAddInvitation").click(function () {
@@ -1296,6 +1324,7 @@ function loadIndustry() {
                     var quotationurl = '@Url.Action("View", "Quotation")' + '/' + obj.MessageToUser;
                     $("#divViewQuotionForSupplier").append("Your company has registered for this RFQ. <a class='btn btn-md btn-warning' OnClick='window.location.href = \"" + quotationurl+"\"'> View Quotation </a> ");
                     $("#btnCreateQuotation").hide();
+                    $("#btnNotRelevant").hide();
                 }
             },
             error: function (response) {

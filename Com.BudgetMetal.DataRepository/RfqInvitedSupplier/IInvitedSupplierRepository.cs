@@ -11,6 +11,8 @@ namespace Com.BudgetMetal.DataRepository.InvitedSupplier
         void InactiveByRFQId(int rfqId, string UpdatedBy);
 
         Task<List<Com.BudgetMetal.DBEntities.InvitedSupplier>> GetByDocumentId(int documentId);
+
+        void NotRelevantRfq(int rfqId, int companyId, string UpdatedBy);
     }
     
 }

@@ -87,6 +87,9 @@
     <Content Update="Views\RfqAccessByEmail\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Rfq\Revise.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Shared\_Empty_Layout.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

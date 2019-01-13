@@ -151,6 +151,180 @@ namespace Com.GenericPlatform.WebApp.Controllers
 
         }
 
+        [HttpGet]
+        public async Task<ActionResult> Revise(int id)
+        {
+            try
+            {
+                ViewBag.User_Id = HttpContext.Session.GetString("User_Id");
+                ViewBag.Company_Id = HttpContext.Session.GetString("Company_Id");
+                ViewBag.UserName = HttpContext.Session.GetString("UserName");
+                ViewBag.FullName = HttpContext.Session.GetString("ContactName");
+                ViewBag.EmailAddress = HttpContext.Session.GetString("EmailAddress");
+
+                string User_Id = HttpContext.Session.GetString("User_Id");
+                string Company_Id = HttpContext.Session.GetString("Company_Id");
+                string currentCompanyType = HttpContext.Session.GetString("C_BusinessType");
+
+                var userRoles = JsonConvert.DeserializeObject<List<VmRoleItem>>(HttpContext.Session.GetString("SelectedRoles"));
+                bool isCompanyAdmin = false;
+                if (userRoles.Where(e => e.Id == Constants.C_Admin_Role).ToList().Count > 0)
+                {
+                    isCompanyAdmin = true;
+                }
+
+                var checkPermissionResult = await rfqService.CheckPermissionForRFQ(Convert.ToInt32(Company_Id), Convert.ToInt32(currentCompanyType), Convert.ToInt32(User_Id), id, isCompanyAdmin);
+
+                if (checkPermissionResult.IsSuccess)
+                {
+                    var result = await rfqService.GetSingleRfqById(id);
+                    result.Document.DocumentStatus.Name = "New";
+                    result.Document.DocumentStatus_Id = BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Draft;
+                    result.Document.DocumentNo = "";
+                    result.Document_Id = 0;
+                    result.Id = 0;
+                    return View(result);
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "You are not authorized to access this RFQ.";
+                    return RedirectToAction("ErrorForUser", "Home");
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction("ErrorForUser", "Home");
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Revise(VmRfqItem Rfq)
+        {
+            try
+            {
+                var submitType = Request.Form["btnType"];
+                string documentAction = "";
+                if (submitType.ToString().ToLower() == "draft")
+                {
+                    Rfq.Document.DocumentStatus_Id = Constants_CodeTable.Code_RFQ_Draft;
+                    documentAction = "Save as Draft";
+                }
+                else
+                {
+                    Rfq.Document.DocumentStatus_Id = Constants_CodeTable.Code_RFQ_RequiredApproval;
+                    documentAction = "Submitted";
+                }
+                Rfq.SelectedTags = Request.Form["SelectedTags"].ToString();
+
+                // check attachments
+                if (Request.Form.Files.Count() > 0)
+                {
+                    var listAttachment = new List<VmAttachmentItem>();
+                    int i = 0;
+
+                    var fileInfoArray = Request.Form["fileDescriptionRFQ[]"].ToArray();
+
+                    var attachedFiles = Request.Form.Files.Where(f => f.Length > 0);
+
+                    if (attachedFiles.Count() > 0 && fileInfoArray.Length > 0)
+                    {
+                        foreach (var fileAttachment in attachedFiles)
+                        {
+                            if (fileAttachment.Name.ToLower() != "fupload")
+                            {
+                                if (fileAttachment.Length > 0)
+                                {
+                                    var tmpFileNameArr = fileAttachment.FileName.ToString().Split("\\");
+                                    string tmpFileName = tmpFileNameArr.Last();
+                                    var desc = fileInfoArray[i].ToString();
+
+                                    var att = new VmAttachmentItem
+                                    {
+                                        FileName = tmpFileName,
+                                        FileSize = fileAttachment.Length,
+                                        FileBinary = Convert.ToBase64String(ConvertFiletoBytes(fileAttachment)),
+                                        Description = desc,
+                                        CreatedBy = Rfq.CreatedBy,
+                                        UpdatedBy = Rfq.UpdatedBy
+                                    };
+                                    listAttachment.Add(att);
+
+                                }
+
+                                i++;
+                            }
+
+
+                        }
+                    }
+
+                    // assign attachment list
+                    Rfq.Document.Attachment = listAttachment;
+                }
+
+
+                var listInvitedSupplier = new List<VmInvitedSupplierItem>();
+                var arrInvitedSupplier = Request.Form["supplier_list"].ToArray();
+                foreach (var itemSupplier in arrInvitedSupplier)
+                {
+                    var supplier = new VmInvitedSupplierItem();
+                    supplier.Company_Id = Convert.ToInt32(itemSupplier);
+
+                    listInvitedSupplier.Add(supplier);
+                }
+                Rfq.InvitedSupplier = listInvitedSupplier;
+
+                var listDocumentUser = new List<VmDocumentUserItem>();
+                var arrUser = Request.Form["documentUserId[]"].ToArray();
+                var arrRole = Request.Form["documentUserRole[]"].ToArray();
+                for (int j = 0; j < arrUser.Length; j++)
+                {
+                    var userId = arrUser[j];
+                    var rolesId = arrRole[j];
+                    var roles = rolesId.Split(',');
+                    foreach (var item in roles)
+                    {
+                        var documentUser = new VmDocumentUserItem
+                        {
+                            User_Id = Convert.ToInt32(userId),
+                            Role_Id = Convert.ToInt32(item)
+                        };
+                        listDocumentUser.Add(documentUser);
+                    }
+                }
+                Rfq.Document.DocumentUser = listDocumentUser;
+
+                var listDocumentActivity = new List<VmDocumentActivityItem>();
+                var DocumentActivity = new VmDocumentActivityItem()
+                {
+                    User_Id = Convert.ToInt32(HttpContext.Session.GetString("User_Id")),
+                    IsRfq = true,
+                    Action = documentAction,
+
+                };
+                listDocumentActivity.Add(DocumentActivity);
+                Rfq.Document.DocumentActivityList = listDocumentActivity;
+                Rfq.Id = 0;
+                var result = await rfqService.SaveRFQ(Rfq);
+                if (result.IsSuccess)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Error while creating RFQ. Please contact system administrator.";
+                    return RedirectToAction("ErrorForUser", "Home");
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction("ErrorForUser", "Home");
+            }
+        }
+
         // GET: Rfq/Edit/5
         [HttpGet]
         public async Task<ActionResult> Edit(int id)
@@ -601,6 +775,18 @@ namespace Com.GenericPlatform.WebApp.Controllers
         {
 
             var result = await rfqService.CheckQuotationByRfqId(rfqId, Convert.ToInt32(HttpContext.Session.GetString("Company_Id")));
+
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> NotRelevantRfq(int rfqId)
+        {
+
+            var result = await rfqService.NotRelevantRfq(rfqId, Convert.ToInt32(HttpContext.Session.GetString("Company_Id")), HttpContext.Session.GetString("UserName"));
 
             return new JsonResult(result, new JsonSerializerSettings()
             {

@@ -38,5 +38,19 @@ namespace Com.BudgetMetal.DataRepository.InvitedSupplier
 
             return result;
         }
+
+        public void NotRelevantRfq(int rfqId, int companyId, string UpdatedBy)
+        {
+            var dbResult = this.entities.Where(e => e.IsActive == true && e.Rfq_Id == rfqId && e.Company_Id == companyId).ToList();
+            dbResult.ForEach(e =>
+            {
+                e.NotRelevant = true;
+                e.UpdatedDate = DateTime.Now;
+                e.UpdatedBy = UpdatedBy;
+            }
+            );
+            this.Commit();
+        }
+        
     }
 }

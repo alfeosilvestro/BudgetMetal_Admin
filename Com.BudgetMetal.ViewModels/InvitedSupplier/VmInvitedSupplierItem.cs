@@ -10,7 +10,7 @@ namespace Com.BudgetMetal.ViewModels.InvitedSupplier
         
         public int RfqId { get; set; }
         public int Company_Id { get; set; }
-        
+        public bool NotRelevant { get; set; }
 
         public virtual VmCompanyItem Company { get; set; }
         public virtual VmRfqItem Rfq { get; set; }

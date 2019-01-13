@@ -50,6 +50,8 @@ namespace Com.BudgetMetal.Services.RFQ
 
         Task<VmGenericServiceResult> CheckQuotationByRfqId(int rfqId, int companyId);
 
+        Task<VmGenericServiceResult> NotRelevantRfq(int rfqId, int companyId, string UpdatedBy);
+
         Task<VmGenericServiceResult> AddClarification(int documentId, int userId, string userName, string clarification, int commentId);
 
         Task<VmGenericServiceResult> CheckPermissionForRFQ(int companyId, int C_BussinessType, int userId, int RfqId, bool companyAdmin);
