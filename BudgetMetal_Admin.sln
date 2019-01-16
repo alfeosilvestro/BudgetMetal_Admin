@@ -39,7 +39,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Com.BudgetMetal.DBEntities"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Com.EzTender.PublicPortal", "Com.EzTender.PublicPortal\Com.EzTender.PublicPortal.csproj", "{DA3A9608-31A9-4170-A7F3-B3B1A4FDE610}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Com.EzTender.Scheduler", "Com.EzTender.Scheduler\Com.EzTender.Scheduler.csproj", "{F653FD85-41C7-469A-8D2D-1548FD55D486}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Com.EzTender.SchedulerJob", "Com.EzTender.SchedulerJob\Com.EzTender.SchedulerJob.csproj", "{207DDD1B-63CF-47F4-BE0E-329F3A00ED49}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -96,10 +96,10 @@ Global
 		{DA3A9608-31A9-4170-A7F3-B3B1A4FDE610}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DA3A9608-31A9-4170-A7F3-B3B1A4FDE610}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA3A9608-31A9-4170-A7F3-B3B1A4FDE610}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F653FD85-41C7-469A-8D2D-1548FD55D486}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F653FD85-41C7-469A-8D2D-1548FD55D486}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F653FD85-41C7-469A-8D2D-1548FD55D486}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F653FD85-41C7-469A-8D2D-1548FD55D486}.Release|Any CPU.Build.0 = Release|Any CPU
+		{207DDD1B-63CF-47F4-BE0E-329F3A00ED49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{207DDD1B-63CF-47F4-BE0E-329F3A00ED49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{207DDD1B-63CF-47F4-BE0E-329F3A00ED49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{207DDD1B-63CF-47F4-BE0E-329F3A00ED49}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -118,7 +118,7 @@ Global
 		{BE4C8B4A-F8ED-4ECA-B05C-34D86A497C7A} = {7B82E778-676E-4923-92B1-6C134806B6CE}
 		{AC8AB1F2-A3B9-4747-8998-21370AF120B8} = {7D08EBAD-3A9A-44EF-A1E3-E7058B5EB8C5}
 		{DA3A9608-31A9-4170-A7F3-B3B1A4FDE610} = {7B82E778-676E-4923-92B1-6C134806B6CE}
-		{F653FD85-41C7-469A-8D2D-1548FD55D486} = {7B82E778-676E-4923-92B1-6C134806B6CE}
+		{207DDD1B-63CF-47F4-BE0E-329F3A00ED49} = {7B82E778-676E-4923-92B1-6C134806B6CE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BD07161-C582-4271-A9D6-53BF9E07D42E}

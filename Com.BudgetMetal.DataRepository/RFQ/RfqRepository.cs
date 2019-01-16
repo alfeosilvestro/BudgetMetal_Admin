@@ -323,5 +323,14 @@ namespace Com.BudgetMetal.DataRepository.RFQ
 
             return result;
         }
+
+        public async Task<List<Com.BudgetMetal.DBEntities.Rfq>> GetAllOpenRFQ()
+        {
+            var result = await this.entities.Include(e => e.Document).ThenInclude(e=>e.DocumentUser)
+                .Where(e => e.IsActive == true && e.Document.IsActive == true && e.Document.DocumentStatus_Id == Constants_CodeTable.Code_RFQ_Open).ToListAsync();
+
+            return result;
+        }
+
     }
 }
