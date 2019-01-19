@@ -93,27 +93,27 @@
                             @if (currentPage > 1)
                             {
                                 <li>
-                                    <a class='btn btn-md btn-primary' href="~/Companies">First</a>
+                                    <a class='btn btn-md btn-primary' href="~/Companies?keyword=@( ViewData["keyword"])">First</a>
                                 </li>
                                 <li>
-                                    <a class='btn btn-md btn-primary' href="?page=@(currentPage - 1)">Previous</a>
+                                    <a class='btn btn-md btn-primary' href="?page=@(currentPage - 1)&keyword=@( ViewData["keyword"])">Previous</a>
                                 </li>
                             }
 
                             @for (int page = startPage; page <= endPage; page++)
                             {
                                 <li class="@(page == currentPage ? "active" : "")">
-                                    <a class='btn btn-md btn-primary' href="?page=@(page)"> @(page) </a>
+                                    <a class='btn btn-md btn-primary' href="?page=@(page)&keyword=@( ViewData["keyword"])"> @(page) </a>
                                 </li>
                             }
 
                             @if (currentPage < totalPage)
                             {
                                 <li>
-                                    <a class='btn btn-md btn-primary' href="?page=@(currentPage + 1)">Next</a>
+                                    <a class='btn btn-md btn-primary' href="?page=@(currentPage + 1)&keyword=@( ViewData["keyword"])">Next</a>
                                 </li>
                                 <li>
-                                    <a class='btn btn-md btn-primary' href="?page=@(totalPage)">Last</a>
+                                    <a class='btn btn-md btn-primary' href="?page=@(totalPage)&keyword=@( ViewData["keyword"])">Last</a>
                                 </li>
                             }
                         </ul>

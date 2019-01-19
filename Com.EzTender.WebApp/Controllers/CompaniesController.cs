@@ -30,6 +30,7 @@ namespace Com.EzTender.WebApp.Controllers
         public async Task<ActionResult> Index(string keyword, int page, int totalRecords)
         {
             var result = await svs.GetCompanySupplierList(keyword, page, _appSettings.TotalRecordPerPage);
+            ViewData["keyword"] = keyword;
 
             return View(result);
         }
@@ -40,7 +41,7 @@ namespace Com.EzTender.WebApp.Controllers
             var company_Id = HttpContext.Session.GetString("Company_Id");
             int id = Convert.ToInt32(company_Id);
             var result = await svs.GetSupplierByCompany(id, page, keyword);
-
+            ViewData["keyword"] = keyword;
             return View(result);
         }        
 
