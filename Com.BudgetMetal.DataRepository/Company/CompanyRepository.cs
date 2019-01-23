@@ -139,17 +139,14 @@ namespace Com.BudgetMetal.DataRepository.Company
                  (e.IsActive == true) &&
                  (e.C_BusinessType == Com.BudgetMetal.Common.Constants_CodeTable.Code_C_Supplier) &&
                  (e.Name.StartsWith(keyword) && keyword != "")
-               )
-               .OrderBy(e => new { e.Name, e.CreatedDate })
+               ).OrderBy(e => new { e.Name, e.CreatedDate })
+              .ToListAsync();
+
+            var recordList = records.ToList()
                .Skip((totalRecords * page) - totalRecords)
-               .Take(totalRecords).ToListAsync();
+               .Take(totalRecords).ToList();
 
-            var recordList = records.ToList();
-
-            var count = entities.Where(e =>
-                 (e.IsActive == true) &&
-                 (keyword == string.Empty || e.Name.StartsWith(keyword)))
-                 .ToList().Count();
+            var count = records.ToList().Count();
 
             var nextPage = 0;
             var prePage = 0;
@@ -192,9 +189,9 @@ namespace Com.BudgetMetal.DataRepository.Company
 
             var recordList = records
                 .OrderBy(e => e.Name)
-            .Skip((totalRecords * page) - totalRecords)
-            .Take(totalRecords)
-            .ToList();
+                .Skip((totalRecords * page) - totalRecords)
+                .Take(totalRecords)
+                .ToList();
 
             var count = records.Count();
 
