@@ -43,6 +43,7 @@ namespace Com.BudgetMetal.Common
                     Body = body
                 })
                 {
+                    message.IsBodyHtml = true;
                     smtp.Send(message);
                 }
             }

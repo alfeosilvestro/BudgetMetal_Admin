@@ -1,55 +1,95 @@
-﻿@{
-    ViewData["Title"] = "Forgot Password";
+﻿@model Com.BudgetMetal.ViewModels.Blogs.VmBlogPage
+@{
+    ViewData["Title"] = "Blog";
     Layout = "~/Views/Shared/_Public_Layout.cshtml";
 }
 
 
 <div id="Content">
     <div class="content_wrapper clearfix">
+        <br /><br />
         <div class="sections_group">
             <div class="entry-content">
-
-                <div class="section mcb-section equal-height-wrap" >
+                @{
+                    foreach (var item in Model.Result.Records)
+                    {
+                <div class="section mcb-section equal-height-wrap">
                     <div class="section_wrapper mcb-section-inner">
                         <h3>
-                            The Future of Procurement Arrives at Last
+                            @item.Title
                         </h3>
-                        <h4>Digital technologies are on pace to automate most routine procurement processes within three to five years.</h4>
+                        <h4>Category : @item.Category</h4>
+                       
                         <p>
-                            By <b>Hugo Evans</b>  and  <b>Stephen Easton</b> 
+                           @Html.Raw(item.Note)
                         </p>
-                        <p>
-                            <b>Procurement: Ripe for Reinvention</b> 
-                            In many ways, today’s procurement organizations resemble white-collar versions of manufacturing in the 1970s. Manual processes still dominate procurement, even as automation transforms other business functions. Legions of staffers handle low-value sourcing and demand-management activities at the bottom of The Purchasing Chessboard, where they have more leverage over suppliers or the ability to influence users (see figure 1). Routine, labor-intensive transactional activities—pricing negotiations, contract awards, supplier performance monitoring—consume time and attention. Procurement workers also spend hours piecing together fragmented information flows from myriad transactions, a task technology could perform in seconds. Internal stakeholders, meanwhile, grow frustrated by what they perceive as slow service from procurement, and yearn for self-service options and direct access to end-to-end data streams.
-                        </p>
-                        <img src="https://www.atkearney.com/documents/20152/1007218/FG-The-Future-of-Procurement-Arrives-at-Last-01.png/ffadb15b-0e08-9918-3551-1ad715be5524?t=1518476367985" />
-                        <p>
-                            All this is about to change. Digital technology will revolutionize procurement over the next three to five years (see figure 2). A convergence of artificial intelligence (AI), advanced analytics, and other new technologies will automate manual processes and empower business users with the tools and information to get what they need without help from procurement.
-                        </p>
-                        <img src="https://www.atkearney.com/documents/20152/1007218/FG-The-Future-of-Procurement-Arrives-at-Last-02.png/78845658-3428-fc11-6fbc-206d0ee4e367?t=1518476367934"  />
-                        <p>
-                            Automation drives efficiency and creates new opportunities for procurement to add value in areas that can’t be automated. Like production managers in a modern, digitized factory, procurement leaders will orchestrate end-to-end processes, with a strategic perspective and an eye on long-term value. As technology takes over routine transactional work, they’ll focus on higher-value activities such as forming vendor partnerships and re-engineering products.
-
-                            The future of procurement looks familiar in some ways and strikingly different in others. Procurement will always meet basic user needs for transactional services such as sourcing and supplier selection. But digitally enabled procurement teams also will play a bigger role in advancing company strategy by improving products and services and turning supplier capabilities into competitive advantage in the marketplace.
-                        </p>
+                        <a href="@item.RedirectLink" target="_blank">Read More</a>
                         <hr />
                     </div>
                 </div>
-                <div class="section mcb-section equal-height-wrap" >
+                    }
+                }
+
+                
+                <div class="section mcb-section equal-height-wrap">
                     <div class="section_wrapper mcb-section-inner">
-                        <h3>Building superior capabilities for strategic sourcing</h3>
-                        <p>
-                            <b>By Steffen Fuchs, Gillian Pais, and Jeff Shulman</b>
-                        </p>
-                        <p>
-                            Purchased materials and services often make up 60 to 80 percent of a product’s cost. Companies that don’t invest in the purchasing team’s capabilities are throwing away value.
-                            <br />
-                            Jack Welch once notoriously said that “engineers who can’t add, operators who can’t run their equipment, and accountants who can’t foot numbers become purchasing professionals.” Hyperbole aside, General Electric’s legendary boss was reflecting a common perception: the purchasing function is little more than a necessary evil in business. No surprise, then, that many companies underinvest in the purchasing team’s capabilities and leave sourcing out of strategic decision-making processes in favor of functions, such as manufacturing and sales, that drive revenue.
-                            <br />
-                            Over time, of course, a negative compounding effect sets in: up-and-coming talent flows to the higher-status functions, often exacerbating the capabilities mismatch when difficult sourcing negotiations come up. If a supplier’s heavily supported sales team squares off against an underdeveloped purchasing team, the result, like that of a football match between Fiji and Brazil, is fairly predictable.
-                            <br />
-                            Yet purchased materials and services make up 60 to 80 percent of a product’s total cost in many industries. As a result, companies that do not invest appropriately in the purchasing team’s capabilities and culture are throwing away more value than they realize. Organizations that employ leading-edge purchasing practices achieve almost double the margins of companies with below-average purchasing departments (20.2 percent versus 10.9 percent, respectively).1 Among the dimensions that affect purchasing’s success, capabilities and culture were correlated 1.5 to 2.2 times more strongly with a company’s financial performance than the others we studied (exhibit).
-                        </p>
+                        <div class="pagination pull-right" style="padding:10px;">
+                            @{
+                                int currentPage = Model.Result.CurrentPage;
+                                int totalPage = Model.Result.TotalPage;
+                                int previousPage = Model.Result.PreviousPage;
+                                int nextPage = Model.Result.NextPage;
+
+                                int startPage = currentPage - 5;
+                                int endPage = currentPage + 4;
+
+                                if (startPage <= 0)
+                                {
+                                    endPage -= (startPage - 1);
+                                    startPage = 1;
+                                }
+                                if (endPage > totalPage)
+                                {
+                                    endPage = totalPage;
+                                    if (endPage > 10)
+                                    {
+                                        startPage = endPage - 9;
+                                    }
+                                }
+
+                                @if (endPage > 1)
+                                {
+                                    <ul class="pagination">
+                                        @if (currentPage > 1)
+                                        {
+                                            <li>
+                                                <a class='btn btn-md btn-primary' href="~/Roles">First</a>
+                                            </li>
+                                            <li>
+                                                <a class='btn btn-md btn-primary' href="?page=@(currentPage - 1)">Previous</a>
+                                            </li>
+                                        }
+
+                                        @for (int page = startPage; page <= endPage; page++)
+                                        {
+                                            <li class="@(page == currentPage ? "active" : "")">
+                                                <a class='btn btn-md btn-primary' href="?page=@(page)"> @(page) </a>
+                                            </li>
+                                        }
+
+                                        @if (currentPage < totalPage)
+                                        {
+                                            <li>
+                                                <a class='btn btn-md btn-primary' href="?page=@(currentPage + 1)">Next</a>
+                                            </li>
+                                            <li>
+                                                <a class='btn btn-md btn-primary' href="?page=@(totalPage)">Last</a>
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                            }
+                        </div>
                     </div>
                 </div>
             </div>

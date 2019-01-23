@@ -1,0 +1,44 @@
+﻿@model Com.BudgetMetal.ViewModels.Blogs.VmBlogItem
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<div class="container-fluid">
+    <h3>Preview Blog</h3>
+    <div class="card">
+        <div class="row"></div>
+        <div class="row clearfix">
+            <div class="col-md-8">
+                <div class="col-sm-12">
+                    <h4>@Model.Title</h4>
+                    <hr />
+                </div>
+
+
+                <div class="col-sm-12">
+                    <label>Category :</label> <span class="badge bg-light-blue"> <strong> @Model.Category </strong></span>
+                </div>
+                <hr />
+
+                <div class="col-sm-12">
+                    @Html.Raw(Model.Note)
+                </div>
+                <div class="col-sm-12">
+                    <a href="http://@(Model.RedirectLink)" target="_blank">Read More</a>
+
+                </div>
+
+            </div>
+        </div>
+        <br /><br />    
+    </div>
+    <div>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        <a asp-action="Index">Back to List</a>
+    </div>
+    <br />
+</div>
+    
+    

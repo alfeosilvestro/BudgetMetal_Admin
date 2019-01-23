@@ -39,7 +39,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Com.BudgetMetal.DBEntities"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Com.EzTender.PublicPortal", "Com.EzTender.PublicPortal\Com.EzTender.PublicPortal.csproj", "{DA3A9608-31A9-4170-A7F3-B3B1A4FDE610}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Com.EzTender.SchedulerJob", "Com.EzTender.SchedulerJob\Com.EzTender.SchedulerJob.csproj", "{207DDD1B-63CF-47F4-BE0E-329F3A00ED49}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Com.EzTender.SchedulerJob", "Com.EzTender.SchedulerJob\Com.EzTender.SchedulerJob.csproj", "{207DDD1B-63CF-47F4-BE0E-329F3A00ED49}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,6 +83,7 @@ Global
 		{657C284E-5199-4292-BD54-BDEB44E7BDBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{657C284E-5199-4292-BD54-BDEB44E7BDBF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B52B4B3D-F45E-4BB7-9B98-1CEE4E8A551D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B52B4B3D-F45E-4BB7-9B98-1CEE4E8A551D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B52B4B3D-F45E-4BB7-9B98-1CEE4E8A551D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B52B4B3D-F45E-4BB7-9B98-1CEE4E8A551D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BE4C8B4A-F8ED-4ECA-B05C-34D86A497C7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

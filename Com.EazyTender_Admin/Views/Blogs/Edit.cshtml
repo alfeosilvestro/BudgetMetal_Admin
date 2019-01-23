@@ -1,0 +1,75 @@
+﻿@model Com.BudgetMetal.ViewModels.Blogs.VmBlogItem
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+<div class="container-fluid">
+    <h3>Edit Blog</h3>
+    <div class="card">
+        <div class="row"></div>
+        <div class="row clearfix">
+            <div class="col-md-8">
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-line col-md-12">
+                        <br />
+                        <label asp-for="Title" class="control-label"></label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                    <div class="form-line col-md-12">
+                        <br />
+                        <label asp-for="Note" class="control-label"></label>
+                        @*<textarea asp-for="Note" class="form-control"></textarea>*@
+                        <textarea id="ckeditor" asp-for="Note">
+                       
+                        </textarea>
+
+                    </div>
+                    <div class="form-line col-md-8">
+                        <br />
+                        <label asp-for="Category" class="control-label"></label>
+                        <input asp-for="Category" class="form-control" />
+                        <span asp-validation-for="Category" class="text-danger"></span>
+                    </div>
+                    <div class="form-line col-md-12">
+                        <br />
+                        <label asp-for="RedirectLink" class="control-label"></label>
+                        <input asp-for="RedirectLink" class="form-control" />
+                        <span asp-validation-for="RedirectLink" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <br />
+                        <div class="checkbox">
+                            <input type="checkbox" class="chk-col-red" asp-for="IsActive" />
+                            <label for="IsActive"> Is Active</label>
+                        </div>
+                    </div>
+                    <input type="hidden" asp-for="CreatedDate" class="form-control" />
+                    <input type="hidden" asp-for="CreatedBy" class="form-control" />
+                    <input type="hidden" asp-for="UpdatedBy" class="form-control" />
+                    <input type="hidden" asp-for="Id" class="form-control" />
+                    <div class="form-group col-md-6">
+                        <br />
+                        <input type="submit" value="Save" class="btn btn-info" />
+                    </div>
+                    <br />
+                </form>
+            </div>
+        </div>
+    </div>
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+    <br />
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<!-- Ckeditor -->
+<script src="~/material_theme/plugins/ckeditor/ckeditor.js"></script>
+<!-- Custom Js -->
+<script src="~/material_theme/js/admin.js"></script>
+<script src="~/material_theme/js/pages/forms/editors.js"></script>

@@ -19,6 +19,7 @@ using System.Text;
 using Com.BudgetMetal.Common;
 using System.IO;
 using Com.EazyTender.WebApp.Configurations;
+using Com.BudgetMetal.Services.Blogs;
 
 namespace Com.EzTender.WebApp.Controllers
 {
@@ -31,7 +32,7 @@ namespace Com.EzTender.WebApp.Controllers
         private readonly IServiceTagsService serviceTagsService;
         private readonly IUserService userService;
         private readonly IAttachmentService attachmentService;
-
+        private readonly IBlogService blogService;
 
         public PublicController(IRFQService rfqService,
                               ICompanyService companyService,
@@ -39,7 +40,7 @@ namespace Com.EzTender.WebApp.Controllers
                               IIndustryService industryService,
                               IOptions<AppSettings> appSettings,
                               IUserService userService,
-                              IAttachmentService attachmentService)
+                              IAttachmentService attachmentService, IBlogService blogService)
         {
             this.rfqService = rfqService;
             this.industryService = industryService;
@@ -48,6 +49,7 @@ namespace Com.EzTender.WebApp.Controllers
             this.userService = userService;
             this._appSettings = appSettings.Value;
             this.attachmentService = attachmentService;
+            this.blogService = blogService;
         }
 
         public IActionResult Index()
@@ -55,9 +57,11 @@ namespace Com.EzTender.WebApp.Controllers
             return View();
         }
 
-        public IActionResult Blog()
+        public async Task<IActionResult> Blog(string keyword, int page, int totalRecords)
         {
-            return View();
+            var result = await blogService.GetBlogsByPage(keyword, page, _appSettings.TotalRecordPerPage);
+
+            return View(result);
         }
 
         public IActionResult RFQ()

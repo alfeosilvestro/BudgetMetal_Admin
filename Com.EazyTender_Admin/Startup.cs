@@ -42,6 +42,8 @@ using Com.BudgetMetal.DataRepository.RfqPriceSchedule;
 using Com.BudgetMetal.DataRepository.DocumentUser;
 using Com.BudgetMetal.DataRepository.Rating;
 using Com.BudgetMetal.DataRepository.RfqInvites;
+using Com.BudgetMetal.DataRepository.Blogs;
+using Com.BudgetMetal.Services.Blogs;
 using Com.BudgetMetal.DataRepository.CompanySupplier;
 
 namespace Com.EazyTender_Admin
@@ -161,6 +163,9 @@ namespace Com.EazyTender_Admin
             services.AddScoped<IRfqInvitesRepository, RfqInvitesRepository>();
 
             services.AddScoped<ICompanySupplierRepository, CompanySupplierRepository>();
+
+            services.AddScoped<IBlogRepository,BlogRepository>();
+            services.AddScoped<IBlogService, BlogService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

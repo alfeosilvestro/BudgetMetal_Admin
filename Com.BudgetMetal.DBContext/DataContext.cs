@@ -43,6 +43,8 @@ namespace Com.BudgetMetal.DB
         public virtual DbSet<QuotationRequirement> QuotationRequirement { get; set; }
         public virtual DbSet<CompanySupplier> CompanySupplier { get; set; }
         public virtual DbSet<TimeLine> TimeLine { get; set; }
+        public virtual DbSet<Blog> Blog { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
