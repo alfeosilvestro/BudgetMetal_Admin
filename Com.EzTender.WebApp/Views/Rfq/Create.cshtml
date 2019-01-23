@@ -151,7 +151,8 @@
 
                                 <div class="col-sm-3">
                                     <input type="checkbox" asp-for="IsPublic" class="chk-col-red" />
-                                    <label for="IsPublic">Public</label>
+                                    <label for="IsPublic">Public </label>
+                                    <a href="#" data-toggle="modal" data-target="#publicModal"><span class="badge bg-light-blue">i</span></a>
                                 </div>
                                 <div class="col-sm-3">
                                     <input type="checkbox" asp-for="SupplierProvideInstallationService" class="chk-col-red" />
@@ -171,9 +172,10 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
-                                    <span class="text-warning">Click <a href='@Url.Action("DownloadExcelTemplate","Rfq")'>Here</a> to Download Template</span><br /><br />
+                                    <span class="text-warning">Click <a href='@Url.Action("DownloadExcelTemplate","Rfq")'>Here</a> to Download Template</span>
+                                    <a href="#" data-toggle="modal" data-target="#excelInfoModal"><span class="badge bg-light-blue">i</span></a><br /><br />
                                     <label>Upload Template</label>
-                                    <input type="file" name="fUpload" id="fUpload" value="" class="form-control" /> 
+                                    <input type="file" name="fUpload" id="fUpload" value="" class="form-control" />
                                     <br />
                                     <button type="button" class="btn btn-success" id="btnUploadFile">Upload Template</button>
                                 </div>
@@ -285,7 +287,7 @@
                             </table>
                             <div class="row">
                                 <div class="form-group col-sm-12">
-                                    <a class="btn btn-success" id="btnNewPricing"> Add Item </a>
+                                    <a class="btn btn-success" id="btnNewPricing"> Add Pricing </a>
                                 </div>
 
                             </div>
@@ -437,6 +439,35 @@
 
 </form>
 
+<div class="modal fade" id="publicModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">IsPublic</h4>
+            </div>
+            <div class="modal-body">
+                Why public?
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="excelInfoModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Excel</h4>
+            </div>
+            <div class="modal-body">
+                Why excel?
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Editable Table Plugin Js
 <script src="~/material_theme/plugins/editable-table/mindmup-editabletable.js"></script>
 <script src="~/material_theme/js/pages/tables/editable-table.js"></script>-->

@@ -30,7 +30,7 @@ namespace Com.EzTender.WebApp.Controllers
         {
             var Company_Id = HttpContext.Session.GetString("Company_Id");
             int companyId = (Company_Id != null) ? int.Parse(Company_Id) : 0;
-            var result = await timelineService.GetTimeLineData(page, companyId, 1, "");
+            var result = await timelineService.GetTimeLineData(page, companyId, 5, "");
 
             return new JsonResult(result, new JsonSerializerSettings()
             {
