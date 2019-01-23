@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Http;
 using Com.BudgetMetal.ViewModels.SupplierServiceTag;
 using System.Collections.Generic;
 using Com.EazyTender.WebApp.Configurations;
+using System.IO;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -161,10 +162,19 @@ namespace Com.EzTender.WebApp.Controllers
 
             if (result.IsSuccess)
             {
-                string mailBody = "";
-                mailBody = "Your new password for EzyTender is " + newPassword;
+                string filePath = "wwwroot/Template/";
+                FileStream fileStream = new FileStream( filePath+ "resetpassword.htm", FileMode.Open);
+                string msgBody = "";
+                using (StreamReader reader = new StreamReader(fileStream))
+                {
+                    string line = reader.ReadToEnd();
+                    msgBody = msgBody + line;
+                }
+                msgBody = msgBody.Replace("[password]", newPassword);
+                //string mailBody = "";
+                //mailBody = "Your new password for EzyTender is " + newPassword;
                 SendingMail sm = new SendingMail();
-                sm.SendMail(Email, "", "Reset Password", mailBody);
+                sm.SendMail(Email, "", "Reset Password", msgBody);
             }
 
             return new JsonResult(result, new JsonSerializerSettings()

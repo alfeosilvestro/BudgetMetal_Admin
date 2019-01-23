@@ -1,54 +1,44 @@
-﻿@model Com.BudgetMetal.ViewModels.Role.VmRoleItem
+﻿@model Com.BudgetMetal.ViewModels.Blogs.VmBlogItem
 
 @{
     ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
-<h2>Details</h2>
+<div class="container-fluid">
+    <h3>Preview Blog</h3>
+    <div class="card">
+        <div class="row"></div>
+        <div class="row clearfix">
+            <div class="col-md-8">
+                <div class="col-sm-12">
+                    <h4>@Model.Title</h4>
+                    <hr />
+                </div>
 
-<div>
-    <h4>Role</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => Model.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => Model.Code)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Code)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedBy)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.CreatedBy)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.CreatedDate)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.IsActive)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.IsActive)
-        </dd>
-    </dl>
+
+                <div class="col-sm-12">
+                    <label>Category :</label> <span class="badge bg-light-blue"> <strong> @Model.Category </strong></span>
+                </div>
+                <hr />
+
+                <div class="col-sm-12">
+                    @Html.Raw(Model.Note)
+                </div>
+                <div class="col-sm-12">
+                    <a href="http://@(Model.RedirectLink)" target="_blank">Read More</a>
+
+                </div>
+
+            </div>
+        </div>
+        <br /><br />    
+    </div>
+    <div>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        <a asp-action="Index">Back to List</a>
+    </div>
+    <br />
 </div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    <a asp-action="Index">Back to List</a>
-</div>
+    
+    

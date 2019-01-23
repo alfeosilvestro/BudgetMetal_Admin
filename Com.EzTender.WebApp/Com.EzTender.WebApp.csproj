@@ -17,6 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\Template\resetpassword.htm" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Com.BudgetMetal.Common\Com.BudgetMetal.Common.csproj" />
     <ProjectReference Include="..\Com.BudgetMetal.DataRepository\Com.BudgetMetal.DataRepository.csproj" />
     <ProjectReference Include="..\Com.BudgetMetal.Services\Com.BudgetMetal.Services.csproj" />

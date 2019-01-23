@@ -60,7 +60,7 @@ namespace Com.EazyTender_Admin.Controllers
             }
 
             //0 is for adminpanal
-            var result = await svs.GetRfqByPage(0, page, 10);
+            var result = "";// await svs.GetRfqByPage(0, page, 10);
             return View(result);
         }
 
@@ -164,7 +164,7 @@ namespace Com.EazyTender_Admin.Controllers
                 }
                 Rfq.Document.DocumentUser = listDocumentUser;
 
-                string documentNo = svs.SaveRFQ(Rfq);
+                string documentNo = "";//svs.SaveRFQ(Rfq);
 
                 return RedirectToAction("Index");
             }
@@ -255,7 +255,7 @@ namespace Com.EazyTender_Admin.Controllers
                 }
                 Rfq.Document.DocumentUser = listDocumentUser;
 
-                string documentNo = svs.UpdateRFQ(Rfq);
+                string documentNo = "";// svs.UpdateRFQ(Rfq);
 
                 return RedirectToAction("Index");
             }
@@ -344,7 +344,7 @@ namespace Com.EazyTender_Admin.Controllers
         [HttpGet]
         public async Task<JsonResult> GetActiveRoles()
         {
-            var result = await roleService.GetActiveRoles();
+            var result = "";// await roleService.GetActiveRoles();
 
             return new JsonResult(result, new JsonSerializerSettings()
             {
@@ -355,7 +355,7 @@ namespace Com.EazyTender_Admin.Controllers
         [HttpGet]
         public async Task<JsonResult> GetSupplierByServiceTagsId(string serviceTagsId, int page, string searchKeyword)
         {
-            var result = await companyService.GetSupplierByServiceTagsId(serviceTagsId, page, searchKeyword);
+            var result = "";//await companyService.GetSupplierByServiceTagsId(serviceTagsId, page, searchKeyword);
 
             return new JsonResult(result, new JsonSerializerSettings()
             {

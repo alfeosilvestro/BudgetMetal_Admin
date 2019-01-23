@@ -1,22 +1,22 @@
-﻿@model Com.BudgetMetal.ViewModels.Role.VmRolePage
+﻿@model Com.BudgetMetal.ViewModels.Blogs.VmBlogPage
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
-<h2>Role</h2>
+<h2>Blog</h2>
 <div class="card">
     <div class="row"></div>
     <div class="header">
         <div class="row">
-            @using (Html.BeginForm("Index", "Roles", FormMethod.Get))
+            @using (Html.BeginForm("Index", "Blogs", FormMethod.Get))
             {
                 <div class="col-sm-5">
                     @Html.TextBox("keyword",
              null,
              new {
                  id = "search_key",
-                 @class = "form-control"
+                 @class = "form-control" 
             })
                 </div>
                 <div class="col-sm-1">
@@ -31,10 +31,10 @@
             <tr>
                 <th> # </th>
                 <th>
-                    Name@*@Html.DisplayNameFor(model => model.Result.Records[0].Role)*@
+                    Title
                 </th>
                 <th>
-                    Code@*@Html.DisplayNameFor(model => model.Result.Records[0].RoleCode)*@
+                   Category
                 </th>
                 <th><a asp-action="Create">Create New</a></th>
                 <th></th>
@@ -47,12 +47,12 @@
                 {
                     <tr>
                         <td> @counter </td>
-                        <td> @item.Name </td>
-                        <td> @item.Code </td>
+                        <td> @item.Title </td>
+                        <td> @item.Category </td>
                         <td hidden="hidden"> @item.Id </td>
                         <td>
-                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                            @*<a asp-action="Details" asp-route-id="@item.Id">Details</a>*@
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id">Preview</a> |
                             <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                         </td>
                     </tr>

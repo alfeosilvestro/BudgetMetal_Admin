@@ -3,8 +3,12 @@ using Com.BudgetMetal.DataRepository.RFQ;
 using Com.BudgetMetal.DataRepository.Users;
 using Com.BudgetMetal.DB;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration.FileExtensions;
+using Microsoft.Extensions.Configuration.Json;
 using System;
+using System.IO;
 
 namespace Com.EzTender.SchedulerJob
 {
@@ -17,13 +21,22 @@ namespace Com.EzTender.SchedulerJob
             
             try
             {
-                Console.WriteLine("Hello World!");
-                string sqlConnectionString = "server=35.229.71.137;userid=platform_user;password=password;database=platform_db;SslMode=none;";
+                var builder = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetCurrentDirectory())
+               .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+
+                IConfigurationRoot configuration = builder.Build();
+
+                //Console.WriteLine(configuration.GetConnectionString("DefaultConnection"));
+
+
+                //Console.WriteLine("Hello World!");
+                string sqlConnectionString = configuration.GetConnectionString("DefaultConnection");
                 var services = new ServiceCollection()
                 .AddDbContext<DataContext>(options =>
                       options.UseMySQL(
                       sqlConnectionString,
-                      b => b.MigrationsAssembly("Com.BudgetMetal.Services.Gallery") // main project name = Application Specific
+                      b => b.MigrationsAssembly("Com.EzyTender.Scheduler") // main project name = Application Specific
                   ));
                 //services.AddScoped<ICompanyRepository, CompanyRepository>();
                 ConfigureServices(services);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Com.BudgetMetal.DataRepository.Attachment;
+using Com.BudgetMetal.DataRepository.Blogs;
 using Com.BudgetMetal.DataRepository.Clarification;
 using Com.BudgetMetal.DataRepository.Code_Category;
 using Com.BudgetMetal.DataRepository.Code_Table;
@@ -33,6 +34,7 @@ using Com.BudgetMetal.DataRepository.UserRoles;
 using Com.BudgetMetal.DataRepository.Users;
 using Com.BudgetMetal.DB;
 using Com.BudgetMetal.Services.Attachment;
+using Com.BudgetMetal.Services.Blogs;
 using Com.BudgetMetal.Services.Code_Category;
 using Com.BudgetMetal.Services.Code_Table;
 using Com.BudgetMetal.Services.Company;
@@ -108,7 +110,8 @@ namespace Com.EzTender.WebApp
         private void RegisterForDependencyInjection(IServiceCollection services)
         {
             //// Register for repository classes
-
+            services.AddScoped<IBlogService, BlogService>();
+            services.AddScoped<IBlogRepository, BlogRepository>();
 
             //// Register for repository classes
             services.AddScoped<ISingle_Sign_OnRepository, Single_Sign_OnRepository>();
