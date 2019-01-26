@@ -3,7 +3,15 @@
     ViewData["Title"] = "Register";
     Layout = "~/Views/Shared/_Empty_Layout.cshtml";
 }
-
+<style>
+    [type="checkbox"] + label {
+        padding-left: 26px;
+        height: 25px;
+        line-height: 21px;
+        font-size: 15px;
+        font-weight: bold;
+    }
+</style>
 
 <div class="row clearfix">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -86,12 +94,14 @@
                                 <input type="text" asp-for="ContactNumber" class="form-control" placeholder="Contact No." required>
                             </div>
                         </div>
-
-
                     </fieldset>
                     <h3>Terms & Conditions - Finish</h3>
                     <fieldset>
-
+                        <div class="row">
+                            <input id="acceptTerms-2" name="acceptTerms" type="checkbox" required>
+                            <label for="acceptTerms-2">I agree with the Terms and Conditions.</label>
+                        </div>
+                        <br />
                         <div style="height: 500px; overflow-y: auto;">
                             WEBSITE TERMS OF USE<br /><br />
 
@@ -169,10 +179,7 @@
                             These Terms set out everything agreed by the parties relating to your use of the Website and supersede and cancel anything discussed, exchanged or agreed prior to you agreeing to these Terms.  The parties have not relied on any representation, warranty or agreement relating to the Website that is not expressly set out in the Terms, and no such representation, warranty or agreement has any effect from the date you agreed to these Terms.
 
                         </div>
-                        <div class="row pull-right">
-                            <input id="acceptTerms-2" name="acceptTerms" type="checkbox" required>
-                            <label for="acceptTerms-2">I agree with the Terms and Conditions.</label>
-                        </div>
+
                     </fieldset>
                 </form>
             </div>
