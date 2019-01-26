@@ -500,7 +500,23 @@
         loadIndustry();
         loadUser();
         loadRole();
+
+        
+       
+        $('#ValidRfqdate').bootstrapMaterialDatePicker('setMinDate', moment());
+        $('#StartRfqdate').bootstrapMaterialDatePicker('setMinDate', moment()).on('change', function (e, date) {
+            $('#ValidRfqdate').bootstrapMaterialDatePicker('setMinDate', date);
+        });
+
+        $('#EstimatedProjectEndDate').bootstrapMaterialDatePicker('setMinDate', moment());
+        $('#EstimatedProjectStartDate').bootstrapMaterialDatePicker('setMinDate', moment()).on('change', function (e, date) {
+            $('#EstimatedProjectEndDate').bootstrapMaterialDatePicker('setMinDate', date);
+        });
+
+
     });
+
+
 
     $("#btnSubmit").click(function () {
         $("#btnType").val("submit");
@@ -909,3 +925,4 @@ function loadIndustry() {
 
 <!-- Create RFQ Js -->
 <script src="~/material_theme/js/RFQ/create.js"></script>
+
