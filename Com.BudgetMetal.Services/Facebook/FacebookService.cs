@@ -11,38 +11,33 @@ namespace Com.BudgetMetal.Services.Facebook
 {
     public class FacebookService : IFacebookService
     {
-        private readonly IFacebookClient _facebookClient;
+        private string _accessToken;
+        private string _pageId;
 
-        public FacebookService(IFacebookClient facebookClient)
+        public FacebookService(string accessToken, string pageId)
         {
-            _facebookClient = facebookClient;
+            this._accessToken = accessToken;
+            this._pageId = pageId;
         }
 
-        public async Task<Account> GetAccountAsync(string accessToken)
+        public string Publish(string textToPublish, string imageUrl)
         {
-            var result = await _facebookClient.GetAsync<dynamic>(
-                accessToken, "me", "fields=id,name,email,first_name,last_name,age_range,birthday,gender,locale");
+            IFacebookClient ifc = new FacebookClient(this._accessToken, this._pageId);
 
-            if (result == null)
-            {
-                return new Account();
-            }
+            var facebookTask = ifc.PublishToFacebook(textToPublish, imageUrl);
 
-            var account = new Account
-            {
-                Id = result.id,
-                Email = result.email,
-                Name = result.name,
-                UserName = result.username,
-                FirstName = result.first_name,
-                LastName = result.last_name,
-                Locale = result.locale
-            };
-
-            return account;
+            return facebookTask;
         }
 
-        public async Task PostOnWallAsync(string accessToken, string message)
-            => await _facebookClient.PostAsync(accessToken, "me/feed", new { message });
+        public async Task SimplePost(string textToPublish)
+        {
+            IFacebookClient ifc = new FacebookClient(this._accessToken, this._pageId);
+
+            var facebookTask = ifc.PublishSimplePost(textToPublish);
+            Task.WaitAll(facebookTask);
+
+            Console.WriteLine( facebookTask.Result );
+        }
+
     }
 }

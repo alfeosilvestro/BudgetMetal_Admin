@@ -7,7 +7,9 @@ namespace Com.BudgetMetal.Services.Facebook
 {
     public interface IFacebookClient
     {
-        Task<T> GetAsync<T>(string accessToken, string endpoint, string args = null);
-        Task PostAsync(string accessToken, string endpoint, object data, string args = null);
+        Task<Tuple<int, string>> PublishSimplePost(string postText);
+        string PublishToFacebook(string postText, string pictureURL);
+        Task<Tuple<int, string>> UploadPhoto(string photoURL);
+        Task<Tuple<int, string>> UpdatePhotoWithPost(string postID, string postText);
     }
 }

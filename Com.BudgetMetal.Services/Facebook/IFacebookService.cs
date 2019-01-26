@@ -8,7 +8,7 @@ namespace Com.BudgetMetal.Services.Facebook
 {
     public interface IFacebookService
     {
-        Task<Account> GetAccountAsync(string accessToken);
-        Task PostOnWallAsync(string accessToken, string message);
+        string Publish(string textToPublish, string imageUrl);
+        Task SimplePost(string textToPublish);
     }
 }
