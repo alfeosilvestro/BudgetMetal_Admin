@@ -19,6 +19,11 @@ namespace Com.EzTender.FaceBookConsole
             string facebookAppId = "844268399254202";
             string facebookAppSecret = "1fabfd9399940e1aa4d386be2173ae38";
 
+            /*
+             Facebook user name: ezytender@gmail.com
+             Facebook user pass: nnhhyy66
+             */
+
             IFacebookService fsvs = new FacebookService(accessToken, pageId);
             fsvs.SimplePost("Test");
 
