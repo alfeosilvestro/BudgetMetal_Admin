@@ -5,6 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="bin\Debug\netcoreapp2.0\Com.EzTender.WebApp.deps.json" />
+    <Content Include="bin\Debug\netcoreapp2.0\Com.EzTender.WebApp.runtimeconfig.dev.json" />
+    <Content Include="bin\Debug\netcoreapp2.0\Com.EzTender.WebApp.runtimeconfig.json" />
+    <Content Include="bin\Release\netcoreapp2.0\Com.EzTender.WebApp.deps.json" />
+    <Content Include="bin\Release\netcoreapp2.0\Com.EzTender.WebApp.runtimeconfig.dev.json" />
+    <Content Include="bin\Release\netcoreapp2.0\Com.EzTender.WebApp.runtimeconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.3" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.4" />
@@ -17,6 +26,36 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="bin\Debug\netcoreapp2.0\Com.BudgetMetal.Common.dll" />
+    <None Include="bin\Debug\netcoreapp2.0\Com.BudgetMetal.Common.pdb" />
+    <None Include="bin\Debug\netcoreapp2.0\Com.BudgetMetal.DataRepository.dll" />
+    <None Include="bin\Debug\netcoreapp2.0\Com.BudgetMetal.DataRepository.pdb" />
+    <None Include="bin\Debug\netcoreapp2.0\Com.BudgetMetal.DB.dll" />
+    <None Include="bin\Debug\netcoreapp2.0\Com.BudgetMetal.DB.pdb" />
+    <None Include="bin\Debug\netcoreapp2.0\Com.BudgetMetal.DBEntities.dll" />
+    <None Include="bin\Debug\netcoreapp2.0\Com.BudgetMetal.DBEntities.pdb" />
+    <None Include="bin\Debug\netcoreapp2.0\Com.BudgetMetal.Services.dll" />
+    <None Include="bin\Debug\netcoreapp2.0\Com.BudgetMetal.Services.pdb" />
+    <None Include="bin\Debug\netcoreapp2.0\Com.BudgetMetal.ViewModels.dll" />
+    <None Include="bin\Debug\netcoreapp2.0\Com.BudgetMetal.ViewModels.pdb" />
+    <None Include="bin\Debug\netcoreapp2.0\Com.EzTender.WebApp.dll" />
+    <None Include="bin\Debug\netcoreapp2.0\Com.EzTender.WebApp.pdb" />
+    <None Include="bin\Debug\netcoreapp2.0\wwwroot\Template\RFQ_Template.xlsx" />
+    <None Include="bin\Debug\netcoreapp2.0\wwwroot\Upload\RFQ_Template.xlsx" />
+    <None Include="bin\Release\netcoreapp2.0\Com.BudgetMetal.Common.dll" />
+    <None Include="bin\Release\netcoreapp2.0\Com.BudgetMetal.Common.pdb" />
+    <None Include="bin\Release\netcoreapp2.0\Com.BudgetMetal.DataRepository.dll" />
+    <None Include="bin\Release\netcoreapp2.0\Com.BudgetMetal.DataRepository.pdb" />
+    <None Include="bin\Release\netcoreapp2.0\Com.BudgetMetal.DB.dll" />
+    <None Include="bin\Release\netcoreapp2.0\Com.BudgetMetal.DB.pdb" />
+    <None Include="bin\Release\netcoreapp2.0\Com.BudgetMetal.DBEntities.dll" />
+    <None Include="bin\Release\netcoreapp2.0\Com.BudgetMetal.DBEntities.pdb" />
+    <None Include="bin\Release\netcoreapp2.0\Com.BudgetMetal.Services.dll" />
+    <None Include="bin\Release\netcoreapp2.0\Com.BudgetMetal.Services.pdb" />
+    <None Include="bin\Release\netcoreapp2.0\Com.BudgetMetal.ViewModels.dll" />
+    <None Include="bin\Release\netcoreapp2.0\Com.BudgetMetal.ViewModels.pdb" />
+    <None Include="bin\Release\netcoreapp2.0\Com.EzTender.WebApp.dll" />
+    <None Include="bin\Release\netcoreapp2.0\Com.EzTender.WebApp.pdb" />
     <None Include="wwwroot\Template\resetpassword.htm" />
   </ItemGroup>
 
