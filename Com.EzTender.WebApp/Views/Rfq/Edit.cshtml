@@ -626,6 +626,16 @@
         loadUser();
         loadRole()
        // $('#StartRfqdate').datepicker("setDate", new Date(2008, 9, 03));
+
+        $('#ValidRfqdate').bootstrapMaterialDatePicker('setMinDate', moment());
+        $('#StartRfqdate').bootstrapMaterialDatePicker('setMinDate', moment()).on('change', function (e, date) {
+            $('#ValidRfqdate').bootstrapMaterialDatePicker('setMinDate', date);
+        });
+
+        $('#EstimatedProjectEndDate').bootstrapMaterialDatePicker('setMinDate', moment());
+        $('#EstimatedProjectStartDate').bootstrapMaterialDatePicker('setMinDate', moment()).on('change', function (e, date) {
+            $('#EstimatedProjectEndDate').bootstrapMaterialDatePicker('setMinDate', date);
+        });
     });
 
     $("#tabinvited_suppliers").click(function () {
