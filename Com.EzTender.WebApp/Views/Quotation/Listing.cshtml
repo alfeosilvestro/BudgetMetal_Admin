@@ -35,7 +35,8 @@
                                 <th>RFQ No</th>
                                 <th>RFQ Closing Date</th>
                                 <th>Company</th>
-                                <th>Quotation Status</th>
+                                <th>Status</th>
+                                <th class="align-right">Price</th>
                                 <th>Quotation Updated Date</th>
                             </tr>
                         </thead>
@@ -50,6 +51,7 @@
                                         <td>@Html.DisplayFor(modelitem => item.Rfq.ValidRfqdate)</td>
                                         <td>@item.Document.Company.Name</td>
                                         <td>@item.Document.DocumentStatus.Name</td>
+                                        <td class="align-right">@item.QuotedFigure</td>
                                         <td>@Html.DisplayFor(modelitem => item.Document.UpdatedDate)</td>
                                     </tr>
                                 }
@@ -58,7 +60,7 @@
                     </table>
                     <div class="row">
                         <div class="col-sm-12">
-                           
+
 
                             <!-- pager -->
                             @if (Model.Result.TotalPage > 1)

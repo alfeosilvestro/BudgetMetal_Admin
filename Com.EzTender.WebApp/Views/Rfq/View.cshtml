@@ -181,8 +181,7 @@
                                 <div class="col-sm-3">
                                     <input type="checkbox" asp-for="IsPublic" class="chk-col-red" disabled />
                                     <label for="IsPublic">Public</label>
-
-
+                                    <a href="#" data-toggle="modal" data-target="#publicModal"><span class="badge bg-light-blue">i</span></a>
                                 </div>
                                 <div class="col-sm-3">
                                     <input type="checkbox" asp-for="SupplierProvideInstallationService" class="chk-col-red" disabled />
@@ -838,7 +837,20 @@
         </div>
     </div>
 </div>
-
+<div class="modal fade" id="publicModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">IsPublic</h4>
+            </div>
+            <div class="modal-body">
+                Why public?
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Editable Table Plugin Js
 <script src="~/material_theme/plugins/editable-table/mindmup-editabletable.js"></script>
