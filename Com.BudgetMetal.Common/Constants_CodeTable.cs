@@ -52,6 +52,10 @@ namespace Com.BudgetMetal.Common
         public static readonly int Code_TM_Quotation = 100062;
 
         public static readonly int Code_SiteOption_WebUrl = 100071;
+        public static readonly int Code_SiteOption_Fb_App_Id = 100072;
+        public static readonly int Code_SiteOption_Fb_App_Secret = 100073;
+        public static readonly int Code_SiteOption_Fb_AccessToken = 100074;
+        public static readonly int Code_SiteOption_Fb_PageId = 100075;
         #endregion
     }
 }

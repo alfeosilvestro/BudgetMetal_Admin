@@ -45,6 +45,7 @@ using Com.BudgetMetal.DataRepository.RfqInvites;
 using Com.BudgetMetal.DataRepository.Blogs;
 using Com.BudgetMetal.Services.Blogs;
 using Com.BudgetMetal.DataRepository.CompanySupplier;
+using Com.BudgetMetal.Services.Facebook;
 
 namespace Com.EazyTender_Admin
 {
@@ -101,6 +102,8 @@ namespace Com.EazyTender_Admin
 
         private void RegisterForDependencyInjection(IServiceCollection services)
         {
+
+           
             //// Register for repository classes
             services.AddScoped<IRoleRepository, RoleRepository>();
 
@@ -166,6 +169,8 @@ namespace Com.EazyTender_Admin
 
             services.AddScoped<IBlogRepository,BlogRepository>();
             services.AddScoped<IBlogService, BlogService>();
+
+            services.AddScoped<IFacebookService, FacebookService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Com.BudgetMetal.DataRepository.Attachment;
@@ -49,9 +50,12 @@ using Com.BudgetMetal.Services.TimeLine;
 using Com.BudgetMetal.Services.Users;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Com.EzTender.WebApp
 {
@@ -103,15 +107,40 @@ namespace Com.EzTender.WebApp
             });
 
             //services.AddMvc();
-            services.AddMvc(options => options.MaxModelValidationErrors = 50);
+            services.AddMvc(options => options.MaxModelValidationErrors = 50)
+                 .AddViewLocalization(opts => { opts.ResourcesPath = "Resources"; })
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization(); 
             RegisterForDependencyInjection(services);
+
+            //Localization
+            services.AddLocalization(options => {
+                options.ResourcesPath = "Resources";
+            });
+
+            services.AddLocalization(opts =>
+            {
+                opts.ResourcesPath = "Resources";
+            });
+
+
+
+            services.Configure<RequestLocalizationOptions>(opts =>
+            {
+                var supportedCultures = new List<CultureInfo>
+                {
+                    new CultureInfo("en-US"),
+                    new CultureInfo("my-mm"),
+                };
+                opts.DefaultRequestCulture = new RequestCulture("en-US");
+                opts.SupportedCultures = supportedCultures;
+                opts.SupportedUICultures = supportedCultures;
+            });
         }
 
         private void RegisterForDependencyInjection(IServiceCollection services)
         {
-            //// Register for repository classes
-            services.AddScoped<IBlogService, BlogService>();
-            services.AddScoped<IBlogRepository, BlogRepository>();
+           
 
             //// Register for repository classes
             services.AddScoped<ISingle_Sign_OnRepository, Single_Sign_OnRepository>();
@@ -120,7 +149,6 @@ namespace Com.EzTender.WebApp
             services.AddScoped<IGalleryService, GalleryService>();
 
             services.AddScoped<IDocumentRepository, DocumentRepository>();
-
             services.AddScoped<IRequirementRepository, RequirementRepository>();
             services.AddScoped<ISlaRepository, SlaRepository>();
             services.AddScoped<IPenaltyRepository, PenaltyRepository>();
@@ -128,6 +156,11 @@ namespace Com.EzTender.WebApp
             services.AddScoped<IRfqPriceScheduleRepository, RfqPriceScheduleRepository>();
             services.AddScoped<IDocumentUserRepository, DocumentUserRepository>();
             services.AddScoped<IDocumentActivityRepository, DocumentActivityRepository>();
+            //Rating
+            services.AddScoped<IRatingRepository, RatingRepository>();
+            //CompanySupplier
+            services.AddScoped<ICompanySupplierRepository, CompanySupplierRepository>();
+            services.AddScoped<IRfqInvitesRepository, RfqInvitesRepository>();
 
             services.AddScoped<IRFQService, RFQService>();
             services.AddScoped<IRfqRepository, RfqRepository>();
@@ -175,13 +208,9 @@ namespace Com.EzTender.WebApp
             services.AddScoped<IEmailLogRepository, EmailLogRepository>();
             services.AddScoped<IEmailLogService, EmailLogService>();
 
-            //Rating
-            services.AddScoped<IRatingRepository, RatingRepository>();
-
-            //CompanySupplier
-            services.AddScoped<ICompanySupplierRepository, CompanySupplierRepository>();
-
-            services.AddScoped<IRfqInvitesRepository, RfqInvitesRepository>();
+            //// Register for repository classes
+            services.AddScoped<IBlogService, BlogService>();
+            services.AddScoped<IBlogRepository, BlogRepository>();
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -195,6 +224,12 @@ namespace Com.EzTender.WebApp
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            //Localization
+            var options = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
+            app.UseRequestLocalization(options.Value);
+
+            app.UseCookiePolicy();
 
             app.UseStaticFiles();
             app.UseSession();
