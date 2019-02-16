@@ -352,7 +352,6 @@ namespace Com.BudgetMetal.Services.Quotation
 
         }
 
-
         public async Task<VmQuotationPage> GetQuotationForBuyerByPage(int userId, int buyerId, int page, int totalRecords, bool isCompany, int statusId = 0, string keyword = "")
         {
             var dbPageResult = await repoQuotation.GetQuotationForBuyerByPage(userId, buyerId,

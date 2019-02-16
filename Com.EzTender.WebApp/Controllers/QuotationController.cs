@@ -155,24 +155,21 @@ namespace Com.EzTender.WebApp.Controllers
                 var checkPermissionResult = await quotationService.CheckPermissionForQuotation(Convert.ToInt32(Company_Id), Convert.ToInt32(currentCompanyType), Convert.ToInt32(User_Id), id, isCompanyAdmin);
                 if (checkPermissionResult.IsSuccess)
                 {
-var result = await quotationService.GetSingleQuotationById(id);
+                    var result = await quotationService.GetSingleQuotationById(id);
 
-                return View(result);
+                    return View(result);
                 }
                 else
                 {
                     TempData["ErrorMessage"] = "You are not authorized to access this Quotation.";
                     return RedirectToAction("ErrorForUser", "Home");
                 }
-
-                
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = ex.Message;
                 return RedirectToAction("ErrorForUser", "Home");
             }
-
         }
 
         [HttpGet]
