@@ -32,8 +32,8 @@ namespace Com.BudgetMetal.Common
 
                 var smtp = new SmtpClient
                 {
-                    Host = "box5156.bluehost.com",//"smtp.gmail.com",
-                    Port = 465,//25,
+                    Host = "mail.mritmyanmar.com",//"smtp.gmail.com",
+                    Port = 25,
                     EnableSsl = true,
                     DeliveryMethod = SmtpDeliveryMethod.Network,
                     UseDefaultCredentials = false,
