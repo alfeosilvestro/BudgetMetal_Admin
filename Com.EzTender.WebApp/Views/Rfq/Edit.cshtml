@@ -229,15 +229,12 @@
                                             }
                                         }
                                     }
-
                                 </tbody>
-
                             </table>
                             <div class="row">
                                 <div class="form-group col-sm-12">
                                     <a class="btn btn-success" id="btnNewRequirement"> New Requirement </a>
                                 </div>
-
                             </div>
                         </div>
                         <div role="tabpanel" class="tab-pane fade in" id="service_level_agreement">
@@ -318,6 +315,7 @@
 
                         <div role="tabpanel" class="tab-pane fade in" id="pricing">
                             <input type="hidden" id="PricingLastId" value="@Model.RfqPriceSchedule.Count" />
+                            @{int j = 0;}
                             <table id="pricingTable" class="table table-striped">
                                 <thead>
                                     <tr>
@@ -328,22 +326,27 @@
                                         <th>&nbsp;</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="pricingTableTableBody">
                                     @{
                                         if (Model.RfqPriceSchedule != null)
                                         {
-                                            int i = 0;
-                                            foreach (var item in Model.RfqPriceSchedule)
+                                            int i = j;
+                                            var productList = Model.RfqPriceSchedule.Where(x => x.CategoryId == Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Product).ToList();
+                                            foreach (var item in productList)
                                             {
                                                 <tr>
                                                     <td><input type="text" name="RfqPriceSchedule[@i].ItemName" class="form-control" value="@item.ItemName" /> </td>
                                                     <td><input type="text" name="RfqPriceSchedule[@i].ItemDescription" class="form-control" value="@item.ItemDescription" /></td>
                                                     <td><input type="text" name="RfqPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>
-                                                    <td><input type="text" name="RfqPriceSchedule[@i].QuantityRequired" class="form-control" value="@item.QuantityRequired" /></td>
+                                                    <td>
+                                                        <input type="text" name="RfqPriceSchedule[@i].QuantityRequired" class="form-control" value="@item.QuantityRequired" />
+                                                        <input type="hidden" name="RfqPriceSchedule[@i].CategoryId" value="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Product)" class="form-control" />
+                                                    </td>
                                                     <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePricingRow(this)'>Remove</button></td>
                                                 </tr>
                                                 i++;
                                             }
+                                            j = i;
                                         }
                                     }
 
@@ -352,6 +355,89 @@
                             <div class="row">
                                 <div class="form-group col-sm-12">
                                     <a class="btn btn-success" id="btnNewPricing"> New Pricing </a>
+                                </div>
+                            </div>
+
+                            <table id="pricingServiceTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="25%">Item Name</th>
+                                        <th width="35%">Item Description</th>
+                                        <th width="20%">Internal Reference Code</th>
+                                        <th width="10%">Quantity</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="pricingServiceTableBody">
+                                    @{
+
+                                        if (Model.RfqPriceSchedule != null)
+                                        {
+                                            int i = j;
+                                            var serviceList = Model.RfqPriceSchedule.Where(x => x.CategoryId == Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Service).ToList();
+                                            foreach (var item in serviceList)
+                                            {
+                                                <tr>
+                                                    <td><input type="text" name="RfqPriceSchedule[@i].ItemName" class="form-control" value="@item.ItemName" /> </td>
+                                                    <td><input type="text" name="RfqPriceSchedule[@i].ItemDescription" class="form-control" value="@item.ItemDescription" /></td>
+                                                    <td><input type="text" name="RfqPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>
+                                                    <td>
+                                                        <input type="text" name="RfqPriceSchedule[@i].QuantityRequired" class="form-control" value="@item.QuantityRequired" />
+                                                        <input type="hidden" name="RfqPriceSchedule[@i].CategoryId" value="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Service)" class="form-control" />
+                                                    </td>
+                                                    <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePricingRow(this)'>Remove</button></td>
+                                                </tr>
+                                                i++;
+                                            }
+                                            j = i;
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                            <div class="row">
+                                <div class="form-group col-sm-12">
+                                    <a class="btn btn-success" id="btnServicePricing"> Add Service Pricing </a>
+                                </div>
+                            </div>
+
+                            <table id="pricingWarrantyTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="25%">Item Name</th>
+                                        <th width="35%">Item Description</th>
+                                        <th width="20%">Internal Reference Code</th>
+                                        <th width="10%">Quantity</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="pricingWarrantyTableBody">
+                                    @{
+                                        if (Model.RfqPriceSchedule != null)
+                                        {
+                                            int i = j;
+                                            var warrantyList = Model.RfqPriceSchedule.Where(x => x.CategoryId == Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Warranty).ToList();
+                                            foreach (var item in warrantyList)
+                                            {
+                                                <tr>
+                                                    <td><input type="text" name="RfqPriceSchedule[@i].ItemName" class="form-control" value="@item.ItemName" /> </td>
+                                                    <td><input type="text" name="RfqPriceSchedule[@i].ItemDescription" class="form-control" value="@item.ItemDescription" /></td>
+                                                    <td><input type="text" name="RfqPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>
+                                                    <td>
+                                                        <input type="text" name="RfqPriceSchedule[@i].QuantityRequired" class="form-control" value="@item.QuantityRequired" />
+                                                        <input type="hidden" name="RfqPriceSchedule[@i].CategoryId" value="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Warranty)" class="form-control" />
+                                                    </td>
+                                                    <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePricingRow(this)'>Remove</button></td>
+                                                </tr>
+                                                i++;
+                                            }
+                                            j = i;
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                            <div class="row">
+                                <div class="form-group col-sm-12">
+                                    <a class="btn btn-success" id="btnWarrantyPricing"> Add Warranty Pricing </a>
                                 </div>
                             </div>
                         </div>

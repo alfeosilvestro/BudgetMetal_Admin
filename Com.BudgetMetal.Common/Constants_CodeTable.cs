@@ -16,6 +16,7 @@ namespace Com.BudgetMetal.Common
         public static readonly int CodeCat_Company = 100050;
         public static readonly int CodeCat_TimeLineMessageType = 100060;
         public static readonly int CodeCat_SiteOption = 100070;
+        public static readonly int CodeCat_RfqPricingCategory = 100080;
         #endregion
 
         #region Code Table
@@ -57,6 +58,10 @@ namespace Com.BudgetMetal.Common
         public static readonly int Code_SiteOption_Fb_App_Secret = 100073;
         public static readonly int Code_SiteOption_Fb_AccessToken = 100074;
         public static readonly int Code_SiteOption_Fb_PageId = 100075;
+
+        public static readonly int Code_RfqPriceCategory_Product= 100081;
+        public static readonly int Code_RfqPriceCategory_Service = 100082;
+        public static readonly int Code_RfqPriceCategory_Warranty = 100083;
         #endregion
     }
 }

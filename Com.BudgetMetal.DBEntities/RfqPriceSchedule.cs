@@ -10,7 +10,8 @@ namespace Com.BudgetMetal.DBEntities
         public string ItemDescription { get; set; }
         public string InternalRefrenceCode { get; set; }
         public string QuantityRequired { get; set; }
-      
+        public int CategoryId { get; set; }
+
         public int Rfq_Id { get; set; }
 
         [ForeignKey("Rfq_Id")]
