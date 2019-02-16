@@ -63,7 +63,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
                 var resultObj = result.Result;
                 if (resultObj.Id == 0)
                 {
-                    ViewBag.ErrorMessage = "Email or Password is invalid!";
+                    ViewBag.ErrorMessage = "Username or Password is invalid!";
                     return View(user);
                 }
                 else

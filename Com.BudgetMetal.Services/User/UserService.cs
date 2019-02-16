@@ -589,16 +589,16 @@ namespace Com.BudgetMetal.Services.Users
             return result;
         }
 
-        public async Task<VmGenericServiceResult> ResetPassword(string email, string newPassword)
+        public async Task<VmGenericServiceResult> ResetPassword(string username, string newPassword)
         {
             var result = new VmGenericServiceResult();
 
-            var dbresult = await repo.GetUserByEmail(email);
+            var dbresult = await repo.GetUserByUserName(username);
 
             if (dbresult == null)
             {
                 result.IsSuccess = false;
-                result.MessageToUser = "This email is not registered.";
+                result.MessageToUser = "This user is not registered.";
             }
             else
             {   
@@ -606,7 +606,7 @@ namespace Com.BudgetMetal.Services.Users
                 repo.Update(dbresult);
                 repo.Commit();
                 result.IsSuccess = true;
-                result.MessageToUser = "Successful";
+                result.MessageToUser = dbresult.EmailAddress;
             }
 
             return result;

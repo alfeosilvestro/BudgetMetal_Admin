@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Facebook" Version="7.0.6" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Com.BudgetMetal.Common\Com.BudgetMetal.Common.csproj" />
     <ProjectReference Include="..\Com.BudgetMetal.DataRepository\Com.BudgetMetal.DataRepository.csproj" />
     <ProjectReference Include="..\Com.BudgetMetal.DBContext\Com.BudgetMetal.DB.csproj" />

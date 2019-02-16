@@ -102,6 +102,16 @@ namespace Com.EzTender.WebApp.Controllers
 
         public IActionResult SignIn()
         {
+            string _cul = Request.Query["culture"];
+            
+            if(_cul != null)
+            {
+                ViewBag.culture = _cul;
+            }
+            else
+            {
+                ViewBag.culture = "";
+            }
             return View();
         }
 

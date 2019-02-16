@@ -155,10 +155,10 @@ namespace Com.EzTender.WebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<JsonResult> ResetPassword(string Email)
+        public async Task<JsonResult> ResetPassword(string Username)
         {
             string newPassword = CreateRandomPassword(6);
-            var result = await userService.ResetPassword(Email, newPassword);
+            var result = await userService.ResetPassword(Username, newPassword);
 
             if (result.IsSuccess)
             {
@@ -174,7 +174,7 @@ namespace Com.EzTender.WebApp.Controllers
                 //string mailBody = "";
                 //mailBody = "Your new password for EzyTender is " + newPassword;
                 SendingMail sm = new SendingMail();
-                sm.SendMail(Email, "", "Reset Password", msgBody);
+                sm.SendMail(result.MessageToUser, "", "Reset Password", msgBody);
             }
 
             return new JsonResult(result, new JsonSerializerSettings()
