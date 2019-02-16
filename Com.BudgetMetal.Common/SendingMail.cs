@@ -24,19 +24,19 @@ namespace Com.BudgetMetal.Common
                 //mailMessage.Subject = subject;
                 //client.Send(mailMessage);
                 //info@mritmyanmar.com
-                //var fromAddress = new MailAddress("ezytender@gmail.com", "EzyTender");
+                var fromAddress = new MailAddress("ezytender@gmail.com", "EzyTender");
 
-                var fromAddress = new MailAddress("info@mritmyanmar.com", "EzyTender");
+                //var fromAddress = new MailAddress("info@mritmyanmar.com", "EzyTender");
                 var toAddress = new MailAddress(toMail, toMail);
                 const string fromPassword = "nnhhyy66";
 
                 var smtp = new SmtpClient
                 {
-                    Host = "box5156.bluehost.com",//"smtp.gmail.com",
-                    Port = 465,//25,
+                    Host = "smtp.gmail.com",
+                    Port = 587,
                     EnableSsl = true,
                     DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false,
+                    UseDefaultCredentials = true,
                     Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
                 };
                 using (var message = new MailMessage(fromAddress, toAddress)
