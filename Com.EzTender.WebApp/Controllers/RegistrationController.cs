@@ -64,7 +64,7 @@ namespace Com.EzTender.WebApp.Controllers
 
                 //var location = new Uri($"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}");
                 var location = new Uri($"{Request.Scheme}://{Request.Host}");
-                var url = location.AbsoluteUri;
+                var url = _appSettings.App_Identity.WebAppUrl;// location.AbsoluteUri;
                 string encodeUserName = user.UserName.EncodeString(); // Convert.ToBase64String(Encoding.UTF8.GetBytes(user.EmailAddress));
                 string token = _appSettings.App_Identity.Identity;
                 //var byte_time = Encoding.UTF8.GetBytes(DateTime.Now.AddDays(2).ToString());
