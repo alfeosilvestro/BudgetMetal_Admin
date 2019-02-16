@@ -36,7 +36,7 @@ namespace Com.BudgetMetal.Services.Users
 
         Task<VmGenericServiceResult> ConfirmUserName(string Username);
 
-        Task<VmGenericServiceResult> ResetPassword(string email, string newPassword);
+        Task<VmGenericServiceResult> ResetPassword(string username, string newPassword);
 
         Task<VmGenericServiceResult> ChangePassword(int id, string password);
     }
