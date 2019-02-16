@@ -92,7 +92,7 @@ $("#btnNewPricing").click(function () {
         "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].InternalRefrenceCode' class='form-control' />" +
         "</td> " +
         "<td> " +
-        "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].QuantityRequired' class='form-control' />" +
+        "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].QuantityRequired' class='form-control' /> <input type='text' name='RfqPriceSchedule[" + PricingLastId + "].CategoryId' value='100081' class='form-control' />" +
         "</td> " +
         "<td> " +
         "<button type='button' class='btn btn-danger waves-effect' onclick='RemovePricingRow(this)'> Remove</button >" +
@@ -107,6 +107,56 @@ $("#btnNewPricing").click(function () {
 function RemovePricingRow(item) {
     $(item).parent().parent().remove();
 }
+
+$("#btnServicePricing").click(function () {
+    var PricingLastId = $("#PricingLastId").val();
+    var newRow = "<tr>" +
+        "<td> " +
+        "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].ItemName' class='form-control' />" +
+        "</td> " +
+        "<td> " +
+        "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].ItemDescription' class='form-control' />" +
+        "</td> " +
+        "<td> " +
+        "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].InternalRefrenceCode' class='form-control' />" +
+        "</td> " +
+        "<td> " +
+        "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].QuantityRequired' class='form-control' /><input type='text' name='RfqPriceSchedule[" + PricingLastId + "].CategoryId' value='100082' class='form-control' />" +
+        "</td> " +
+        "<td> " +
+        "<button type='button' class='btn btn-danger waves-effect' onclick='RemovePricingRow(this)'> Remove</button >" +
+        "</td> " +
+        "</tr> ";
+
+    $("#pricingServiceTable > tbody").append(newRow);
+    PricingLastId = parseInt(PricingLastId) + 1;
+    $("#PricingLastId").val(PricingLastId);
+});
+
+$("#btnWarrantyPricing").click(function () {
+    var PricingLastId = $("#PricingLastId").val();
+    var newRow = "<tr>" +
+        "<td> " +
+        "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].ItemName' class='form-control' />" +
+        "</td> " +
+        "<td> " +
+        "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].ItemDescription' class='form-control' />" +
+        "</td> " +
+        "<td> " +
+        "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].InternalRefrenceCode' class='form-control' />" +
+        "</td> " +
+        "<td> " +
+        "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].QuantityRequired' class='form-control' /> <input type='text' name='RfqPriceSchedule[" + PricingLastId + "].CategoryId' value='100083' class='form-control' />" +
+        "</td> " +
+        "<td> " +
+        "<button type='button' class='btn btn-danger waves-effect' onclick='RemovePricingRow(this)'> Remove</button >" +
+        "</td> " +
+        "</tr> ";
+
+    $("#pricingWarrantyTable > tbody").append(newRow);
+    PricingLastId = parseInt(PricingLastId) + 1;
+    $("#PricingLastId").val(PricingLastId);
+});
 
 // Add and Remove Attachment
 $("#btnNewFile").click(function () {

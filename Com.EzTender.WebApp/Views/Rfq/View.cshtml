@@ -358,7 +358,6 @@
                         </div>
 
                         <div role="tabpanel" class="tab-pane fade in" id="pricing">
-
                             <table id="pricingTable" class="table table-striped">
                                 <thead>
                                     <tr>
@@ -372,8 +371,37 @@
                                     @{
                                         if (Model.RfqPriceSchedule != null)
                                         {
+                                            var productList = Model.RfqPriceSchedule.Where(x => x.CategoryId == Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Product).ToList();
+                                            foreach (var item in productList)
+                                            {
+                                                <tr>
+                                                    <td>@item.ItemName </td>
+                                                    <td>@item.ItemDescription</td>
+                                                    <td>@item.InternalRefrenceCode</td>
+                                                    <td>@item.QuantityRequired</td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
 
-                                            foreach (var item in Model.RfqPriceSchedule)
+                            <table id="pricingServiceTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="25%">Item Name</th>
+                                        <th width="35%">Item Description</th>
+                                        <th width="20%">Internal Reference Code</th>
+                                        <th width="10%">Quantity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (Model.RfqPriceSchedule != null)
+                                        {
+                                            var serviceList = Model.RfqPriceSchedule.Where(x => x.CategoryId == Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Service).ToList();
+                                            
+                                            foreach (var item in serviceList)
                                             {
                                                 <tr>
                                                     <td>@item.ItemName </td>
@@ -382,13 +410,38 @@
                                                     <td>@item.QuantityRequired</td>
 
                                                 </tr>
-
                                             }
                                         }
                                     }
-
                                 </tbody>
+                            </table>
 
+                            <table id="pricingWarrantyTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="25%">Item Name</th>
+                                        <th width="35%">Item Description</th>
+                                        <th width="20%">Internal Reference Code</th>
+                                        <th width="10%">Quantity</th>
+                                    </tr>
+                                </thead>    
+                                <tbody>
+                                    @{
+                                        if (Model.RfqPriceSchedule != null)
+                                        {
+                                            var warrantyList = Model.RfqPriceSchedule.Where(x => x.CategoryId == Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Warranty).ToList();
+                                            foreach (var item in warrantyList)
+                                            {
+                                                <tr>
+                                                    <td>@item.ItemName </td>
+                                                    <td>@item.ItemDescription</td>
+                                                    <td>@item.InternalRefrenceCode</td>
+                                                    <td>@item.QuantityRequired</td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                </tbody>
                             </table>
 
                             @{
@@ -581,14 +634,14 @@
                                                 <tr>
                                                     <td> @item.Name </td>
                                                     <td> @item.EmailAddress </td>
-                                                    <td> 
-                                                    @{ 
-                                                        if (Model.Document.DocumentStatus_Id == Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Open)
-                                                        {
-                                                            <input type="button" class='btn btn-primary' value="Resend" onclick="ResendEmail('@item.EmailAddress')">
+                                                    <td>
+                                                        @{
+                                                            if (Model.Document.DocumentStatus_Id == Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Open)
+                                                            {
+                                                                <input type="button" class='btn btn-primary' value="Resend" onclick="ResendEmail('@item.EmailAddress')">
+                                                            }
                                                         }
-                                                    }
-                                                     </td>
+                                                    </td>
                                                 </tr>
                                             }
                                         }
@@ -689,7 +742,7 @@
                         if (Code_C_Buyer != currentCompanyType)
                         {
                             <a class="btn btn-success" id="btnCreateQuotation" href='@Url.Action("Create","Quotation",new { id= Model.Id })'>Register &amp; Interest</a>
-                            <button type="button" class="btn btn-danger" id="btnNotRelevant" >Not Relevant</button>
+                            <button type="button" class="btn btn-danger" id="btnNotRelevant">Not Relevant</button>
                             <div id="divViewQuotionForSupplier"></div>
                         }
                         else
@@ -717,7 +770,7 @@
                             }
                             else
                             {
-                                <a href="@Url.Action("Revise", "Rfq", new { id = Model.Id })" id="btnRevise" class="btn btn-danger" >Revise</a>
+                                <a href="@Url.Action("Revise", "Rfq", new { id = Model.Id })" id="btnRevise" class="btn btn-danger">Revise</a>
                             }
                         }
                     }

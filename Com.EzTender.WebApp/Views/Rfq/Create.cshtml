@@ -172,7 +172,7 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
-                                    <span class="text-warning">Click <a href='@Url.Action("DownloadExcelTemplate","Rfq")'>Here</a> to Download Template</span>
+                                    <span class="text-warning">Click <a href='@Url.Action("DownloadExcelTemplate", "Rfq")'>Here</a> to Download Template</span>
                                     <a href="#" data-toggle="modal" data-target="#excelInfoModal"><span class="badge bg-light-blue">i</span></a><br /><br />
                                     <label>Upload Template</label>
                                     <input type="file" name="fUpload" id="fUpload" value="" class="form-control" />
@@ -263,7 +263,7 @@
                         </div>
 
                         <div role="tabpanel" class="tab-pane fade in" id="pricing">
-                            <input type="hidden" id="PricingLastId" value="1" />
+                            <input type="hidden" id="PricingLastId" value="3" />
                             <table id="pricingTable" class="table table-striped">
                                 <thead>
                                     <tr>
@@ -279,7 +279,11 @@
                                         <td><input type="text" asp-for="RfqPriceSchedule[0].ItemName" class="form-control" /></td>
                                         <td><input type="text" asp-for="RfqPriceSchedule[0].ItemDescription" class="form-control" /></td>
                                         <td><input type="text" asp-for="RfqPriceSchedule[0].InternalRefrenceCode" class="form-control" /></td>
-                                        <td><input type="text" asp-for="RfqPriceSchedule[0].QuantityRequired" class="form-control" /></td>
+                                        <td>
+                                            <input type="text" asp-for="RfqPriceSchedule[0].QuantityRequired" class="form-control" />
+                                            <input type="hidden" asp-for="RfqPriceSchedule[0].CategoryId" value="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Product)" class="form-control" />
+                                        </td>
+
                                         <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePricingRow(this)'>Remove</button></td>
                                     </tr>
                                 </tbody>
@@ -287,9 +291,70 @@
                             </table>
                             <div class="row">
                                 <div class="form-group col-sm-12">
-                                    <a class="btn btn-success" id="btnNewPricing"> Add Pricing </a>
+                                    <a class="btn btn-success" id="btnNewPricing"> Add Product Pricing  </a>
                                 </div>
 
+                            </div>
+
+                            @*<input type="hidden" id="PricingServiceLastId" value="1" />*@
+                            <table id="pricingServiceTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="25%">Item Name</th>
+                                        <th width="35%">Item Description</th>
+                                        <th width="20%">Internal Reference Code</th>
+                                        <th width="10%">Quantity</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="pricingServiceTableBody">
+                                    <tr>
+                                        <td><input type="text" asp-for="RfqPriceSchedule[1].ItemName" class="form-control" /></td>
+                                        <td><input type="text" asp-for="RfqPriceSchedule[1].ItemDescription" class="form-control" /></td>
+                                        <td><input type="text" asp-for="RfqPriceSchedule[1].InternalRefrenceCode" class="form-control" /></td>
+                                        <td>
+                                            <input type="text" asp-for="RfqPriceSchedule[1].QuantityRequired" class="form-control" />
+                                            <input type="hidden" asp-for="RfqPriceSchedule[1].CategoryId" value="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Service)" class="form-control" />
+                                        </td>
+                                        <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePricingRow(this)'>Remove</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row">
+                                <div class="form-group col-sm-12">
+                                    <a class="btn btn-success" id="btnServicePricing"> Add Service Pricing </a>
+                                </div>
+                            </div>
+
+                            <table id="pricingWarrantyTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="25%">Item Name</th>
+                                        <th width="35%">Item Description</th>
+                                        <th width="20%">Internal Reference Code</th>
+                                        <th width="10%">Quantity</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="pricingWarrantyTableBody">
+                                    <tr>
+                                        <td><input type="text" asp-for="RfqPriceSchedule[2].ItemName" class="form-control" /></td>
+                                        <td><input type="text" asp-for="RfqPriceSchedule[2].ItemDescription" class="form-control" /></td>
+                                        <td><input type="text" asp-for="RfqPriceSchedule[2].InternalRefrenceCode" class="form-control" /></td>
+                                        <td>
+                                            <input type="text" asp-for="RfqPriceSchedule[2].QuantityRequired" class="form-control" />
+                                            <input type="hidden" asp-for="RfqPriceSchedule[2].CategoryId" value="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Warranty)" class="form-control" />
+                                        </td>
+
+                                        <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePricingRow(this)'>Remove</button></td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                            <div class="row">
+                                <div class="form-group col-sm-12">
+                                    <a class="btn btn-success" id="btnWarrantyPricing"> Add Warranty Pricing </a>
+                                </div>
                             </div>
                         </div>
 
@@ -884,6 +949,7 @@ function loadIndustry() {
                     $("#pricingTableBody").empty();
 
                     for (var i = 0; i < response.List_Pricing.length; i++) {
+                       
                         $('#pricingTableBody').append(
                             "<tr> " +
                             "<td>" + "<input type='text' name='RfqPriceSchedule[" + i + "].ItemName' class='form-control' value='" + response.List_Pricing[i].ItemName + "'/></td>" +
@@ -896,6 +962,8 @@ function loadIndustry() {
                     }
                     $("#PricingLastId").val(response.List_Pricing.length);
                     console.log(response.List_Requirement);
+
+                    
 
                 }
                 alert("File upload success!");

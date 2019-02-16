@@ -407,11 +407,9 @@ namespace Com.GenericPlatform.WebApp.Controllers
                             };
 
                             Rfq.Document.Attachment.Add(att);
-
                         }
                         i++;
                     }
-
                 }
 
                 //Rfq.Document.Attachment = listAttachment;
@@ -549,7 +547,6 @@ namespace Com.GenericPlatform.WebApp.Controllers
                                         UpdatedBy = Rfq.UpdatedBy
                                     };
                                     listAttachment.Add(att);
-
                                 }
 
                                 i++;
@@ -562,7 +559,6 @@ namespace Com.GenericPlatform.WebApp.Controllers
                     // assign attachment list
                     Rfq.Document.Attachment = listAttachment;
                 }
-
 
                 var listInvitedSupplier = new List<VmInvitedSupplierItem>();
                 var arrInvitedSupplier = Request.Form["supplier_list"].ToArray();
