@@ -36,6 +36,9 @@ namespace Com.BudgetMetal.DataRepository.RFQ
                               && (e.Document.IsActive == true)
                               && e.Document.Company_Id == documentOwner
                               && (statusId == 0 || e.Document.DocumentStatus_Id == statusId)
+                              && (e.Document.DocumentStatus_Id != Constants_CodeTable.Code_RFQ_Delete)
+                              && (e.Document.DocumentStatus_Id != Constants_CodeTable.Code_RFQ_Draft)
+                               && (e.Document.DocumentStatus_Id != Constants_CodeTable.Code_RFQ_RequiredApproval)
                               && (keyword == "" || e.Document.Title.ToLower().Contains(keyword.ToLower()) || e.Document.DocumentNo.ToLower().Contains(keyword.ToLower()) || e.Document.Company.Name.ToLower().Contains(keyword.ToLower()))
                             )
                             .OrderByDescending(e => e.CreatedDate)
@@ -97,6 +100,7 @@ namespace Com.BudgetMetal.DataRepository.RFQ
                               && (statusId == 0 || e.Document.DocumentStatus_Id == statusId)
                               && (e.Document.DocumentStatus_Id != Constants_CodeTable.Code_RFQ_Delete)
                               && (e.Document.DocumentStatus_Id != Constants_CodeTable.Code_RFQ_Draft)
+                               && (e.Document.DocumentStatus_Id != Constants_CodeTable.Code_RFQ_RequiredApproval)
                               && (keyword == "" || e.Document.Title.ToLower().Contains(keyword.ToLower()) || e.Document.DocumentNo.ToLower().Contains(keyword.ToLower()) || e.Document.Company.Name.ToLower().Contains(keyword.ToLower()))
                             )
                             .OrderByDescending(e => e.CreatedDate)

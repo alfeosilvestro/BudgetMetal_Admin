@@ -85,13 +85,12 @@
                     <ul class="nav nav-tabs tab-nav-right" role="tablist">
                         <li role="presentation" class="active"><a href="#basic_requirements" data-toggle="tab">Info</a></li>
                         <li role="presentation"><a href="#detailed_requirements" data-toggle="tab">Requirements</a></li>
-                        <li role="presentation"><a href="#service_level_agreement" data-toggle="tab">SLA</a></li>
-                        <li role="presentation"><a href="#penalty" data-toggle="tab">Commercial terms ( need to confirm)</a></li>
-                        <li role="presentation"><a href="#pricing" data-toggle="tab">Pricing Table</a></li>
-                        <li role="presentation" id="tabinvited_suppliers"><a href="#invited_suppliers" data-toggle="tab">Invited Suppliers</a></li>
-                        <li role="presentation"><a href="#attachments" data-toggle="tab">Files</a></li>
-                        <li role="presentation"><a href="#settings" data-toggle="tab">Users</a></li>
-                        <li role="presentation"><a href="#DocumentActivity" data-toggle="tab">Activity</a></li>
+                        <li role="presentation"><a href="#service_level_agreement" data-toggle="tab">Supports</a></li>
+                        <li role="presentation"><a href="#penalty" data-toggle="tab">Commercials</a></li>
+                        <li role="presentation"><a href="#pricing" data-toggle="tab">Pricing</a></li>
+                        <li role="presentation"><a href="#attachments" data-toggle="tab">Attachments</a></li>
+                        <li role="presentation"><a href="#settings" data-toggle="tab">Roles</a></li>
+                        <li role="presentation" id="tabinvited_suppliers"><a href="#invited_suppliers" data-toggle="tab">Invited Supplier</a></li>
                     </ul>
                     <!-- Tab panes -->
                     <div class="tab-content">
@@ -234,7 +233,7 @@
                             <table id="slaTable" class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th width="30%">Requirement</th>
+                                        <th width="30%">Service Name</th>
                                         <th width="65%">Description</th>
                                         <th>&nbsp;</th>
                                     </tr>
@@ -260,7 +259,7 @@
                             </table>
                             <div class="row">
                                 <div class="form-group col-sm-12">
-                                    <a class="btn btn-success" id="btnNewSLA"> New SLA </a>
+                                    <a class="btn btn-success" id="btnNewSLA"> New Support </a>
                                 </div>
 
                             </div>
@@ -270,9 +269,9 @@
                             <table id="penaltyTable" class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th width="30%">Breach of Service Definition</th>
-                                        <th width="20%">Milestone</th>
-                                        <th width="45%">Commercial term and description</th>
+                                        <th width="30%">Service Name</th>
+                                        @*<th width="20%">Milestone</th>*@
+                                        <th width="45%">Description</th>
                                         <th>&nbsp;</th>
                                     </tr>
                                 </thead>
@@ -285,7 +284,7 @@
                                             {
                                                 <tr>
                                                     <td><input type="text" name="Penalty[@i].BreachOfServiceDefinition" class="form-control" value="@item.BreachOfServiceDefinition" /></td>
-                                                    <td><input type="text" name="Penalty[@i].PenaltyAmount" class="form-control" value="@item.PenaltyAmount" /></td>
+                                                    @*<td><input type="text" name="Penalty[@i].PenaltyAmount" class="form-control" value="@item.PenaltyAmount" /></td>*@
                                                     <td><input type="text" name="Penalty[@i].Description" class="form-control" value="@item.Description" /></td>
                                                     <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePenaltyRow(this)'>Remove</button></td>
                                                 </tr>
@@ -299,7 +298,7 @@
                             </table>
                             <div class="row">
                                 <div class="form-group col-sm-12">
-                                    <a class="btn btn-success" id="btnNewPenalty"> New Penalty </a>
+                                    <a class="btn btn-success" id="btnNewPenalty"> New Commercial </a>
                                 </div>
 
                             </div>
@@ -341,7 +340,7 @@
                             </table>
                             <div class="row">
                                 <div class="form-group col-sm-12">
-                                    <a class="btn btn-success" id="btnNewPricing"> New </a>
+                                    <a class="btn btn-success" id="btnNewPricing"> New Pricing </a>
                                 </div>
 
                             </div>
@@ -413,7 +412,7 @@
                             <iframe id="iframe_download_file" style="display:none" src=""></iframe>
                             <div class="row">
                                 <div class="form-group col-sm-12">
-                                    <a class="btn btn-success" id="btnNewFile"> New </a>
+                                    <a class="btn btn-success" id="btnNewFile"> New Attachment </a>
                                 </div>
                             </div>
                         </div>
@@ -515,24 +514,7 @@
                             </div>
                         </div>
 
-                        <div role="tabpanel" class="tab-pane fade in" id="DocumentActivity">
-
-                            <table id="pricingTable" class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th width="25%">Action</th>
-                                        <th width="35%">Created By</th>
-                                        <th width="20%">Created Date</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                   
-
-                                </tbody>
-
-                            </table>
-
-                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -544,7 +526,7 @@
             <div class="card">
                 <div class="body">
                     <input type="hidden" name="btnType" id="btnType" value="" />
-                    <button type="button" id="btnDraft" class="btn btn-info btn-lg">Draft</button>
+                    <button type="button" id="btnDraft" class="btn btn-info btn-lg">Save as Draft</button>
                     <button type="button" id="btnSubmit" class="btn btn-primary  btn-lg">Submit</button>
                     <input type="hidden" id="loadinvitedsupplier" value="0" />
                 </div>

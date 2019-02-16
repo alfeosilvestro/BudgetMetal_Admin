@@ -57,9 +57,9 @@ $("#btnNewPenalty").click(function () {
         "<td> " +
         "<input type='text' name='Penalty[" + PenaltyLastId + "].BreachOfServiceDefinition' class='form-control' />" +
         "</td> " +
-        "<td> " +
-        "<input type='text' name='Penalty[" + PenaltyLastId + "].PenaltyAmount' class='form-control' />" +
-        "</td> " +
+        //"<td> " +
+        //"<input type='text' name='Penalty[" + PenaltyLastId + "].PenaltyAmount' class='form-control' />" +
+        //"</td> " +
         "<td> " +
         "<input type='text' name='Penalty[" + PenaltyLastId + "].Description' class='form-control' />" +
         "</td> " +

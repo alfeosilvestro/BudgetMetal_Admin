@@ -81,13 +81,13 @@
                     <ul class="nav nav-tabs tab-nav-right" role="tablist">
                         <li role="presentation" class="active"><a href="#basic_information" data-toggle="tab">Basic Information</a></li>
                         <li role="presentation"><a href="#detailed_requirements" data-toggle="tab">Requirements</a></li>
-                        <li role="presentation"><a href="#pricing" data-toggle="tab">Pricing Table</a></li>
+                        <li role="presentation"><a href="#pricing" data-toggle="tab">Pricing</a></li>
                         <li role="presentation"><a href="#attachments" data-toggle="tab">Attachments</a></li>
                         @{
                             if (Code_C_Buyer != currentCompanyType)
                             {
-                                <li role="presentation"><a href="#settings" data-toggle="tab">Users</a></li>
-                                <li role="presentation"><a href="#DocumentActivity" data-toggle="tab">Activity</a></li>
+                                <li role="presentation"><a href="#settings" data-toggle="tab">Roles</a></li>
+                                <li role="presentation"><a href="#DocumentActivity" data-toggle="tab">Activities</a></li>
                             }
 
                         }
@@ -103,7 +103,7 @@
                                     <label for="quote_no">Contact Person</label>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" asp-for="Document.ContactPersonName" class="form-control" placeholder="Contact Person" value="@ViewBag.FullName">
+                                            <input type="text" asp-for="Document.ContactPersonName" class="form-control" placeholder="Contact Person" >
                                         </div>
                                     </div>
                                 </div>

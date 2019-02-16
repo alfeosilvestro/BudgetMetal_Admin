@@ -81,12 +81,12 @@
                     <ul class="nav nav-tabs tab-nav-right" role="tablist">
                         <li role="presentation" class="active"><a href="#basic_requirements" data-toggle="tab">Info</a></li>
                         <li role="presentation"><a href="#detailed_requirements" data-toggle="tab">Requirements</a></li>
-                        <li role="presentation"><a href="#service_level_agreement" data-toggle="tab">SLA</a></li>
-                        <li role="presentation"><a href="#penalty" data-toggle="tab">Commercial terms</a></li>
-                        <li role="presentation"><a href="#pricing" data-toggle="tab">Pricing Table</a></li>
+                        <li role="presentation"><a href="#service_level_agreement" data-toggle="tab">Supports</a></li>
+                        <li role="presentation"><a href="#penalty" data-toggle="tab">Commercials</a></li>
+                        <li role="presentation"><a href="#pricing" data-toggle="tab">Pricing</a></li>
                         <li role="presentation"><a href="#attachments" data-toggle="tab">Attachments</a></li>
                         <li role="presentation"><a href="#settings" data-toggle="tab">Roles</a></li>
-                        <li role="presentation"><a href="#invited_suppliers" data-toggle="tab">Invite Suppliers</a></li>
+                        <li role="presentation"><a href="#invited_suppliers" data-toggle="tab">Invite Supplier</a></li>
                     </ul>
                     <!-- Tab panes -->
                     <div class="tab-content">
@@ -203,7 +203,7 @@
                             </table>
                             <div class="row">
                                 <div class="form-group col-sm-12">
-                                    <a class="btn btn-success" id="btnNewRequirement"> Add Requirement </a>
+                                    <a class="btn btn-success" id="btnNewRequirement"> New Requirement </a>
                                 </div>
 
                             </div>
@@ -213,7 +213,7 @@
                             <table id="slaTable" class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th width="30%">Requirement</th>
+                                        <th width="30%">Service Name</th>
                                         <th width="65%">Description</th>
                                         <th>&nbsp;</th>
                                     </tr>
@@ -228,7 +228,7 @@
                             </table>
                             <div class="row">
                                 <div class="form-group col-sm-12">
-                                    <a class="btn btn-success" id="btnNewSLA"> Add SLA </a>
+                                    <a class="btn btn-success" id="btnNewSLA"> New Support </a>
                                 </div>
 
                             </div>
@@ -238,16 +238,16 @@
                             <table id="penaltyTable" class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th width="30%">Phase(s)</th>
-                                        <th width="20%">Milestone(s)</th>
-                                        <th width="45%">Commercial term and description</th>
+                                        <th width="50%">Service Name</th>
+                                        @*<th width="20%">Milestone(s)</th>*@
+                                        <th width="45%">Description</th>
                                         <th>&nbsp;</th>
                                     </tr>
                                 </thead>
                                 <tbody id="penaltyTableBody">
                                     <tr>
                                         <td><input type="text" asp-for="Penalty[0].BreachOfServiceDefinition" class="form-control" /></td>
-                                        <td><input type="text" asp-for="Penalty[0].PenaltyAmount" class="form-control" /></td>
+                                        @*<td><input type="text" asp-for="Penalty[0].PenaltyAmount" class="form-control" /></td>*@
                                         <td><input type="text" asp-for="Penalty[0].Description" class="form-control" /></td>
                                         <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePenaltyRow(this)'>Remove</button></td>
                                     </tr>
@@ -256,7 +256,7 @@
                             </table>
                             <div class="row">
                                 <div class="form-group col-sm-12">
-                                    <a class="btn btn-success" id="btnNewPenalty"> Add Terms </a>
+                                    <a class="btn btn-success" id="btnNewPenalty">New Commercial </a>
                                 </div>
 
                             </div>
@@ -287,7 +287,7 @@
                             </table>
                             <div class="row">
                                 <div class="form-group col-sm-12">
-                                    <a class="btn btn-success" id="btnNewPricing"> Add Pricing </a>
+                                    <a class="btn btn-success" id="btnNewPricing"> New Pricing </a>
                                 </div>
 
                             </div>
@@ -350,7 +350,7 @@
                             </table>
                             <div class="row">
                                 <div class="form-group col-sm-12">
-                                    <a class="btn btn-success" id="btnNewFile"> Add Attachement </a>
+                                    <a class="btn btn-success" id="btnNewFile"> New Attachement </a>
                                 </div>
                             </div>
                         </div>
@@ -429,7 +429,7 @@
             <div class="card">
                 <div class="body">
                     <input type="hidden" name="btnType" id="btnType" value="" />
-                    <button type="button" id="btnDraft" class="btn btn-info btn-lg">Draft</button>
+                    <button type="button" id="btnDraft" class="btn btn-info btn-lg">Save as Draft</button>
                     <button type="button" id="btnSubmit" class="btn btn-primary  btn-lg">Submit</button>
                     <button type="button" onclick='window.location.href = "@Url.Action("Index", "Rfq")";' class="btn btn-default  btn-lg">Cancel</button>
                 </div>
@@ -884,7 +884,7 @@ function loadIndustry() {
                         $('#penaltyTableBody').append(
                             "<tr> " +
                             "<td>" + "<input type='text' name='Penalty[" + i + "].BreachOfServiceDefinition' class='form-control' value='" + response.List_Panalty[i].BreachOfServiceDefinition + "'/></td>" +
-                            "<td>" + "<input type='text' name='Penalty[" + i + "].PenaltyAmount' class='form-control' value='" + response.List_Panalty[i].PenaltyAmount + "'/></td>" +
+                            //"<td>" + "<input type='text' name='Penalty[" + i + "].PenaltyAmount' class='form-control' value='" + response.List_Panalty[i].PenaltyAmount + "'/></td>" +
                             "<td>" + "<input type='text' name='Penalty[" + i + "].Description' class='form-control' value='" + response.List_Panalty[i].Description + "'/></td>" +
                             "<td><button type='button' class='btn btn-danger waves-effect' onclick='RemovePenaltyRow(this)'>Remove</button></td>" +
                             "<tr> "
