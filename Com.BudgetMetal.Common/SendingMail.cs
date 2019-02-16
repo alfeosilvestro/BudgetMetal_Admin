@@ -32,11 +32,11 @@ namespace Com.BudgetMetal.Common
 
                 var smtp = new SmtpClient
                 {
-                    Host = "mail.mritmyanmar.com",//"smtp.gmail.com",
-                    Port = 25,
+                    Host = "box5156.bluehost.com",//"smtp.gmail.com",
+                    Port = 465,
                     EnableSsl = true,
                     DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false,
+                    UseDefaultCredentials = true,
                     Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
                 };
                 using (var message = new MailMessage(fromAddress, toAddress)
