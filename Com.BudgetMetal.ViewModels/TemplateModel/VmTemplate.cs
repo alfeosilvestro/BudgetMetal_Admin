@@ -19,5 +19,9 @@ namespace Com.BudgetMetal.ViewModels.TemplateModel
         public List<VmPenaltyItem> List_Panalty { get; set; }
 
         public List<VmRfqPriceScheduleItem> List_Pricing { get; set; }
+
+        public List<VmRfqPriceScheduleItem> List_Service_Pricing { get; set; }
+
+        public List<VmRfqPriceScheduleItem> List_Waranty_Pricing { get; set; }
     }
 }
