@@ -23,15 +23,17 @@ namespace Com.BudgetMetal.Common
                 //mailMessage.Body = body;
                 //mailMessage.Subject = subject;
                 //client.Send(mailMessage);
+                //info@mritmyanmar.com
+                //var fromAddress = new MailAddress("ezytender@gmail.com", "EzyTender");
 
-                var fromAddress = new MailAddress("ezytender@gmail.com", "EzyTender");
+                var fromAddress = new MailAddress("info@mritmyanmar.com", "EzyTender");
                 var toAddress = new MailAddress(toMail, toMail);
                 const string fromPassword = "nnhhyy66";
 
                 var smtp = new SmtpClient
                 {
-                    Host = "smtp.gmail.com",
-                    Port = 25,
+                    Host = "box5156.bluehost.com",//"smtp.gmail.com",
+                    Port = 465,//25,
                     EnableSsl = true,
                     DeliveryMethod = SmtpDeliveryMethod.Network,
                     UseDefaultCredentials = false,
