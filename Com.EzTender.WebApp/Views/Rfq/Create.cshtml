@@ -566,8 +566,8 @@
         loadUser();
         loadRole();
 
-        
-       
+
+
         $('#ValidRfqdate').bootstrapMaterialDatePicker('setMinDate', moment());
         $('#StartRfqdate').bootstrapMaterialDatePicker('setMinDate', moment()).on('change', function (e, date) {
             $('#ValidRfqdate').bootstrapMaterialDatePicker('setMinDate', date);
@@ -901,9 +901,6 @@ function loadIndustry() {
             contentType: false,
             processData: false,
             success: function (response) {
-
-                console.log(response);
-
                 if (response.List_Requirement.length > 0) {
 
                     $("#requirementsTableBody").empty();
@@ -919,8 +916,6 @@ function loadIndustry() {
                     }
 
                     $("#detailRequirementLastId").val(response.List_Requirement.length);
-                    console.log(response.List_Requirement);
-
                 }
 
                 if (response.List_SLA.length > 0) {
@@ -937,7 +932,6 @@ function loadIndustry() {
                         );
                     }
                     $("#detailSLALastId").val(response.List_SLA.length);
-                    console.log(response.List_SLA);
 
                 }
 
@@ -955,33 +949,76 @@ function loadIndustry() {
                             "<tr> "
                         );
                     }
-                    $("#PenaltyLastId").val(response.List_Panalty.length);
-                    console.log(response.List_Requirement);
 
+                    $("#PenaltyLastId").val(response.List_Panalty.length);
                 }
 
+                var pcount = 0
                 if (response.List_Pricing.length > 0) {
 
                     $("#pricingTableBody").empty();
-
                     for (var i = 0; i < response.List_Pricing.length; i++) {
-                       
-                        $('#pricingTableBody').append(
+                        pcount = i;
+                            $('#pricingTableBody').append(
+                                "<tr> " +
+                                "<td>" + "<input type='text' name='RfqPriceSchedule[" + pcount + "].ItemName' class='form-control' value='" + response.List_Pricing[i].ItemName + "'/></td>" +
+                                "<td>" + "<input type='text' name='RfqPriceSchedule[" + pcount + "].ItemDescription' class='form-control' value='" + response.List_Pricing[i].ItemDescription + "'/></td>" +
+                                "<td>" + "<input type='text' name='RfqPriceSchedule[" + pcount + "].InternalRefrenceCode' class='form-control' value='" + response.List_Pricing[i].InternalRefrenceCode + "'/></td>" +
+                                "<td>" +
+                                    "<input type='text' name='RfqPriceSchedule[" + pcount + "].QuantityRequired' class='form-control' value='" + response.List_Pricing[i].QuantityRequired + "'/>" +
+                                    "<input type='hidden' name='RfqPriceSchedule[" + pcount + "].CategoryId' class='form-control' value='" + response.List_Pricing[i].CategoryId + "'/>" +
+                                "</td >" +
+                                "<td><button type='button' class='btn btn-danger waves-effect' onclick='RemovePricingRow(this)'>Remove</button></td>" +
+                                "<tr> "
+                        );
+                        pcount++;
+                    }
+
+                    $("#PricingLastId").val(pcount);
+                }
+
+                if (response.List_Service_Pricing.length > 0) {
+                    $("#pricingWarrantyTableBody").empty();
+                    for (var i = 0; i < response.List_Service_Pricing.length; i++) {
+                        $('#pricingWarrantyTableBody').append(
                             "<tr> " +
-                            "<td>" + "<input type='text' name='RfqPriceSchedule[" + i + "].ItemName' class='form-control' value='" + response.List_Pricing[i].ItemName + "'/></td>" +
-                            "<td>" + "<input type='text' name='RfqPriceSchedule[" + i + "].ItemDescription' class='form-control' value='" + response.List_Pricing[i].ItemDescription + "'/></td>" +
-                            "<td>" + "<input type='text' name='RfqPriceSchedule[" + i + "].InternalRefrenceCode' class='form-control' value='" + response.List_Pricing[i].InternalRefrenceCode + "'/></td>" +
-                            "<td>" + "<input type='text' name='RfqPriceSchedule[" + i + "].QuantityRequired' class='form-control' value='" + response.List_Pricing[i].QuantityRequired + "'/></td>" +
+                            "<td>" + "<input type='text' name='RfqPriceSchedule[" + pcount + "].ItemName' class='form-control' value='" + response.List_Service_Pricing[i].ItemName + "'/></td>" +
+                            "<td>" + "<input type='text' name='RfqPriceSchedule[" + pcount + "].ItemDescription' class='form-control' value='" + response.List_Service_Pricing[i].ItemDescription + "'/></td>" +
+                            "<td>" + "<input type='text' name='RfqPriceSchedule[" + pcount + "].InternalRefrenceCode' class='form-control' value='" + response.List_Service_Pricing[i].InternalRefrenceCode + "'/></td>" +
+                            "<td>" +
+                            "<input type='text' name='RfqPriceSchedule[" + pcount + "].QuantityRequired' class='form-control' value='" + response.List_Service_Pricing[i].QuantityRequired + "'/>" +
+                            "<input type='hidden' name='RfqPriceSchedule[" + pcount + "].CategoryId' class='form-control' value='" + response.List_Service_Pricing[i].CategoryId + "'/>" +
+                            "</td > " +
                             "<td><button type='button' class='btn btn-danger waves-effect' onclick='RemovePricingRow(this)'>Remove</button></td>" +
                             "<tr> "
                         );
+                        pcount++;
                     }
-                    $("#PricingLastId").val(response.List_Pricing.length);
-                    console.log(response.List_Requirement);
-
-                    
-
+                    $("#PricingLastId").val(pcount);
                 }
+
+                if (response.List_Waranty_Pricing.length > 0) {
+                    $("#pricingServiceTableBody").empty();
+                    for (var i = 0; i < response.List_Waranty_Pricing.length; i++) {
+                        $('#pricingServiceTableBody').append(
+                            "<tr> " +
+                            "<td>" + "<input type='text' name='RfqPriceSchedule[" + pcount + "].ItemName' class='form-control' value='" + response.List_Waranty_Pricing[i].ItemName + "'/></td>" +
+                            "<td>" + "<input type='text' name='RfqPriceSchedule[" + pcount + "].ItemDescription' class='form-control' value='" + response.List_Waranty_Pricing[i].ItemDescription + "'/></td>" +
+                            "<td>" + "<input type='text' name='RfqPriceSchedule[" + pcount + "].InternalRefrenceCode' class='form-control' value='" + response.List_Waranty_Pricing[i].InternalRefrenceCode + "'/></td>" +
+                            "<td>" +
+                            "<input type='text' name='RfqPriceSchedule[" + pcount + "].QuantityRequired' class='form-control' value='" + response.List_Waranty_Pricing[i].QuantityRequired + "'/>" +
+                            "<input type='hidden' name='RfqPriceSchedule[" + pcount + "].CategoryId' class='form-control' value='" + response.List_Waranty_Pricing[i].CategoryId + "'/>" +
+                            "</td > " +
+                            "<td><button type='button' class='btn btn-danger waves-effect' onclick='RemovePricingRow(this)'>Remove</button></td>" +
+                            "<tr> "
+                        );
+                        pcount++;
+                    }
+                    $("#PricingLastId").val(pcount);
+                }
+
+                $("#PricingLastId").val(pcount);
+                console.log(pcount);
                 alert("File upload success!");
             },
             error: function (e) {

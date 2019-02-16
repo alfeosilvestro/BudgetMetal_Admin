@@ -92,7 +92,7 @@ $("#btnNewPricing").click(function () {
         "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].InternalRefrenceCode' class='form-control' />" +
         "</td> " +
         "<td> " +
-        "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].QuantityRequired' class='form-control' /> <input type='text' name='RfqPriceSchedule[" + PricingLastId + "].CategoryId' value='100081' class='form-control' />" +
+        "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].QuantityRequired' class='form-control' /> <input type='hidden' name='RfqPriceSchedule[" + PricingLastId + "].CategoryId' value='100081' class='form-control' />" +
         "</td> " +
         "<td> " +
         "<button type='button' class='btn btn-danger waves-effect' onclick='RemovePricingRow(this)'> Remove</button >" +
@@ -121,7 +121,7 @@ $("#btnServicePricing").click(function () {
         "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].InternalRefrenceCode' class='form-control' />" +
         "</td> " +
         "<td> " +
-        "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].QuantityRequired' class='form-control' /><input type='text' name='RfqPriceSchedule[" + PricingLastId + "].CategoryId' value='100082' class='form-control' />" +
+        "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].QuantityRequired' class='form-control' /><input type='hidden' name='RfqPriceSchedule[" + PricingLastId + "].CategoryId' value='100082' class='form-control' />" +
         "</td> " +
         "<td> " +
         "<button type='button' class='btn btn-danger waves-effect' onclick='RemovePricingRow(this)'> Remove</button >" +
@@ -146,7 +146,7 @@ $("#btnWarrantyPricing").click(function () {
         "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].InternalRefrenceCode' class='form-control' />" +
         "</td> " +
         "<td> " +
-        "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].QuantityRequired' class='form-control' /> <input type='text' name='RfqPriceSchedule[" + PricingLastId + "].CategoryId' value='100083' class='form-control' />" +
+        "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].QuantityRequired' class='form-control' /> <input type='hidden' name='RfqPriceSchedule[" + PricingLastId + "].CategoryId' value='100083' class='form-control' />" +
         "</td> " +
         "<td> " +
         "<button type='button' class='btn btn-danger waves-effect' onclick='RemovePricingRow(this)'> Remove</button >" +

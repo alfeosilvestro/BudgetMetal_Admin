@@ -552,7 +552,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
                                 i++;
                             }
 
-                            
+
                         }
                     }
 
@@ -910,21 +910,30 @@ namespace Com.GenericPlatform.WebApp.Controllers
                     resultTemplate.List_Requirement = getRequirementsFromTemplate(sheet);
                     break;
 
-                case "sla":
+                case "supports":
                     resultTemplate.List_SLA = getSLAFromTemplate(sheet);
                     break;
 
-                case "penalty":
+                case "commercials":
                     resultTemplate.List_Panalty = getPaneltyFromTemplate(sheet);
                     break;
 
-                case "pricing":
-                    resultTemplate.List_Pricing = getPricingFromTemplate(sheet);
+                case "product pricing":
+                    resultTemplate.List_Pricing = getPricingFromTemplate(sheet, Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Product);
                     break;
+
+                case "service pricing":
+                    resultTemplate.List_Service_Pricing = getPricingFromTemplate(sheet, Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Service);
+                    break;
+
+                case "warranty pricing":
+                    resultTemplate.List_Waranty_Pricing = getPricingFromTemplate(sheet, Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Warranty);
+                    break;
+
             }
         }
 
-        private List<VmRfqPriceScheduleItem> getPricingFromTemplate(ISheet sheet)
+        private List<VmRfqPriceScheduleItem> getPricingFromTemplate(ISheet sheet, int categoryId)
         {
             var result = new List<VmRfqPriceScheduleItem>();
             IRow headerRow = sheet.GetRow(0); //Get Header Row
@@ -946,6 +955,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
                         resultItem.ItemDescription = row.GetCell(1).ToString();
                         resultItem.InternalRefrenceCode = row.GetCell(2).ToString();
                         resultItem.QuantityRequired = row.GetCell(3).ToString();
+                        resultItem.CategoryId = categoryId;
 
                         result.Add(resultItem);
                     }
@@ -983,7 +993,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
                         var resultItem = new VmPenaltyItem();
                         resultItem.BreachOfServiceDefinition = row.GetCell(0).ToString();
                         resultItem.Description = row.GetCell(1).ToString();
-                        resultItem.PenaltyAmount = row.GetCell(2).ToString();
+                        //resultItem.PenaltyAmount = row.GetCell(2).ToString();
 
                         result.Add(resultItem);
                     }
@@ -1107,7 +1117,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
             {
                 rfqId = int.Parse(RfqId);
             }
-            var result = await rfqService.AddInvitationUser(rfqId,name,email, HttpContext.Session.GetString("UserName"));
+            var result = await rfqService.AddInvitationUser(rfqId, name, email, HttpContext.Session.GetString("UserName"));
 
             return new JsonResult(result, new JsonSerializerSettings()
             {
