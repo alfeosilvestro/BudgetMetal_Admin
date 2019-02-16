@@ -164,6 +164,8 @@
                                 <div class="col-sm-3">
                                     <input type="checkbox" asp-for="IsPublic" class="chk-col-red" />
                                     <label for="IsPublic">Public</label>
+
+                                    <a href="#" data-toggle="modal" data-target="#publicModal"><span class="badge bg-light-blue">i</span></a>
                                 </div>
                                 <div class="col-sm-3">
                                     <input type="checkbox" asp-for="SupplierProvideInstallationService" class="chk-col-red" />
@@ -191,7 +193,7 @@
                             <table id="requirementsTable" class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th width="30%">Service Name</th>
+                                        <th width="40%">Service Name</th>
                                         <th width="50%">Description</th>
                                         <th>&nbsp;</th>
                                     </tr>
@@ -233,8 +235,8 @@
                             <table id="slaTable" class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th width="30%">Service Name</th>
-                                        <th width="65%">Description</th>
+                                        <th width="40%">Service Name</th>
+                                        <th width="50%">Description</th>
                                         <th>&nbsp;</th>
                                     </tr>
                                 </thead>
@@ -269,9 +271,9 @@
                             <table id="penaltyTable" class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th width="30%">Service Name</th>
+                                        <th width="40%">Service Name</th>
                                         @*<th width="20%">Milestone</th>*@
-                                        <th width="45%">Description</th>
+                                        <th width="50%">Description</th>
                                         <th>&nbsp;</th>
                                     </tr>
                                 </thead>
@@ -621,6 +623,21 @@
     </div>
 
 </form>
+
+<div class="modal fade" id="publicModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Public</h4>
+            </div>
+            <div class="modal-body">
+                By checking Public, your tender will be published in our TenderBoard public domain. Any supplier who accesses the public portal will be able to review your requirements and submit a proposal for your review.
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Editable Table Plugin Js
 <script src="~/material_theme/plugins/editable-table/mindmup-editabletable.js"></script>

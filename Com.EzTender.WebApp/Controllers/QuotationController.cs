@@ -205,7 +205,7 @@ var result = await quotationService.GetSingleQuotationById(id);
             {
                 var submitType = Request.Form["btnType"];
                 string documentAction = "";
-                if (submitType.ToString().ToLower() == "draft")
+                if (submitType.ToString().ToLower() == "save as draft")
                 {
                     quotationItem.Document.DocumentStatus_Id = Constants_CodeTable.Code_Quotation_Draft;
                     documentAction = "Save as Draft";

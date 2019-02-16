@@ -206,7 +206,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
             {
                 var submitType = Request.Form["btnType"];
                 string documentAction = "";
-                if (submitType.ToString().ToLower() == "draft")
+                if (submitType.ToString().ToLower() == "save as draft")
                 {
                     Rfq.Document.DocumentStatus_Id = Constants_CodeTable.Code_RFQ_Draft;
                     documentAction = "Save as Draft";
@@ -370,7 +370,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
             {
                 var submitType = Request.Form["btnType"];
                 string documentAction = "";
-                if (submitType.ToString().ToLower() == "draft")
+                if (submitType.ToString().ToLower() == "save as draft")
                 {
                     Rfq.Document.DocumentStatus_Id = Constants_CodeTable.Code_RFQ_Draft;
                     documentAction = "Save as Draft";
@@ -503,7 +503,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
             {
                 var submitType = Request.Form["btnType"];
                 string documentAction = "";
-                if (submitType.ToString().ToLower() == "draft")
+                if (submitType.ToString().ToLower() == "save as draft")
                 {
                     Rfq.Document.DocumentStatus_Id = Constants_CodeTable.Code_RFQ_Draft;
                     documentAction = "Save as Draft";
@@ -601,6 +601,58 @@ namespace Com.GenericPlatform.WebApp.Controllers
                 };
                 listDocumentActivity.Add(DocumentActivity);
                 Rfq.Document.DocumentActivityList = listDocumentActivity;
+
+                var result = await rfqService.SaveRFQ(Rfq);
+                if (result.IsSuccess)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Error while creating RFQ. Please contact system administrator.";
+                    return RedirectToAction("ErrorForUser", "Home");
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction("ErrorForUser", "Home");
+            }
+        }
+
+
+        // GET: Rfq/Create
+        public ActionResult Template()
+        {
+            ViewBag.User_Id = HttpContext.Session.GetString("User_Id");
+            ViewBag.Company_Id = HttpContext.Session.GetString("Company_Id");
+            ViewBag.UserName = HttpContext.Session.GetString("UserName");
+            ViewBag.FullName = HttpContext.Session.GetString("ContactName");
+            ViewBag.EmailAddress = HttpContext.Session.GetString("EmailAddress");
+            
+
+            return View();
+        }
+
+        // POST: Rfq/Create
+        [HttpPost]
+        public async Task<ActionResult> Template(VmRfqItem Rfq)
+        {
+            try
+            {
+                var submitType = Request.Form["btnType"];
+                string documentAction = "";
+                if (submitType.ToString().ToLower() == "save as draft")
+                {
+                    Rfq.Document.DocumentStatus_Id = Constants_CodeTable.Code_RFQ_Draft;
+                    documentAction = "Save as Draft";
+                }
+                else
+                {
+                    Rfq.Document.DocumentStatus_Id = Constants_CodeTable.Code_RFQ_RequiredApproval;
+                    documentAction = "Submitted";
+                }
+                
 
                 var result = await rfqService.SaveRFQ(Rfq);
                 if (result.IsSuccess)

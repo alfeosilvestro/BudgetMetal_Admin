@@ -27,7 +27,8 @@ namespace Com.BudgetMetal.Common
 
         public static readonly int Code_RFQ = 100021;
         public static readonly int Code_Quotation = 100022;
-        
+        public static readonly int Code_RFQTemplate = 100023;
+
 
         public static readonly int Code_RFQ_Draft = 100031;
         public static readonly int Code_RFQ_RequiredApproval = 100032;
