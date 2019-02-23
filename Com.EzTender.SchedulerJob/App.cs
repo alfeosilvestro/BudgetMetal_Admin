@@ -39,6 +39,7 @@ namespace Com.EzTender.SchedulerJob
 
         private async Task PostCurrencyRateToFacebook()
         {
+            Console.WriteLine("Post Exchange Rate  - Start");
             string result =await repoForex.GetForexDataFromBankApi();
             JObject json = JObject.Parse(result);
             //string[] arrExchanges = { "USD", "GBP", "SGD" };
@@ -51,7 +52,7 @@ namespace Com.EzTender.SchedulerJob
             }
 
             await svsFacebook.PostMessage(sb.ToString());
-
+            Console.WriteLine("Post Exchange Rate  - End");
         }
 
         private async void AlertOpenRFQForExpiring()
