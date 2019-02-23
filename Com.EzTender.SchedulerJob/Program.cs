@@ -9,6 +9,9 @@ using Microsoft.Extensions.Configuration.FileExtensions;
 using Microsoft.Extensions.Configuration.Json;
 using System;
 using System.IO;
+using Com.BudgetMetal.DataRepository.Forex;
+using Com.BudgetMetal.Services.Facebook;
+using Com.BudgetMetal.DataRepository.Code_Table;
 
 namespace Com.EzTender.SchedulerJob
 {
@@ -59,6 +62,9 @@ namespace Com.EzTender.SchedulerJob
             services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<IRfqRepository, RfqRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IForexRepository, ForexRepository>();
+            services.AddScoped<ICodeTableRepository, CodeTableRepository>();
+            services.AddScoped<IFacebookService, FacebookService>();
             // add app
             services.AddTransient<App>();
         }

@@ -415,6 +415,19 @@ namespace Com.BudgetMetal.Services.Quotation
 
                 }
 
+                resultItem.QuotationPriceSchedule = new List<VmQuotationPriceScheduleItem>();
+                if(dbItem.QuotationPriceSchedule != null)
+                {
+                    foreach(var item in dbItem.QuotationPriceSchedule)
+                    {
+                        var vmQPS = new VmQuotationPriceScheduleItem();
+
+                        Copy<Com.BudgetMetal.DBEntities.QuotationPriceSchedule, VmQuotationPriceScheduleItem>(item, vmQPS);
+
+                        resultItem.QuotationPriceSchedule.Add(vmQPS);
+                    }
+                }
+
                 resultObj.Result.Records.Add(resultItem);
             }
 

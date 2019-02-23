@@ -16,6 +16,7 @@ namespace Com.BudgetMetal.Common
         public static readonly string QuotationDefaultRoleId = "8";
         public static readonly int C_Admin_Role = 2;
 
-       
+        public static readonly string[] arrExchanges = { "USD", "GBP", "SGD", "EUR", "CNY", "THB" , "VND", "AUD" };
+
     }
 }

@@ -26,6 +26,7 @@
     <ProjectReference Include="..\Com.BudgetMetal.DataRepository\Com.BudgetMetal.DataRepository.csproj" />
     <ProjectReference Include="..\Com.BudgetMetal.DBContext\Com.BudgetMetal.DB.csproj" />
     <ProjectReference Include="..\Com.BudgetMetal.DBEntities\Com.BudgetMetal.DBEntities.csproj" />
+    <ProjectReference Include="..\Com.BudgetMetal.Services\Com.BudgetMetal.Services.csproj" />
   </ItemGroup>
 
 </Project>

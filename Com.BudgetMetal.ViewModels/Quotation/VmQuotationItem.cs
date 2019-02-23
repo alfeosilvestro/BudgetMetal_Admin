@@ -25,6 +25,8 @@ namespace Com.BudgetMetal.ViewModels.Quotation
         public int Rfq_Id { get; set; }
         public virtual VmRfqItem Rfq { get; set; }
 
+        
+
         public virtual List<VmQuotationPriceScheduleItem> QuotationPriceSchedule { get; set; }
 
         public virtual List<VmQuotationRequirementItem> QuotationRequirement { get; set; }

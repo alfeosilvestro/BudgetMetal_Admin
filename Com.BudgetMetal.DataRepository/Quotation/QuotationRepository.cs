@@ -80,6 +80,7 @@ namespace Com.BudgetMetal.DataRepository.Quotation
                             .Include(e => e.Document.DocumentStatus)
                             .Include(e => e.Document.DocumentType)
                             .Include(e => e.Document.Company)
+                            .Include(e=>e.QuotationPriceSchedule)
                             .Include(e=> e.Rfq)
                             .Where(e =>
                               (e.IsActive == true)
