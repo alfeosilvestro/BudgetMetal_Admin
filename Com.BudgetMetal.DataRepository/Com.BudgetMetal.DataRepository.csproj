@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Com.BudgetMetal.Common\Com.BudgetMetal.Common.csproj" />
     <ProjectReference Include="..\Com.BudgetMetal.DBContext\Com.BudgetMetal.DB.csproj" />
     <ProjectReference Include="..\Com.BudgetMetal.DBEntities\Com.BudgetMetal.DBEntities.csproj" />
