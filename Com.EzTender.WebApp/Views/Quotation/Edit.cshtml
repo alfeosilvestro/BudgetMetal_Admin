@@ -165,43 +165,124 @@
                         </div>
 
                         <div role="tabpanel" class="tab-pane fade in" id="pricing">
+                            @{int j = 0;}
                             <input type="hidden" id="PricingLastId" value="1" />
+                            <div>Product Pricing</div>
                             <table id="pricingTable" class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th width="25%">Item Name</th>
-                                        <th width="35%">Item Description</th>
-                                        <th width="20%">Internal Reference Code</th>
-                                        <th width="10%">Unit Price</th>
-                                        <th width="10%">Quantity</th>
-                                        <th width="10%">Amount</th>
+                                        <th width="20%">Item Name</th>
+                                        <th width="25%">Item Description</th>
+                                        <th width="15%">Internal Reference Code</th>
+                                        <th width="15%">Unit Price</th>
+                                        <th width="12%">Quantity</th>
+                                        <th width="15%">Amount</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @{
                                         if (Model.QuotationPriceSchedule != null)
                                         {
-                                            int i = 0;
-                                            foreach (var item in Model.QuotationPriceSchedule)
+                                            int i = j;
+                                            var productList = Model.QuotationPriceSchedule.Where(x => x.CategoryId == Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Product).ToList();
+                                            foreach (var item in productList)
                                             {
                                                 <tr>
                                                     <td>@item.ItemName <input type="hidden" name="QuotationPriceSchedule[@i].ItemName" class="form-control" value="@item.ItemName" /></td>
                                                     <td>@item.ItemDescription <input type="hidden" name="QuotationPriceSchedule[@i].ItemDescription" class="form-control" value="@item.ItemDescription" /></td>
                                                     <td>@item.InternalRefrenceCode <input type="hidden" name="QuotationPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>
                                                     <td><input type="text" name="QuotationPriceSchedule[@i].UnitPrice" class="form-control" value="@item.UnitPrice" /></td>
-                                                    <td>@item.QuantityRequired <input type="hidden" name="QuotationPriceSchedule[@i].QuantityRequired" class="form-control" value="@item.QuantityRequired" /></td>
+                                                    <td>
+                                                        @item.QuantityRequired <input type="hidden" name="QuotationPriceSchedule[@i].QuantityRequired" class="form-control" value="@item.QuantityRequired" />
+                                                        <input type="hidden" name="QuotationPriceSchedule[@i].CategoryId" class="form-control" value="@item.CategoryId" />
+                                                    </td>
                                                     <td><input type="text" name="QuotationPriceSchedule[@i].ItemAmount" class="form-control" value="@item.ItemAmount" /></td>
-
                                                 </tr>
                                                 i++;
                                             }
+                                            j = i;
                                         }
                                     }
 
                                 </tbody>
-
                             </table>
+                            <div>Service Pricing</div>
+                            <table id="pricingServiceTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="20%">Item Name</th>
+                                        <th width="25%">Item Description</th>
+                                        <th width="15%">Internal Reference Code</th>
+                                        <th width="15%">Unit Price</th>
+                                        <th width="12%">Quantity</th>
+                                        <th width="15%">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (Model.QuotationPriceSchedule != null)
+                                        {
+                                            int i = j;
+                                            var serviceList = Model.QuotationPriceSchedule.Where(x => x.CategoryId == Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Service).ToList();
+                                            foreach (var item in serviceList)
+                                            {
+                                                <tr>
+                                                    <td>@item.ItemName <input type="hidden" name="QuotationPriceSchedule[@i].ItemName" class="form-control" value="@item.ItemName" /></td>
+                                                    <td>@item.ItemDescription <input type="hidden" name="QuotationPriceSchedule[@i].ItemDescription" class="form-control" value="@item.ItemDescription" /></td>
+                                                    <td>@item.InternalRefrenceCode <input type="hidden" name="QuotationPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>
+                                                    <td><input type="text" name="QuotationPriceSchedule[@i].UnitPrice" class="form-control" value="@item.UnitPrice" /></td>
+                                                    <td>
+                                                        @item.QuantityRequired <input type="hidden" name="QuotationPriceSchedule[@i].QuantityRequired" class="form-control" value="@item.QuantityRequired" />
+                                                        <input type="hidden" name="QuotationPriceSchedule[@i].CategoryId" class="form-control" value="@item.CategoryId" />
+                                                    </td>
+                                                    <td><input type="text" name="QuotationPriceSchedule[@i].ItemAmount" class="form-control" value="@item.ItemAmount" /></td>
+                                                </tr>
+                                                i++;
+                                            }
+                                            j = i;
+                                        }
+                                    }
 
+                                </tbody>
+                            </table>
+                            <div>Warranty Pricing</div>
+                            <table id="pricingWarrantyTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="20%">Item Name</th>
+                                        <th width="25%">Item Description</th>
+                                        <th width="15%">Internal Reference Code</th>
+                                        <th width="15%">Unit Price</th>
+                                        <th width="12%">Quantity</th>
+                                        <th width="15%">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (Model.QuotationPriceSchedule != null)
+                                        {
+                                            int i = j;
+                                            var warrantyList = Model.QuotationPriceSchedule.Where(x => x.CategoryId == Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Warranty).ToList();
+                                            foreach (var item in warrantyList)
+                                            {
+                                                <tr>
+                                                    <td>@item.ItemName <input type="hidden" name="QuotationPriceSchedule[@i].ItemName" class="form-control" value="@item.ItemName" /></td>
+                                                    <td>@item.ItemDescription <input type="hidden" name="QuotationPriceSchedule[@i].ItemDescription" class="form-control" value="@item.ItemDescription" /></td>
+                                                    <td>@item.InternalRefrenceCode <input type="hidden" name="QuotationPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>
+                                                    <td><input type="text" name="QuotationPriceSchedule[@i].UnitPrice" class="form-control" value="@item.UnitPrice" /></td>
+                                                    <td>
+                                                        @item.QuantityRequired <input type="hidden" name="QuotationPriceSchedule[@i].QuantityRequired" class="form-control" value="@item.QuantityRequired" />
+                                                        <input type="hidden" name="QuotationPriceSchedule[@i].CategoryId" class="form-control" value="@item.CategoryId" />
+                                                    </td>
+                                                    <td><input type="text" name="QuotationPriceSchedule[@i].ItemAmount" class="form-control" value="@item.ItemAmount" /></td>
+                                                </tr>
+                                                i++;
+                                            }
+                                            j = i;
+                                        }
+                                    }
+                                </tbody>
+                            </table>
                         </div>
 
                         <div role="tabpanel" class="tab-pane fade" id="attachments">
