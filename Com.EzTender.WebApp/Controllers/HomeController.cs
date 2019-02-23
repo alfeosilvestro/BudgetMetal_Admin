@@ -86,7 +86,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
                 {
                     isCompanyAdmin = true;
                 }
-                var result = await rfqService.GetRfqByPage(Convert.ToInt32(User_Id), Convert.ToInt32(Company_Id), page, 10, isCompanyAdmin, Convert.ToInt32(status), skeyword == null ? "" : skeyword);
+                var result = await rfqService.GetRfqByPageForDashboard(Convert.ToInt32(User_Id), Convert.ToInt32(Company_Id), page, 10, isCompanyAdmin, Convert.ToInt32(status), skeyword == null ? "" : skeyword);
 
                 return new JsonResult(result, new JsonSerializerSettings()
                 {
