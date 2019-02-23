@@ -51,7 +51,15 @@ namespace Com.EzTender.SchedulerJob
                 sb.AppendFormat("1 {0} = {1} MMK{2}", exch,json["rates"][exch],Environment.NewLine);
             }
 
-            await svsFacebook.PostMessage(sb.ToString());
+            var resultPost =  await svsFacebook.PostMessage(sb.ToString());
+            if (resultPost.IsSuccess)
+            {
+                Console.WriteLine("Post Exchange Rate  - Success");
+            }
+            else
+            {
+                Console.WriteLine("Post Exchange Rate  - Failed:" + resultPost.MessageToUser);
+            }
             Console.WriteLine("Post Exchange Rate  - End");
         }
 
