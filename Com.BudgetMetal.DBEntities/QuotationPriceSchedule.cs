@@ -14,6 +14,7 @@ namespace Com.BudgetMetal.DBEntities
         public decimal ItemAmount { get; set; }
         public decimal UnitPrice { get; set; }
         public int Quotation_Id { get; set; }
+        public int CategoryId { get; set; }
 
         [ForeignKey("Quotation_Id")]
         public virtual Quotation Quotation { get; set; }

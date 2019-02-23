@@ -5,8 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Com.BudgetMetal.ViewModels.QuotationPriceSchedule
 {
     public class VmQuotationPriceScheduleItem : ViewModelItemBase
-    {
-              
+    {         
         public string ItemName { get; set; }
         public string ItemDescription { get; set; }
         public string InternalRefrenceCode { get; set; }
@@ -14,6 +13,6 @@ namespace Com.BudgetMetal.ViewModels.QuotationPriceSchedule
         public decimal ItemAmount { get; set; }
         public decimal UnitPrice { get; set; }
         public int Quotation_Id { get; set; }
-       
+        public int CategoryId { get; set; }
     }
 }
