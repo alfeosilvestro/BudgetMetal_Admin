@@ -306,15 +306,16 @@
                         </div>
 
                         <div role="tabpanel" class="tab-pane fade in" id="pricing">
+                            <h4>Product Pricing</h4>
                             <input type="hidden" id="PricingLastId" value="@Model.RfqPriceSchedule.Count" />
                             @{int j = 0;}
                             <table id="pricingTable" class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th width="25%">Item Name</th>
-                                        <th width="35%">Item Description</th>
-                                        <th width="20%">Internal Reference Code</th>
-                                        <th width="10%">Quantity</th>
+                                        <th width="30%">Item Name</th>
+                                        <th width="40%">Item Description</th>
+                                        @*<th width="20%">Internal Reference Code</th>*@
+                                        <th width="15%">Quantity</th>
                                         <th>&nbsp;</th>
                                     </tr>
                                 </thead>
@@ -329,7 +330,7 @@
                                                 <tr>
                                                     <td><input type="text" name="RfqPriceSchedule[@i].ItemName" class="form-control" value="@item.ItemName" /> </td>
                                                     <td><input type="text" name="RfqPriceSchedule[@i].ItemDescription" class="form-control" value="@item.ItemDescription" /></td>
-                                                    <td><input type="text" name="RfqPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>
+                                                    @*<td><input type="text" name="RfqPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>*@
                                                     <td>
                                                         <input type="text" name="RfqPriceSchedule[@i].QuantityRequired" class="form-control" value="@item.QuantityRequired" />
                                                         <input type="hidden" name="RfqPriceSchedule[@i].CategoryId" value="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Product)" class="form-control" />
@@ -349,14 +350,14 @@
                                     <a class="btn btn-success" id="btnNewPricing"> Add Pricing </a>
                                 </div>
                             </div>
-
+                            <h4>Service Pricing</h4>
                             <table id="pricingServiceTable" class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th width="25%">Item Name</th>
-                                        <th width="35%">Item Description</th>
-                                        <th width="20%">Internal Reference Code</th>
-                                        <th width="10%">Quantity</th>
+                                        <th width="30%">Item Name</th>
+                                        <th width="40%">Item Description</th>
+                                        @*<th width="20%">Internal Reference Code</th>*@
+                                        <th width="15%">Quantity</th>
                                         <th>&nbsp;</th>
                                     </tr>
                                 </thead>
@@ -372,7 +373,7 @@
                                                 <tr>
                                                     <td><input type="text" name="RfqPriceSchedule[@i].ItemName" class="form-control" value="@item.ItemName" /> </td>
                                                     <td><input type="text" name="RfqPriceSchedule[@i].ItemDescription" class="form-control" value="@item.ItemDescription" /></td>
-                                                    <td><input type="text" name="RfqPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>
+                                                    @*<td><input type="text" name="RfqPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>*@
                                                     <td>
                                                         <input type="text" name="RfqPriceSchedule[@i].QuantityRequired" class="form-control" value="@item.QuantityRequired" />
                                                         <input type="hidden" name="RfqPriceSchedule[@i].CategoryId" value="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Service)" class="form-control" />
@@ -391,14 +392,14 @@
                                     <a class="btn btn-success" id="btnServicePricing"> Add Service Pricing </a>
                                 </div>
                             </div>
-
+                            <h4>Warranty Pricing</h4>
                             <table id="pricingWarrantyTable" class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th width="25%">Item Name</th>
-                                        <th width="35%">Item Description</th>
-                                        <th width="20%">Internal Reference Code</th>
-                                        <th width="10%">Quantity</th>
+                                        <th width="30%">Item Name</th>
+                                        <th width="40%">Item Description</th>
+                                        @*<th width="20%">Internal Reference Code</th>*@
+                                        <th width="15%">Quantity</th>
                                         <th>&nbsp;</th>
                                     </tr>
                                 </thead>
@@ -413,7 +414,7 @@
                                                 <tr>
                                                     <td><input type="text" name="RfqPriceSchedule[@i].ItemName" class="form-control" value="@item.ItemName" /> </td>
                                                     <td><input type="text" name="RfqPriceSchedule[@i].ItemDescription" class="form-control" value="@item.ItemDescription" /></td>
-                                                    <td><input type="text" name="RfqPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>
+                                                    @*<td><input type="text" name="RfqPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>*@
                                                     <td>
                                                         <input type="text" name="RfqPriceSchedule[@i].QuantityRequired" class="form-control" value="@item.QuantityRequired" />
                                                         <input type="hidden" name="RfqPriceSchedule[@i].CategoryId" value="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Warranty)" class="form-control" />

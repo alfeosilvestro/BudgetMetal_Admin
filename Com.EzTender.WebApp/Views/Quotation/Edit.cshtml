@@ -167,13 +167,13 @@
                         <div role="tabpanel" class="tab-pane fade in" id="pricing">
                             @{int j = 0;}
                             <input type="hidden" id="PricingLastId" value="1" />
-                            <div>Product Pricing</div>
+                            <h4>Product Pricing</h4>
                             <table id="pricingTable" class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th width="20%">Item Name</th>
-                                        <th width="25%">Item Description</th>
-                                        <th width="15%">Internal Reference Code</th>
+                                        <th width="25%">Item Name</th>
+                                        <th width="35%">Item Description</th>
+                                        @*<th width="15%">Internal Reference Code</th>*@
                                         <th width="15%">Unit Price</th>
                                         <th width="12%">Quantity</th>
                                         <th width="15%">Amount</th>
@@ -190,7 +190,7 @@
                                                 <tr>
                                                     <td>@item.ItemName <input type="hidden" name="QuotationPriceSchedule[@i].ItemName" class="form-control" value="@item.ItemName" /></td>
                                                     <td>@item.ItemDescription <input type="hidden" name="QuotationPriceSchedule[@i].ItemDescription" class="form-control" value="@item.ItemDescription" /></td>
-                                                    <td>@item.InternalRefrenceCode <input type="hidden" name="QuotationPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>
+                                                    @*<td>@item.InternalRefrenceCode <input type="hidden" name="QuotationPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>*@
                                                     <td><input type="text" name="QuotationPriceSchedule[@i].UnitPrice" class="form-control" value="@item.UnitPrice" /></td>
                                                     <td>
                                                         @item.QuantityRequired <input type="hidden" name="QuotationPriceSchedule[@i].QuantityRequired" class="form-control" value="@item.QuantityRequired" />
@@ -206,13 +206,13 @@
 
                                 </tbody>
                             </table>
-                            <div>Service Pricing</div>
+                            <h4>Service Pricing</h4>
                             <table id="pricingServiceTable" class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th width="20%">Item Name</th>
-                                        <th width="25%">Item Description</th>
-                                        <th width="15%">Internal Reference Code</th>
+                                        <th width="25%">Item Name</th>
+                                        <th width="35%">Item Description</th>
+                                        @*<th width="15%">Internal Reference Code</th>*@
                                         <th width="15%">Unit Price</th>
                                         <th width="12%">Quantity</th>
                                         <th width="15%">Amount</th>
@@ -229,7 +229,7 @@
                                                 <tr>
                                                     <td>@item.ItemName <input type="hidden" name="QuotationPriceSchedule[@i].ItemName" class="form-control" value="@item.ItemName" /></td>
                                                     <td>@item.ItemDescription <input type="hidden" name="QuotationPriceSchedule[@i].ItemDescription" class="form-control" value="@item.ItemDescription" /></td>
-                                                    <td>@item.InternalRefrenceCode <input type="hidden" name="QuotationPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>
+                                                    @*<td>@item.InternalRefrenceCode <input type="hidden" name="QuotationPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>*@
                                                     <td><input type="text" name="QuotationPriceSchedule[@i].UnitPrice" class="form-control" value="@item.UnitPrice" /></td>
                                                     <td>
                                                         @item.QuantityRequired <input type="hidden" name="QuotationPriceSchedule[@i].QuantityRequired" class="form-control" value="@item.QuantityRequired" />
@@ -245,13 +245,13 @@
 
                                 </tbody>
                             </table>
-                            <div>Warranty Pricing</div>
+                            <h4>Warranty Pricing</h4>
                             <table id="pricingWarrantyTable" class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th width="20%">Item Name</th>
-                                        <th width="25%">Item Description</th>
-                                        <th width="15%">Internal Reference Code</th>
+                                        <th width="25%">Item Name</th>
+                                        <th width="35%">Item Description</th>
+                                        @*<th width="15%">Internal Reference Code</th>*@
                                         <th width="15%">Unit Price</th>
                                         <th width="12%">Quantity</th>
                                         <th width="15%">Amount</th>
@@ -268,7 +268,7 @@
                                                 <tr>
                                                     <td>@item.ItemName <input type="hidden" name="QuotationPriceSchedule[@i].ItemName" class="form-control" value="@item.ItemName" /></td>
                                                     <td>@item.ItemDescription <input type="hidden" name="QuotationPriceSchedule[@i].ItemDescription" class="form-control" value="@item.ItemDescription" /></td>
-                                                    <td>@item.InternalRefrenceCode <input type="hidden" name="QuotationPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>
+                                                    @*<td>@item.InternalRefrenceCode <input type="hidden" name="QuotationPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>*@
                                                     <td><input type="text" name="QuotationPriceSchedule[@i].UnitPrice" class="form-control" value="@item.UnitPrice" /></td>
                                                     <td>
                                                         @item.QuantityRequired <input type="hidden" name="QuotationPriceSchedule[@i].QuantityRequired" class="form-control" value="@item.QuantityRequired" />
