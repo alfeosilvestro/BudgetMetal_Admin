@@ -40,6 +40,7 @@ using Com.BudgetMetal.Services.Code_Category;
 using Com.BudgetMetal.Services.Code_Table;
 using Com.BudgetMetal.Services.Company;
 using Com.BudgetMetal.Services.EmailLog;
+using Com.BudgetMetal.Services.Facebook;
 using Com.BudgetMetal.Services.Gallery;
 using Com.BudgetMetal.Services.Industries;
 using Com.BudgetMetal.Services.Quotation;
@@ -211,6 +212,9 @@ namespace Com.EzTender.WebApp
             //// Register for repository classes
             services.AddScoped<IBlogService, BlogService>();
             services.AddScoped<IBlogRepository, BlogRepository>();
+
+            //// Register for repository classes
+            services.AddScoped<IFacebookService, FacebookService>();
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

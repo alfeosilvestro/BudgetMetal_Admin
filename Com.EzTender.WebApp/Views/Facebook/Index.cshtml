@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Post Status on Facebook</h2>
+
+<form action="Facebook/PostonWall" method="post">
+    
+    <div class="row">
+        <div class="col-sm-6">
+            <textarea rows="5" class="form-control" name="postMessage"></textarea>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-sm-6">
+            <input type="submit" name="submit" value="Post"  class="btn btn-primary"/>
+        </div>
+    </div>
+    
+   
+</form>
