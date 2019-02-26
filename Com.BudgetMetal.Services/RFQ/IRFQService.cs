@@ -12,6 +12,9 @@ namespace Com.BudgetMetal.Services.RFQ
     {
         Task<VmRfqPage> GetRfqByPage(int userId, int documentOwner, int page, int totalRecords, bool isCompany, int statusId = 0, string keyword = "");
 
+        Task<VmRfqPage> GetRfqByPageForDashboard(int userId, int documentOwner, int page, int totalRecords, bool isCompany, int statusId = 0, string keyword = "");
+
+
         Task<VmRfqPage> GetRfqForSupplierByPage(int supplierId, int page, int totalRecords, int statusId = 0, string keyword = "");
 
         Task<VmRfqPage> GetPublicRfqByPage(int page, int totalRecords, int statusId = 0, string keyword = "");
