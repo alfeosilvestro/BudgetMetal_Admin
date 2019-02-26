@@ -357,13 +357,14 @@
                         </div>
 
                         <div role="tabpanel" class="tab-pane fade in" id="pricing">
+                            <h4>Product Pricing</h4>
                             <table id="pricingTable" class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th width="25%">Item Name</th>
-                                        <th width="35%">Item Description</th>
-                                        <th width="20%">Internal Reference Code</th>
-                                        <th width="10%">Quantity</th>
+                                        <th width="30%">Item Name</th>
+                                        <th width="40%">Item Description</th>
+                                        @*<th width="20%">Internal Reference Code</th>*@
+                                        <th width="15%">Quantity</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -376,7 +377,7 @@
                                                 <tr>
                                                     <td>@item.ItemName </td>
                                                     <td>@item.ItemDescription</td>
-                                                    <td>@item.InternalRefrenceCode</td>
+                                                    @*<td>@item.InternalRefrenceCode</td>*@
                                                     <td>@item.QuantityRequired</td>
                                                 </tr>
                                             }
@@ -384,14 +385,14 @@
                                     }
                                 </tbody>
                             </table>
-
+                            <h4>Service Pricing</h4>
                             <table id="pricingServiceTable" class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th width="25%">Item Name</th>
-                                        <th width="35%">Item Description</th>
-                                        <th width="20%">Internal Reference Code</th>
-                                        <th width="10%">Quantity</th>
+                                        <th width="30%">Item Name</th>
+                                        <th width="40%">Item Description</th>
+                                        @*<th width="20%">Internal Reference Code</th>*@
+                                        <th width="15%">Quantity</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -399,13 +400,13 @@
                                         if (Model.RfqPriceSchedule != null)
                                         {
                                             var serviceList = Model.RfqPriceSchedule.Where(x => x.CategoryId == Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Service).ToList();
-                                            
+
                                             foreach (var item in serviceList)
                                             {
                                                 <tr>
                                                     <td>@item.ItemName </td>
                                                     <td>@item.ItemDescription</td>
-                                                    <td>@item.InternalRefrenceCode</td>
+                                                    @*<td>@item.InternalRefrenceCode</td>*@
                                                     <td>@item.QuantityRequired</td>
 
                                                 </tr>
@@ -414,16 +415,16 @@
                                     }
                                 </tbody>
                             </table>
-
+                            <h4>Warranty Pricing</h4>
                             <table id="pricingWarrantyTable" class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th width="25%">Item Name</th>
-                                        <th width="35%">Item Description</th>
-                                        <th width="20%">Internal Reference Code</th>
-                                        <th width="10%">Quantity</th>
+                                        <th width="30%">Item Name</th>
+                                        <th width="40%">Item Description</th>
+                                        @*<th width="20%">Internal Reference Code</th>*@
+                                        <th width="15%">Quantity</th>
                                     </tr>
-                                </thead>    
+                                </thead>
                                 <tbody>
                                     @{
                                         if (Model.RfqPriceSchedule != null)
@@ -434,7 +435,7 @@
                                                 <tr>
                                                     <td>@item.ItemName </td>
                                                     <td>@item.ItemDescription</td>
-                                                    <td>@item.InternalRefrenceCode</td>
+                                                    @*<td>@item.InternalRefrenceCode</td>*@
                                                     <td>@item.QuantityRequired</td>
                                                 </tr>
                                             }
@@ -449,7 +450,6 @@
                                     <button class="btn btn-default waves-effect m-r-20" type="button" data-target="#priceCompareModal" data-toggle="modal">Price Comparison</button>
                                 }
                             }
-
 
                             <div tabindex="-1" class="modal fade in" id="priceCompareModal" role="dialog" aria-labelledby="priceCompareModalLabel" aria-hidden="true">
 

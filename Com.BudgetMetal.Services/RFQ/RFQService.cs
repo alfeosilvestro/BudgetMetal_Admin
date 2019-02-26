@@ -425,7 +425,7 @@ namespace Com.BudgetMetal.Services.RFQ
                     {
                         foreach (var item in rfq.Penalty)
                         {
-                            if (item.BreachOfServiceDefinition != null && item.PenaltyAmount != null && item.Description != null)
+                            if (item.BreachOfServiceDefinition != null && item.Description != null)
                             {
                                 var dbPenalty = new Com.BudgetMetal.DBEntities.Penalty();
 
@@ -445,7 +445,7 @@ namespace Com.BudgetMetal.Services.RFQ
                     {
                         foreach (var item in rfq.RfqPriceSchedule)
                         {
-                            if (item.ItemName != null && item.ItemDescription != null && item.InternalRefrenceCode != null && item.QuantityRequired != null)
+                            if (item.ItemName != null && item.ItemDescription != null && item.QuantityRequired != null)
                             {
                                 var dbRfqPriceSchedule = new Com.BudgetMetal.DBEntities.RfqPriceSchedule();
 
