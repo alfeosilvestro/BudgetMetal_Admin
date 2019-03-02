@@ -5,7 +5,7 @@ $("#btnNewRequirement").click(function () {
 
     var newRow = "<tr>" +
         "<td> " +
-        "<input type='text' name='Requirement[" + detailRequirementLastId + "].ServiceName' class='form-control' />" +
+        "<input type='text' name='Requirement[" + detailRequirementLastId + "].ServiceName' class='form-control requirement' />" +
         "</td> " +
         "<td> " +
         "<input type='text' name='Requirement[" + detailRequirementLastId + "].Description' class='form-control' />" +
@@ -30,7 +30,7 @@ $("#btnNewSLA").click(function () {
 
     var newRow = "<tr>" +
         "<td> " +
-        "<input type='text' name='Sla[" + detailSLALastId + "].Requirement' class='form-control' />" +
+        "<input type='text' name='Sla[" + detailSLALastId + "].Requirement' class='form-control support' />" +
         "</td> " +
         "<td> " +
         "<input type='text' name='Sla[" + detailSLALastId + "].Description' class='form-control' />" +
@@ -55,7 +55,7 @@ $("#btnNewPenalty").click(function () {
 
     var newRow = "<tr>" +
         "<td> " +
-        "<input type='text' name='Penalty[" + PenaltyLastId + "].BreachOfServiceDefinition' class='form-control' />" +
+        "<input type='text' name='Penalty[" + PenaltyLastId + "].BreachOfServiceDefinition' class='form-control commercial' />" +
         "</td> " +
         //"<td> " +
         //"<input type='text' name='Penalty[" + PenaltyLastId + "].PenaltyAmount' class='form-control' />" +
@@ -83,16 +83,16 @@ $("#btnNewPricing").click(function () {
     var PricingLastId = $("#PricingLastId").val();
     var newRow = "<tr>" +
         "<td> " +
-        "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].ItemName' class='form-control' />" +
+        "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].ItemName' class='form-control pricing' />" +
         "</td> " +
         "<td> " +
         "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].ItemDescription' class='form-control' />" +
         "</td> " +
-        "<td> " +
-        "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].InternalRefrenceCode' class='form-control' />" +
-        "</td> " +
-        "<td> " +
-        "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].QuantityRequired' class='form-control' /> <input type='hidden' name='RfqPriceSchedule[" + PricingLastId + "].CategoryId' value='100081' class='form-control' />" +
+        //"<td> " +
+        //"<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].InternalRefrenceCode' class='form-control' />" +
+        //"</td> " +
+        "<td/> " +
+        "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].QuantityRequired' class='form-control pricingQty' /> <input type='hidden' name='RfqPriceSchedule[" + PricingLastId + "].CategoryId' value='100081' class='form-control' />" +
         "</td> " +
         "<td> " +
         "<button type='button' class='btn btn-danger waves-effect' onclick='RemovePricingRow(this)'> Remove</button >" +
@@ -112,16 +112,16 @@ $("#btnServicePricing").click(function () {
     var PricingLastId = $("#PricingLastId").val();
     var newRow = "<tr>" +
         "<td> " +
-        "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].ItemName' class='form-control' />" +
+        "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].ItemName' class='form-control pricing' />" +
         "</td> " +
         "<td> " +
         "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].ItemDescription' class='form-control' />" +
         "</td> " +
+        //"<td> " +
+        //"<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].InternalRefrenceCode' class='form-control' />" +
+        //"</td> " +
         "<td> " +
-        "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].InternalRefrenceCode' class='form-control' />" +
-        "</td> " +
-        "<td> " +
-        "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].QuantityRequired' class='form-control' /><input type='hidden' name='RfqPriceSchedule[" + PricingLastId + "].CategoryId' value='100082' class='form-control' />" +
+        "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].QuantityRequired' class='form-control pricingQty' /><input type='hidden' name='RfqPriceSchedule[" + PricingLastId + "].CategoryId' value='100082' class='form-control' />" +
         "</td> " +
         "<td> " +
         "<button type='button' class='btn btn-danger waves-effect' onclick='RemovePricingRow(this)'> Remove</button >" +
@@ -137,16 +137,16 @@ $("#btnWarrantyPricing").click(function () {
     var PricingLastId = $("#PricingLastId").val();
     var newRow = "<tr>" +
         "<td> " +
-        "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].ItemName' class='form-control' />" +
+        "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].ItemName' class='form-control pricing' />" +
         "</td> " +
         "<td> " +
         "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].ItemDescription' class='form-control' />" +
         "</td> " +
+        //"<td> " +
+        //"<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].InternalRefrenceCode' class='form-control' />" +
+        //"</td> " +
         "<td> " +
-        "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].InternalRefrenceCode' class='form-control' />" +
-        "</td> " +
-        "<td> " +
-        "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].QuantityRequired' class='form-control' /> <input type='hidden' name='RfqPriceSchedule[" + PricingLastId + "].CategoryId' value='100083' class='form-control' />" +
+        "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].QuantityRequired' class='form-control pricingQty' /> <input type='hidden' name='RfqPriceSchedule[" + PricingLastId + "].CategoryId' value='100083' class='form-control' />" +
         "</td> " +
         "<td> " +
         "<button type='button' class='btn btn-danger waves-effect' onclick='RemovePricingRow(this)'> Remove</button >" +

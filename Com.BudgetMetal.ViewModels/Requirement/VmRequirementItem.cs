@@ -9,10 +9,10 @@ namespace Com.BudgetMetal.ViewModels.Requirement
     {       
         public int Rfq_Id { get; set; }
 
-        [Required]
+        
         public string ServiceName { get; set; }
 
-        [Required]
+        
         public string Description { get; set; }
 
         public virtual VmRfqItem Rfq { get; set; }
