@@ -148,7 +148,6 @@
                                     </div>
                                 </div>
 
-
                                 <div class="col-sm-3">
                                     <input type="checkbox" asp-for="IsPublic" class="chk-col-red" />
                                     <label for="IsPublic">Public </label>
@@ -180,8 +179,8 @@
                                     <button type="button" class="btn btn-success" id="btnUploadFile">Upload Template</button>
                                 </div>
                             </div>
-
                         </div>
+
                         <div role="tabpanel" class="tab-pane fade in" id="detailed_requirements">
                             <input type="hidden" id="detailRequirementLastId" value="1" />
                             <table id="requirementsTable" class="table table-striped">
@@ -194,12 +193,11 @@
                                 </thead>
                                 <tbody id="requirementsTableBody">
                                     <tr>
-                                        <td><input type="text" asp-for="Requirement[0].ServiceName" class="form-control" /></td>
+                                        <td><input type="text" asp-for="Requirement[0].ServiceName" class="form-control requirement" /></td>
                                         <td><input type="text" asp-for="Requirement[0].Description" class="form-control" /></td>
                                         <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveRequirementRow(this)'>Remove</button></td>
                                     </tr>
                                 </tbody>
-
                             </table>
                             <div class="row">
                                 <div class="form-group col-sm-12">
@@ -220,7 +218,7 @@
                                 </thead>
                                 <tbody id="slaTableBody">
                                     <tr>
-                                        <td><input type="text" asp-for="Sla[0].Requirement" class="form-control" /></td>
+                                        <td><input type="text" asp-for="Sla[0].Requirement" class="form-control support" /></td>
                                         <td><input type="text" asp-for="Sla[0].Description" class="form-control" /></td>
                                         <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveSLARow(this)'>Remove</button></td>
                                     </tr>
@@ -230,7 +228,6 @@
                                 <div class="form-group col-sm-12">
                                     <a class="btn btn-success" id="btnNewSLA"> New Support </a>
                                 </div>
-
                             </div>
                         </div>
                         <div role="tabpanel" class="tab-pane fade in" id="penalty">
@@ -246,19 +243,17 @@
                                 </thead>
                                 <tbody id="penaltyTableBody">
                                     <tr>
-                                        <td><input type="text" asp-for="Penalty[0].BreachOfServiceDefinition" class="form-control" /></td>
+                                        <td><input type="text" asp-for="Penalty[0].BreachOfServiceDefinition" class="form-control commercial" /></td>
                                         @*<td><input type="text" asp-for="Penalty[0].PenaltyAmount" class="form-control" /></td>*@
                                         <td><input type="text" asp-for="Penalty[0].Description" class="form-control" /></td>
                                         <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePenaltyRow(this)'>Remove</button></td>
                                     </tr>
                                 </tbody>
-
                             </table>
                             <div class="row">
                                 <div class="form-group col-sm-12">
                                     <a class="btn btn-success" id="btnNewPenalty">New Commercial </a>
                                 </div>
-
                             </div>
                         </div>
 
@@ -276,11 +271,11 @@
                                 </thead>
                                 <tbody id="pricingTableBody">
                                     <tr>
-                                        <td><input type="text" asp-for="RfqPriceSchedule[0].ItemName" class="form-control" /></td>
+                                        <td><input type="text" asp-for="RfqPriceSchedule[0].ItemName" class="form-control pricing" /></td>
                                         <td><input type="text" asp-for="RfqPriceSchedule[0].ItemDescription" class="form-control" /></td>
                                         @*<td><input type="text" asp-for="RfqPriceSchedule[0].InternalRefrenceCode" class="form-control" /></td>*@
                                         <td>
-                                            <input type="text" asp-for="RfqPriceSchedule[0].QuantityRequired" class="form-control" />
+                                            <input type="text" asp-for="RfqPriceSchedule[0].QuantityRequired" class="form-control pricingQty" />
                                             <input type="hidden" asp-for="RfqPriceSchedule[0].CategoryId" value="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Product)" class="form-control" />
                                         </td>
 
@@ -408,7 +403,6 @@
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
-
                             </table>
                             <div class="row">
                                 <div class="form-group col-sm-12">
@@ -469,7 +463,6 @@
                                             <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveRfqEmailInvites(this)'>Remove</button></td>
                                         </tr>
                                     </tbody>
-
                                 </table>
                                 <div class="row">
                                     <div class="form-group col-sm-12">
@@ -559,8 +552,6 @@
         loadUser();
         loadRole();
 
-
-
         $('#ValidRfqdate').bootstrapMaterialDatePicker('setMinDate', moment());
         $('#StartRfqdate').bootstrapMaterialDatePicker('setMinDate', moment()).on('change', function (e, date) {
             $('#ValidRfqdate').bootstrapMaterialDatePicker('setMinDate', date);
@@ -587,7 +578,7 @@
     });
 
     function SaveForm() {
-
+        alert("Start save!")
         var isValid = true;
 
         //$("form#frmCreateRFQ :input[type=text]").each(function () {
@@ -597,6 +588,7 @@
         //    }
         //});
 
+        var invalidMessage = "";
         isValid = $("form#frmCreateRFQ").valid();
         if (isValid) {
             var haveInvitedSupplier = false;
@@ -606,12 +598,100 @@
                     haveInvitedSupplier = true;
                 }
             });
-
             if (haveInvitedSupplier) {
-                $('.page-loader-wrapper').fadeIn();
-                $("#frmCreateRFQ").submit();
+                invalidMessage += "Please invite at least one supplier. \n";
+            }
+
+            //Check Requeirment Table
+            var hasRequirementRecord = false;
+            var hasRequirementValid = false;
+            var requirementTableCount = $('requirementsTableBody').find('tr').length;
+            if (requirementTableCount > 0) {
+                hasRequirementRecord = true;
+            }
+            if (hasRequirementRecord) {                
+                $('input:text.requirement').each(function () {
+                    if ($(this).val() != "") {
+                        hasRequirementValid = true;
+                    }
+                });
+                if (hasRequirementValid) {
+                    invalidMessage += "Service name in Requirement tab is not blank. \n";
+                }
             } else {
-                alert("Please invite at least one supplier.");
+                invalidMessage += "Please fill at least one record in Requirement tab. \n";
+            }
+
+            ////Check Support Table
+            //var supportTableCount = $('slaTableBody').find('tr').length;
+            //if (supportTableCount < 1) {
+            //    invalidMessage += "Please fill at least one record in Support tab. \n";
+            //}
+            //var hasSupportValid = false;
+            //$('input:text.support').each(function () {
+            //    if ($(this).val() != "") {
+            //        hasSupportValid = true;
+            //    }
+            //});
+            //if (hasSupportValid) {
+            //    invalidMessage += "Service name in Support tab is not blank. \n";
+            //}
+            ////Check Commercial Table
+            //var commercialTableCount = $('penaltyTableBody').find('tr').length;
+            //if (commercialTableCount < 1) {
+            //    invalidMessage += "Please fill at least one record in Support tab. \n";
+            //}
+            //var hasCommercialValid = false;
+            //$('input:text.commercial').each(function () {
+            //    if ($(this).val() != "") {
+            //        hasCommercialValid = true;
+            //    }
+            //});
+            //if (hasCommercialValid) {
+            //    invalidMessage += "Item name in Commercial tab is not blank. \n";
+            //}
+
+            ////Check Pricing Table
+            //var hasPricingValid = false;
+            //$('input:text.pricing').each(function () {
+            //    if ($(this).val() != "") {
+            //        hasPricingValid = true;
+            //    }
+            //});
+            //if (hasPricingValid) {
+            //    invalidMessage += "Pricing name in Pricing tab is not blank. \n";
+            //}
+            ////Check PricingValue Table
+            //var hasPricingQtyValid = false;
+            //var hasPricingQtyBlank = false;
+            //$('input:text.pricingQty').each(function () {
+            //    var qty = $(this).val();
+            //    if (qty != "") {
+            //        if (data === parseInt(qty, 2)) {
+            //        } else {
+            //            hasPricingQtyValid = true;
+            //        }
+            //    } else {
+            //        hasPricingQtyBlank = true;
+            //    }
+            //});
+            //if (hasPricingQtyBlank) {
+            //    invalidMessage += "Quantity in Pricing tab is not blank. \n";
+            //}
+            //if (hasPricingQtyValid) {
+            //    invalidMessage += "Quantity in Pricing tab is not number. \n";
+            //}
+
+            //if (haveInvitedSupplier && hasRequirementValid && hasSupportValid && hasCommercialValid && hasPricingValid && hasPricingQtyValid && hasPricingQtyBlank) {
+            if (hasRequirementRecord && hasRequirementValid) {
+
+                alert("True and Save");
+
+                //$('.page-loader-wrapper').fadeIn();
+                //$("#frmCreateRFQ").submit();
+
+            } else {
+                alert(invalidMessage);
             }
         } else {
             alert("Please fill all fields!")
