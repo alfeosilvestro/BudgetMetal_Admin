@@ -141,7 +141,7 @@ namespace Com.EzTender.WebApp.Controllers
                 string code = Request.Query["code"];
                 ViewBag.Code = code;
                 var result = await rfqService.GetPublicPortalSingleRfqById(id);
-
+                TempData["LoginUrl"] = _appSettings.App_Identity.WebAppUrl + "Public/SignIn";
                 return View(result);
             }
             catch (Exception ex)

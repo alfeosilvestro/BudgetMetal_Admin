@@ -147,6 +147,17 @@ namespace Com.BudgetMetal.DataRepository.RFQ
                 .Where(e => e.IsActive == true && e.Company_Id == supplierId)
                 .Select(e => e.Rfq_Id).Distinct().ToListAsync();
 
+            var filterPublicRfq = await this.DbContext.Quotation.Include(e => e.Document).Include(e => e.Rfq)
+                .Where(e => e.IsActive == true
+                && e.Document.IsActive == true
+                && e.Rfq.IsPublic == true
+                && e.Document.Company_Id == supplierId
+                )
+                .Select(e => e.Rfq_Id).Distinct().ToListAsync();
+
+            filterRfq.AddRange(filterPublicRfq);
+
+
 
             var records = await this.entities
                             .Include(e => e.Document)
@@ -212,6 +223,9 @@ namespace Com.BudgetMetal.DataRepository.RFQ
                               && (e.Document.IsActive == true)
                               && e.IsPublic == true
                               && (statusId == 0 || e.Document.DocumentStatus_Id == statusId)
+                              && (e.Document.DocumentStatus_Id != Constants_CodeTable.Code_RFQ_Delete)
+                              && (e.Document.DocumentStatus_Id != Constants_CodeTable.Code_RFQ_Draft)
+                              && (e.Document.DocumentStatus_Id != Constants_CodeTable.Code_RFQ_RequiredApproval)
                               && (keyword == "" || e.Document.DocumentNo.Contains(keyword) || e.Document.Title.ToLower().Contains(keyword.ToLower()) || e.Document.Company.Name.ToLower().Contains(keyword.ToLower()))
                             )
                             .OrderByDescending(e => e.CreatedDate)
@@ -286,55 +300,55 @@ namespace Com.BudgetMetal.DataRepository.RFQ
             return record;
         }
 
-        public async Task<PageResult<Com.BudgetMetal.DBEntities.Rfq>> GetPublicRfqByCompany(int page, int companyId, int totalRecords, int statusId, string keyword)
-        {
-            var records = await this.entities
-                            .Include(e => e.Document)
-                            .Include(e => e.Document.DocumentStatus)
-                            .Include(e => e.Document.DocumentType)
-                            .Include(e => e.Document.Company)
-                            .Where(e =>
-                              (e.IsActive == true)
-                              && (e.Document.IsActive == true)
-                              && e.IsPublic == true
-                              && e.Document.Company_Id == companyId
-                              && (statusId == 0 || e.Document.DocumentStatus_Id == statusId)
-                              && (keyword == "" || e.Document.DocumentNo.Contains(keyword))
-                            )
-                            .OrderByDescending(e => e.CreatedDate)
-                            .ToListAsync();
+        //public async Task<PageResult<Com.BudgetMetal.DBEntities.Rfq>> GetPublicRfqByCompany(int page, int companyId, int totalRecords, int statusId, string keyword)
+        //{
+        //    var records = await this.entities
+        //                    .Include(e => e.Document)
+        //                    .Include(e => e.Document.DocumentStatus)
+        //                    .Include(e => e.Document.DocumentType)
+        //                    .Include(e => e.Document.Company)
+        //                    .Where(e =>
+        //                      (e.IsActive == true)
+        //                      && (e.Document.IsActive == true)
+        //                      && e.IsPublic == true
+        //                      && e.Document.Company_Id == companyId
+        //                      && (statusId == 0 || e.Document.DocumentStatus_Id == statusId)
+        //                      && (keyword == "" || e.Document.DocumentNo.Contains(keyword))
+        //                    )
+        //                    .OrderByDescending(e => e.CreatedDate)
+        //                    .ToListAsync();
 
-            var recordList = records
-                .Skip((totalRecords * page) - totalRecords)
-                .Take(totalRecords).ToList();
+        //    var recordList = records
+        //        .Skip((totalRecords * page) - totalRecords)
+        //        .Take(totalRecords).ToList();
 
-            var count = records.Count();
+        //    var count = records.Count();
 
-            var nextPage = 0;
-            var prePage = 0;
-            if (page > 1)
-            {
-                prePage = page - 1;
-            }
+        //    var nextPage = 0;
+        //    var prePage = 0;
+        //    if (page > 1)
+        //    {
+        //        prePage = page - 1;
+        //    }
 
-            var totalPage = (count + totalRecords - 1) / totalRecords;
-            if (page < totalPage)
-            {
-                nextPage = page + 1;
-            }
+        //    var totalPage = (count + totalRecords - 1) / totalRecords;
+        //    if (page < totalPage)
+        //    {
+        //        nextPage = page + 1;
+        //    }
 
-            var result = new PageResult<Com.BudgetMetal.DBEntities.Rfq>()
-            {
-                Records = recordList,
-                TotalPage = totalPage,
-                CurrentPage = page,
-                PreviousPage = prePage,
-                NextPage = nextPage,
-                TotalRecords = count
-            };
+        //    var result = new PageResult<Com.BudgetMetal.DBEntities.Rfq>()
+        //    {
+        //        Records = recordList,
+        //        TotalPage = totalPage,
+        //        CurrentPage = page,
+        //        PreviousPage = prePage,
+        //        NextPage = nextPage,
+        //        TotalRecords = count
+        //    };
 
-            return result;
-        }
+        //    return result;
+        //}
 
 
         public async Task<List<Com.BudgetMetal.DBEntities.Company>> GetSelectedSupplier(int rfqId)

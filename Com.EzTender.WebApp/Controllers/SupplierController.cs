@@ -27,12 +27,12 @@ namespace Com.EzTender.WebApp.Controllers
         }
 
 
-        public ActionResult PublicRfqByCompany(int id)
-        {
-            ViewBag.Company_Id = id;
+        //public ActionResult PublicRfqByCompany(int id)
+        //{
+        //    ViewBag.Company_Id = id;
 
-            return View();
-        }
+        //    return View();
+        //}
         // GET: Suppliers
         public async Task<ActionResult> Index(string keyword, int page, int totalRecords)
         {
@@ -45,7 +45,7 @@ namespace Com.EzTender.WebApp.Controllers
         public async Task<IActionResult> Details(int id)
         {
             VmCompanyItem item = await svs.GetCompanyById(id);
-
+            
             if (item == null)
             {
                 return NotFound();
@@ -132,17 +132,17 @@ namespace Com.EzTender.WebApp.Controllers
             });
         }
 
-        [HttpGet]
-        public async Task<JsonResult> GetPublicRFQByCompany(int page, int Company_Id, string status, string skeyword)
-        {
-            //var company_Id = HttpContext.Session.GetString("Company_Id");
-            var result = await rfqService.GetPublicRfqByCompany(page, Company_Id, 2, Convert.ToInt32(status),
-                skeyword == null ? "" : skeyword);
+        //[HttpGet]
+        //public async Task<JsonResult> GetPublicRFQByCompany(int page, int Company_Id, string status, string skeyword)
+        //{
+        //    //var company_Id = HttpContext.Session.GetString("Company_Id");
+        //    var result = await rfqService.GetPublicRfqByCompany(page, Company_Id, 2, Convert.ToInt32(status),
+        //        skeyword == null ? "" : skeyword);
 
-            return new JsonResult(result, new JsonSerializerSettings()
-            {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            });
-        }
+        //    return new JsonResult(result, new JsonSerializerSettings()
+        //    {
+        //        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+        //    });
+        //}
     }
 }

@@ -78,6 +78,17 @@ namespace Com.GenericPlatform.WebApp.Controllers
             string currentCompanyType = HttpContext.Session.GetString("C_BusinessType");
             if (currentCompanyType == Constants_CodeTable.Code_C_Buyer.ToString())
             {
+                //var Company_Id = HttpContext.Session.GetString("Company_Id");
+                //var User_Id = HttpContext.Session.GetString("User_Id");
+                //var userRoles = JsonConvert.DeserializeObject<List<VmRoleItem>>(HttpContext.Session.GetString("SelectedRoles"));
+                //bool isCompanyAdmin = false;
+                //if (userRoles.Where(e => e.Id == Constants.C_Admin_Role).ToList().Count > 0)
+                //{
+                //    isCompanyAdmin = true;
+                //}
+
+                //var result = await rfqService.GetRfqByPageForDashboard(Convert.ToInt32(User_Id), Convert.ToInt32(Company_Id), page, 10, isCompanyAdmin, Convert.ToInt32(status), skeyword == null ? "" : skeyword);
+
                 var Company_Id = HttpContext.Session.GetString("Company_Id");
                 var User_Id = HttpContext.Session.GetString("User_Id");
                 var userRoles = JsonConvert.DeserializeObject<List<VmRoleItem>>(HttpContext.Session.GetString("SelectedRoles"));
@@ -86,7 +97,8 @@ namespace Com.GenericPlatform.WebApp.Controllers
                 {
                     isCompanyAdmin = true;
                 }
-                var result = await rfqService.GetRfqByPageForDashboard(Convert.ToInt32(User_Id), Convert.ToInt32(Company_Id), page, 10, isCompanyAdmin, Convert.ToInt32(status), skeyword == null ? "" : skeyword);
+                var result = await rfqService.GetRfqByPage(Convert.ToInt32(User_Id), Convert.ToInt32(Company_Id), page, 10, isCompanyAdmin,Convert.ToInt32(status), skeyword == null ? "" : skeyword);
+
 
                 return new JsonResult(result, new JsonSerializerSettings()
                 {
@@ -95,8 +107,6 @@ namespace Com.GenericPlatform.WebApp.Controllers
             }
             else
             {
-               
-
                 var Company_Id = HttpContext.Session.GetString("Company_Id");
 
                 var result = await rfqService.GetRfqForSupplierByPage(Convert.ToInt32(Company_Id), page, 10);
@@ -114,7 +124,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
         public async Task<JsonResult> GetPublicRFQ(int page, string status, string skeyword)
         {
             
-            var result = await rfqService.GetPublicRfqByPage(page, 2, Convert.ToInt32(status),
+            var result = await rfqService.GetPublicRfqByPage(page, 10, Convert.ToInt32(status),
                 skeyword == null ? "" : skeyword);
 
             return new JsonResult(result, new JsonSerializerSettings()

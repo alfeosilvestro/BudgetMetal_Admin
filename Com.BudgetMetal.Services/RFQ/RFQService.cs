@@ -176,76 +176,76 @@ namespace Com.BudgetMetal.Services.RFQ
         }
 
 
-        public async Task<VmRfqPage> GetRfqByPageForDashboard(int userId, int documentOwner, int page, int totalRecords, bool isCompanyAdmin, int statusId = 0, string keyword = "")
-        {
-            var dbPageResult = await repoRfq.GetRfqByPageForDashboard(userId, documentOwner,
-                (page == 0 ? Constants.app_firstPage : page),
-                (totalRecords == 0 ? Constants.app_totalRecords : totalRecords), isCompanyAdmin, statusId, keyword);
+        //public async Task<VmRfqPage> GetRfqByPageForDashboard(int userId, int documentOwner, int page, int totalRecords, bool isCompanyAdmin, int statusId = 0, string keyword = "")
+        //{
+        //    var dbPageResult = await repoRfq.GetRfqByPageForDashboard(userId, documentOwner,
+        //        (page == 0 ? Constants.app_firstPage : page),
+        //        (totalRecords == 0 ? Constants.app_totalRecords : totalRecords), isCompanyAdmin, statusId, keyword);
 
-            //var dbPageResult = repo.GetCodeTableByPage(keyword,
-            //    (page == 0 ? Constants.app_firstPage : page),
-            //    (totalRecords == 0 ? Constants.app_totalRecords : totalRecords));
+        //    //var dbPageResult = repo.GetCodeTableByPage(keyword,
+        //    //    (page == 0 ? Constants.app_firstPage : page),
+        //    //    (totalRecords == 0 ? Constants.app_totalRecords : totalRecords));
 
-            if (dbPageResult == null)
-            {
-                return new VmRfqPage();
-            }
+        //    if (dbPageResult == null)
+        //    {
+        //        return new VmRfqPage();
+        //    }
 
-            var resultObj = new VmRfqPage();
-            resultObj.RequestId = DateTime.Now.ToString("yyyyMMddHHmmss");
-            resultObj.RequestDate = DateTime.Now;
-            resultObj.Result = new PageResult<VmRfqItem>();
-            resultObj.Result.Records = new List<VmRfqItem>();
+        //    var resultObj = new VmRfqPage();
+        //    resultObj.RequestId = DateTime.Now.ToString("yyyyMMddHHmmss");
+        //    resultObj.RequestDate = DateTime.Now;
+        //    resultObj.Result = new PageResult<VmRfqItem>();
+        //    resultObj.Result.Records = new List<VmRfqItem>();
 
-            Copy<PageResult<Rfq>, PageResult<VmRfqItem>>(dbPageResult, resultObj.Result, new string[] { "Records" });
+        //    Copy<PageResult<Rfq>, PageResult<VmRfqItem>>(dbPageResult, resultObj.Result, new string[] { "Records" });
 
-            var industryList = industryRepository.GetAll();
+        //    var industryList = industryRepository.GetAll();
 
-            foreach (var dbItem in dbPageResult.Records)
-            {
-                var resultItem = new VmRfqItem();
+        //    foreach (var dbItem in dbPageResult.Records)
+        //    {
+        //        var resultItem = new VmRfqItem();
 
-                Copy<Rfq, VmRfqItem>(dbItem, resultItem);
+        //        Copy<Rfq, VmRfqItem>(dbItem, resultItem);
 
-                if (dbItem.Document != null)
-                {
-                    resultItem.Document = new ViewModels.Document.VmDocumentItem()
-                    {
-                        Id = dbItem.Document.Id,
-                        DocumentNo = dbItem.Document.DocumentNo,
-                        Title = dbItem.Document.Title,
-                        DocumentStatus = new ViewModels.CodeTable.VmCodeTableItem()
-                        {
-                            Name = dbItem.Document.DocumentStatus.Name
-                        },
-                        DocumentType = new ViewModels.CodeTable.VmCodeTableItem()
-                        {
-                            Name = dbItem.Document.DocumentStatus.Name
-                        },
-                        Company = new ViewModels.Company.VmCompanyItem()
-                        {
-                            Name = dbItem.Document.Company.Name
-                        }
-                    };
+        //        if (dbItem.Document != null)
+        //        {
+        //            resultItem.Document = new ViewModels.Document.VmDocumentItem()
+        //            {
+        //                Id = dbItem.Document.Id,
+        //                DocumentNo = dbItem.Document.DocumentNo,
+        //                Title = dbItem.Document.Title,
+        //                DocumentStatus = new ViewModels.CodeTable.VmCodeTableItem()
+        //                {
+        //                    Name = dbItem.Document.DocumentStatus.Name
+        //                },
+        //                DocumentType = new ViewModels.CodeTable.VmCodeTableItem()
+        //                {
+        //                    Name = dbItem.Document.DocumentStatus.Name
+        //                },
+        //                Company = new ViewModels.Company.VmCompanyItem()
+        //                {
+        //                    Name = dbItem.Document.Company.Name
+        //                }
+        //            };
 
-                }
+        //        }
 
-                resultItem.IndustryOfRfq = "";
+        //        resultItem.IndustryOfRfq = "";
 
-                if (!string.IsNullOrEmpty(dbItem.IndustryOfRfq))
-                {
-                    var industry = industryList.Result.Where(x => x.Id == int.Parse(dbItem.IndustryOfRfq)).FirstOrDefault();
-                    if (industry != null)
-                    {
-                        resultItem.IndustryOfRfq = industry.Name;
-                    }
-                }
+        //        if (!string.IsNullOrEmpty(dbItem.IndustryOfRfq))
+        //        {
+        //            var industry = industryList.Result.Where(x => x.Id == int.Parse(dbItem.IndustryOfRfq)).FirstOrDefault();
+        //            if (industry != null)
+        //            {
+        //                resultItem.IndustryOfRfq = industry.Name;
+        //            }
+        //        }
 
-                resultObj.Result.Records.Add(resultItem);
-            }
+        //        resultObj.Result.Records.Add(resultItem);
+        //    }
 
-            return resultObj;
-        }
+        //    return resultObj;
+        //}
 
 
         public async Task<VmRfqPage> GetRfqForSupplierByPage(int supplierId, int page, int totalRecords, int statusId = 0, string keyword = "")
@@ -1853,56 +1853,56 @@ namespace Com.BudgetMetal.Services.RFQ
             return resultObject;
         }
 
-        public async Task<VmRfqPage> GetPublicRfqByCompany(int page, int companyId, int totalRecords, int statusId = 0, string keyword = "")
-        {
-            var dbPageResult = await repoRfq.GetPublicRfqByCompany((page == 0 ? Constants.app_firstPage : page), companyId,
-                (totalRecords == 0 ? Constants.app_totalRecords : totalRecords), statusId, keyword);
+        //public async Task<VmRfqPage> GetPublicRfqByCompany(int page, int companyId, int totalRecords, int statusId = 0, string keyword = "")
+        //{
+        //    var dbPageResult = await repoRfq.GetPublicRfqByCompany((page == 0 ? Constants.app_firstPage : page), companyId,
+        //        (totalRecords == 0 ? Constants.app_totalRecords : totalRecords), statusId, keyword);
 
-            if (dbPageResult == null)
-            {
-                return new VmRfqPage();
-            }
+        //    if (dbPageResult == null)
+        //    {
+        //        return new VmRfqPage();
+        //    }
 
-            var resultObj = new VmRfqPage();
-            resultObj.RequestId = DateTime.Now.ToString("yyyyMMddHHmmss");
-            resultObj.RequestDate = DateTime.Now;
-            resultObj.Result = new PageResult<VmRfqItem>();
-            resultObj.Result.Records = new List<VmRfqItem>();
+        //    var resultObj = new VmRfqPage();
+        //    resultObj.RequestId = DateTime.Now.ToString("yyyyMMddHHmmss");
+        //    resultObj.RequestDate = DateTime.Now;
+        //    resultObj.Result = new PageResult<VmRfqItem>();
+        //    resultObj.Result.Records = new List<VmRfqItem>();
 
-            Copy<PageResult<Rfq>, PageResult<VmRfqItem>>(dbPageResult, resultObj.Result, new string[] { "Records" });
+        //    Copy<PageResult<Rfq>, PageResult<VmRfqItem>>(dbPageResult, resultObj.Result, new string[] { "Records" });
 
-            foreach (var dbItem in dbPageResult.Records)
-            {
-                var resultItem = new VmRfqItem();
+        //    foreach (var dbItem in dbPageResult.Records)
+        //    {
+        //        var resultItem = new VmRfqItem();
 
-                Copy<Rfq, VmRfqItem>(dbItem, resultItem);
+        //        Copy<Rfq, VmRfqItem>(dbItem, resultItem);
 
-                if (dbItem.Document != null)
-                {
-                    resultItem.Document = new ViewModels.Document.VmDocumentItem()
-                    {
-                        DocumentNo = dbItem.Document.DocumentNo,
-                        Title = dbItem.Document.Title,
-                        DocumentStatus = new ViewModels.CodeTable.VmCodeTableItem()
-                        {
-                            Name = dbItem.Document.DocumentStatus.Name
-                        },
-                        DocumentType = new ViewModels.CodeTable.VmCodeTableItem()
-                        {
-                            Name = dbItem.Document.DocumentStatus.Name
-                        },
-                        Company = new ViewModels.Company.VmCompanyItem()
-                        {
-                            Name = dbItem.Document.Company.Name
-                        }
-                    };
-                }
+        //        if (dbItem.Document != null)
+        //        {
+        //            resultItem.Document = new ViewModels.Document.VmDocumentItem()
+        //            {
+        //                DocumentNo = dbItem.Document.DocumentNo,
+        //                Title = dbItem.Document.Title,
+        //                DocumentStatus = new ViewModels.CodeTable.VmCodeTableItem()
+        //                {
+        //                    Name = dbItem.Document.DocumentStatus.Name
+        //                },
+        //                DocumentType = new ViewModels.CodeTable.VmCodeTableItem()
+        //                {
+        //                    Name = dbItem.Document.DocumentStatus.Name
+        //                },
+        //                Company = new ViewModels.Company.VmCompanyItem()
+        //                {
+        //                    Name = dbItem.Document.Company.Name
+        //                }
+        //            };
+        //        }
 
-                resultObj.Result.Records.Add(resultItem);
-            }
+        //        resultObj.Result.Records.Add(resultItem);
+        //    }
 
-            return resultObj;
-        }
+        //    return resultObj;
+        //}
 
 
         public async Task<List<VmCompanyItem>> LoadSelectedSupplier(int rfqId)

@@ -12,7 +12,7 @@ namespace Com.BudgetMetal.Services.RFQ
     {
         Task<VmRfqPage> GetRfqByPage(int userId, int documentOwner, int page, int totalRecords, bool isCompany, int statusId = 0, string keyword = "");
 
-        Task<VmRfqPage> GetRfqByPageForDashboard(int userId, int documentOwner, int page, int totalRecords, bool isCompany, int statusId = 0, string keyword = "");
+        //Task<VmRfqPage> GetRfqByPageForDashboard(int userId, int documentOwner, int page, int totalRecords, bool isCompany, int statusId = 0, string keyword = "");
 
 
         Task<VmRfqPage> GetRfqForSupplierByPage(int supplierId, int page, int totalRecords, int statusId = 0, string keyword = "");
@@ -41,7 +41,7 @@ namespace Com.BudgetMetal.Services.RFQ
 
         Task<VmRfqItem> GetPublicPortalSingleRfqById(int documentId);
 
-        Task<VmRfqPage> GetPublicRfqByCompany(int page, int companyId, int totalRecords, int statusId = 0, string keyword = "");
+        //Task<VmRfqPage> GetPublicRfqByCompany(int page, int companyId, int totalRecords, int statusId = 0, string keyword = "");
 
         Task<List<VmCompanyItem>> LoadSelectedSupplier(int rfqId);
 

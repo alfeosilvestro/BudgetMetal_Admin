@@ -32,5 +32,6 @@ namespace Com.BudgetMetal.ViewModels.Company
         public int OrderToShow { get; set; }
         public virtual List<VmUserItem> UserList { get; set; }
         public virtual List<VmRatingItem> RatingList { get; set; }
+        public string IndustryCertification { get; set; }
     }
 }
