@@ -46,7 +46,7 @@
                             <label for="status">Status</label>
                             <h4><span class="label label-info">New</span></h4>
                         </div>
-                        <div class="col-sm-6">
+                        @*<div class="col-sm-6">
                             <label for="quote_no">Internal Reference No</label>
                             <div class="form-group">
                                 <div class="form-line">
@@ -54,8 +54,8 @@
                                     <span asp-validation-for="InternalRefrenceNo" class="text-danger"></span>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-6">
+                        </div>*@
+                        @*<div class="col-sm-6">
                             <label for="quote_no">Internal Project Name</label>
                             <div class="form-group">
                                 <div class="form-line">
@@ -63,7 +63,7 @@
                                     <span asp-validation-for="InternalProjectName" class="text-danger"></span>
                                 </div>
                             </div>
-                        </div>
+                        </div>*@
 
                     </div>
 
@@ -186,6 +186,7 @@
                             <table id="requirementsTable" class="table table-striped">
                                 <thead>
                                     <tr>
+                                        <th width="5%">Serial</th>
                                         <th width="40%">Service Name</th>
                                         <th width="50%">Description</th>
                                         <th>&nbsp;</th>
@@ -193,6 +194,7 @@
                                 </thead>
                                 <tbody id="requirementsTableBody">
                                     <tr>
+                                        <td>1</td>
                                         <td><input type="text" asp-for="Requirement[0].ServiceName" class="form-control requirement" /></td>
                                         <td><input type="text" asp-for="Requirement[0].Description" class="form-control" /></td>
                                         <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveRequirementRow(this)'>Remove</button></td>
@@ -211,6 +213,7 @@
                             <table id="slaTable" class="table table-striped">
                                 <thead>
                                     <tr>
+                                        <th width="5%">Serial</th>
                                         <th width="40%">Service Name</th>
                                         <th width="50%">Description</th>
                                         <th>&nbsp;</th>
@@ -218,6 +221,7 @@
                                 </thead>
                                 <tbody id="slaTableBody">
                                     <tr>
+                                        <td>1</td>
                                         <td><input type="text" asp-for="Sla[0].Requirement" class="form-control support" /></td>
                                         <td><input type="text" asp-for="Sla[0].Description" class="form-control" /></td>
                                         <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveSLARow(this)'>Remove</button></td>
@@ -235,6 +239,7 @@
                             <table id="penaltyTable" class="table table-striped">
                                 <thead>
                                     <tr>
+                                        <th width="5%">Serial</th>
                                         <th width="40%">Service Name</th>
                                         @*<th width="20%">Milestone(s)</th>*@
                                         <th width="50%">Description</th>
@@ -243,6 +248,7 @@
                                 </thead>
                                 <tbody id="penaltyTableBody">
                                     <tr>
+                                        <td>1</td>
                                         <td><input type="text" asp-for="Penalty[0].BreachOfServiceDefinition" class="form-control commercial" /></td>
                                         @*<td><input type="text" asp-for="Penalty[0].PenaltyAmount" class="form-control" /></td>*@
                                         <td><input type="text" asp-for="Penalty[0].Description" class="form-control" /></td>
@@ -262,6 +268,7 @@
                             <table id="pricingTable" class="table table-striped">
                                 <thead>
                                     <tr>
+                                        <th width="5%">Serial</th>
                                         <th width="30%">Item Name</th>
                                         <th width="40%">Item Description</th>
                                         @*<th width="20%">Internal Reference Code</th>*@
@@ -271,6 +278,7 @@
                                 </thead>
                                 <tbody id="pricingTableBody">
                                     <tr>
+                                        <td>1</td>
                                         <td><input type="text" asp-for="RfqPriceSchedule[0].ItemName" class="form-control pricing" /></td>
                                         <td><input type="text" asp-for="RfqPriceSchedule[0].ItemDescription" class="form-control" /></td>
                                         @*<td><input type="text" asp-for="RfqPriceSchedule[0].InternalRefrenceCode" class="form-control" /></td>*@
@@ -294,6 +302,7 @@
                             <table id="pricingServiceTable" class="table table-striped">
                                 <thead>
                                     <tr>
+                                        <th width="5%">Serial</th>
                                         <th width="30%">Item Name</th>
                                         <th width="40%">Item Description</th>
                                         @*<th width="20%">Internal Reference Code</th>*@
@@ -303,6 +312,7 @@
                                 </thead>
                                 <tbody id="pricingServiceTableBody">
                                     <tr>
+                                        <td>1</td>
                                         <td><input type="text" asp-for="RfqPriceSchedule[1].ItemName" class="form-control" /></td>
                                         <td><input type="text" asp-for="RfqPriceSchedule[1].ItemDescription" class="form-control" /></td>
                                         @*<td><input type="text" asp-for="RfqPriceSchedule[1].InternalRefrenceCode" class="form-control" /></td>*@
@@ -323,6 +333,7 @@
                             <table id="pricingWarrantyTable" class="table table-striped">
                                 <thead>
                                     <tr>
+                                        <th width="5%">Serial</th>
                                         <th width="30%">Item Name</th>
                                         <th width="40%">Item Description</th>
                                         @*<th width="20%">Internal Reference Code</th>*@
@@ -332,6 +343,7 @@
                                 </thead>
                                 <tbody id="pricingWarrantyTableBody">
                                     <tr>
+                                        <td>1</td>
                                         <td><input type="text" asp-for="RfqPriceSchedule[2].ItemName" class="form-control" /></td>
                                         <td><input type="text" asp-for="RfqPriceSchedule[2].ItemDescription" class="form-control" /></td>
                                         @*<td><input type="text" asp-for="RfqPriceSchedule[2].InternalRefrenceCode" class="form-control" /></td>*@
@@ -353,11 +365,12 @@
                         <div role="tabpanel" class="tab-pane fade" id="invited_suppliers">
                             <div class="row">
                                 <div class="col-sm-3">
+                                   
                                     <select id="ddlIndustry" class="form-control selectpicker"></select>
                                     <input type="hidden" asp-for="IndustryOfRfq" id="hdIndustry" />
                                 </div>
                                 <div class="col-sm-8">
-                                    <select asp-for="SelectedTags" class="form-control show-tick" id="ddlServiceTags" data-live-search="true" multiple></select>
+                                    <select asp-for="SelectedTags" class="form-control selectpicker" id="ddlServiceTags" data-live-search="true" multiple></select>
                                 </div>
                                 <div class="col-sm-1">
 
@@ -417,6 +430,7 @@
                                     <select id="ddlUser" class="form-control selectpicker"></select>
                                 </div>
                                 <div class="col-sm-5">
+                                    @*<select class="form-control show-tick" id="ddlRole" data-live-search="true" multiple></select>*@
                                     <select class="form-control selectpicker" id="ddlRole" data-live-search="true" multiple></select>
                                 </div>
                                 <div class="col-sm-2">
@@ -578,7 +592,7 @@
     });
 
     function SaveForm() {
-        alert("Start save!")
+        //alert("Start save!")
         var isValid = true;
 
         //$("form#frmCreateRFQ :input[type=text]").each(function () {
@@ -835,8 +849,8 @@
                         }
                         $('#invitedSupplierTable > tbody').append(
                             "<tr>" +
-                            "<td> <h5>" + item.Name + "</h5>" + verifyBadge+
-                            " <p class='m-t-15 m-b-30'>" + item.About + "</p></td>" +
+                            "<td> <a href='@Url.Action("Details","Companies")/"+item.Id+"' target='_blank'> <h5>" + item.Name + "</h5></a>" + verifyBadge+
+                            "<p><i> Industry Certification: "+ item.IndustryCertification +"</i></p> <p class='m-t-15 m-b-30'>" + item.About + "</p></td>" +
                             "<td><input type='checkbox' class='filled-in supplier' id='chkSupplier_" + item.Id + "'  name='supplier_list' value='" + item.Id + "'> <button type='button' id='btnInvite_" + item.Id + "' class='btn btn-danger' onclick='checkSupplier(" + item.Id + ")'>Select</button></td>" +
                             "</tr>");
 
@@ -980,7 +994,7 @@ function loadIndustry() {
 
                     for (var i = 0; i < response.List_Requirement.length; i++) {
                         $('#requirementsTableBody').append(
-                            "<tr> " +
+                            "<tr> <td></td>" +
                                 "<td>" + "<input type='text' name='Requirement[" + i + "].ServiceName' class='form-control' value='" + response.List_Requirement[i].ServiceName + "'/></td>" +
                                 "<td>" + "<input type='text' name='Requirement[" + i + "].Description' class='form-control' value='" + response.List_Requirement[i].Description + "'/></td>" +
                                 "<td><button type='button' class='btn btn-danger waves-effect' onclick='RemoveRequirementRow(this)'>Remove</button></td>" +
@@ -989,6 +1003,7 @@ function loadIndustry() {
                     }
 
                     $("#detailRequirementLastId").val(response.List_Requirement.length);
+                    FillSerialNumber("requirementsTable");
                 }
 
                 if (response.List_SLA.length > 0) {
@@ -997,7 +1012,7 @@ function loadIndustry() {
 
                     for (var i = 0; i < response.List_SLA.length; i++) {
                         $('#slaTableBody').append(
-                            "<tr> " +
+                            "<tr> <td></td>" +
                             "<td>" + "<input type='text' name='Sla[" + i + "].Requirement' class='form-control' value='" + response.List_SLA[i].Requirement + "'/></td>" +
                             "<td>" + "<input type='text' name='Sla[" + i + "].Description' class='form-control' value='" + response.List_SLA[i].Description + "'/></td>" +
                             "<td><button type='button' class='btn btn-danger waves-effect' onclick='RemoveSLARow(this)'>Remove</button></td>" +
@@ -1005,7 +1020,7 @@ function loadIndustry() {
                         );
                     }
                     $("#detailSLALastId").val(response.List_SLA.length);
-
+                    FillSerialNumber("slaTable");
                 }
 
                 if (response.List_Panalty.length > 0) {
@@ -1014,7 +1029,7 @@ function loadIndustry() {
 
                     for (var i = 0; i < response.List_Panalty.length; i++) {
                         $('#penaltyTableBody').append(
-                            "<tr> " +
+                            "<tr><td></td> " +
                             "<td>" + "<input type='text' name='Penalty[" + i + "].BreachOfServiceDefinition' class='form-control' value='" + response.List_Panalty[i].BreachOfServiceDefinition + "'/></td>" +
                             //"<td>" + "<input type='text' name='Penalty[" + i + "].PenaltyAmount' class='form-control' value='" + response.List_Panalty[i].PenaltyAmount + "'/></td>" +
                             "<td>" + "<input type='text' name='Penalty[" + i + "].Description' class='form-control' value='" + response.List_Panalty[i].Description + "'/></td>" +
@@ -1024,6 +1039,7 @@ function loadIndustry() {
                     }
 
                     $("#PenaltyLastId").val(response.List_Panalty.length);
+                    FillSerialNumber("penaltyTable");
                 }
 
                 var pcount = 0
@@ -1033,7 +1049,7 @@ function loadIndustry() {
                     for (var i = 0; i < response.List_Pricing.length; i++) {
                         pcount = i;
                             $('#pricingTableBody').append(
-                                "<tr> " +
+                                "<tr><td></td> " +
                                 "<td>" + "<input type='text' name='RfqPriceSchedule[" + pcount + "].ItemName' class='form-control' value='" + response.List_Pricing[i].ItemName + "'/></td>" +
                                 "<td>" + "<input type='text' name='RfqPriceSchedule[" + pcount + "].ItemDescription' class='form-control' value='" + response.List_Pricing[i].ItemDescription + "'/></td>" +
                                 //"<td>" + "<input type='text' name='RfqPriceSchedule[" + pcount + "].InternalRefrenceCode' class='form-control' value='" + response.List_Pricing[i].InternalRefrenceCode + "'/></td>" +
@@ -1048,13 +1064,14 @@ function loadIndustry() {
                     }
 
                     $("#PricingLastId").val(pcount);
+                    FillSerialNumber("pricingTable");
                 }
 
                 if (response.List_Service_Pricing.length > 0) {
                     $("#pricingWarrantyTableBody").empty();
                     for (var i = 0; i < response.List_Service_Pricing.length; i++) {
                         $('#pricingWarrantyTableBody').append(
-                            "<tr> " +
+                            "<tr><td></td> " +
                             "<td>" + "<input type='text' name='RfqPriceSchedule[" + pcount + "].ItemName' class='form-control' value='" + response.List_Service_Pricing[i].ItemName + "'/></td>" +
                             "<td>" + "<input type='text' name='RfqPriceSchedule[" + pcount + "].ItemDescription' class='form-control' value='" + response.List_Service_Pricing[i].ItemDescription + "'/></td>" +
                             //"<td>" + "<input type='text' name='RfqPriceSchedule[" + pcount + "].InternalRefrenceCode' class='form-control' value='" + response.List_Service_Pricing[i].InternalRefrenceCode + "'/></td>" +
@@ -1068,13 +1085,14 @@ function loadIndustry() {
                         pcount++;
                     }
                     $("#PricingLastId").val(pcount);
+                    FillSerialNumber("pricingWarrantyTable");
                 }
 
                 if (response.List_Waranty_Pricing.length > 0) {
                     $("#pricingServiceTableBody").empty();
                     for (var i = 0; i < response.List_Waranty_Pricing.length; i++) {
                         $('#pricingServiceTableBody').append(
-                            "<tr> " +
+                            "<tr><td></td> " +
                             "<td>" + "<input type='text' name='RfqPriceSchedule[" + pcount + "].ItemName' class='form-control' value='" + response.List_Waranty_Pricing[i].ItemName + "'/></td>" +
                             "<td>" + "<input type='text' name='RfqPriceSchedule[" + pcount + "].ItemDescription' class='form-control' value='" + response.List_Waranty_Pricing[i].ItemDescription + "'/></td>" +
                             //"<td>" + "<input type='text' name='RfqPriceSchedule[" + pcount + "].InternalRefrenceCode' class='form-control' value='" + response.List_Waranty_Pricing[i].InternalRefrenceCode + "'/></td>" +
@@ -1088,6 +1106,7 @@ function loadIndustry() {
                         pcount++;
                     }
                     $("#PricingLastId").val(pcount);
+                    FillSerialNumber("pricingServiceTable");
                 }
 
                 $("#PricingLastId").val(pcount);

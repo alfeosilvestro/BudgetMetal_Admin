@@ -58,7 +58,7 @@
                             <label for="status">Status</label>
                             <h4><span class="label label-info">@Model.Document.DocumentStatus.Name</span></h4>
                         </div>
-                        <div class="col-sm-6">
+                        @*<div class="col-sm-6">
                             <label for="quote_no">Internal Reference No</label>
                             <div class="form-group">
                                 <div class="form-line">
@@ -66,8 +66,8 @@
                                     <span asp-validation-for="InternalRefrenceNo" class="text-danger"></span>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-6">
+                        </div>*@
+                        @*<div class="col-sm-6">
                             <label for="quote_no">Internal Project Name</label>
                             <div class="form-group">
                                 <div class="form-line">
@@ -75,7 +75,7 @@
                                     <span asp-validation-for="InternalProjectName" class="text-danger"></span>
                                 </div>
                             </div>
-                        </div>
+                        </div>*@
 
                     </div>
 
@@ -209,6 +209,7 @@
                             <table id="requirementsTable" class="table table-striped">
                                 <thead>
                                     <tr>
+                                        <th width="5%">Serial</th>
                                         <th width="40%">Service Name</th>
                                         <th width="50%">Description</th>
 
@@ -216,11 +217,13 @@
                                 </thead>
                                 <tbody>
                                     @{
+                                        int countRequirement = 1;
                                         if (Model.Requirement != null)
                                         {
                                             foreach (var item in Model.Requirement)
                                             {
                                                 <tr>
+                                                    <td>@countRequirement</td>
                                                     <td>
                                                         @item.ServiceName
                                                     </td>
@@ -229,6 +232,7 @@
                                                     </td>
 
                                                 </tr>
+                                                countRequirement++;
                                             }
                                         }
                                     }
@@ -300,22 +304,24 @@
                             <table id="slaTable" class="table table-striped">
                                 <thead>
                                     <tr>
+                                        <th width="5%">Serial</th>
                                         <th width="40%">Service Name</th>
                                         <th width="50%">Description</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @{
+                                        int countSla = 1;
                                         if (Model.Sla != null)
                                         {
                                             foreach (var item in Model.Sla)
                                             {
                                                 <tr>
+                                                    <td>@countSla</td>
                                                     <td>@item.Requirement
                                                     <td>@item.Description</td>
-
                                                 </tr>
-
+                                                countSla++;
                                             }
                                         }
                                     }
@@ -329,23 +335,27 @@
                             <table id="penaltyTable" class="table table-striped">
                                 <thead>
                                     <tr>
+                                        <th width="5%">Serial</th>
                                         <th width="40%">Service Name</th>
                                         @*<th width="20%">Milestone</th>*@
-                                        <th width="45%">Description</th>
+                                        <th width="50%">Description</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @{
+                                        int countPenalty = 1;
                                         if (Model.Penalty != null)
                                         {
 
                                             foreach (var item in Model.Penalty)
                                             {
                                                 <tr>
+                                                    <td>@countPenalty</td>
                                                     <td>@item.BreachOfServiceDefinition</td>
                                                     @*<td>@item.PenaltyAmount</td>*@
                                                     <td>@item.Description</td>
                                                 </tr>
+                                                countPenalty++;
                                             }
                                         }
                                     }
@@ -361,25 +371,29 @@
                             <table id="pricingTable" class="table table-striped">
                                 <thead>
                                     <tr>
+                                        <th width="5%">Serial</th>
                                         <th width="30%">Item Name</th>
                                         <th width="40%">Item Description</th>
                                         @*<th width="20%">Internal Reference Code</th>*@
-                                        <th width="15%">Quantity</th>
+                                        <th width="20%">Quantity</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @{
+                                        int countPrice = 1;
                                         if (Model.RfqPriceSchedule != null)
                                         {
                                             var productList = Model.RfqPriceSchedule.Where(x => x.CategoryId == Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Product).ToList();
                                             foreach (var item in productList)
                                             {
                                                 <tr>
+                                                    <td>@countPrice</td>
                                                     <td>@item.ItemName </td>
                                                     <td>@item.ItemDescription</td>
                                                     @*<td>@item.InternalRefrenceCode</td>*@
                                                     <td>@item.QuantityRequired</td>
                                                 </tr>
+                                                countPrice++;
                                             }
                                         }
                                     }
@@ -389,14 +403,16 @@
                             <table id="pricingServiceTable" class="table table-striped">
                                 <thead>
                                     <tr>
+                                        <th width="5%">Serial</th>
                                         <th width="30%">Item Name</th>
                                         <th width="40%">Item Description</th>
                                         @*<th width="20%">Internal Reference Code</th>*@
-                                        <th width="15%">Quantity</th>
+                                        <th width="20%">Quantity</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @{
+                                        int countPriceService = 1;
                                         if (Model.RfqPriceSchedule != null)
                                         {
                                             var serviceList = Model.RfqPriceSchedule.Where(x => x.CategoryId == Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Service).ToList();
@@ -404,12 +420,13 @@
                                             foreach (var item in serviceList)
                                             {
                                                 <tr>
+                                                    <td>@countPriceService</td>
                                                     <td>@item.ItemName </td>
                                                     <td>@item.ItemDescription</td>
                                                     @*<td>@item.InternalRefrenceCode</td>*@
                                                     <td>@item.QuantityRequired</td>
-
                                                 </tr>
+                                                countPriceService++;
                                             }
                                         }
                                     }
@@ -419,6 +436,7 @@
                             <table id="pricingWarrantyTable" class="table table-striped">
                                 <thead>
                                     <tr>
+                                        <th width="5%">Serial</th>
                                         <th width="30%">Item Name</th>
                                         <th width="40%">Item Description</th>
                                         @*<th width="20%">Internal Reference Code</th>*@
@@ -427,17 +445,21 @@
                                 </thead>
                                 <tbody>
                                     @{
+                                        int countPriceWarranty = 1;
                                         if (Model.RfqPriceSchedule != null)
                                         {
                                             var warrantyList = Model.RfqPriceSchedule.Where(x => x.CategoryId == Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Warranty).ToList();
                                             foreach (var item in warrantyList)
                                             {
                                                 <tr>
+                                                    <td>@countPriceWarranty</td>
                                                     <td>@item.ItemName </td>
                                                     <td>@item.ItemDescription</td>
                                                     @*<td>@item.InternalRefrenceCode</td>*@
                                                     <td>@item.QuantityRequired</td>
                                                 </tr>
+                                                countPriceWarranty++;
+                                                
                                             }
                                         }
                                     }
@@ -1216,8 +1238,8 @@ $("#btnAddComment").click(function () {
                         }
                         $('#invitedSupplierTable > tbody').append(
                             "<tr>" +
-                            "<td> <h5>" + item.Name + "</h5>" + verifyBadge +
-                            " <p class='m-t-15 m-b-30'>" + item.About + "</p></td>" +
+                            "<td><a href='@Url.Action("Details","Companies")/"+item.Id+"' target='_blank'> <h5>" + item.Name + "</h5></a>" + verifyBadge +
+                            "<p><i> Industry Certification: " + item.IndustryCertification +"</i></p> <p class='m-t-15 m-b-30'>" + item.About + "</p></td>" +
                             "</tr>");
                     }
                 },
@@ -1349,7 +1371,7 @@ function loadIndustry() {
                         "<tr>" +
                         "<td> <a type='button' class='btn btn-warning' href='" + url+"/"+item.Id+"' target='_blank'>View</a>  </td>" +
                         "<td>" + item.Document.DocumentNo + "</td>" +
-                        "<td>" + item.Document.Company.Name+ "</td>" +
+                        "<td><a href='@Url.Action("Details","Companies")/" + item.Document.Company_Id+"' target='_blank'>" + item.Document.Company.Name + "</a></td>" +
                         "<td>" + item.Document.DocumentStatus.Name + "</td>" +
                         "<td class='align-right'>" + item.QuotedFigure + "</td>" +
                         "</tr>"

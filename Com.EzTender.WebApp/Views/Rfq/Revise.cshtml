@@ -50,7 +50,7 @@
                             <label for="status">Status</label>
                             <h4><span class="label label-info">@Model.Document.DocumentStatus.Name</span></h4>
                         </div>
-                        <div class="col-sm-6">
+                        @*<div class="col-sm-6">
                             <label for="quote_no">Internal Reference No</label>
                             <div class="form-group">
                                 <div class="form-line">
@@ -58,16 +58,16 @@
                                     <span asp-validation-for="InternalRefrenceNo" class="text-danger"></span>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-6">
+                        </div>*@
+                        @*<div class="col-sm-6">
                             <label for="quote_no">Internal Project Name</label>
                             <div class="form-group">
-                                <div class="form-line">
+                                <div class="form-line"> 
                                     <input type="text" asp-for="InternalProjectName" class="form-control" placeholder="Internal Project Name">
                                     <span asp-validation-for="InternalProjectName" class="text-danger"></span>
                                 </div>
                             </div>
-                        </div>
+                        </div>*@
 
                     </div>
 
@@ -193,6 +193,7 @@
                             <table id="requirementsTable" class="table table-striped">
                                 <thead>
                                     <tr>
+                                        <th width="5%">Serial</th>
                                         <th width="40%">Service Name</th>
                                         <th width="50%">Description</th>
                                         <th>&nbsp;</th>
@@ -200,12 +201,14 @@
                                 </thead>
                                 <tbody>
                                     @{
+                                        int countRequirement = 1;
                                         if (Model.Requirement != null)
                                         {
                                             int i = 0;
                                             foreach (var item in Model.Requirement)
                                             {
                                                 <tr>
+                                                    <td>@countRequirement</td>
                                                     <td>
                                                         <input type="text" name="Requirement[@i].ServiceName" class="form-control" value="@item.ServiceName" />
                                                     </td>
@@ -216,6 +219,7 @@
                                                     <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveRequirementRow(this)'>Remove</button></td>
                                                 </tr>
                                                 i++;
+                                                countRequirement++;
                                             }
                                         }
                                     }
@@ -235,6 +239,7 @@
                             <table id="slaTable" class="table table-striped">
                                 <thead>
                                     <tr>
+                                        <th width="5%">Serial</th>
                                         <th width="40%">Service Name</th>
                                         <th width="50%">Description</th>
                                         <th>&nbsp;</th>
@@ -242,17 +247,20 @@
                                 </thead>
                                 <tbody>
                                     @{
+                                        int countSla = 1;
                                         if (Model.Sla != null)
                                         {
                                             int i = 0;
                                             foreach (var item in Model.Sla)
                                             {
                                                 <tr>
+                                                    <td>@countSla</td>
                                                     <td><input type="text" name="Sla[@i].Requirement" class="form-control" value="@item.Requirement" /></td>
                                                     <td><input type="text" name="Sla[@i].Description" class="form-control" value="@item.Description" /></td>
                                                     <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveSLARow(this)'>Remove</button></td>
                                                 </tr>
                                                 i++;
+                                                countSla++;
                                             }
                                         }
                                     }
@@ -271,6 +279,7 @@
                             <table id="penaltyTable" class="table table-striped">
                                 <thead>
                                     <tr>
+                                        <th width="5%">Serial</th>
                                         <th width="40%">Service Name</th>
                                         @*<th width="20%">Milestone</th>*@
                                         <th width="50%">Description</th>
@@ -279,18 +288,21 @@
                                 </thead>
                                 <tbody>
                                     @{
+                                        int countPenalty = 1;
                                         if (Model.Penalty != null)
                                         {
                                             int i = 0;
                                             foreach (var item in Model.Penalty)
                                             {
                                                 <tr>
+                                                    <td>@countPenalty</td>
                                                     <td><input type="text" name="Penalty[@i].BreachOfServiceDefinition" class="form-control" value="@item.BreachOfServiceDefinition" /></td>
                                                     @*<td><input type="text" name="Penalty[@i].PenaltyAmount" class="form-control" value="@item.PenaltyAmount" /></td>*@
                                                     <td><input type="text" name="Penalty[@i].Description" class="form-control" value="@item.Description" /></td>
                                                     <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePenaltyRow(this)'>Remove</button></td>
                                                 </tr>
                                                 i++;
+                                                countPenalty++;
                                             }
                                         }
                                     }
@@ -312,6 +324,7 @@
                             <table id="pricingTable" class="table table-striped">
                                 <thead>
                                     <tr>
+                                        <th width="5%">Serial</th>
                                         <th width="30%">Item Name</th>
                                         <th width="40%">Item Description</th>
                                         @*<th width="20%">Internal Reference Code</th>*@
@@ -321,6 +334,7 @@
                                 </thead>
                                 <tbody id="pricingTableTableBody">
                                     @{
+                                        int countPrice = 1;
                                         if (Model.RfqPriceSchedule != null)
                                         {
                                             int i = j;
@@ -328,6 +342,7 @@
                                             foreach (var item in productList)
                                             {
                                                 <tr>
+                                                    <td>@countPrice</td>
                                                     <td><input type="text" name="RfqPriceSchedule[@i].ItemName" class="form-control" value="@item.ItemName" /> </td>
                                                     <td><input type="text" name="RfqPriceSchedule[@i].ItemDescription" class="form-control" value="@item.ItemDescription" /></td>
                                                     @*<td><input type="text" name="RfqPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>*@
@@ -338,6 +353,7 @@
                                                     <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePricingRow(this)'>Remove</button></td>
                                                 </tr>
                                                 i++;
+                                                countPrice++;
                                             }
                                             j = i;
                                         }
@@ -354,6 +370,7 @@
                             <table id="pricingServiceTable" class="table table-striped">
                                 <thead>
                                     <tr>
+                                        <th width="5%">Serial</th>
                                         <th width="30%">Item Name</th>
                                         <th width="40%">Item Description</th>
                                         @*<th width="20%">Internal Reference Code</th>*@
@@ -363,7 +380,7 @@
                                 </thead>
                                 <tbody id="pricingServiceTableBody">
                                     @{
-
+                                        int countPriceService = 1;
                                         if (Model.RfqPriceSchedule != null)
                                         {
                                             int i = j;
@@ -371,6 +388,7 @@
                                             foreach (var item in serviceList)
                                             {
                                                 <tr>
+                                                    <td>@countPriceService</td>
                                                     <td><input type="text" name="RfqPriceSchedule[@i].ItemName" class="form-control" value="@item.ItemName" /> </td>
                                                     <td><input type="text" name="RfqPriceSchedule[@i].ItemDescription" class="form-control" value="@item.ItemDescription" /></td>
                                                     @*<td><input type="text" name="RfqPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>*@
@@ -381,6 +399,7 @@
                                                     <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePricingRow(this)'>Remove</button></td>
                                                 </tr>
                                                 i++;
+                                                countPriceService++;
                                             }
                                             j = i;
                                         }
@@ -396,6 +415,7 @@
                             <table id="pricingWarrantyTable" class="table table-striped">
                                 <thead>
                                     <tr>
+                                        <th width="5%">Serial</th>
                                         <th width="30%">Item Name</th>
                                         <th width="40%">Item Description</th>
                                         @*<th width="20%">Internal Reference Code</th>*@
@@ -405,6 +425,7 @@
                                 </thead>
                                 <tbody id="pricingWarrantyTableBody">
                                     @{
+                                        int countPriceWarranty = 1;
                                         if (Model.RfqPriceSchedule != null)
                                         {
                                             int i = j;
@@ -412,6 +433,7 @@
                                             foreach (var item in warrantyList)
                                             {
                                                 <tr>
+                                                    <td>@countPriceWarranty</td>
                                                     <td><input type="text" name="RfqPriceSchedule[@i].ItemName" class="form-control" value="@item.ItemName" /> </td>
                                                     <td><input type="text" name="RfqPriceSchedule[@i].ItemDescription" class="form-control" value="@item.ItemDescription" /></td>
                                                     @*<td><input type="text" name="RfqPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>*@
@@ -422,6 +444,7 @@
                                                     <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePricingRow(this)'>Remove</button></td>
                                                 </tr>
                                                 i++;
+                                                countPriceWarranty++;
                                             }
                                             j = i;
                                         }
@@ -443,7 +466,7 @@
                                 </div>
                                 <div class="col-sm-8">
                                     @*<select id="ddlServiceTags" class="form-control"></select>*@
-                                    <select asp-for="SelectedTags" class="form-control show-tick" id="ddlServiceTags" data-live-search="true" multiple></select>
+                                    <select asp-for="SelectedTags" class="form-control selectpicker" id="ddlServiceTags" data-live-search="true" multiple></select>
                                     <input type="hidden" value="@Model.SelectedTags" id="hdSelectedTags" />
                                 </div>
                                 <div class="col-sm-1">
@@ -493,9 +516,7 @@
                                         <th width="*">&nbsp;</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    
-                                </tbody>
+                                <tbody></tbody>
 
                             </table>
                             <iframe id="iframe_download_file" style="display:none" src=""></iframe>
@@ -512,7 +533,7 @@
                                     <select id="ddlUser" class="form-control selectpicker"></select>
                                 </div>
                                 <div class="col-sm-5">
-                                    <select class="form-control show-tick" id="ddlRole" data-live-search="true" multiple></select>
+                                    <select class="form-control selectpicker" id="ddlRole" data-live-search="true" multiple></select>
                                 </div>
                                 <div class="col-sm-2">
                                     <a id="btnAddUser" class="btn btn-success">Add</a>
@@ -603,7 +624,7 @@
                             </div>
                         </div>
 
-                        
+
                     </div>
                 </div>
             </div>
@@ -897,8 +918,8 @@
                         }
                         $('#invitedSupplierTable > tbody').append(
                             "<tr>" +
-                            "<td> <h5>" + item.Name + "</h5>" + verifyBadge +
-                            " <p class='m-t-15 m-b-30'>" + item.About + "</p></td>" +
+                            "<td><a href='@Url.Action("Details","Companies")/"+item.Id+"' target='_blank'> <h5>" + item.Name + "</h5></a>" + verifyBadge +
+                            "<p><i> Industry Certification: " + item.IndustryCertification +"</i></p> <p class='m-t-15 m-b-30'>" + item.About + "</p></td>" +
                             "<td><input type='checkbox' class='filled-in supplier' id='chkSupplier_" + item.Id + "'  name='supplier_list' value='" + item.Id + "' " + selected + "> <button type='button' id='btnInvite_" + item.Id + "' class='btn " + selectedClass +"' onclick='checkSupplier(" + item.Id + ")'>"+invited+"</button></td>" +
                             "</tr>");
 

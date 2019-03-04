@@ -838,7 +838,7 @@ namespace Com.BudgetMetal.Services.Quotation
                 {
                     Company_Id = quotation.Document.Company_Id,
                     User_Id = quotation.Document.DocumentUser.FirstOrDefault().User_Id,
-                    Message = "Updated on quotation" + quotation.Document.DocumentNo,
+                    Message = "Updated on quotation " + quotation.Document.DocumentNo,
                     MessageType = Constants_CodeTable.Code_TM_Quotation,
                     IsRead = false,
                     Document_Id = dbDocument.Id,

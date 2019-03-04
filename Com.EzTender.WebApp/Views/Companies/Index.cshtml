@@ -33,10 +33,11 @@
                 <th> # </th>
                 <th> Name </th>
                 <th> Address </th>
-                <th> Domain </th>
+                @*<th> Domain </th>*@
+                <th> Industry Certification </th>
                 <th> Registration No. </th>
-                <th> About </th>
-                <th> IsVerified </th>
+                @*<th> About </th>*@
+                <th> Verified </th>
                 <th></th>
             </tr>
         </thead>
@@ -49,11 +50,12 @@
                     <tr>
                         @*<td> @item.Id </td>*@
                         <td> @counter </td>
-                        <td> @item.Name </td>
+                        <td> <a href="@Url.Action("Details","Companies", new { id = item.Id})"> @item.Name</a> </td>
                         <td> @item.Address </td>
-                        <td> @item.Domain </td>
+                        @*<td> @item.Domain </td>*@
+                        <td> @item.IndustryCertification</td>
                         <td> @item.RegNo </td>
-                        <td> @item.About </td>
+                        @*<td> @item.About </td>*@
                         <td> <input type="checkbox" id="@counter" class="chk-col-pink" @checkedStatus disabled> <label for="@counter"></label> </td>
                     </tr>
                     counter = counter + 1;

@@ -4,7 +4,7 @@ $("#btnNewRequirement").click(function () {
     var detailRequirementLastId = $("#detailRequirementLastId").val();
 
     var newRow = "<tr>" +
-        "<td> " +
+        "<td></td><td> " +
         "<input type='text' name='Requirement[" + detailRequirementLastId + "].ServiceName' class='form-control requirement' />" +
         "</td> " +
         "<td> " +
@@ -18,10 +18,13 @@ $("#btnNewRequirement").click(function () {
     $("#requirementsTable > tbody").append(newRow);
     detailRequirementLastId = parseInt(detailRequirementLastId) + 1;
     $("#detailRequirementLastId").val(detailRequirementLastId);
+    FillSerialNumber("requirementsTable");
+
 });
 
 function RemoveRequirementRow(item) {
     $(item).parent().parent().remove();    
+    FillSerialNumber("requirementsTable");
 }
 
 // Add and Remove SLA
@@ -29,7 +32,7 @@ $("#btnNewSLA").click(function () {
     var detailSLALastId = $("#detailSLALastId").val();
 
     var newRow = "<tr>" +
-        "<td> " +
+        "<td></td><td> " +
         "<input type='text' name='Sla[" + detailSLALastId + "].Requirement' class='form-control support' />" +
         "</td> " +
         "<td> " +
@@ -43,10 +46,12 @@ $("#btnNewSLA").click(function () {
     $("#slaTable > tbody").append(newRow);
     detailSLALastId = parseInt(detailSLALastId) + 1;
     $("#detailSLALastId").val(detailSLALastId);
+    FillSerialNumber("slaTable");
 });
 
 function RemoveSLARow(item) {
     $(item).parent().parent().remove();
+    FillSerialNumber("slaTable");
 }
 
 // Add and Remove Penalty
@@ -54,7 +59,7 @@ $("#btnNewPenalty").click(function () {
     var PenaltyLastId = $("#PenaltyLastId").val();
 
     var newRow = "<tr>" +
-        "<td> " +
+        "<td></td><td> " +
         "<input type='text' name='Penalty[" + PenaltyLastId + "].BreachOfServiceDefinition' class='form-control commercial' />" +
         "</td> " +
         //"<td> " +
@@ -71,10 +76,12 @@ $("#btnNewPenalty").click(function () {
     $("#penaltyTable > tbody").append(newRow);
     PenaltyLastId = parseInt(PenaltyLastId) + 1;
     $("#PenaltyLastId").val(PenaltyLastId);
+    FillSerialNumber("penaltyTable");
 });
 
 function RemovePenaltyRow(item) {
     $(item).parent().parent().remove();
+    FillSerialNumber("penaltyTable");
 }
 
 
@@ -82,7 +89,7 @@ function RemovePenaltyRow(item) {
 $("#btnNewPricing").click(function () {
     var PricingLastId = $("#PricingLastId").val();
     var newRow = "<tr>" +
-        "<td> " +
+        "<td></td><td> " +
         "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].ItemName' class='form-control pricing' />" +
         "</td> " +
         "<td> " +
@@ -91,7 +98,7 @@ $("#btnNewPricing").click(function () {
         //"<td> " +
         //"<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].InternalRefrenceCode' class='form-control' />" +
         //"</td> " +
-        "<td/> " +
+        "<td> " +
         "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].QuantityRequired' class='form-control pricingQty' /> <input type='hidden' name='RfqPriceSchedule[" + PricingLastId + "].CategoryId' value='100081' class='form-control' />" +
         "</td> " +
         "<td> " +
@@ -102,16 +109,20 @@ $("#btnNewPricing").click(function () {
     $("#pricingTable > tbody").append(newRow);
     PricingLastId = parseInt(PricingLastId) + 1;
     $("#PricingLastId").val(PricingLastId);
+    FillSerialNumber("pricingTable");
 });
 
 function RemovePricingRow(item) {
     $(item).parent().parent().remove();
+    FillSerialNumber("pricingTable");
+    FillSerialNumber("pricingServiceTable");
+    FillSerialNumber("pricingWarrantyTable");
 }
 
 $("#btnServicePricing").click(function () {
     var PricingLastId = $("#PricingLastId").val();
     var newRow = "<tr>" +
-        "<td> " +
+        "<td></td><td> " +
         "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].ItemName' class='form-control pricing' />" +
         "</td> " +
         "<td> " +
@@ -131,12 +142,13 @@ $("#btnServicePricing").click(function () {
     $("#pricingServiceTable > tbody").append(newRow);
     PricingLastId = parseInt(PricingLastId) + 1;
     $("#PricingLastId").val(PricingLastId);
+    FillSerialNumber("pricingServiceTable");
 });
 
 $("#btnWarrantyPricing").click(function () {
     var PricingLastId = $("#PricingLastId").val();
     var newRow = "<tr>" +
-        "<td> " +
+        "<td></td><td> " +
         "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].ItemName' class='form-control pricing' />" +
         "</td> " +
         "<td> " +
@@ -156,12 +168,13 @@ $("#btnWarrantyPricing").click(function () {
     $("#pricingWarrantyTable > tbody").append(newRow);
     PricingLastId = parseInt(PricingLastId) + 1;
     $("#PricingLastId").val(PricingLastId);
+    FillSerialNumber("pricingWarrantyTable");
 });
 
 // Add and Remove Attachment
 $("#btnNewFile").click(function () {
     var newRow = "<tr>" +
-        "<td> " +
+        "<td></td><td> " +
         "<input type='file' name='attachmentRFQ[]' class='form-control' onchange='getFilename(this)' />" +
         "</td> " +
         "<td> " +
@@ -195,7 +208,7 @@ $("#btnRfqEmailsInvites").click(function () {
     var detailEmalsInviteLastId = $("#detailEmalsInviteLastId").val();
 
     var newRow = "<tr>" +
-        "<td> " +
+        "<td></td><td> " +
         "<input type='text' name='RfqEmailInvites[" + detailEmalsInviteLastId + "].Name' class='form-control' />" +
         "</td> " +
         "<td> " +
@@ -213,4 +226,13 @@ $("#btnRfqEmailsInvites").click(function () {
 
 function RemoveRfqEmailInvites(item) {
     $(item).parent().parent().remove();
+}
+
+
+function FillSerialNumber(tbName) {
+    var i = 1;
+    $('#' + tbName + ' > tbody  > tr > td:first-child').each(function () {
+        $(this).html(i);
+        i++;
+    });
 }
