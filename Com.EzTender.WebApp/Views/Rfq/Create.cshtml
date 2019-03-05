@@ -79,7 +79,7 @@
                 <div class="body">
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs tab-nav-right" role="tablist">
-                        <li role="presentation" class="active"><a href="#basic_requirements" data-toggle="tab">Info</a></li>
+                        <li role="presentation" class="active"><a id="infoTag" href="#basic_requirements" data-toggle="tab">Info</a></li>
                         <li role="presentation"><a href="#detailed_requirements" data-toggle="tab">Requirements</a></li>
                         <li role="presentation"><a href="#service_level_agreement" data-toggle="tab">Supports</a></li>
                         <li role="presentation"><a href="#penalty" data-toggle="tab">Commercials</a></li>
@@ -96,7 +96,7 @@
                                     <label for="StartRfqdate">Start RFQ Date</label>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" asp-for="StartRfqdate" class="form-control datepicker" placeholder="Start RFQ Date">
+                                            <input type="text" asp-for="StartRfqdate" class="form-control datepicker" id="startRfqDate" placeholder="Start RFQ Date">
                                             <span asp-validation-for="StartRfqdate" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -105,7 +105,7 @@
                                     <label for="ValidRfqdate">Valid RFQ Date</label>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" asp-for="ValidRfqdate" class="form-control datepicker" placeholder="End RFQ Date">
+                                            <input type="text" asp-for="ValidRfqdate" class="form-control datepicker" id="validRfqDate" placeholder="End RFQ Date">
                                             <span asp-validation-for="ValidRfqdate" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -114,7 +114,7 @@
                                     <label for="quote_no">Estimated Project Start Date</label>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" asp-for="EstimatedProjectStartDate" class="form-control datepicker" placeholder="Start of Project Delivery">
+                                            <input type="text" asp-for="EstimatedProjectStartDate" class="form-control datepicker" id="estimateProjectStartDate" placeholder="Start of Project Delivery">
                                             <span asp-validation-for="EstimatedProjectStartDate" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -123,7 +123,7 @@
                                     <label for="EstimatedProjectEndDate">Estimated Project End Date</label>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" asp-for="EstimatedProjectEndDate" class="form-control datepicker" placeholder="End of Project Delivery">
+                                            <input type="text" asp-for="EstimatedProjectEndDate" class="form-control datepicker" id="estimateProjectEndDate" placeholder="End of Project Delivery">
                                             <span asp-validation-for="EstimatedProjectEndDate" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -133,7 +133,7 @@
                                     <label for="QuotationOpeningDate">Quotation Opening Date</label>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" asp-for="QuotationOpeningDate" class="form-control datepicker" placeholder="Quotation Opening Date">
+                                            <input type="text" asp-for="QuotationOpeningDate" class="form-control datepicker" id="quotationOpeningDate" placeholder="Quotation Opening Date">
                                             <span asp-validation-for="QuotationOpeningDate" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -142,7 +142,7 @@
                                     <label for="quote_no">Contract Value</label>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" asp-for="ContractValue" class="form-control" placeholder="Contract Value">
+                                            <input type="text" asp-for="ContractValue" class="form-control" id="contractValue" placeholder="Contract Value">
                                             <span asp-validation-for="ContractValue" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -307,7 +307,7 @@
                                         <td><input type="text" asp-for="RfqPriceSchedule[1].ItemDescription" class="form-control" /></td>
                                         @*<td><input type="text" asp-for="RfqPriceSchedule[1].InternalRefrenceCode" class="form-control" /></td>*@
                                         <td>
-                                            <input type="text" asp-for="RfqPriceSchedule[1].QuantityRequired" class="form-control" />
+                                            <input type="text" asp-for="RfqPriceSchedule[1].QuantityRequired" class="form-control pricingQty" />
                                             <input type="hidden" asp-for="RfqPriceSchedule[1].CategoryId" value="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Service)" class="form-control" />
                                         </td>
                                         <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePricingRow(this)'>Remove</button></td>
@@ -336,7 +336,7 @@
                                         <td><input type="text" asp-for="RfqPriceSchedule[2].ItemDescription" class="form-control" /></td>
                                         @*<td><input type="text" asp-for="RfqPriceSchedule[2].InternalRefrenceCode" class="form-control" /></td>*@
                                         <td>
-                                            <input type="text" asp-for="RfqPriceSchedule[2].QuantityRequired" class="form-control" />
+                                            <input type="text" asp-for="RfqPriceSchedule[2].QuantityRequired" class="form-control pricingQty" />
                                             <input type="hidden" asp-for="RfqPriceSchedule[2].CategoryId" value="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Warranty)" class="form-control" />
                                         </td>
                                         <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePricingRow(this)'>Remove</button></td>
@@ -579,6 +579,7 @@
 
     function SaveForm() {
         alert("Start save!")
+        $("#infoTag").click();
         var isValid = true;
 
         //$("form#frmCreateRFQ :input[type=text]").each(function () {
@@ -589,6 +590,7 @@
         //});
 
         var invalidMessage = "";
+
         isValid = $("form#frmCreateRFQ").valid();
         if (isValid) {
             var haveInvitedSupplier = false;
@@ -602,93 +604,208 @@
                 invalidMessage += "Please invite at least one supplier. \n";
             }
 
+            var hasStartRfqDate = false;
+            var startRfqDate = $('#startRfqDate').val();
+            if (startRfqDate != "") {
+                hasStartRfqDate = true;
+            } else {
+                invalidMessage += "Start RFQ date should not be blank. \n";
+            }
+
+            var hasValidRfqDate = false;
+            var validRfqDate = $('#validRfqDate').val();
+            if (validRfqDate != "") {
+                hasValidRfqDate = true;
+            } else {
+                invalidMessage += "Valid RFQ date should not be blank. \n";
+            }
+
+            var hasEstimateProjectStartDate = false;
+            var estimateProjectStartDate = $('#estimateProjectStartDate').val();
+            if (estimateProjectStartDate != "") {
+                hasEstimateProjectStartDate = true;
+            } else {
+                invalidMessage += "Estimate project start date should not be blank. \n";
+            }
+
+            var hasEstimateProjectEndDate = false;
+            var estimateProjectEndDate = $('#estimateProjectEndDate').val();
+            if (estimateProjectEndDate != "") {
+                hasEstimateProjectEndDate = true;
+            } else {
+                invalidMessage += "Estimate project end date should not be blank. \n";
+            }
+
+            var hasQuotationOpeningDate = false;
+            var quotationOpeningDate = $('#quotationOpeningDate').val();
+            if (quotationOpeningDate != "") {
+                hasQuotationOpeningDate = true;
+            } else {
+                invalidMessage += "Quotation opening date should not be blank. \n";
+            }
+
+            var hasContractValue = false;
+            var contractValue = $('#contractValue').val();
+            if (contractValue != "") {
+                hasContractValue = true;
+            } else {
+                invalidMessage += "Contract value should not be blank. \n";
+            }
+
             //Check Requeirment Table
             var hasRequirementRecord = false;
             var hasRequirementValid = false;
-            var requirementTableCount = $('requirementsTableBody').find('tr').length;
+            var requirementTableCount = $('#requirementsTableBody').find('tr').length;
             if (requirementTableCount > 0) {
                 hasRequirementRecord = true;
             }
-            if (hasRequirementRecord) {                
+            if (hasRequirementRecord) {
                 $('input:text.requirement').each(function () {
+                    hasRequirementValid = false;
                     if ($(this).val() != "") {
                         hasRequirementValid = true;
                     }
                 });
-                if (hasRequirementValid) {
+                if (!hasRequirementValid) {
                     invalidMessage += "Service name in Requirement tab is not blank. \n";
                 }
             } else {
                 invalidMessage += "Please fill at least one record in Requirement tab. \n";
             }
 
-            ////Check Support Table
-            //var supportTableCount = $('slaTableBody').find('tr').length;
-            //if (supportTableCount < 1) {
-            //    invalidMessage += "Please fill at least one record in Support tab. \n";
-            //}
-            //var hasSupportValid = false;
-            //$('input:text.support').each(function () {
-            //    if ($(this).val() != "") {
-            //        hasSupportValid = true;
-            //    }
-            //});
-            //if (hasSupportValid) {
-            //    invalidMessage += "Service name in Support tab is not blank. \n";
-            //}
-            ////Check Commercial Table
-            //var commercialTableCount = $('penaltyTableBody').find('tr').length;
-            //if (commercialTableCount < 1) {
-            //    invalidMessage += "Please fill at least one record in Support tab. \n";
-            //}
-            //var hasCommercialValid = false;
-            //$('input:text.commercial').each(function () {
-            //    if ($(this).val() != "") {
-            //        hasCommercialValid = true;
-            //    }
-            //});
-            //if (hasCommercialValid) {
-            //    invalidMessage += "Item name in Commercial tab is not blank. \n";
-            //}
+            //Check Support Table
+            var hasSupportRecord = false;
+            var hasSupportValid = false;
+            var supportTableCount = $('#slaTableBody').find('tr').length;
+            if (supportTableCount > 0) {
+                hasSupportRecord = true;
+            }
+            if (hasSupportRecord) {
+                $('input:text.support').each(function () {
+                    hasSupportValid = false;
+                    if ($(this).val() != "") {
+                        hasSupportValid = true;
+                    }
+                    if (!hasSupportValid) {
+                        invalidMessage += "Service name in Support tab is not blank. \n";
+                    }
+                });
+            } else {
+                invalidMessage += "Please fill at least one record in Support tab. \n";
+            }
 
-            ////Check Pricing Table
-            //var hasPricingValid = false;
-            //$('input:text.pricing').each(function () {
-            //    if ($(this).val() != "") {
-            //        hasPricingValid = true;
-            //    }
-            //});
-            //if (hasPricingValid) {
-            //    invalidMessage += "Pricing name in Pricing tab is not blank. \n";
-            //}
-            ////Check PricingValue Table
-            //var hasPricingQtyValid = false;
-            //var hasPricingQtyBlank = false;
-            //$('input:text.pricingQty').each(function () {
-            //    var qty = $(this).val();
-            //    if (qty != "") {
-            //        if (data === parseInt(qty, 2)) {
-            //        } else {
-            //            hasPricingQtyValid = true;
-            //        }
-            //    } else {
-            //        hasPricingQtyBlank = true;
-            //    }
-            //});
-            //if (hasPricingQtyBlank) {
-            //    invalidMessage += "Quantity in Pricing tab is not blank. \n";
-            //}
-            //if (hasPricingQtyValid) {
-            //    invalidMessage += "Quantity in Pricing tab is not number. \n";
-            //}
+            //Check Commercial Table
+            var hasCommercialRecord = false;
+            var hasCommercialValid = false;
+            var commercialTableCount = $('#penaltyTableBody').find('tr').length;
+            if (commercialTableCount > 0) {
+                hasCommercialRecord = true;
+            }
+            if (hasCommercialRecord) {
+                $('input:text.commercial').each(function () {
+                    hasCommercialValid = false;
+                    if ($(this).val() != "") {
+                        hasCommercialValid = true;
+                    }
+                });
+                if (!hasCommercialValid) {
+                    invalidMessage += "Item name in Commercial tab is not blank. \n";
+                }
+            } else {
+                invalidMessage += "Please fill at least one record in Commercial tab. \n";
+            }
 
-            //if (haveInvitedSupplier && hasRequirementValid && hasSupportValid && hasCommercialValid && hasPricingValid && hasPricingQtyValid && hasPricingQtyBlank) {
-            if (hasRequirementRecord && hasRequirementValid) {
+            //Check Pricing Table
+            var hasPricingRecord = false;
+            var hasPricingValid = false;
+            var pricingTableCount = $('#pricingTableBody').find('tr').length;
+            if (pricingTableCount > 0) {
+                hasPricingRecord = true;
+            }
+            if (hasPricingRecord) {
+                $('input:text.pricing').each(function () {
+                    hasPricingValid = false;
+                    if ($(this).val() != "") {
+                        hasPricingValid = true;
+                    }
+                });
+                if (!hasPricingValid) {
+                    invalidMessage += "Pricing name in Pricing tab is not blank. \n";
+                }
+            } else {
+                invalidMessage += "Please fill at least one record in Product Pricing tab. \n";
+            }
 
-                alert("True and Save");
+            //Service Table
+            var hasServicePricingRecord = false;
+            var hasServicePricingValid = false;
+            var pricingServiceTableCount = $('#pricingServiceTableBody').find('tr').length;
+            if (pricingServiceTableCount > 0) {
+                hasServicePricingRecord = true;
+            }
+            if (hasServicePricingRecord) {
+                $('input:text.pricing').each(function () {
+                    hasServicePricingValid = false;
+                    if ($(this).val() != "") {
+                        hasServicePricingValid = true;
+                    }
+                });
+                if (!hasServicePricingValid) {
+                    invalidMessage += "Pricing name in Service Pricing tab is not blank. \n";
+                }
+            } else {
+                invalidMessage += "Please fill at least one record in Service Product Pricing tab. \n";
+            }
 
-                //$('.page-loader-wrapper').fadeIn();
-                //$("#frmCreateRFQ").submit();
+            //Warranty Table
+            var hasWarrantyPricingRecord = false;
+            var hasWarrantyPricingValid = false;
+            var pricingWarrantyTableCount = $('#pricingWarrantyTableBody').find('tr').length;
+            if (pricingWarrantyTableCount > 0) {
+                hasWarrantyPricingRecord = true;
+            }
+            if (hasWarrantyPricingRecord) {
+                $('input:text.pricing').each(function () {
+                    hasWarrantyPricingValid = false;
+                    if ($(this).val() != "") {
+                        hasWarrantyPricingValid = true;
+                    }
+                });
+                if (!hasWarrantyPricingValid) {
+                    invalidMessage += "Pricing name in Warranty Pricing tab is not blank. \n";
+                }
+            } else {
+                invalidMessage += "Please fill at least one record in Warranty Pricing tab. \n";
+            }
+
+            //Check PricingValue Table
+            var hasPricingQtyValid = false;
+            var hasPricingQtyBlank = false;
+            $('input:text.pricingQty').each(function () {
+                hasPricingQtyBlank = false;
+                var qty = $(this).val();
+                hasPricingQtyBlank = false;
+                if (qty != "") {
+                    hasPricingQtyValid = false;
+                    if (qty === parseInt(qty, 2)) {
+                    } else {
+                        hasPricingQtyValid = true;
+                    }
+                } else {
+                    hasPricingQtyBlank = true;
+                }
+            });
+            if (hasPricingQtyBlank) {
+                invalidMessage += "Quantity in Pricing tab is not blank. \n";
+            }
+            if (!hasPricingQtyValid) {
+                invalidMessage += "Quantity in Pricing tab is not number. \n";
+            }
+            
+            if (hasStartRfqDate && hasValidRfqDate && hasEstimateProjectStartDate && haveInvitedSupplier && hasRequirementValid && hasSupportValid && hasCommercialValid && hasPricingValid && hasPricingQtyValid && !hasPricingQtyBlank && hasRequirementRecord && hasSupportRecord && hasCommercialRecord && hasPricingRecord && hasServicePricingRecord && hasWarrantyPricingRecord) {
+                
+                $('.page-loader-wrapper').fadeIn();
+                $("#frmCreateRFQ").submit();
 
             } else {
                 alert(invalidMessage);
