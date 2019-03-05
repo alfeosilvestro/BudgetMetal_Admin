@@ -50,7 +50,7 @@
                                         <td>@item.Document.DocumentNo</td>
                                         <td>@item.Rfq.Document.DocumentNo</td>
                                         <td>@Html.DisplayFor(modelitem => item.Rfq.ValidRfqdate)</td>
-                                        <td>@item.Document.Company.Name</td>
+                                        <td><a href="@Url.Action("Details","Companies", new { id = item.Document.Company_Id})" target="_blank"> @item.Document.Company.Name</a></td>
                                         <td>@item.Document.DocumentStatus.Name</td>
                                         @*<td>
                                             @{ 
