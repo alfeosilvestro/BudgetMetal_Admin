@@ -6,12 +6,14 @@ using Com.BudgetMetal.ViewModels.DocumentActivity;
 using Com.BudgetMetal.ViewModels.DocumentUser;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Com.BudgetMetal.ViewModels.Document
 {
     public class VmDocumentItem : ViewModelItemBase
     {
+        [Required]
         public string Title { get; set; }
 
         public string ContactPersonName { get; set; }

@@ -18,7 +18,7 @@ namespace Com.BudgetMetal.ViewModels.Rfq
     {
        public int Document_Id { get; set; }
 
-        [Required]
+       
         public string InternalRefrenceNo { get; set; }
 
         public string InternalProjectName { get; set; }

@@ -39,6 +39,7 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <input type="text" asp-for="Document.Title" class="form-control" placeholder="Project Title" />
+                                    <span asp-validation-for="Document.Title" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>
@@ -96,7 +97,7 @@
                                     <label for="StartRfqdate">Start RFQ Date</label>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" asp-for="StartRfqdate" class="form-control datepicker" id="startRfqDate" placeholder="Start RFQ Date">
+                                            <input type="text" asp-for="StartRfqdate" class="form-control datepicker"  placeholder="Start RFQ Date">
                                             <span asp-validation-for="StartRfqdate" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -105,7 +106,7 @@
                                     <label for="ValidRfqdate">Valid RFQ Date</label>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" asp-for="ValidRfqdate" class="form-control datepicker" id="validRfqDate" placeholder="End RFQ Date">
+                                            <input type="text" asp-for="ValidRfqdate" class="form-control datepicker"  placeholder="End RFQ Date">
                                             <span asp-validation-for="ValidRfqdate" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -114,7 +115,7 @@
                                     <label for="quote_no">Estimated Project Start Date</label>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" asp-for="EstimatedProjectStartDate" class="form-control datepicker" id="estimateProjectStartDate" placeholder="Start of Project Delivery">
+                                            <input type="text" asp-for="EstimatedProjectStartDate" class="form-control datepicker" placeholder="Start of Project Delivery">
                                             <span asp-validation-for="EstimatedProjectStartDate" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -123,7 +124,7 @@
                                     <label for="EstimatedProjectEndDate">Estimated Project End Date</label>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" asp-for="EstimatedProjectEndDate" class="form-control datepicker" id="estimateProjectEndDate" placeholder="End of Project Delivery">
+                                            <input type="text" asp-for="EstimatedProjectEndDate" class="form-control datepicker"  placeholder="End of Project Delivery">
                                             <span asp-validation-for="EstimatedProjectEndDate" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -133,7 +134,7 @@
                                     <label for="QuotationOpeningDate">Quotation Opening Date</label>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" asp-for="QuotationOpeningDate" class="form-control datepicker" id="quotationOpeningDate" placeholder="Quotation Opening Date">
+                                            <input type="text" asp-for="QuotationOpeningDate" class="form-control datepicker"  placeholder="Quotation Opening Date">
                                             <span asp-validation-for="QuotationOpeningDate" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -142,7 +143,7 @@
                                     <label for="quote_no">Contract Value</label>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" asp-for="ContractValue" class="form-control" id="contractValue" placeholder="Contract Value">
+                                            <input type="text" asp-for="ContractValue" class="form-control"  placeholder="Contract Value">
                                             <span asp-validation-for="ContractValue" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -565,7 +566,7 @@
         loadIndustry();
         loadUser();
         loadRole();
-
+        
         $('#ValidRfqdate').bootstrapMaterialDatePicker('setMinDate', moment());
         $('#StartRfqdate').bootstrapMaterialDatePicker('setMinDate', moment()).on('change', function (e, date) {
             $('#ValidRfqdate').bootstrapMaterialDatePicker('setMinDate', date);
@@ -592,7 +593,7 @@
     });
 
     function SaveForm() {
-        alert("Start save!")
+        //alert("Start save!")
         $("#infoTag").click();
         var isValid = true;
 
@@ -619,7 +620,7 @@
             }
 
             var hasStartRfqDate = false;
-            var startRfqDate = $('#startRfqDate').val();
+            var startRfqDate = $('#StartRfqDate').val();
             if (startRfqDate != "") {
                 hasStartRfqDate = true;
             } else {
@@ -627,7 +628,7 @@
             }
 
             var hasValidRfqDate = false;
-            var validRfqDate = $('#validRfqDate').val();
+            var validRfqDate = $('#ValidRfqDate').val();
             if (validRfqDate != "") {
                 hasValidRfqDate = true;
             } else {
@@ -635,7 +636,7 @@
             }
 
             var hasEstimateProjectStartDate = false;
-            var estimateProjectStartDate = $('#estimateProjectStartDate').val();
+            var estimateProjectStartDate = $('#EstimateProjectStartDate').val();
             if (estimateProjectStartDate != "") {
                 hasEstimateProjectStartDate = true;
             } else {
@@ -643,7 +644,7 @@
             }
 
             var hasEstimateProjectEndDate = false;
-            var estimateProjectEndDate = $('#estimateProjectEndDate').val();
+            var estimateProjectEndDate = $('#EstimateProjectEndDate').val();
             if (estimateProjectEndDate != "") {
                 hasEstimateProjectEndDate = true;
             } else {
@@ -651,7 +652,7 @@
             }
 
             var hasQuotationOpeningDate = false;
-            var quotationOpeningDate = $('#quotationOpeningDate').val();
+            var quotationOpeningDate = $('#QuotationOpeningDate').val();
             if (quotationOpeningDate != "") {
                 hasQuotationOpeningDate = true;
             } else {
@@ -659,7 +660,7 @@
             }
 
             var hasContractValue = false;
-            var contractValue = $('#contractValue').val();
+            var contractValue = $('#ContractValue').val();
             if (contractValue != "") {
                 hasContractValue = true;
             } else {

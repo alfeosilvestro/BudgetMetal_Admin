@@ -208,7 +208,7 @@ $("#btnRfqEmailsInvites").click(function () {
     var detailEmalsInviteLastId = $("#detailEmalsInviteLastId").val();
 
     var newRow = "<tr>" +
-        "<td></td><td> " +
+        "<td> " +
         "<input type='text' name='RfqEmailInvites[" + detailEmalsInviteLastId + "].Name' class='form-control' />" +
         "</td> " +
         "<td> " +
