@@ -356,7 +356,7 @@
                                         <td><input type="text" name="RfqPriceSchedule[@i].ItemDescription" class="form-control" value="@item.ItemDescription" /></td>
                                         @*<td><input type="text" name="RfqPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>*@
                                         <td>
-                                            <input type="text" name="RfqPriceSchedule[@i].QuantityRequired" class="form-control" value="@item.QuantityRequired" />
+                                            <input type="text" name="RfqPriceSchedule[@i].QuantityRequired" class="form-control pricingQty" value="@item.QuantityRequired" />
                                             <input type="hidden" name="RfqPriceSchedule[@i].CategoryId" value="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Product)" class="form-control" />
                                         </td>
                                         <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePricingRow(this)'>Remove</button></td>
@@ -398,11 +398,11 @@
                                             {
                                     <tr>
                                         <td>@countPriceService</td>
-                                        <td><input type="text" name="RfqPriceSchedule[@i].ItemName" class="form-control" value="@item.ItemName" /> </td>
+                                        <td><input type="text" name="RfqPriceSchedule[@i].ItemName" class="form-control pricing" value="@item.ItemName" /> </td>
                                         <td><input type="text" name="RfqPriceSchedule[@i].ItemDescription" class="form-control" value="@item.ItemDescription" /></td>
                                         @*<td><input type="text" name="RfqPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>*@
                                         <td>
-                                            <input type="text" name="RfqPriceSchedule[@i].QuantityRequired" class="form-control" value="@item.QuantityRequired" />
+                                            <input type="text" name="RfqPriceSchedule[@i].QuantityRequired" class="form-control pricingQty" value="@item.QuantityRequired" />
                                             <input type="hidden" name="RfqPriceSchedule[@i].CategoryId" value="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Service)" class="form-control" />
                                         </td>
                                         <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePricingRow(this)'>Remove</button></td>
@@ -443,11 +443,11 @@
                                             {
                                     <tr>
                                         <td>@countPriceWarranty</td>
-                                        <td><input type="text" name="RfqPriceSchedule[@i].ItemName" class="form-control" value="@item.ItemName" /> </td>
+                                        <td><input type="text" name="RfqPriceSchedule[@i].ItemName" class="form-control pricing" value="@item.ItemName" /> </td>
                                         <td><input type="text" name="RfqPriceSchedule[@i].ItemDescription" class="form-control" value="@item.ItemDescription" /></td>
                                         @*<td><input type="text" name="RfqPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>*@
                                         <td>
-                                            <input type="text" name="RfqPriceSchedule[@i].QuantityRequired" class="form-control" value="@item.QuantityRequired" />
+                                            <input type="text" name="RfqPriceSchedule[@i].QuantityRequired" class="form-control  pricingQty" value="@item.QuantityRequired" />
                                             <input type="hidden" name="RfqPriceSchedule[@i].CategoryId" value="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Warranty)" class="form-control" />
                                         </td>
                                         <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePricingRow(this)'>Remove</button></td>
