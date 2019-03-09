@@ -608,6 +608,7 @@
 
         isValid = $("form#frmCreateRFQ").valid();
         if (isValid) {
+            //check Invited Supplier
             var haveInvitedSupplier = false;
             $('input:checkbox.supplier').each(function () {
                 var sThisVal = (this.checked ? $(this).val() : "");
@@ -615,7 +616,7 @@
                     haveInvitedSupplier = true;
                 }
             });
-            if (haveInvitedSupplier) {
+            if (!haveInvitedSupplier) {
                 invalidMessage += "Please invite at least one supplier. \n";
             }
 
@@ -674,14 +675,16 @@
             if (requirementTableCount > 0) {
                 hasRequirementRecord = true;
             }
+
             if (hasRequirementRecord) {
                 $('input:text.requirement').each(function () {
-                    hasRequirementValid = false;
-                    if ($(this).val() != "") {
+                    //hasRequirementValid = false;
+                    if ($(this).val() == "") {
                         hasRequirementValid = true;
                     }
                 });
-                if (!hasRequirementValid) {
+
+                if (hasRequirementValid) {
                     invalidMessage += "Service name in Requirement tab is not blank. \n";
                 }
             } else {
@@ -697,11 +700,12 @@
             }
             if (hasSupportRecord) {
                 $('input:text.support').each(function () {
-                    hasSupportValid = false;
-                    if ($(this).val() != "") {
+                    //hasSupportValid = false;
+                    if ($(this).val() == "") {
                         hasSupportValid = true;
                     }
-                    if (!hasSupportValid) {
+
+                    if (hasSupportValid) {
                         invalidMessage += "Service name in Support tab is not blank. \n";
                     }
                 });
@@ -718,12 +722,13 @@
             }
             if (hasCommercialRecord) {
                 $('input:text.commercial').each(function () {
-                    hasCommercialValid = false;
-                    if ($(this).val() != "") {
+                    //hasCommercialValid = false;
+                    if ($(this).val() == "") {
                         hasCommercialValid = true;
                     }
                 });
-                if (!hasCommercialValid) {
+
+                if (hasCommercialValid) {
                     invalidMessage += "Item name in Commercial tab is not blank. \n";
                 }
             } else {
@@ -739,12 +744,13 @@
             }
             if (hasPricingRecord) {
                 $('input:text.pricing').each(function () {
-                    hasPricingValid = false;
-                    if ($(this).val() != "") {
+                    //hasPricingValid = false;
+                    if ($(this).val() == "") {
                         hasPricingValid = true;
                     }
                 });
-                if (!hasPricingValid) {
+
+                if (hasPricingValid) {
                     invalidMessage += "Pricing name in Pricing tab is not blank. \n";
                 }
             } else {
@@ -760,12 +766,13 @@
             }
             if (hasServicePricingRecord) {
                 $('input:text.pricing').each(function () {
-                    hasServicePricingValid = false;
-                    if ($(this).val() != "") {
+                    //hasServicePricingValid = false;
+                    if ($(this).val() == "") {
                         hasServicePricingValid = true;
                     }
                 });
-                if (!hasServicePricingValid) {
+
+                if (hasServicePricingValid) {
                     invalidMessage += "Pricing name in Service Pricing tab is not blank. \n";
                 }
             } else {
@@ -781,12 +788,13 @@
             }
             if (hasWarrantyPricingRecord) {
                 $('input:text.pricing').each(function () {
-                    hasWarrantyPricingValid = false;
-                    if ($(this).val() != "") {
+                    //hasWarrantyPricingValid = false;
+                    if ($(this).val() == "") {
                         hasWarrantyPricingValid = true;
                     }
                 });
-                if (!hasWarrantyPricingValid) {
+
+                if (hasWarrantyPricingValid) {
                     invalidMessage += "Pricing name in Warranty Pricing tab is not blank. \n";
                 }
             } else {
@@ -797,11 +805,11 @@
             var hasPricingQtyValid = false;
             var hasPricingQtyBlank = false;
             $('input:text.pricingQty').each(function () {
-                hasPricingQtyBlank = false;
+                //hasPricingQtyBlank = false;
                 var qty = $(this).val();
-                hasPricingQtyBlank = false;
+                //hasPricingQtyBlank = false;
                 if (qty != "") {
-                    hasPricingQtyValid = false;
+                    //hasPricingQtyValid = false;
                     if (qty === parseInt(qty, 2)) {
                     } else {
                         hasPricingQtyValid = true;
@@ -813,17 +821,18 @@
             if (hasPricingQtyBlank) {
                 invalidMessage += "Quantity in Pricing tab is not blank. \n";
             }
-            if (!hasPricingQtyValid) {
+            if (hasPricingQtyValid) {
                 invalidMessage += "Quantity in Pricing tab is not number. \n";
             }
             
-            if (hasStartRfqDate && hasValidRfqDate && hasEstimateProjectStartDate && haveInvitedSupplier && hasRequirementValid && hasSupportValid && hasCommercialValid && hasPricingValid && hasPricingQtyValid && !hasPricingQtyBlank && hasRequirementRecord && hasSupportRecord && hasCommercialRecord && hasPricingRecord && hasServicePricingRecord && hasWarrantyPricingRecord) {
-                
+            //if (hasStartRfqDate && hasValidRfqDate && hasEstimateProjectStartDate && haveInvitedSupplier && hasRequirementValid && hasSupportValid && hasCommercialValid && hasPricingValid && hasPricingQtyValid && !hasPricingQtyBlank && hasRequirementRecord && hasSupportRecord && hasCommercialRecord && hasPricingRecord && hasServicePricingRecord && hasWarrantyPricingRecord) {
+            if (invalidMessage == "") {
                 $('.page-loader-wrapper').fadeIn();
                 $("#frmCreateRFQ").submit();
 
             } else {
                 alert(invalidMessage);
+                invalidMessage = "";
             }
         } else {
             alert("Please fill all fields!")

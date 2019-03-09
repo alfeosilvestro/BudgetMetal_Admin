@@ -195,13 +195,13 @@ function RemoveAttachmentRFQRow(item) {
 
 $("input:file").change(function () {
     var fileName = $(this).val();
-    alert(fileName);
+    //alert(fileName);
 });
 
 function getFileName(elm) {
     var fn = $(elm).val();
     var filename = fn.match(/[^\\/]*$/)[0]; // remove C:\fakename
-    alert(filename);
+   // alert(filename);
 }
 
 $("#btnRfqEmailsInvites").click(function () {
