@@ -175,6 +175,76 @@ namespace Com.BudgetMetal.Services.RFQ
             return resultObj;
         }
 
+        public async Task<VmRfqPage> GetRfqTemplateByPage(int userId, int documentOwner, int page, int totalRecords, bool isCompanyAdmin, int statusId = 0, string keyword = "")
+        {
+            var dbPageResult = await repoRfq.GetRfqByPage(userId, documentOwner,
+                (page == 0 ? Constants.app_firstPage : page),
+                (totalRecords == 0 ? Constants.app_totalRecords : totalRecords), isCompanyAdmin, statusId, keyword);
+
+            //var dbPageResult = repo.GetCodeTableByPage(keyword,
+            //    (page == 0 ? Constants.app_firstPage : page),
+            //    (totalRecords == 0 ? Constants.app_totalRecords : totalRecords));
+
+            if (dbPageResult == null)
+            {
+                return new VmRfqPage();
+            }
+
+            var resultObj = new VmRfqPage();
+            resultObj.RequestId = DateTime.Now.ToString("yyyyMMddHHmmss");
+            resultObj.RequestDate = DateTime.Now;
+            resultObj.Result = new PageResult<VmRfqItem>();
+            resultObj.Result.Records = new List<VmRfqItem>();
+
+            Copy<PageResult<Rfq>, PageResult<VmRfqItem>>(dbPageResult, resultObj.Result, new string[] { "Records" });
+
+            var industryList = industryRepository.GetAll();
+
+            foreach (var dbItem in dbPageResult.Records)
+            {
+                var resultItem = new VmRfqItem();
+
+                Copy<Rfq, VmRfqItem>(dbItem, resultItem);
+
+                if (dbItem.Document != null)
+                {
+                    resultItem.Document = new ViewModels.Document.VmDocumentItem()
+                    {
+                        Id = dbItem.Document.Id,
+                        DocumentNo = dbItem.Document.DocumentNo,
+                        Title = dbItem.Document.Title,
+                        DocumentStatus = new ViewModels.CodeTable.VmCodeTableItem()
+                        {
+                            Name = dbItem.Document.DocumentStatus.Name
+                        },
+                        DocumentType = new ViewModels.CodeTable.VmCodeTableItem()
+                        {
+                            Name = dbItem.Document.DocumentStatus.Name
+                        },
+                        Company = new ViewModels.Company.VmCompanyItem()
+                        {
+                            Name = dbItem.Document.Company.Name
+                        }
+                    };
+
+                }
+
+                resultItem.IndustryOfRfq = "";
+
+                if (!string.IsNullOrEmpty(dbItem.IndustryOfRfq))
+                {
+                    var industry = industryList.Result.Where(x => x.Id == int.Parse(dbItem.IndustryOfRfq)).FirstOrDefault();
+                    if (industry != null)
+                    {
+                        resultItem.IndustryOfRfq = industry.Name;
+                    }
+                }
+
+                resultObj.Result.Records.Add(resultItem);
+            }
+
+            return resultObj;
+        }
 
         //public async Task<VmRfqPage> GetRfqByPageForDashboard(int userId, int documentOwner, int page, int totalRecords, bool isCompanyAdmin, int statusId = 0, string keyword = "")
         //{
@@ -457,7 +527,7 @@ namespace Com.BudgetMetal.Services.RFQ
                     {
                         foreach (var item in rfq.Requirement)
                         {
-                            if (item.ServiceName != null && item.Description != null)
+                            if (item.ServiceName != null)
                             {
                                 var dbRequirement = new Com.BudgetMetal.DBEntities.Requirement();
 
@@ -477,7 +547,7 @@ namespace Com.BudgetMetal.Services.RFQ
                     {
                         foreach (var item in rfq.Sla)
                         {
-                            if (item.Requirement != null && item.Description != null)
+                            if (item.Requirement != null)
                             {
                                 var dbSla = new Com.BudgetMetal.DBEntities.Sla();
 
@@ -498,7 +568,7 @@ namespace Com.BudgetMetal.Services.RFQ
                     {
                         foreach (var item in rfq.Penalty)
                         {
-                            if (item.BreachOfServiceDefinition != null && item.Description != null)
+                            if (item.BreachOfServiceDefinition != null)
                             {
                                 var dbPenalty = new Com.BudgetMetal.DBEntities.Penalty();
 
@@ -518,7 +588,7 @@ namespace Com.BudgetMetal.Services.RFQ
                     {
                         foreach (var item in rfq.RfqPriceSchedule)
                         {
-                            if (item.ItemName != null && item.ItemDescription != null && item.QuantityRequired != null)
+                            if (item.ItemName != null  && item.QuantityRequired != null)
                             {
                                 var dbRfqPriceSchedule = new Com.BudgetMetal.DBEntities.RfqPriceSchedule();
 
@@ -776,7 +846,7 @@ namespace Com.BudgetMetal.Services.RFQ
                     {
                         foreach (var item in rfq.Requirement)
                         {
-                            if (item.ServiceName != null && item.Description != null)
+                            if (item.ServiceName != null)
                             {
                                 var dbRequirement = new Com.BudgetMetal.DBEntities.Requirement();
 
@@ -799,7 +869,7 @@ namespace Com.BudgetMetal.Services.RFQ
                     {
                         foreach (var item in rfq.Sla)
                         {
-                            if (item.Requirement != null && item.Description != null)
+                            if (item.Requirement != null )
                             {
                                 var dbSla = new Com.BudgetMetal.DBEntities.Sla();
 
@@ -822,7 +892,7 @@ namespace Com.BudgetMetal.Services.RFQ
                     {
                         foreach (var item in rfq.Penalty)
                         {
-                            if (item.BreachOfServiceDefinition != null && item.PenaltyAmount != null && item.Description != null)
+                            if (item.BreachOfServiceDefinition != null)
                             {
                                 var dbPenalty = new Com.BudgetMetal.DBEntities.Penalty();
 
@@ -846,7 +916,7 @@ namespace Com.BudgetMetal.Services.RFQ
                     {
                         foreach (var item in rfq.RfqPriceSchedule)
                         {
-                            if (item.ItemName != null && item.ItemDescription != null && item.InternalRefrenceCode != null && item.QuantityRequired != null)
+                            if (item.ItemName != null  && item.QuantityRequired != null)
                             {
                                 var dbRfqPriceSchedule = new Com.BudgetMetal.DBEntities.RfqPriceSchedule();
 
@@ -1052,6 +1122,128 @@ namespace Com.BudgetMetal.Services.RFQ
                 result.MessageToUser = "Fail to update your RFQ. Please contact site admin.";
                 result.Error = ex;
             }
+
+            return result;
+        }
+
+
+        public async Task<VmGenericServiceResult> SaveRFQTemplate(VmRfqItem rfq)
+        {
+            var result = new VmGenericServiceResult();
+            try
+            {
+                var dbDocument = new Com.BudgetMetal.DBEntities.Document();
+                string documentNo = "";
+                documentNo = GenerateTemplateDocumentNo(rfq.Document.Company_Id);
+                rfq.Document.DocumentNo = documentNo;
+                rfq.Document.WorkingPeriod = GetCurrentWeek();
+                Copy<VmDocumentItem, Com.BudgetMetal.DBEntities.Document>(rfq.Document, dbDocument);
+                repoDocument.Add(dbDocument);
+                repoDocument.Commit();
+
+                rfq.Document_Id = dbDocument.Id;
+
+                var dbRFQ = new Com.BudgetMetal.DBEntities.Rfq();
+                Copy<VmRfqItem, Com.BudgetMetal.DBEntities.Rfq>(rfq, dbRFQ);
+                repoRfq.Add(dbRFQ);
+                repoRfq.Commit();
+
+                
+
+             
+                if (rfq.Requirement != null)
+                {
+                    if (rfq.Requirement.Count > 0)
+                    {
+                        foreach (var item in rfq.Requirement)
+                        {
+                            if (item.ServiceName != null)
+                            {
+                                var dbRequirement = new Com.BudgetMetal.DBEntities.Requirement();
+
+                                Copy<VmRequirementItem, Com.BudgetMetal.DBEntities.Requirement>(item, dbRequirement);
+                                dbRequirement.Rfq_Id = dbRFQ.Id;
+                                dbRequirement.CreatedBy = dbRequirement.UpdatedBy = dbRFQ.CreatedBy;
+                                repoRequirement.Add(dbRequirement);
+                            }
+                        }
+                        repoRequirement.Commit();
+                    }
+                }
+
+                if (rfq.Sla != null)
+                {
+                    if (rfq.Sla.Count > 0)
+                    {
+                        foreach (var item in rfq.Sla)
+                        {
+                            if (item.Requirement != null)
+                            {
+                                var dbSla = new Com.BudgetMetal.DBEntities.Sla();
+
+                                Copy<VmSlaItem, Com.BudgetMetal.DBEntities.Sla>(item, dbSla);
+                                dbSla.Rfq_Id = dbRFQ.Id;
+                                dbSla.CreatedBy = dbSla.UpdatedBy = dbRFQ.CreatedBy;
+                                repoSla.Add(dbSla);
+                            }
+
+                        }
+                        repoSla.Commit();
+                    }
+                }
+
+                if (rfq.Penalty != null)
+                {
+                    if (rfq.Penalty.Count > 0)
+                    {
+                        foreach (var item in rfq.Penalty)
+                        {
+                            if (item.BreachOfServiceDefinition != null)
+                            {
+                                var dbPenalty = new Com.BudgetMetal.DBEntities.Penalty();
+
+                                Copy<VmPenaltyItem, Com.BudgetMetal.DBEntities.Penalty>(item, dbPenalty);
+                                dbPenalty.Rfq_Id = dbRFQ.Id;
+                                dbPenalty.CreatedBy = dbPenalty.UpdatedBy = dbRFQ.CreatedBy;
+                                repoPenalty.Add(dbPenalty);
+                            }
+                        }
+                        repoPenalty.Commit();
+                    }
+                }
+
+                if (rfq.RfqPriceSchedule != null)
+                {
+                    if (rfq.RfqPriceSchedule.Count > 0)
+                    {
+                        foreach (var item in rfq.RfqPriceSchedule)
+                        {
+                            if (item.ItemName != null && item.QuantityRequired != null)
+                            {
+                                var dbRfqPriceSchedule = new Com.BudgetMetal.DBEntities.RfqPriceSchedule();
+
+                                Copy<VmRfqPriceScheduleItem, Com.BudgetMetal.DBEntities.RfqPriceSchedule>(item, dbRfqPriceSchedule);
+                                dbRfqPriceSchedule.Rfq_Id = dbRFQ.Id;
+                                dbRfqPriceSchedule.CreatedBy = dbRfqPriceSchedule.UpdatedBy = dbRFQ.CreatedBy;
+                                repoRfqPriceSchedule.Add(dbRfqPriceSchedule);
+                            }
+                        }
+                        repoRfqPriceSchedule.Commit();
+                    }
+                }
+
+           
+
+                result.IsSuccess = true;
+                result.MessageToUser = "You have succesfully created RFQ as Document No." + documentNo;
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.MessageToUser = "Fail to create your RFQ. Please contact site admin.";
+                result.Error = ex;
+            }
+
 
             return result;
         }
@@ -1317,6 +1509,14 @@ namespace Com.BudgetMetal.Services.RFQ
             int countRfq = repoDocument.GetRfqCountByCompany(companyId);
             countRfq = countRfq + 1;
             string documentNo = "RFQ_" + companyId.ToString().PadLeft(4, '0') + "_" + countRfq.ToString().PadLeft(4, '0');
+            return documentNo;
+        }
+
+        private string GenerateTemplateDocumentNo(int companyId)
+        {
+            int countRfq = repoDocument.GetRfqTemplateCountByCompany(companyId);
+            countRfq = countRfq + 1;
+            string documentNo = "RFQ_Template_" + companyId.ToString().PadLeft(4, '0') + "_" + countRfq.ToString().PadLeft(4, '0');
             return documentNo;
         }
 

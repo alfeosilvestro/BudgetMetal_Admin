@@ -74,27 +74,31 @@ namespace Com.BudgetMetal.DataRepository.Document
 
         public int GetRfqCountByCompany(int companyId)
         {
-            var records = entities.Where(e => e.Company_Id == companyId && e.DocumentType_Id == 100021).ToList().Count();
+            var records = entities.Where(e => e.Company_Id == companyId && e.DocumentType_Id == Constants_CodeTable.Code_RFQ).ToList().Count();
             return records;
         }
 
-
+        public int GetRfqTemplateCountByCompany(int companyId)
+        {
+            var records = entities.Where(e => e.Company_Id == companyId && e.DocumentType_Id == Constants_CodeTable.Code_RFQTemplate).ToList().Count();
+            return records;
+        }
 
         public int GetRfqCountByCompanyAndWorkingPeriod(int companyId, string workingPeriod)
         {
-            var records = entities.Where(e => e.Company_Id == companyId && e.DocumentType_Id == 100021 && e.IsActive== true && e.WorkingPeriod == workingPeriod).ToList().Count();
+            var records = entities.Where(e => e.Company_Id == companyId && e.DocumentType_Id == Constants_CodeTable.Code_RFQ && e.IsActive== true && e.WorkingPeriod == workingPeriod).ToList().Count();
             return records;
         }
 
         public int GetQuotationCountByCompany(int companyId)
         {
-            var records = entities.Where(e => e.Company_Id == companyId && e.DocumentType_Id == 100022).ToList().Count();
+            var records = entities.Where(e => e.Company_Id == companyId && e.DocumentType_Id == Constants_CodeTable.Code_Quotation).ToList().Count();
             return records;
         }
 
         public int GetQuotationCountByCompanyAndWorkingPeriod(int companyId, string workingPeriod)
         {
-            var records = entities.Where(e => e.Company_Id == companyId && e.DocumentType_Id == 100022 && e.IsActive == true && e.WorkingPeriod == workingPeriod).ToList().Count();
+            var records = entities.Where(e => e.Company_Id == companyId && e.DocumentType_Id == Constants_CodeTable.Code_Quotation && e.IsActive == true && e.WorkingPeriod == workingPeriod).ToList().Count();
             return records;
         }
     }

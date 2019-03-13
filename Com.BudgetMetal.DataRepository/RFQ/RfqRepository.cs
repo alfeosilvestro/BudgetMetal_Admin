@@ -34,6 +34,68 @@ namespace Com.BudgetMetal.DataRepository.RFQ
                             .Where(e =>
                               (e.IsActive == true)
                               && (e.Document.IsActive == true)
+                              &&(e.Document.DocumentType_Id == Constants_CodeTable.Code_RFQ)
+                              && e.Document.Company_Id == documentOwner
+                              && (statusId == 0 || e.Document.DocumentStatus_Id == statusId)
+                              && (e.Document.DocumentStatus_Id != Constants_CodeTable.Code_RFQ_Delete)
+                              && (keyword == "" || e.Document.Title.ToLower().Contains(keyword.ToLower()) || e.Document.DocumentNo.ToLower().Contains(keyword.ToLower()) || e.Document.Company.Name.ToLower().Contains(keyword.ToLower()))
+                            )
+                            .OrderByDescending(e => e.CreatedDate)
+                            .ToListAsync();
+
+            if (!isCompanyAdmin)
+            {
+                records = records.Where(e => filterDocument.Contains(e.Document_Id)).ToList();
+            }
+
+            var recordList = records
+                .Skip((totalRecords * page) - totalRecords)
+                .Take(totalRecords).ToList();
+
+            var count = records.Count();
+
+            var nextPage = 0;
+            var prePage = 0;
+            if (page > 1)
+            {
+                prePage = page - 1;
+            }
+
+            var totalPage = (count + totalRecords - 1) / totalRecords;
+            if (page < totalPage)
+            {
+                nextPage = page + 1;
+            }
+
+            var result = new PageResult<Com.BudgetMetal.DBEntities.Rfq>()
+            {
+                Records = recordList,
+                TotalPage = totalPage,
+                CurrentPage = page,
+                PreviousPage = prePage,
+                NextPage = nextPage,
+                TotalRecords = count
+            };
+
+            return result;
+        }
+
+        public async Task<PageResult<Com.BudgetMetal.DBEntities.Rfq>> GetRfqTemplateByPage(int userId, int documentOwner, int page, int totalRecords, bool isCompanyAdmin, int statusId, string keyword)
+        {
+            var filterDocument = await this.DbContext.DocumentUser
+                .Where(e => e.IsActive == true && e.User_Id == userId)
+                .Select(e => e.Document_Id).Distinct().ToListAsync();
+
+
+            var records = await this.entities
+                            .Include(e => e.Document)
+                            .Include(e => e.Document.DocumentStatus)
+                            .Include(e => e.Document.DocumentType)
+                            .Include(e => e.Document.Company)
+                            .Where(e =>
+                              (e.IsActive == true)
+                              && (e.Document.IsActive == true)
+                              && (e.Document.DocumentType_Id == Constants_CodeTable.Code_RFQTemplate)
                               && e.Document.Company_Id == documentOwner
                               && (statusId == 0 || e.Document.DocumentStatus_Id == statusId)
                               && (e.Document.DocumentStatus_Id != Constants_CodeTable.Code_RFQ_Delete)
@@ -94,6 +156,7 @@ namespace Com.BudgetMetal.DataRepository.RFQ
                             .Where(e =>
                               (e.IsActive == true)
                               && (e.Document.IsActive == true)
+                              && (e.Document.DocumentType_Id == Constants_CodeTable.Code_RFQ)
                               && e.Document.Company_Id == documentOwner
                               && (statusId == 0 || e.Document.DocumentStatus_Id == statusId)
                               && (e.Document.DocumentStatus_Id != Constants_CodeTable.Code_RFQ_Delete)
@@ -167,6 +230,7 @@ namespace Com.BudgetMetal.DataRepository.RFQ
                             .Where(e =>
                               (e.IsActive == true)
                               && (e.Document.IsActive == true)
+                              && (e.Document.DocumentType_Id == Constants_CodeTable.Code_RFQ)
                               && filterRfq.Contains(e.Id)
                               && (statusId == 0 || e.Document.DocumentStatus_Id == statusId)
                               && (e.Document.DocumentStatus_Id != Constants_CodeTable.Code_RFQ_Delete)
@@ -221,6 +285,7 @@ namespace Com.BudgetMetal.DataRepository.RFQ
                             .Where(e =>
                               (e.IsActive == true)
                               && (e.Document.IsActive == true)
+                              && (e.Document.DocumentType_Id == Constants_CodeTable.Code_RFQ)
                               && e.IsPublic == true
                               && (statusId == 0 || e.Document.DocumentStatus_Id == statusId)
                               && (e.Document.DocumentStatus_Id != Constants_CodeTable.Code_RFQ_Delete)
@@ -380,6 +445,7 @@ namespace Com.BudgetMetal.DataRepository.RFQ
                             .Where(e =>
                               (e.IsActive == true)
                               && (e.Document.IsActive == true)
+                              && (e.Document.DocumentType_Id == Constants_CodeTable.Code_RFQ)
                               && e.IsPublic == true
                               && (e.Document.DocumentStatus_Id == Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Open)
                             )
@@ -405,7 +471,7 @@ namespace Com.BudgetMetal.DataRepository.RFQ
         public async Task<List<Com.BudgetMetal.DBEntities.Rfq>> GetAllOpenRFQ()
         {
             var result = await this.entities.Include(e => e.Document).ThenInclude(e=>e.DocumentUser)
-                .Where(e => e.IsActive == true && e.Document.IsActive == true && e.Document.DocumentStatus_Id == Constants_CodeTable.Code_RFQ_Open).ToListAsync();
+                .Where(e => e.IsActive == true && e.Document.IsActive == true && (e.Document.DocumentType_Id == Constants_CodeTable.Code_RFQ) &&  e.Document.DocumentStatus_Id == Constants_CodeTable.Code_RFQ_Open).ToListAsync();
 
             return result;
         }

@@ -177,12 +177,11 @@
                                 <thead>
                                     <tr>
                                         <th width="5%">Serial</th>
-                                        <th width="25%">Item Name</th>
-                                        <th width="35%">Item Description</th>
-                                        @*<th width="15%">Internal Reference Code</th>*@
-                                        <th width="15%">Unit Price</th>
-                                        <th width="12%">Quantity</th>
-                                        <th width="15%">Amount</th>
+                                        <th width="20%">Item Name</th>
+                                        <th width="30%">Item Description</th>
+                                        <th width="20%">Unit Price</th>
+                                        <th width="10%">Quantity</th>
+                                        <th width="20%">Amount</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -194,18 +193,18 @@
                                                 var productList = Model.QuotationPriceSchedule.Where(x => x.CategoryId == Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Product).ToList();
                                                 foreach (var item in productList)
                                                 {
-                                                <tr>
-                                                    <td>@countProductPricing</td>
-                                                    <td>@item.ItemName <input type="hidden" name="QuotationPriceSchedule[@i].ItemName" class="form-control" value="@item.ItemName" /></td>
-                                                    <td>@item.ItemDescription <input type="hidden" name="QuotationPriceSchedule[@i].ItemDescription" class="form-control" value="@item.ItemDescription" /></td>
-                                                    @*<td>@item.InternalRefrenceCode <input type="hidden" name="QuotationPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>*@
-                                                    <td><input type="text" name="QuotationPriceSchedule[@i].UnitPrice" class="form-control" value="@item.UnitPrice" /></td>
-                                                    <td>
-                                                        @item.QuantityRequired <input type="hidden" name="QuotationPriceSchedule[@i].QuantityRequired" class="form-control" value="@item.QuantityRequired" />
-                                                        <input type="hidden" name="QuotationPriceSchedule[@i].CategoryId" class="form-control" value="@item.CategoryId" />
-                                                    </td>
-                                                    <td><input type="text" name="QuotationPriceSchedule[@i].ItemAmount" class="form-control" value="@item.ItemAmount" /></td>
-                                                </tr>
+                                    <tr>
+                                        <td>@countProductPricing</td>
+                                        <td>@item.ItemName <input type="hidden" name="QuotationPriceSchedule[@i].ItemName" class="form-control" value="@item.ItemName" /></td>
+                                        <td>@item.ItemDescription <input type="hidden" name="QuotationPriceSchedule[@i].ItemDescription" class="form-control" value="@item.ItemDescription" /></td>
+                                        <td><input type="text" id="product_txtUnitPrice_@i" name="QuotationPriceSchedule[@i].UnitPrice" class="form-control" onchange="calculateTotal(@i,'product')" value="@item.UnitPrice" /></td>
+                                        <td>
+                                            @item.QuantityRequired
+                                            <input type="hidden" name="QuotationPriceSchedule[@i].QuantityRequired" class="form-control" id="product_hdQty_@i" value="@item.QuantityRequired" />
+                                            <input type="hidden" name="QuotationPriceSchedule[@i].CategoryId" class="form-control" value="@item.CategoryId" />
+                                        </td>
+                                        <td><input type="text" id="product_hdItemAmount_@i" name="QuotationPriceSchedule[@i].ItemAmount" class="form-control" disabled value="@item.ItemAmount" /></td>
+                                    </tr>
                                                 i++;
                                                 countProductPricing++;
                                             }
@@ -220,12 +219,11 @@
                                 <thead>
                                     <tr>
                                         <th width="5%">Serial</th>
-                                        <th width="25%">Item Name</th>
-                                        <th width="35%">Item Description</th>
-                                        @*<th width="15%">Internal Reference Code</th>*@
-                                        <th width="15%">Unit Price</th>
-                                        <th width="12%">Quantity</th>
-                                        <th width="15%">Amount</th>
+                                        <th width="20%">Item Name</th>
+                                        <th width="30%">Item Description</th>
+                                        <th width="20%">Unit Price</th>
+                                        <th width="10%">Quantity</th>
+                                        <th width="20%">Amount</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -241,13 +239,14 @@
                                                     <td>@countServicePricing</td>
                                                     <td>@item.ItemName <input type="hidden" name="QuotationPriceSchedule[@i].ItemName" class="form-control" value="@item.ItemName" /></td>
                                                     <td>@item.ItemDescription <input type="hidden" name="QuotationPriceSchedule[@i].ItemDescription" class="form-control" value="@item.ItemDescription" /></td>
-                                                    @*<td>@item.InternalRefrenceCode <input type="hidden" name="QuotationPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>*@
-                                                    <td><input type="text" name="QuotationPriceSchedule[@i].UnitPrice" class="form-control" value="@item.UnitPrice" /></td>
+                                                   
+                                                    <td><input type="text" id="service_txtUnitPrice_@i" name="QuotationPriceSchedule[@i].UnitPrice" class="form-control" onchange="calculateTotal(@i,'service')" value="@item.UnitPrice" /></td>
                                                     <td>
-                                                        @item.QuantityRequired <input type="hidden" name="QuotationPriceSchedule[@i].QuantityRequired" class="form-control" value="@item.QuantityRequired" />
+                                                        @item.QuantityRequired 
+                                                        <input type="hidden" name="QuotationPriceSchedule[@i].QuantityRequired" class="form-control" id="service_hdQty_@i" value="@item.QuantityRequired" />
                                                         <input type="hidden" name="QuotationPriceSchedule[@i].CategoryId" class="form-control" value="@item.CategoryId" />
                                                     </td>
-                                                    <td><input type="text" name="QuotationPriceSchedule[@i].ItemAmount" class="form-control" value="@item.ItemAmount" /></td>
+                                                    <td><input type="text" id="service_hdItemAmount_@i" name="QuotationPriceSchedule[@i].ItemAmount" class="form-control"  disabled value="@item.ItemAmount" /></td>
                                                 </tr>
                                                 i++;
                                                 countServicePricing++;
@@ -263,12 +262,11 @@
                                 <thead>
                                     <tr>
                                         <th width="5%">Serial</th>
-                                        <th width="25%">Item Name</th>
-                                        <th width="35%">Item Description</th>
-                                        @*<th width="15%">Internal Reference Code</th>*@
-                                        <th width="15%">Unit Price</th>
-                                        <th width="12%">Quantity</th>
-                                        <th width="15%">Amount</th>
+                                        <th width="20%">Item Name</th>
+                                        <th width="30%">Item Description</th>
+                                        <th width="20%">Unit Price</th>
+                                        <th width="10%">Quantity</th>
+                                        <th width="20%">Amount</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -280,18 +278,18 @@
                                                 var warrantyList = Model.QuotationPriceSchedule.Where(x => x.CategoryId == Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Warranty).ToList();
                                                 foreach (var item in warrantyList)
                                                 {
-                                                <tr>
-                                                    <td>@countWarrantyPricing</td>
-                                                    <td>@item.ItemName <input type="hidden" name="QuotationPriceSchedule[@i].ItemName" class="form-control" value="@item.ItemName" /></td>
-                                                    <td>@item.ItemDescription <input type="hidden" name="QuotationPriceSchedule[@i].ItemDescription" class="form-control" value="@item.ItemDescription" /></td>
-                                                    @*<td>@item.InternalRefrenceCode <input type="hidden" name="QuotationPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>*@
-                                                    <td><input type="text" name="QuotationPriceSchedule[@i].UnitPrice" class="form-control" value="@item.UnitPrice" /></td>
-                                                    <td>
-                                                        @item.QuantityRequired <input type="hidden" name="QuotationPriceSchedule[@i].QuantityRequired" class="form-control" value="@item.QuantityRequired" />
-                                                        <input type="hidden" name="QuotationPriceSchedule[@i].CategoryId" class="form-control" value="@item.CategoryId" />
-                                                    </td>
-                                                    <td><input type="text" name="QuotationPriceSchedule[@i].ItemAmount" class="form-control" value="@item.ItemAmount" /></td>
-                                                </tr>
+                                    <tr>
+                                        <td>@countWarrantyPricing</td>
+                                        <td>@item.ItemName <input type="hidden" name="QuotationPriceSchedule[@i].ItemName" class="form-control" value="@item.ItemName" /></td>
+                                        <td>@item.ItemDescription <input type="hidden" name="QuotationPriceSchedule[@i].ItemDescription" class="form-control" value="@item.ItemDescription" /></td>
+                                        <td><input type="text" id="warranty_txtUnitPrice_@i" name="QuotationPriceSchedule[@i].UnitPrice" class="form-control" onchange="calculateTotal(@i,'warranty')" value="@item.UnitPrice" /></td>
+                                        <td>
+                                            @item.QuantityRequired
+                                            <input type="hidden" name="QuotationPriceSchedule[@i].QuantityRequired" class="form-control" id="warranty_hdQty_@i" value="@item.QuantityRequired" />
+                                            <input type="hidden" name="QuotationPriceSchedule[@i].CategoryId" class="form-control" value="@item.CategoryId" />
+                                        </td>
+                                        <td><input type="text" id="warranty_hdItemAmount_@i" name="QuotationPriceSchedule[@i].ItemAmount" class="form-control" disabled value="@item.ItemAmount" /></td>
+                                    </tr>
                                                 i++;
                                                 countWarrantyPricing++;
                                             }
@@ -499,6 +497,18 @@
             $("#frmCreateQuotation").submit();
         } else {
             alert("Please fill all fields!")
+        }
+    }
+
+    function calculateTotal(id, item) {
+        var unitprice = $("#" + item + "_txtUnitPrice_" + id).val();
+        var qty = $("#" + item + "_hdQty_" + id).val();
+        if (isNaN(unitprice) || isNaN(qty)) {
+            alert("Please type numbe in price");
+            $("#" + item + "_txtUnitPrice_" + id).select();
+        } else {
+            var total = parseFloat(unitprice) * parseInt(qty);
+            $("#" + item + "_hdItemAmount_" + id).val(total.toFixed(2));
         }
     }
 

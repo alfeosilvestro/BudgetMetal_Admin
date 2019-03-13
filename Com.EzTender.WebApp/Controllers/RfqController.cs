@@ -97,6 +97,27 @@ namespace Com.GenericPlatform.WebApp.Controllers
             return View(result);
         }
 
+        public async Task<ActionResult> TemplateListing()
+        {
+            string queryPage = HttpContext.Request.Query["page"];
+            int page = 1;
+            if (queryPage != null)
+            {
+                page = Convert.ToInt32(queryPage);
+            }
+
+            var Company_Id = HttpContext.Session.GetString("Company_Id");
+            var User_Id = HttpContext.Session.GetString("User_Id");
+            var userRoles = JsonConvert.DeserializeObject<List<VmRoleItem>>(HttpContext.Session.GetString("SelectedRoles"));
+            bool isCompanyAdmin = false;
+            if (userRoles.Where(e => e.Id == Constants.C_Admin_Role).ToList().Count > 0)
+            {
+                isCompanyAdmin = true;
+            }
+            var result = await rfqService.GetRfqByPage(Convert.ToInt32(User_Id), Convert.ToInt32(Company_Id), page, 10, isCompanyAdmin);
+            return View(result);
+        }
+
         // GET: Rfq/Edit/5
         [HttpGet]
         public async Task<ActionResult> View(int id)
@@ -622,7 +643,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
 
 
         // GET: Rfq/Create
-        public ActionResult Template()
+        public ActionResult CreateTemplate()
         {
             ViewBag.User_Id = HttpContext.Session.GetString("User_Id");
             ViewBag.Company_Id = HttpContext.Session.GetString("Company_Id");
@@ -636,25 +657,17 @@ namespace Com.GenericPlatform.WebApp.Controllers
 
         // POST: Rfq/Create
         [HttpPost]
-        public async Task<ActionResult> Template(VmRfqItem Rfq)
+        public async Task<ActionResult> CreateTemplate(VmRfqItem Rfq)
         {
             try
             {
-                var submitType = Request.Form["btnType"];
-                string documentAction = "";
-                if (submitType.ToString().ToLower() == "save as draft")
-                {
-                    Rfq.Document.DocumentStatus_Id = Constants_CodeTable.Code_RFQ_Draft;
-                    documentAction = "Save as Draft";
-                }
-                else
-                {
-                    Rfq.Document.DocumentStatus_Id = Constants_CodeTable.Code_RFQ_RequiredApproval;
-                    documentAction = "Submitted";
-                }
+               
+                Rfq.Document.DocumentStatus_Id = Constants_CodeTable.Code_RFQ_Saved;
+                
+                
 
 
-                var result = await rfqService.SaveRFQ(Rfq);
+                var result = await rfqService.SaveRFQTemplate(Rfq);
                 if (result.IsSuccess)
                 {
                     return RedirectToAction("Index");

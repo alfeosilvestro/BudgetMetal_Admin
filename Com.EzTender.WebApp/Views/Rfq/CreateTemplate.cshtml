@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Create";
 }
-<form asp-controller="Rfq" asp-action="Create" method="post" enctype="multipart/form-data" id="frmCreateRFQ">
+<form asp-controller="Rfq" asp-action="CreateTemplate" method="post" enctype="multipart/form-data" id="frmCreateRFQ">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="block-header">
         <h2>Prepare Request for Quotation</h2>
@@ -24,8 +24,8 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <input type="text" asp-for="Document.DocumentNo" readonly class="form-control" placeholder="<Auto Generate by System>">
-                                    <input type="hidden" asp-for="Document.DocumentStatus_Id" value="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Draft)">
-                                    <input type="hidden" asp-for="Document.DocumentType_Id" value="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ)">
+                                    <input type="hidden" asp-for="Document.DocumentStatus_Id" value="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Saved)">
+                                    <input type="hidden" asp-for="Document.DocumentType_Id" value="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQTemplate)">
                                     <input type="hidden" asp-for="Document.Company_Id" value="@ViewBag.Company_Id">
                                     <input type="hidden" asp-for="Document.CreatedBy" value="@ViewBag.UserName">
                                     <input type="hidden" asp-for="Document.UpdatedBy" value="@ViewBag.UserName">
@@ -85,9 +85,7 @@
                         <li role="presentation"><a href="#service_level_agreement" data-toggle="tab">Supports</a></li>
                         <li role="presentation"><a href="#penalty" data-toggle="tab">Commercials</a></li>
                         <li role="presentation"><a href="#pricing" data-toggle="tab">Pricing</a></li>
-                        <li role="presentation"><a href="#attachments" data-toggle="tab">Attachments</a></li>
-                        <li role="presentation"><a href="#settings" data-toggle="tab">Roles</a></li>
-                        <li role="presentation"><a href="#invited_suppliers" data-toggle="tab">Invite Supplier</a></li>
+                        
                     </ul>
                     <!-- Tab panes -->
                     <div class="tab-content">
@@ -363,129 +361,7 @@
                             </div>
                         </div>
 
-                        <div role="tabpanel" class="tab-pane fade" id="invited_suppliers">
-                            <div class="row">
-                                <div class="col-sm-3">
-                                   
-                                    <select id="ddlIndustry" class="form-control selectpicker"></select>
-                                    <input type="hidden" asp-for="IndustryOfRfq" id="hdIndustry" />
-                                </div>
-                                <div class="col-sm-8">
-                                    <select asp-for="SelectedTags" class="form-control selectpicker" id="ddlServiceTags" data-live-search="true" multiple></select>
-                                </div>
-                                <div class="col-sm-1">
-
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <div class="form-line">
-                                            <input type="text" name="txtSearchSupplier" id="txtSearchSupplier" class="form-control" placeholder="Supplier Name, UEN">
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-3">
-                                    <a class="btn btn-success" id="btnLoadSupplier">Search Supplier</a>
-                                </div>
-                            </div>
-                            <table id="invitedSupplierTable" class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th width="95%">Supplier Information</th>
-                                        <th width="*">&nbsp;</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                            <div class="row">
-                                <div class="pagination" style="padding:10px;">
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <div role="tabpanel" class="tab-pane fade" id="attachments">
-
-                            <table id="attachmentTable" class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th width="25%">File Name</th>
-                                        <th width="70%">Description</th>
-                                        <th width="*">&nbsp;</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                            <div class="row">
-                                <div class="form-group col-sm-12">
-                                    <a class="btn btn-success" id="btnNewFile"> New Attachement </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div role="tabpanel" class="tab-pane fade" id="settings">
-                            <div class="row">
-                                <div class="col-sm-5">
-                                    <select id="ddlUser" class="form-control selectpicker"></select>
-                                </div>
-                                <div class="col-sm-5">
-                                    @*<select class="form-control show-tick" id="ddlRole" data-live-search="true" multiple></select>*@
-                                    <select class="form-control selectpicker" id="ddlRole" data-live-search="true" multiple></select>
-                                </div>
-                                <div class="col-sm-2">
-                                    <a id="btnAddUser" class="btn btn-success">Add Role</a>
-                                </div>
-                            </div>
-
-                            <table id="userSettingTable" class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th width="95%">Accessible User(s)</th>
-                                        <th width="*">&nbsp;</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <input type="hidden" name="documentUserId[]" value="@ViewBag.User_Id" />
-                                            <h5> @ViewBag.FullName </h5>
-                                            <input type="hidden" name="documentUserRole[]" value="3" />
-                                            <span class="label bg-deep-purple">RFQ Creator</span>
-                                        </td>
-                                        <td></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-
-                            <div id="rfq_Email_Invites">
-                                <input type="hidden" id="detailEmalsInviteLastId" value="1" />
-                                <table id="reqEmailInvitesTable" class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th width="30%">Name</th>
-                                            <th width="50%">Email Address</th>
-                                            @*<th width="50%">AccessCode</th>*@
-                                            <th>&nbsp;</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="rfqEmailInvites">
-                                        <tr>
-                                            <td><input type="text" asp-for="RfqEmailInvites[0].Name" class="form-control" /></td>
-                                            <td><input type="text" asp-for="RfqEmailInvites[0].EmailAddress" class="form-control" /></td>
-                                            @*<td><input type="text" asp-for="RfqEmailInvites[0].AccessCode" class="form-control" /></td>*@
-                                            <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveRfqEmailInvites(this)'>Remove</button></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <div class="row">
-                                    <div class="form-group col-sm-12">
-                                        <a class="btn btn-success" id="btnRfqEmailsInvites"> New Email Invite </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                      
                     </div>
                 </div>
             </div>
@@ -496,8 +372,7 @@
             <div class="card">
                 <div class="body">
                     <input type="hidden" name="btnType" id="btnType" value="" />
-                    <button type="button" id="btnDraft" class="btn btn-info btn-lg">Save as Draft</button>
-                    <button type="button" id="btnSubmit" class="btn btn-primary  btn-lg">Submit</button>
+                    <button type="button" id="btnDraft" class="btn btn-info btn-lg">Save</button>
                     <button type="button" onclick='window.location.href = "@Url.Action("Index", "Rfq")";' class="btn btn-default  btn-lg">Cancel</button>
                 </div>
             </div>
@@ -563,11 +438,9 @@
 
 <script>
     $(function () {
-        loadIndustry();
-        loadUser();
-        loadRole();
+       
         
-        $('#ValidRfqdate').bootstrapMaterialDatePicker('setMinDate', moment() );
+        $('#ValidRfqdate').bootstrapMaterialDatePicker('setMinDate', moment());
         $('#StartRfqdate').bootstrapMaterialDatePicker('setMinDate', moment()).on('change', function (e, date) {
             $('#ValidRfqdate').bootstrapMaterialDatePicker('setMinDate', date);
         });
@@ -582,13 +455,9 @@
 
 
 
-    $("#btnSubmit").click(function () {
-        $("#btnType").val("submit");
-        SaveForm();
-    });
+ 
 
     $("#btnDraft").click(function () {
-        $("#btnType").val("draft");
         SaveForm();
     });
 
@@ -609,16 +478,7 @@
         isValid = $("form#frmCreateRFQ").valid();
         if (isValid) {
             //check Invited Supplier
-            var haveInvitedSupplier = false;
-            $('input:checkbox.supplier').each(function () {
-                var sThisVal = (this.checked ? $(this).val() : "");
-                if (sThisVal != "") {
-                    haveInvitedSupplier = true;
-                }
-            });
-            if (!haveInvitedSupplier) {
-                invalidMessage += "Please invite at least one supplier. \n";
-            }
+            
 
             var hasStartRfqDate = false;
             var startRfqDate = $('#StartRfqDate').val();
@@ -838,255 +698,6 @@
         }
     }
 
-
-
-    function loadUser() {
-        var ajaxurl = '@Url.Action("GetActiveUserByCompany", "Rfq")';
-
-        $('#ddlUser').append($('<option>', {
-            value: 0,
-            text: '--Select User--'
-        }));
-
-        $.ajax({
-            url: ajaxurl,
-            data: { CompanyId: @ViewBag.Company_Id },
-            dataType: 'json',
-            success: function (response) {
-                //console.log(response);
-                var obj = response;
-                for (var k in obj) {
-                    var item = obj[k];
-                    $('#ddlUser').append($('<option>', {
-                        value: item.Id,
-                        text: item.ContactName
-                    }));
-                }
-                $("#ddlUser").selectpicker('refresh');
-
-            },
-            error: function (response) {
-                alert(response)
-            }
-
-        });
-    }
-
-    $("#btnAddUser").click(function () {
-        var userId = $("#ddlUser").val();
-        var userName = $("#ddlUser option:selected").text();
-        var roleId = $("#ddlRole").val();
-
-        if (userId == 0 ) {
-            alert("Please select the user");
-        } else {
-            var isExistingUser = false;
-            $('#userSettingTable > tbody  > tr > td > input[name="documentUserId[]"]').each(function () {
-                if (userId == $(this).val()) {
-                    alert("User is already exist in list.");
-                    isExistingUser = true;
-                }
-            });
-            if (isExistingUser == false) {
-                if (roleId == null) {
-                    alert("Please select the role(s)");
-                } else {
-                    var tmptag = "<tr><td>" +
-                        "<input type='hidden' name='documentUserId[]' value='" + userId + "' />" +
-                        "<h5> " + userName + " </h5>" +
-                        "<input type='hidden' name='documentUserRole[]' value='" + roleId + "' />";
-                    $("#ddlRole option:selected").each(function () {
-                        var $this = $(this);
-                        if ($this.length) {
-                            var selText = $this.text();
-                            tmptag = tmptag + "<span class='label bg-deep-purple'> " + selText +" </span>&nbsp;  ";
-                        }
-                    });
-                    tmptag = tmptag + "</td><td><button type='button' class='btn btn-danger waves-effect'  onclick='RemoveUserRow(this)'>Remove</button></td>";
-                    tmptag = tmptag + "</tr>";
-                    $("#userSettingTable > tbody").append(tmptag);
-                    $("#ddlUser").val(0);
-                    $("#ddlUser").selectpicker('refresh');
-                    $("#ddlRole").val(0);
-                    $("#ddlRole").selectpicker('refresh');
-                }
-            }
-        }
-    });
-
-    function RemoveUserRow(item) {
-        $(item).parent().parent().remove();
-    }
-
-    function loadRole() {
-        var ajaxurl = '@Url.Action("GetActiveRoles", "Rfq")';
-
-         $.ajax({
-            url: ajaxurl,
-            dataType: 'json',
-            success: function (response) {
-                //console.log(response);
-                var obj = response;
-                for (var k in obj) {
-                    var item = obj[k];
-                    $('#ddlRole').append($('<option>', {
-                        value: item.Id,
-                        text: item.Name
-                    }));
-
-                }
-                $("#ddlRole").selectpicker('refresh');
-
-            },
-            error: function (response) {
-                alert(response)
-            }
-
-        });
-    }
-
-    $("#btnLoadSupplier").click(function () {
-        $('#invitedSupplierTable > tbody').empty();
-        loadSupplier(1);
-    });
-
-    function loadSupplier(page) {
-
-     var serviceTagsId = $('#ddlServiceTags').val();
-        var searchSupplier = $('#txtSearchSupplier').val();
-     var stringServiceTagsId = serviceTagsId.toString();
-
-     if (serviceTagsId == null) {
-            alert("Please select the service tags!")
-     } else {
-         $('.page-loader-wrapper').fadeIn();
-            var ajaxurl = '@Url.Action("GetSupplierByServiceTagsId", "Rfq")';
-            $.ajax({
-                url: ajaxurl,
-                data: { serviceTagsId: stringServiceTagsId, page: page, searchKeyword: searchSupplier},
-                dataType: 'json',
-                success: function (response) {
-                    var obj = response.Result.Records;
-                    for (var k in obj) {
-                        var item = obj[k];
-                        var verifyBadge = "<span class='label label-danger'>Unverified</span>";
-                        if (item.IsVerified) {
-                            verifyBadge = "<span class='label label-success'>Verified</span>";
-                        }
-                        $('#invitedSupplierTable > tbody').append(
-                            "<tr>" +
-                            "<td> <a href='@Url.Action("Details","Companies")/"+item.Id+"' target='_blank'> <h5>" + item.Name + "</h5></a>" + verifyBadge+
-                            "<p><i> Industry Certification: "+ item.IndustryCertification +"</i></p> <p class='m-t-15 m-b-30'>" + item.About + "</p></td>" +
-                            "<td><input type='checkbox' class='filled-in supplier' id='chkSupplier_" + item.Id + "'  name='supplier_list' value='" + item.Id + "'> <button type='button' id='btnInvite_" + item.Id + "' class='btn btn-danger' onclick='checkSupplier(" + item.Id + ")'>Select</button></td>" +
-                            "</tr>");
-
-
-                    }
-                    var totalpage = response.Result.TotalPage;
-                    var currentpage = response.Result.CurrentPage;
-                    if (totalpage > currentpage) {
-                        $(".pagination").empty();
-                        $(".pagination").append(" <a class='btn btn-md btn-default' OnClick='loadSupplier(" + response.Result.NextPage + ")'> Load More </a> ");
-                    } else {
-                        $(".pagination").empty();
-
-                    }
-                    $('.page-loader-wrapper').fadeOut();
-                },
-                error: function (response) {
-                    alert(response);
-                    $('.page-loader-wrapper').fadeOut();
-                }
-            });
-     }
-
-    }
-
-    function checkSupplier(n) {
-
-        if ($("#chkSupplier_" + n).prop("checked")) {
-
-            $("#chkSupplier_" + n).prop("checked", false);
-            $("#btnInvite_" + n).removeClass("btn btn-success").addClass("btn btn-danger");
-            $("#btnInvite_" + n).text("Select");
-        } else {
-            $("#chkSupplier_" + n).prop("checked", true);
-            $("#btnInvite_" + n).removeClass("btn btn-danger").addClass("btn btn-success");
-
-            $("#btnInvite_" + n).text("Selected");
-        }
-
-    }
-function loadIndustry() {
-    var ajaxurl = '@Url.Action("GetActiveIndustries", "Rfq")';
-
-    $('#ddlIndustry').append($('<option>', {
-        value: 0,
-        text: '--Select Industry--'
-    }));
-
-    $.ajax({
-        url: ajaxurl,
-        dataType: 'json',
-        success: function (response) {
-            //console.log(response);
-            var obj = response;
-            for (var k in obj) {
-                var item = obj[k];
-                $('#ddlIndustry').append($('<option>', {
-                    value: item.Id,
-                    text: item.Name
-                }));
-            }
-            $("#ddlIndustry").selectpicker('refresh');
-
-        },
-        error: function (response) {
-            alert(response)
-        }
-
-    });
-
-    }
-
-    $("#ddlIndustry").change(function () {
-        var industryId = $('#ddlIndustry').val();
-
-        loadServiceTags(industryId);
-    });
-
-    function loadServiceTags(industryId) {
-        $('#ddlServiceTags').empty();
-        if (industryId == "0") {
-
-            $("#ddlServiceTags").selectpicker('refresh');
-        } else {
-            $('#hdIndustry').val($("#ddlIndustry option:selected").val());
-            //alert($('#hdIndustry').val())
-            var ajaxurl = '@Url.Action("GetServiceTagByIndustry", "Rfq")';
-
-            $.ajax({
-                url: ajaxurl,
-                data: {Id: industryId},
-                dataType: 'json',
-                success: function (response) {
-                    //console.log(response);
-                    var obj = response;
-                    for (var k in obj) {
-                        var item = obj[k];
-                        $('#ddlServiceTags').append($('<option>', {
-                            value: item.Id,
-                            text: item.Name
-                        }));
-                    }
-                    $("#ddlServiceTags").selectpicker('refresh');
-                },
-                error: function (response) {
-                    alert(response)
-                }
-            });
-        }
-    }
 
     $('#btnUploadFile').on('click', function () {
         var ajaxurl = '@Url.Action("UploadTemplate", "Rfq")';

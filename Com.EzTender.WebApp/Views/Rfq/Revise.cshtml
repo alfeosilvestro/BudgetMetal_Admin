@@ -961,10 +961,9 @@
                 //hasPricingQtyBlank = false;
                 if (qty != "") {
                     //hasPricingQtyValid = false;
-                    if (qty === parseInt(qty, 2)) {
-                    } else {
+                    if (isNaN(qty)) {
                         hasPricingQtyValid = true;
-                    }
+                    } 
                 } else {
                     hasPricingQtyBlank = true;
                 }

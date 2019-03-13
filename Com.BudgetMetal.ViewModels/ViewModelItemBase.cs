@@ -13,14 +13,14 @@ namespace Com.BudgetMetal.ViewModels
             set;
         }
 
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dddd dd MMMM yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd.MMM.yyyy}")]
         public DateTime CreatedDate
         {
             get;
             set;
         }
 
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dddd dd MMMM yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd.MMM.yyyy}")]
         public DateTime UpdatedDate
         {
             get;
