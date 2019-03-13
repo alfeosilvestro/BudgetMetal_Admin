@@ -14,7 +14,7 @@ namespace Com.BudgetMetal.ViewModels.Quotation
     {
         public decimal? QuotedFigure { get; set; }
 
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dddd dd MMMM yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd.MMMM.yyyy}")]
         public DateTime? ValidToDate { get; set; }
 
         public string Comments { get; set; }

@@ -36,10 +36,9 @@
                                 <tr>
                                     <th></th>
                                     <th>RFQ No</th>
+                                    <th>Title</th>
                                     <th>Company</th>
                                     <th>Status</th>
-                                    @*<th>Internal Refrence No</th>
-                                    <th>Internal Project Name</th>*@
                                     <th>Industry</th>
                                     <th>Start Date</th>
                                     <th>Closing Date</th>
@@ -58,10 +57,9 @@
                                                 }
                                             </td>
                                             <td>@item.Document.DocumentNo</td>
-                                            <td><a href="@Url.Action("Details","Companies", new { id = item.Document.Company_Id})" target="_blank"> @item.Document.Company.Name</a></td>
+                                            <td>@item.Document.Title</td>
+                                            <td><a href="@Url.Action("Details","Companies", new { id = item.Document.Company.Id})" target="_blank"> @item.Document.Company.Name</a></td>
                                             <td>@item.Document.DocumentStatus.Name</td>
-                                            @*<td>@item.InternalRefrenceNo</td>
-                                            <td>@item.InternalProjectName</td>*@
                                             <td>@item.IndustryOfRfq</td>
                                             <td>@Html.DisplayFor(modelitem => item.StartRfqdate)</td>
                                             <td>@Html.DisplayFor(modelitem => item.ValidRfqdate)</td>

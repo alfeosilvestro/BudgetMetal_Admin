@@ -17,11 +17,11 @@
                 <br />
                 <div id="originalAbout" style="width:100%" rows="15" readonly>@Html.DisplayFor(model => model.About)</div>
                 <ul class="header-dropdown m-r--5">
-                    @*<li class="dropdown">
+                    <li class="dropdown">
                         <a class=" waves-effect waves-block" data-toggle="modal" data-target="#aboutModal">
                             <i class="material-icons">edit</i>
                         </a>
-                    </li>*@
+                    </li>
                 </ul>
             </div>
         </div>
@@ -38,12 +38,12 @@
                 </h2>
                 <ul class="header-dropdown m-r--5">
                     <li class="dropdown">
-                        @*<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             <i class="material-icons">edit</i>
-                        </a>*@
-                        @*<ul class="dropdown-menu pull-right">
+                        </a>
+                        <ul class="dropdown-menu pull-right">
                             <li><a class="waves-effect waves-block" data-toggle="modal" data-target="#addressModal">Edit Address</a></li>
-                        </ul>*@
+                        </ul>
                     </li>
                 </ul>
             </div>
@@ -80,16 +80,16 @@
                     </a>
                     <a href="javascript:void(0);" class="list-group-item">
                         Buyer Avg Rating: <span class="stars">@Html.DisplayFor(model => model.BuyerAvgRating)</span>
-                    </a>                    
+                    </a>
                     @*<a href="javascript:void(0);" class="list-group-item">
-                        Awarded Quotation: <b>@Html.DisplayFor(model => model.AwardedQuotation)</b>
-                    </a>
-                    <a href="javascript:void(0);" class="list-group-item">
-                        Submitted Quotation: <b>@Html.DisplayFor(model => model.SubmittedQuotation)</b>
-                    </a>
-                    <a href="javascript:void(0);" class="list-group-item">
-                        Maximum RFQ Per Week: <b>@Html.DisplayFor(model => model.MaxRFQPerWeek)</b>
-                    </a>*@
+                            Awarded Quotation: <b>@Html.DisplayFor(model => model.AwardedQuotation)</b>
+                        </a>
+                        <a href="javascript:void(0);" class="list-group-item">
+                            Submitted Quotation: <b>@Html.DisplayFor(model => model.SubmittedQuotation)</b>
+                        </a>
+                        <a href="javascript:void(0);" class="list-group-item">
+                            Maximum RFQ Per Week: <b>@Html.DisplayFor(model => model.MaxRFQPerWeek)</b>
+                        </a>*@
                 </div>
             </div>
         </div>
@@ -117,6 +117,84 @@
         </div>
     </div>
     <!-- #END# Button Items -->
+</div>
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-primary">
+                <div class="panel-heading" role="tab" id="headingOne_1">
+                    <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" aria-expanded="false" aria-controls="collapseOne_1" class="collapsed">
+                            User List
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne_1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne_1" aria-expanded="false" style="height: 0px;">
+                    <div class="panel-body">
+                        <div class="body table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th> # </th>
+                                        <th> Name </th>
+                                        <th>Email</th>
+                                        <th>Job Title</th>
+                                        <th>Type</th>
+                                        <th>Is Admin</th>
+                                        <th>Role</th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        int counter = 1;
+                                        string buttonText = "";
+                                        string userRole = "";
+                                        string className = "";
+                                        if (Model.UserList != null)
+                                        {
+                                            foreach (var item in Model.UserList)
+                                            {
+                                                buttonText = (item.IsConfirmed) ? "Active" : "Inactive";
+                                                className = (item.IsConfirmed) ? "btn btn-success" : "btn btn-danger";
+                                                <tr>
+                                                    <td> @counter </td>
+                                                    <td> @item.UserName </td>
+                                                    <td> @item.EmailAddress </td>
+                                                    <td> @item.JobTitle </td>
+                                                    <td> @item.UserType </td>
+                                                    <td> @item.IsConfirmed </td>
+                                                    <td id="UserRoleId_@item.Id">
+                                                        @{
+                                                            userRole = "";
+                                                            if (item.RoleList.Count > 0)
+                                                            {
+                                                                foreach (var roleItem in item.RoleList)
+                                                                {
+                                                                    userRole += "" + roleItem.Id + ",";
+                                                                    <span class='badge bg-cyan'>  @roleItem.Name  </span>
+                                                                }
+                                                            }
+                                                        }
+                                                    </td>
+                                                    <td><button type='button' id='btnInvite_@item.Id' class='@className' data-myval='@buttonText' onclick='checkSupplier(@item.Id)'> @buttonText </button></td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#userRoleModal" data-userRole="@userRole" data-userId="@item.Id">Edit Role</button>
+                                                    </td>
+                                                </tr>
+                                                counter++;
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="row clearfix">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -335,8 +413,8 @@
             var button = $(event.relatedTarget); // Button that triggered the modal
             //var code = button.data('code'); // Extract info from data-* attributes
             var userRole = button.data('userrole'); // Extract info from data-* attributes
-            
-            var userId = button.data('userid'); 
+
+            var userId = button.data('userid');
 
             //alert("userid" + userId + " userrole " + userRole);
             // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
@@ -444,19 +522,19 @@
                 url: ajaxurl,
                 data: { RoleType: roleType},
                 dataType: 'json',
-                success: function (response) {                    
+                success: function (response) {
                     var obj = response;
                     for (var k in obj) {
                         var item = obj[k];
                         var selected = "";
                         var selectedTags = $("#userRole").val();
-                        
+
                         var array = selectedTags.split(',');
                         array.forEach(function (i) {
                             if (i == item.Id) {
                                 selected = "selected";
                             }
-                        });                        
+                        });
                         var tmpstring = "<option value='" + item.Id + "' " + selected + ">" + item.Name + "</option>"
                         $('#ddluserRole').append(tmpstring);
                     }

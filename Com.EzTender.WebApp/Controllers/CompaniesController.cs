@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Com.BudgetMetal.Common;
 using Com.BudgetMetal.Services.Company;
 using Com.BudgetMetal.Services.Roles;
 using Com.BudgetMetal.ViewModels.Company;
@@ -43,12 +44,31 @@ namespace Com.EzTender.WebApp.Controllers
             var result = await svs.GetSupplierByCompany(id, page, keyword);
             ViewData["keyword"] = keyword;
             return View(result);
-        }        
+        }
 
         // GET: Companies/Details/5
-        public async Task<IActionResult> Details()
+        public async Task<IActionResult> Profile()
         {
             int id = Convert.ToInt32(HttpContext.Session.GetString("Company_Id"));
+            var User_Id = HttpContext.Session.GetString("User_Id");
+            var userRoles = JsonConvert.DeserializeObject<List<BudgetMetal.ViewModels.Role.VmRoleItem>>(HttpContext.Session.GetString("SelectedRoles"));
+            bool isCompanyAdmin = false;
+            if (userRoles.Where(e => e.Id == Constants.C_Admin_Role).ToList().Count > 0)
+            {
+                isCompanyAdmin = true;
+            }
+            ViewData["isAdmin"] = isCompanyAdmin;
+            VmCompanyItem item = await svs.GetCompanyProfileById(id);
+
+            if (item == null)
+            {
+                return NotFound();
+            }
+            return View(item);
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
             VmCompanyItem item = await svs.GetCompanyProfileById(id);
 
             if (item == null)
