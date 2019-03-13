@@ -1028,7 +1028,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
 
                         if (tfProcess)
                         {
-                            if (!string.IsNullOrEmpty(row.GetCell(1).ToString()) && !string.IsNullOrEmpty(row.GetCell(2).ToString()) && !string.IsNullOrEmpty(row.GetCell(3).ToString()))
+                            if (!string.IsNullOrEmpty(row.GetCell(1).ToString()) || !string.IsNullOrEmpty(row.GetCell(2).ToString()) || !string.IsNullOrEmpty(row.GetCell(3).ToString()))
                             {
                                 var resultItem = new VmRfqPriceScheduleItem();
                                 resultItem.ItemName = row.GetCell(1).ToString();
@@ -1081,7 +1081,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
                         if (tfProcess)
                         {
                             var resultItem = new VmRfqPriceScheduleItem();
-                            if (!string.IsNullOrEmpty(row.GetCell(1).ToString()) && !string.IsNullOrEmpty(row.GetCell(2).ToString()) && !string.IsNullOrEmpty(row.GetCell(3).ToString()))
+                            if (!string.IsNullOrEmpty(row.GetCell(1).ToString()) || !string.IsNullOrEmpty(row.GetCell(2).ToString()) || !string.IsNullOrEmpty(row.GetCell(3).ToString()))
                             {
                                 resultItem.ItemName = row.GetCell(1).ToString();
                                 resultItem.ItemDescription = row.GetCell(2).ToString();
@@ -1132,7 +1132,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
                         if (tfProcess)
                         {
                             var resultItem = new VmRfqPriceScheduleItem();
-                            if (!string.IsNullOrEmpty(row.GetCell(1).ToString()) && !string.IsNullOrEmpty(row.GetCell(2).ToString()) && !string.IsNullOrEmpty(row.GetCell(3).ToString()))
+                            if (!string.IsNullOrEmpty(row.GetCell(1).ToString()) || !string.IsNullOrEmpty(row.GetCell(2).ToString()) || !string.IsNullOrEmpty(row.GetCell(3).ToString()))
                             {
                                 resultItem.ItemName = row.GetCell(1).ToString();
                                 resultItem.ItemDescription = row.GetCell(2).ToString();
@@ -1213,7 +1213,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
                     if (row.Cells.All(d => d.CellType == CellType.Blank)) continue;
                     try
                     {
-                        if (!string.IsNullOrEmpty(row.GetCell(1).ToString()) && !string.IsNullOrEmpty(row.GetCell(2).ToString()))
+                        if (!string.IsNullOrEmpty(row.GetCell(1).ToString()) || !string.IsNullOrEmpty(row.GetCell(2).ToString()))
                         {
                             var resultItem = new VmPenaltyItem();
                             resultItem.BreachOfServiceDefinition = row.GetCell(1).ToString();
@@ -1254,7 +1254,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
                     try
                     {
                         var resultItem = new VmSlaItem();
-                        if (!string.IsNullOrEmpty(row.GetCell(1).ToString()) && !string.IsNullOrEmpty(row.GetCell(2).ToString()))
+                        if (!string.IsNullOrEmpty(row.GetCell(1).ToString()) || !string.IsNullOrEmpty(row.GetCell(2).ToString()))
                         {
                             resultItem.Requirement = row.GetCell(1).ToString();
                             resultItem.Description = row.GetCell(2).ToString();
@@ -1293,7 +1293,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
                     try
                     {
                         var resultItem = new VmRequirementItem();
-                        if (!string.IsNullOrEmpty(row.GetCell(1).ToString()) && !string.IsNullOrEmpty(row.GetCell(2).ToString()))
+                        if (!string.IsNullOrEmpty(row.GetCell(1).ToString()) || !string.IsNullOrEmpty(row.GetCell(2).ToString()))
                         {
                             resultItem.ServiceName = row.GetCell(1).ToString();
                             resultItem.Description = row.GetCell(2).ToString();
