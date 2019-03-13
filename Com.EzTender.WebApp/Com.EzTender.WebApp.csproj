@@ -133,6 +133,12 @@
     <Content Update="Views\RfqAccessByEmail\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Rfq\CreateTemplate.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Rfq\TemplateListing.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Rfq\Revise.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

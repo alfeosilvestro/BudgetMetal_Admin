@@ -9,6 +9,8 @@ namespace Com.BudgetMetal.DataRepository.Document
     {
         int GetRfqCountByCompany(int companyId);
 
+        int GetRfqTemplateCountByCompany(int companyId);
+
         int GetQuotationCountByCompany(int companyId);
 
         int GetRfqCountByCompanyAndWorkingPeriod(int companyId, string workingPeriod);

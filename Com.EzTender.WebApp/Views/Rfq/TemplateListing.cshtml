@@ -1,0 +1,129 @@
+﻿@model Com.BudgetMetal.ViewModels.Rfq.VmRfqPage
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="block-header">
+    <h2>Request for Quotation</h2>
+</div>
+
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    List
+
+                </h2>
+
+            </div>
+            <div class="body">
+                @{
+                    if (TempData["message"] != null)
+                    {
+                    <div class="alert alert-warning alert-dismissible" role="alert">
+                        <button class="close" aria-label="Close" type="button" data-dismiss="alert"><span aria-hidden="true">×</span></button>
+                        @TempData["message"]
+                    </div>
+                    }
+                }
+
+                <div class="row clearfix">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>RFQ No</th>
+                                    <th>Company</th>
+                                    <th>Status</th>
+                                    @*<th>Internal Refrence No</th>
+                                        <th>Internal Project Name</th>*@
+                                    <th>Industry</th>
+                                    <th>Start Date</th>
+                                    <th>Closing Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    foreach (var item in Model.Result.Records)
+                                    {
+                                    <tr>
+                                        <td>
+                                            <a type="button" class="btn btn-warning" href='@Url.Action("View","Rfq",new { id= item.Id })'>View</a>
+                                            @if (item.Document.DocumentStatus_Id == Com.BudgetMetal.Common.Constants_CodeTable.Code_RFQ_Draft)
+                                                {
+                                            <a type="button" class="btn btn-warning" href='@Url.Action("Edit","Rfq",new { id= item.Id })'>Edit</a>
+                                                }
+                                        </td>
+                                        <td>@item.Document.DocumentNo</td>
+                                        <td><a href="@Url.Action("Details","Companies", new { id = item.Document.Company_Id})" target="_blank"> @item.Document.Company.Name</a></td>
+                                        <td>@item.Document.DocumentStatus.Name</td>
+                                        @*<td>@item.InternalRefrenceNo</td>
+                                            <td>@item.InternalProjectName</td>*@
+                                        <td>@item.IndustryOfRfq</td>
+                                        <td>@Html.DisplayFor(modelitem => item.StartRfqdate)</td>
+                                        <td>@Html.DisplayFor(modelitem => item.ValidRfqdate)</td>
+                                    </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                        <div class="row">
+                            <div class="col-sm-12">
+
+                                @if (Model.Result.TotalPage > 1)
+                                {
+                                    int currentPage = Model.Result.CurrentPage;
+                                    int totalPage = Model.Result.TotalPage;
+                                    int previousPage = Model.Result.PreviousPage;
+                                    int nextPage = Model.Result.NextPage;
+
+                                    var startPage = currentPage - 5;
+                                    var endPage = currentPage + 4;
+                                    if (currentPage < 6)
+                                    {
+                                        startPage = 1;
+                                    }
+                                    if (totalPage < endPage)
+                                    {
+                                        endPage = totalPage;
+                                    }
+                                <ul class="pagination">
+                                    @if (Model.Result.CurrentPage > 1)
+                                        {
+                                    <li>
+                                        <a href="?page=1">First</a>
+                                    </li>
+                                    <li>
+                                        <a href="?page=@(Model.Result.CurrentPage - 1)">Previous</a>
+                                    </li>
+                                        }
+
+                                    @for (var page = startPage; page <= endPage; page++)
+                                        {
+                                    <li class="@(page == currentPage ? "active" : "")">
+                                        <a href="?page=@(page)"> @(page) </a>
+                                    </li>
+                                        }
+
+                                    @if (currentPage < totalPage)
+                                        {
+                                    <li>
+                                        <a href="?page=@(currentPage + 1)">Next</a>
+                                    </li>
+                                    <li>
+                                        <a href="?page=@(totalPage)">Last</a>
+                                    </li>
+                                        }
+                                </ul>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
