@@ -501,6 +501,11 @@
                 invalidMessage += "Bid Price should not be blank. \n";
             }
 
+            var validToDate = $('#ValidToDate').val();
+            if (validToDate == "") {
+                invalidMessage += "Valid until date should not be blank. \n";
+            }
+
             if (invalidMessage == "") {
                 $('.page-loader-wrapper').fadeIn();
                 $("#frmCreateQuotation").submit();
