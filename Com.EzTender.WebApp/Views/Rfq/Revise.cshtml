@@ -185,9 +185,7 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
-
                         </div>
                         <div role="tabpanel" class="tab-pane fade in" id="detailed_requirements">
                             <input type="hidden" id="detailRequirementLastId" value="@Model.Requirement.Count" />
@@ -210,13 +208,8 @@
                                             {
                                                 <tr>
                                                     <td>@countRequirement</td>
-                                                    <td>
-                                                        <input type="text" name="Requirement[@i].ServiceName" class="form-control requirement" value="@item.ServiceName" />
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" name="Requirement[@i].Description" class="form-control" value="@item.Description" />
-                                                    </td>
-
+                                                    <td><input type="text" name="Requirement[@i].ServiceName" class="form-control requirement" value="@item.ServiceName" /></td>
+                                                    <td><textarea rows="3" name="Requirement[@i].Description" class="form-control"> @item.Description </textarea></td>
                                                     <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveRequirementRow(this)'>Remove</button></td>
                                                 </tr>
                                                 i++;
@@ -224,15 +217,12 @@
                                             }
                                         }
                                     }
-
                                 </tbody>
-
                             </table>
                             <div class="row">
                                 <div class="form-group col-sm-12">
                                     <a class="btn btn-success" id="btnNewRequirement"> Add Requirement </a>
                                 </div>
-
                             </div>
                         </div>
                         <div role="tabpanel" class="tab-pane fade in" id="service_level_agreement">
@@ -257,7 +247,7 @@
                                                 <tr>
                                                     <td>@countSla</td>
                                                     <td><input type="text" name="Sla[@i].Requirement" class="form-control support" value="@item.Requirement" /></td>
-                                                    <td><input type="text" name="Sla[@i].Description" class="form-control" value="@item.Description" /></td>
+                                                    <td><textarea name="Sla[@i].Description" class="form-control"> @item.Description </textarea></td>
                                                     <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveSLARow(this)'>Remove</button></td>
                                                 </tr>
                                                 i++;
@@ -299,7 +289,7 @@
                                                     <td>@countPenalty</td>
                                                     <td><input type="text" name="Penalty[@i].BreachOfServiceDefinition" class="form-control commercial" value="@item.BreachOfServiceDefinition" /></td>
                                                     @*<td><input type="text" name="Penalty[@i].PenaltyAmount" class="form-control" value="@item.PenaltyAmount" /></td>*@
-                                                    <td><input type="text" name="Penalty[@i].Description" class="form-control" value="@item.Description" /></td>
+                                                    <td><textarea rows="3" name="Penalty[@i].Description" class="form-control"> @item.Description </textarea></td>
                                                     <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePenaltyRow(this)'>Remove</button></td>
                                                 </tr>
                                                 i++;
@@ -308,7 +298,6 @@
                                         }
                                     }
                                 </tbody>
-
                             </table>
                             <div class="row">
                                 <div class="form-group col-sm-12">
@@ -345,7 +334,7 @@
                                                 <tr>
                                                     <td>@countPrice</td>
                                                     <td><input type="text" name="RfqPriceSchedule[@i].ItemName" class="form-control pricing" value="@item.ItemName" /> </td>
-                                                    <td><input type="text" name="RfqPriceSchedule[@i].ItemDescription" class="form-control" value="@item.ItemDescription" /></td>
+                                                    <td><textarea rows="3" name="RfqPriceSchedule[@i].ItemDescription" class="form-control"> @item.ItemDescription </textarea></td>
                                                     @*<td><input type="text" name="RfqPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>*@
                                                     <td>
                                                         <input type="text" name="RfqPriceSchedule[@i].QuantityRequired" class="form-control pricingQty" value="@item.QuantityRequired" />
@@ -359,7 +348,6 @@
                                             j = i;
                                         }
                                     }
-
                                 </tbody>
                             </table>
                             <div class="row">
@@ -391,7 +379,7 @@
                                                 <tr>
                                                     <td>@countPriceService</td>
                                                     <td><input type="text" name="RfqPriceSchedule[@i].ItemName" class="form-control pricing" value="@item.ItemName" /> </td>
-                                                    <td><input type="text" name="RfqPriceSchedule[@i].ItemDescription" class="form-control" value="@item.ItemDescription" /></td>
+                                                    <td><textarea rows="3" name="RfqPriceSchedule[@i].ItemDescription" class="form-control"> @item.ItemDescription </textarea></td>
                                                     @*<td><input type="text" name="RfqPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>*@
                                                     <td>
                                                         <input type="text" name="RfqPriceSchedule[@i].QuantityRequired" class="form-control pricingQty" value="@item.QuantityRequired" />
@@ -436,7 +424,7 @@
                                                 <tr>
                                                     <td>@countPriceWarranty</td>
                                                     <td><input type="text" name="RfqPriceSchedule[@i].ItemName" class="form-control pricing" value="@item.ItemName" /> </td>
-                                                    <td><input type="text" name="RfqPriceSchedule[@i].ItemDescription" class="form-control" value="@item.ItemDescription" /></td>
+                                                    <td><textarea rows="3" name="RfqPriceSchedule[@i].ItemDescription" class="form-control"> @item.ItemDescription </textarea></td>
                                                     @*<td><input type="text" name="RfqPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>*@
                                                     <td>
                                                         <input type="text" name="RfqPriceSchedule[@i].QuantityRequired" class="form-control pricingQty" value="@item.QuantityRequired" />
@@ -563,13 +551,10 @@
                                                         @{
                                                             foreach (string tmpRole in item.Roles)
                                                             {
-
                                                                 <span class='label bg-deep-purple'>@tmpRole</span>
                                                             }
                                                         }
-
                                                     </td>
-
                                                     <td>
                                                         @{
                                                             if (i > 0)
@@ -614,18 +599,14 @@
                                             }
                                         }
                                     </tbody>
-
                                 </table>
                                 <div class="row">
                                     <div class="form-group col-sm-12">
                                         <a class="btn btn-success" id="btnRfqEmailsInvites"> New Email Invite </a>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
                 </div>
             </div>

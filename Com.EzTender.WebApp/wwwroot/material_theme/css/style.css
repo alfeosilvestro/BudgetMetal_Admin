@@ -8143,3 +8143,7 @@ html.ie11 .bs-searchbox .form-control {
     .timeline-inverse > li > .timeline-item > .timeline-header {
         border-bottom-color: #ddd
     }
+
+textarea {
+    resize: vertical;
+}

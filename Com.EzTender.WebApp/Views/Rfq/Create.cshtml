@@ -197,7 +197,7 @@
                                     <tr>
                                         <td>1</td>
                                         <td><input type="text" asp-for="Requirement[0].ServiceName" class="form-control requirement" /></td>
-                                        <td><input type="text" asp-for="Requirement[0].Description" class="form-control" /></td>
+                                        <td><textarea rows="3" asp-for="Requirement[0].Description" class="form-control"></textarea></td>
                                         <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveRequirementRow(this)'>Remove</button></td>
                                     </tr>
                                 </tbody>
@@ -224,7 +224,7 @@
                                     <tr>
                                         <td>1</td>
                                         <td><input type="text" asp-for="Sla[0].Requirement" class="form-control support" /></td>
-                                        <td><input type="text" asp-for="Sla[0].Description" class="form-control" /></td>
+                                        <td><textarea rows="3" asp-for="Sla[0].Description" class="form-control"></textarea></td>
                                         <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveSLARow(this)'>Remove</button></td>
                                     </tr>
                                 </tbody>
@@ -252,7 +252,7 @@
                                         <td>1</td>
                                         <td><input type="text" asp-for="Penalty[0].BreachOfServiceDefinition" class="form-control commercial" /></td>
                                         @*<td><input type="text" asp-for="Penalty[0].PenaltyAmount" class="form-control" /></td>*@
-                                        <td><input type="text" asp-for="Penalty[0].Description" class="form-control" /></td>
+                                        <td><textarea rows="3" asp-for="Penalty[0].Description" class="form-control"></textarea></td>
                                         <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePenaltyRow(this)'>Remove</button></td>
                                     </tr>
                                 </tbody>
@@ -281,7 +281,8 @@
                                     <tr>
                                         <td>1</td>
                                         <td><input type="text" asp-for="RfqPriceSchedule[0].ItemName" class="form-control pricing" /></td>
-                                        <td><input type="text" asp-for="RfqPriceSchedule[0].ItemDescription" class="form-control" /></td>
+                                        @*<td><input type="text" asp-for="RfqPriceSchedule[0].ItemDescription" class="form-control" /></td>*@
+                                        <td><textarea rows="3" asp-for="RfqPriceSchedule[0].ItemDescription" class="form-control"></textarea></td>
                                         @*<td><input type="text" asp-for="RfqPriceSchedule[0].InternalRefrenceCode" class="form-control" /></td>*@
                                         <td>
                                             <input type="text" asp-for="RfqPriceSchedule[0].QuantityRequired" class="form-control pricingQty" />
@@ -315,7 +316,7 @@
                                     <tr>
                                         <td>1</td>
                                         <td><input type="text" asp-for="RfqPriceSchedule[1].ItemName" class="form-control" /></td>
-                                        <td><input type="text" asp-for="RfqPriceSchedule[1].ItemDescription" class="form-control" /></td>
+                                        <td><textarea rows="3" asp-for="RfqPriceSchedule[1].ItemDescription" class="form-control"></textarea></td>
                                         @*<td><input type="text" asp-for="RfqPriceSchedule[1].InternalRefrenceCode" class="form-control" /></td>*@
                                         <td>
                                             <input type="text" asp-for="RfqPriceSchedule[1].QuantityRequired" class="form-control pricingQty" />
@@ -346,7 +347,7 @@
                                     <tr>
                                         <td>1</td>
                                         <td><input type="text" asp-for="RfqPriceSchedule[2].ItemName" class="form-control" /></td>
-                                        <td><input type="text" asp-for="RfqPriceSchedule[2].ItemDescription" class="form-control" /></td>
+                                        <td><textarea rows="3" asp-for="RfqPriceSchedule[2].ItemDescription" class="form-control"></textarea></td>
                                         @*<td><input type="text" asp-for="RfqPriceSchedule[2].InternalRefrenceCode" class="form-control" /></td>*@
                                         <td>
                                             <input type="text" asp-for="RfqPriceSchedule[2].QuantityRequired" class="form-control pricingQty" />
@@ -1122,8 +1123,8 @@ function loadIndustry() {
                         $('#requirementsTableBody').append(
                             "<tr> <td></td>" +
                             "<td>" + "<input type='text' name='Requirement[" + i + "].ServiceName' class='form-control requirement' value='" + response.List_Requirement[i].ServiceName + "'/></td>" +
-                                "<td>" + "<input type='text' name='Requirement[" + i + "].Description' class='form-control' value='" + response.List_Requirement[i].Description + "'/></td>" +
-                                "<td><button type='button' class='btn btn-danger waves-effect' onclick='RemoveRequirementRow(this)'>Remove</button></td>" +
+                            "<td>" + "<textarea rows='3' name='Requirement[" + i + "].Description' class='form-control'>" + response.List_Requirement[i].Description + "</textarea></td>" +
+                            "<td><button type='button' class='btn btn-danger waves-effect' onclick='RemoveRequirementRow(this)'>Remove</button></td>" +
                              "<tr> "
                         );
                     }
@@ -1140,7 +1141,7 @@ function loadIndustry() {
                         $('#slaTableBody').append(
                             "<tr> <td></td>" +
                             "<td>" + "<input type='text' name='Sla[" + i + "].Requirement' class='form-control support' value='" + response.List_SLA[i].Requirement + "'/></td>" +
-                            "<td>" + "<input type='text' name='Sla[" + i + "].Description' class='form-control' value='" + response.List_SLA[i].Description + "'/></td>" +
+                            "<td>" + "<textarea rows='3' name='Sla[" + i + "].Description' class='form-control'>" + response.List_SLA[i].Description + "</textarea></td>" +
                             "<td><button type='button' class='btn btn-danger waves-effect' onclick='RemoveSLARow(this)'>Remove</button></td>" +
                             "<tr> "
                         );
@@ -1158,7 +1159,7 @@ function loadIndustry() {
                             "<tr><td></td> " +
                             "<td>" + "<input type='text' name='Penalty[" + i + "].BreachOfServiceDefinition' class='form-control commercial' value='" + response.List_Panalty[i].BreachOfServiceDefinition + "'/></td>" +
                             //"<td>" + "<input type='text' name='Penalty[" + i + "].PenaltyAmount' class='form-control' value='" + response.List_Panalty[i].PenaltyAmount + "'/></td>" +
-                            "<td>" + "<input type='text' name='Penalty[" + i + "].Description' class='form-control' value='" + response.List_Panalty[i].Description + "'/></td>" +
+                            "<td>" + "<textarea rows='3' name='Penalty[" + i + "].Description' class='form-control'>" + response.List_Panalty[i].Description + "</textarea></td>" +
                             "<td><button type='button' class='btn btn-danger waves-effect' onclick='RemovePenaltyRow(this)'>Remove</button></td>" +
                             "<tr> "
                         );
@@ -1177,7 +1178,7 @@ function loadIndustry() {
                             $('#pricingTableBody').append(
                                 "<tr><td></td> " +
                                 "<td>" + "<input type='text' name='RfqPriceSchedule[" + pcount + "].ItemName' class='form-control pricing' value='" + response.List_Pricing[i].ItemName + "'/></td>" +
-                                "<td>" + "<input type='text' name='RfqPriceSchedule[" + pcount + "].ItemDescription' class='form-control' value='" + response.List_Pricing[i].ItemDescription + "'/></td>" +
+                                "<td>" + "<textarea rows='3' name='RfqPriceSchedule[" + pcount + "].ItemDescription' class='form-control'>" + response.List_Pricing[i].ItemDescription + "</textarea></td>" +
                                 //"<td>" + "<input type='text' name='RfqPriceSchedule[" + pcount + "].InternalRefrenceCode' class='form-control' value='" + response.List_Pricing[i].InternalRefrenceCode + "'/></td>" +
                                 "<td>" +
                                 "<input type='text' name='RfqPriceSchedule[" + pcount + "].QuantityRequired' class='form-control pricingQty' value='" + response.List_Pricing[i].QuantityRequired + "'/>" +
@@ -1199,7 +1200,7 @@ function loadIndustry() {
                         $('#pricingWarrantyTableBody').append(
                             "<tr><td></td> " +
                             "<td>" + "<input type='text' name='RfqPriceSchedule[" + pcount + "].ItemName' class='form-control pricing' value='" + response.List_Service_Pricing[i].ItemName + "'/></td>" +
-                            "<td>" + "<input type='text' name='RfqPriceSchedule[" + pcount + "].ItemDescription' class='form-control' value='" + response.List_Service_Pricing[i].ItemDescription + "'/></td>" +
+                            "<td>" + "<textarea rows='3' name='RfqPriceSchedule[" + pcount + "].ItemDescription' class='form-control'>" + response.List_Service_Pricing[i].ItemDescription + "</textarea></td>" +
                             //"<td>" + "<input type='text' name='RfqPriceSchedule[" + pcount + "].InternalRefrenceCode' class='form-control' value='" + response.List_Service_Pricing[i].InternalRefrenceCode + "'/></td>" +
                             "<td>" +
                             "<input type='text' name='RfqPriceSchedule[" + pcount + "].QuantityRequired' class='form-control pricingQty' value='" + response.List_Service_Pricing[i].QuantityRequired + "'/>" +
@@ -1220,7 +1221,7 @@ function loadIndustry() {
                         $('#pricingServiceTableBody').append(
                             "<tr><td></td> " +
                             "<td>" + "<input type='text' name='RfqPriceSchedule[" + pcount + "].ItemName' class='form-control pricing' value='" + response.List_Waranty_Pricing[i].ItemName + "'/></td>" +
-                            "<td>" + "<input type='text' name='RfqPriceSchedule[" + pcount + "].ItemDescription' class='form-control' value='" + response.List_Waranty_Pricing[i].ItemDescription + "'/></td>" +
+                            "<td>" + "<textarea rows='3' name='RfqPriceSchedule[" + pcount + "].ItemDescription' class='form-control'> " + response.List_Waranty_Pricing[i].ItemDescription + " </textarea></td>" +
                             //"<td>" + "<input type='text' name='RfqPriceSchedule[" + pcount + "].InternalRefrenceCode' class='form-control' value='" + response.List_Waranty_Pricing[i].InternalRefrenceCode + "'/></td>" +
                             "<td>" +
                             "<input type='text' name='RfqPriceSchedule[" + pcount + "].QuantityRequired' class='form-control pricingQty' value='" + response.List_Waranty_Pricing[i].QuantityRequired + "'/>" +
