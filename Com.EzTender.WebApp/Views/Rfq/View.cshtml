@@ -9,6 +9,22 @@
     string Code_C_Buyer = Com.BudgetMetal.Common.Constants_CodeTable.Code_C_Buyer.ToString();
     string UserName = Context.Session.GetString("UserName");
 }
+<style>
+    .pricingColspan {
+        background-color: #282828;
+        color:white;
+    }
+
+    .totalPricing {
+        font-weight: bolder;
+        text-align:right;
+    }
+
+    .companyColumn {
+        background-color: #bdbdbd;
+        width:50px;
+    }
+</style>
 <form asp-controller="Rfq" asp-action="View" method="post" enctype="multipart/form-data" id="frmCreateRFQ">
     <div class="block-header">
         <h2>Prepare Request for Quotation</h2>
@@ -243,62 +259,11 @@
                             @{
                                 if (Code_C_Buyer == currentCompanyType)
                                 {
-                                    <button class="btn btn-default waves-effect m-r-20" type="button" data-target="#requirementCompareModal" data-toggle="modal">Requirement Comparison</button>
+                                    <button class="btn btn-default waves-effect m-r-20" type="button" id="btnCompareRequirement">Requirement Comparison</button>
                                 }
                             }
 
-                            <div tabindex="-1" class="modal fade in" id="requirementCompareModal" role="dialog" aria-labelledby="requirementCompareModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-lg" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h4 class="modal-title" id="largeModalLabel">Requirement Comparison</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="table-responsive">
-                                                <table class="table table-bordered table-striped">
-                                                    <thead>
-                                                        <tr>
-                                                            <td></td>
-                                                            @{
-                                                                if (Model.Requirement != null)
-                                                                {
-                                                                    foreach (var item in Model.Requirement)
-                                                                    {
-                                                                        <td>@item.ServiceName</td>
-                                                                    }
-                                                                }
-                                                            }
-                                                        </tr>
-
-                                                    </thead>
-                                                    <tbody>
-                                                        @{
-                                                            if (Model.RequirementComparison != null)
-                                                            {
-                                                                foreach (var item in Model.RequirementComparison)
-                                                                {
-                                                                    <tr>
-                                                                        @{
-                                                                            foreach (var subitem in item)
-                                                                            {
-                                                                                <td>@subitem</td>
-                                                                            }
-                                                                        }
-                                                                    </tr>
-                                                                }
-                                                            }
-                                                        }
-                                                    </tbody>
-                                                </table>
-                                            </div>
-
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button class="btn btn-link waves-effect" type="button" data-dismiss="modal">CLOSE</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            
                         </div>
                         <div role="tabpanel" class="tab-pane fade in" id="service_level_agreement">
                             <table id="slaTable" class="table table-striped">
@@ -469,60 +434,11 @@
                             @{
                                 if (Code_C_Buyer == currentCompanyType)
                                 {
-                                    <button class="btn btn-default waves-effect m-r-20" type="button" data-target="#priceCompareModal" data-toggle="modal">Price Comparison</button>
+                                    <button class="btn btn-default waves-effect m-r-20" id="btnComparePricing" type="button" >Price Comparison</button>
                                 }
                             }
 
-                            <div tabindex="-1" class="modal fade in" id="priceCompareModal" role="dialog" aria-labelledby="priceCompareModalLabel" aria-hidden="true">
-
-                                <div class="modal-dialog modal-lg" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h4 class="modal-title" id="largeModalLabel">Price Comparison</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="table-responsive">
-                                                <table class="table table-bordered table-striped">
-                                                    <thead>
-                                                        <tr>
-                                                            <td></td>
-                                                            @{
-                                                                if (Model.RfqPriceSchedule != null)
-                                                                {
-                                                                    foreach (var item in Model.RfqPriceSchedule)
-                                                                    {
-                                                                        <td>@item.ItemName</td>
-                                                                    }
-                                                                }
-                                                            }
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @{
-                                                            if (Model.PriceComparison != null)
-                                                            {
-                                                                foreach (var item in Model.PriceComparison)
-                                                                {
-                                                                    <tr>
-                                                                        @{
-                                                                            foreach (var subitem in item)
-                                                                            {
-                                                                                <td>@subitem</td>
-                                                                            }
-                                                                        }
-                                                                    </tr>
-                                                                }
-                                                            }
-                                                        }
-                                                </table>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button class="btn btn-link waves-effect" type="button" data-dismiss="modal">CLOSE</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            
 
                         </div>
 
@@ -711,6 +627,9 @@
 
                         </div>
                     </div>
+
+
+
                 </div>
             </div>
         </div>
@@ -722,9 +641,18 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
                         <div class="header">
-                            <h2>
-                                Quotation List
-                            </h2>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <h2>
+                                        Quotation List
+                                        <button class="btn btn-default waves-effect m-r-20" id="btnCompare" type="button">Comparison</button>
+                                    </h2>
+                                </div>
+                                <div class="col-sm-5">
+                                    
+                                </div>
+                            </div>
+                           
                         </div>
                         <div class="body">
 
@@ -926,6 +854,240 @@
     </div>
 </div>
 
+<div tabindex="-1" class="modal fade in" id="CompareModal" role="dialog" aria-labelledby="CompareModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="largeModalLabel">Comparison</h4>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs tab-nav-right" role="tablist">
+                    <li role="presentation" class="active"><a href="#compare_requirements" id="nav_requirementcompare" data-toggle="tab">Requirements</a></li>
+                    <li role="presentation"><a href="#compare_pricing" data-toggle="tab" id="nav_pricingcompare">Pricing</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade in active" id="compare_requirements">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th style="width:100px;"></th>
+                                        @{
+                                            if (Model.RequirementComparison != null)
+                                            {
+                                                int i =2;
+                                                foreach (var item in Model.RequirementComparison)
+                                                {
+                                                    string className = "";
+                                                    if(i%2== 0)
+                                                    {
+                                                        className = "companyColumn";
+                                                    }
+                                                    i++;
+                                                    <th class="@className" style="width:50px;">@(item[0])</th>
+                                                }
+                                        }
+                                        }
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (Model.Requirement != null)
+                                        {
+                                            int j = 1;
+                                            foreach (var item in Model.Requirement)
+                                            {
+                                                <tr>
+                                                    <td> @(item.ServiceName)</td>
+
+                                                    @{
+                                                        int i = 2;
+                                                        foreach (var subitem in Model.RequirementComparison)
+                                                        {
+                                                            string className = "";
+                                                            if (i % 2 == 0)
+                                                            {
+                                                                className = "companyColumn";
+                                                            }
+                                                            i++;
+                                                            <td  class="@className">@(subitem[j])</td>
+                                                        }
+                                                    }
+                                                </tr>
+                                                j++;
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="compare_pricing">
+                        <div class="table-responsive">
+                            @{
+                                int countForColspan = 1;
+                                if (Model.TotalPriceComparison != null)
+                                {
+                                    countForColspan = countForColspan + Model.TotalPriceComparison.Count;
+                                }
+                            }
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th style="width:100px;"></th>
+                                        @{
+                                            if (Model.ProductPriceComparison != null)
+                                            {
+                                                int i = 2;
+                                                foreach (var item in Model.ProductPriceComparison)
+                                                {
+                                                    string className = "";
+                                                    if (i % 2 == 0)
+                                                    {
+                                                        className = "companyColumn";
+                                                    }
+                                                    i++;
+                                                    <th class="@(className)"  style="width:50px;">@(item[0])</th>
+                                                }
+                                        }
+                                        }
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                    <tr >
+                                        <td class="pricingColspan" colspan="@countForColspan">Product</td>
+                                    </tr>
+                                    @{
+                                        if (Model.RfqPriceSchedule != null)
+                                        {
+                                            int j = 1;
+                                            foreach (var item in Model.RfqPriceSchedule.Where(e => e.CategoryId == Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Product).ToList())
+                                            {
+                                                <tr>
+                                                    <td> @(item.ItemName)</td>
+
+                                                    @{
+                                                        int i = 2;
+                                                        foreach (var subitem in Model.ProductPriceComparison)
+                                                        {
+                                                            string className = "";
+                                                            if (i % 2 == 0)
+                                                            {
+                                                                className = "companyColumn";
+                                                            }
+                                                            i++;
+                                                            <td class="@(className)"><p class="pull-right">@(subitem[j]) </p> </td>
+                                                        }
+                                                    }
+                                                </tr>
+                                                j++;
+                                            }
+                                        }
+                                    }
+                                    <tr >
+                                        <td class="pricingColspan" colspan="@countForColspan">Service</td>
+                                    </tr>
+                                    @{
+                                        if (Model.RfqPriceSchedule != null)
+                                        {
+                                            int j =1;
+                                            foreach (var item in Model.RfqPriceSchedule.Where(e => e.CategoryId == Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Service).ToList())
+                                            {
+                                                <tr>
+                                                    <td> @(item.ItemName)</td>
+
+                                                    @{
+                                                        int i =2;
+                                                        foreach (var subitem in Model.ServicePriceComparison)
+                                                        {
+                                                            string className = "";
+                                                            if (i % 2 == 0)
+                                                            {
+                                                                className = "companyColumn";
+                                                            }
+                                                            i++;
+                                                            <td class="@(className)"><p class="pull-right">@(subitem[j])</p> </td>
+                                                        }
+                                                    }
+                                                </tr>
+                                                j++;
+                                            }
+                                        }
+                                    }
+                                    <tr>
+                                        <td  class="pricingColspan" colspan="@countForColspan">Warranty</td>
+                                    </tr>
+                                    @{
+                                        if (Model.RfqPriceSchedule != null)
+                                        {
+                                            int j = 1;
+                                            foreach (var item in Model.RfqPriceSchedule.Where(e => e.CategoryId == Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Warranty).ToList())
+                                            {
+                                                <tr>
+                                                    <td> @(item.ItemName)</td>
+
+                                                    @{
+                                                        int i = 2;
+                                                        foreach (var subitem in Model.WarrantyPriceComparison)
+                                                        {
+                                                            string className = "";
+                                                            if (i % 2 == 0)
+                                                            {
+                                                                className = "companyColumn";
+                                                            }
+                                                            i++;
+                                                            <td class="@(className)"><p class="pull-right">@(subitem[j])</p> </td>
+                                                        }
+                                                    }
+                                                </tr>
+                                                j++;
+                                            }
+                                        }
+                                    }
+                                    @{
+                                        if (Model.RfqPriceSchedule != null)
+                                        {
+                                            <tr style="border-top: 2px solid black;">
+                                                <td class="totalPricing"> Total</td>
+
+                                                @{
+                                                    int i = 2;
+                                                    foreach (var subitem in Model.TotalPriceComparison)
+                                                    {
+                                                        string className = "";
+                                                        if (i % 2 == 0)
+                                                        {
+                                                            className = "companyColumn";
+                                                        }
+                                                        i++;
+                                                        <td class="@(className)"><p class="pull-right">@(subitem[1])</p> </td>
+                                                    }
+                                                }
+                                            </tr>
+                                        }
+                                    }
+
+                                </tbody>
+                            </table>
+                            
+                            
+                        </div>
+
+                    </div>
+                </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-link waves-effect" type="button" data-dismiss="modal">CLOSE</button>
+                </div>
+            </div>
+    </div>
+</div>
+
+
 <!-- Editable Table Plugin Js
 <script src="~/material_theme/plugins/editable-table/mindmup-editabletable.js"></script>
 <script src="~/material_theme/js/pages/tables/editable-table.js"></script>-->
@@ -968,6 +1130,22 @@
 
 
         $('#frmCreateRFQ input').attr('readonly', 'readonly');
+    });
+
+    
+    $("#btnCompareRequirement").click(function () {
+        $("#CompareModal").modal("show");
+        $("#nav_requirementcompare").click();
+    });
+
+    $("#btnCompare").click(function () {
+        $("#CompareModal").modal("show");
+        $("#nav_requirementcompare").click();
+    });
+
+    $("#btnComparePricing").click(function () {
+        $("#CompareModal").modal("show");
+        $("#nav_pricingcompare").click();
     });
 
     $("#btnNotRelevant").click(function () {

@@ -1866,7 +1866,10 @@ namespace Com.BudgetMetal.Services.RFQ
             var dbResultQuotationList = repoQuotation.GetQuotationByRfqId(documentId);
 
             List<List<string>> requirementComparisonList = new List<List<string>>();
-            List<List<string>> priceComparisonList = new List<List<string>>();
+            List<List<string>> priceComparisonList_Product = new List<List<string>>();
+            List<List<string>> priceComparisonList_Service = new List<List<string>>();
+            List<List<string>> priceComparisonList_Warranty = new List<List<string>>();
+            List<List<string>> priceComparisonList_Total = new List<List<string>>();
             foreach (var item in dbResultQuotationList.Result)
             {
                 List<string> requirementComparison = new List<string>();
@@ -1877,18 +1880,46 @@ namespace Com.BudgetMetal.Services.RFQ
                 }
                 requirementComparisonList.Add(requirementComparison);
 
-                List<string> priceComparison = new List<string>();
-                priceComparison.Add(item.Document.Company.Name);
+                List<string> priceComparison_Product = new List<string>();
+                priceComparison_Product.Add(item.Document.Company.Name);
+                foreach (var priceItem in item.QuotationPriceSchedule.Where(e => e.IsActive == true && e.CategoryId== Constants_CodeTable.Code_RfqPriceCategory_Product).ToList())
+                {
+                    priceComparison_Product.Add(priceItem.ItemAmount.ToString("#,##0.00"));
+                }
+                priceComparisonList_Product.Add(priceComparison_Product);
+
+                List<string> priceComparison_Service = new List<string>();
+                priceComparison_Service.Add(item.Document.Company.Name);
+                foreach (var priceItem in item.QuotationPriceSchedule.Where(e => e.IsActive == true && e.CategoryId == Constants_CodeTable.Code_RfqPriceCategory_Service).ToList())
+                {
+                    priceComparison_Service.Add(priceItem.ItemAmount.ToString("#,##0.00"));
+                }
+                priceComparisonList_Service.Add(priceComparison_Service);
+
+                List<string> priceComparison_Warranty = new List<string>();
+                priceComparison_Warranty.Add(item.Document.Company.Name);
+                foreach (var priceItem in item.QuotationPriceSchedule.Where(e => e.IsActive == true && e.CategoryId == Constants_CodeTable.Code_RfqPriceCategory_Warranty).ToList())
+                {
+                    priceComparison_Warranty.Add(priceItem.ItemAmount.ToString("#,##0.00"));
+                }
+                priceComparisonList_Warranty.Add(priceComparison_Warranty);
+
+                List<string> priceComparison_Total = new List<string>();
+                priceComparison_Total.Add(item.Document.Company.Name);
+                decimal totalPricing = 0;
                 foreach (var priceItem in item.QuotationPriceSchedule.Where(e => e.IsActive == true).ToList())
                 {
-                    priceComparison.Add(priceItem.ItemAmount.ToString());
+                    totalPricing = totalPricing + priceItem.ItemAmount;
                 }
-                priceComparisonList.Add(priceComparison);
+                priceComparison_Total.Add(totalPricing.ToString("#,##0.00"));
+                priceComparisonList_Total.Add(priceComparison_Total);
             }
 
             resultObject.RequirementComparison = requirementComparisonList;
-            resultObject.PriceComparison = priceComparisonList;
-
+            resultObject.ProductPriceComparison = priceComparisonList_Product;
+            resultObject.ServicePriceComparison = priceComparisonList_Service;
+            resultObject.WarrantyPriceComparison = priceComparisonList_Warranty;
+            resultObject.TotalPriceComparison = priceComparisonList_Total;
             return resultObject;
         }
 
@@ -2048,7 +2079,7 @@ namespace Com.BudgetMetal.Services.RFQ
             }
 
             resultObject.RequirementComparison = requirementComparisonList;
-            resultObject.PriceComparison = priceComparisonList;
+            resultObject.ProductPriceComparison = priceComparisonList;
 
             return resultObject;
         }
