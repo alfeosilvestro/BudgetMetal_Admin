@@ -48,23 +48,23 @@
                             <h4><span class="label label-info">New</span></h4>
                         </div>
                         @*<div class="col-sm-6">
-                            <label for="quote_no">Internal Reference No</label>
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <input type="text" asp-for="InternalRefrenceNo" class="form-control" placeholder="Internal Reference">
-                                    <span asp-validation-for="InternalRefrenceNo" class="text-danger"></span>
+                                <label for="quote_no">Internal Reference No</label>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="text" asp-for="InternalRefrenceNo" class="form-control" placeholder="Internal Reference">
+                                        <span asp-validation-for="InternalRefrenceNo" class="text-danger"></span>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>*@
+                            </div>*@
                         @*<div class="col-sm-6">
-                            <label for="quote_no">Internal Project Name</label>
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <input type="text" asp-for="InternalProjectName" class="form-control" placeholder="Internal Project Name">
-                                    <span asp-validation-for="InternalProjectName" class="text-danger"></span>
+                                <label for="quote_no">Internal Project Name</label>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="text" asp-for="InternalProjectName" class="form-control" placeholder="Internal Project Name">
+                                        <span asp-validation-for="InternalProjectName" class="text-danger"></span>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>*@
+                            </div>*@
 
                     </div>
 
@@ -92,27 +92,40 @@
                     <!-- Tab panes -->
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane fade in active" id="basic_requirements">
+                            
                             <div class="row clearfix">
                                 <div class="col-sm-3">
-                                    <label for="StartRfqdate">Start RFQ Date</label>
+                                    <label for="StartRfqdate">Start RFQ Date <a href="#" data-toggle="modal" data-target="#timelineModal"><span class="badge bg-light-blue">i</span></a></label>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" asp-for="StartRfqdate" class="form-control datepicker"  placeholder="Start RFQ Date">
+                                            <input type="text" asp-for="StartRfqdate" class="form-control datepicker" placeholder="Start RFQ Date">
                                             <span asp-validation-for="StartRfqdate" class="text-danger"></span>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
-                                    <label for="ValidRfqdate">Valid RFQ Date</label>
+                                    <label for="ValidRfqdate">Valid RFQ Date <a href="#" data-toggle="modal" data-target="#timelineModal"><span class="badge bg-light-blue">i</span></a></label>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" asp-for="ValidRfqdate" class="form-control datepicker"  placeholder="End RFQ Date">
+                                            <input type="text" asp-for="ValidRfqdate" class="form-control datepicker" placeholder="End RFQ Date">
                                             <span asp-validation-for="ValidRfqdate" class="text-danger"></span>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="col-sm-3">
-                                    <label for="quote_no">Estimated Project Start Date</label>
+                                    <label for="QuotationOpeningDate">Quotation Opening Date <a href="#" data-toggle="modal" data-target="#timelineModal"><span class="badge bg-light-blue">i</span></a></label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" asp-for="QuotationOpeningDate" class="form-control datepicker" placeholder="Quotation Opening Date">
+                                            <span asp-validation-for="QuotationOpeningDate" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-sm-3">
+                                    <label for="quote_no">Estimated Project Start Date <a href="#" data-toggle="modal" data-target="#timelineModal"><span class="badge bg-light-blue">i</span></a></label>
                                     <div class="form-group">
                                         <div class="form-line">
                                             <input type="text" asp-for="EstimatedProjectStartDate" class="form-control datepicker" placeholder="Start of Project Delivery">
@@ -121,33 +134,28 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
-                                    <label for="EstimatedProjectEndDate">Estimated Project End Date</label>
+                                    <label for="EstimatedProjectEndDate">Estimated Project End Date <a href="#" data-toggle="modal" data-target="#timelineModal"><span class="badge bg-light-blue">i</span></a></label>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" asp-for="EstimatedProjectEndDate" class="form-control datepicker"  placeholder="End of Project Delivery">
+                                            <input type="text" asp-for="EstimatedProjectEndDate" class="form-control datepicker" placeholder="End of Project Delivery">
                                             <span asp-validation-for="EstimatedProjectEndDate" class="text-danger"></span>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="col-sm-3">
-                                    <label for="QuotationOpeningDate">Quotation Opening Date</label>
-                                    <div class="form-group">
-                                        <div class="form-line">
-                                            <input type="text" asp-for="QuotationOpeningDate" class="form-control datepicker"  placeholder="Quotation Opening Date">
-                                            <span asp-validation-for="QuotationOpeningDate" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                </div>
+                                
+                            </div>
+                            <div class="row clearfix">
                                 <div class="col-sm-9">
                                     <label for="quote_no">Contract Value</label>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" asp-for="ContractValue" class="form-control"  placeholder="Contract Value">
+                                            <input type="text" asp-for="ContractValue" class="form-control" placeholder="Contract Value">
                                             <span asp-validation-for="ContractValue" class="text-danger"></span>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="row clearfix">
 
                                 <div class="col-sm-3">
                                     <input type="checkbox" asp-for="IsPublic" class="chk-col-red" />
@@ -162,6 +170,8 @@
                                     &nbsp;
                                 </div>
 
+                            </div>
+                            <div class="row clearfix">
                                 <div class="col-sm-12">
                                     <label for="quote_no">Messages to Suppliers</label>
                                     <div class="form-group">
@@ -171,6 +181,8 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="row clearfix">
                                 <div class="col-sm-6">
                                     <span class="text-warning">Click <a href='@Url.Action("DownloadExcelTemplate", "Rfq")'>Here</a> to Download Template</span>
                                     <a href="#" data-toggle="modal" data-target="#excelInfoModal"><span class="badge bg-light-blue">i</span></a><br /><br />
@@ -367,7 +379,7 @@
                         <div role="tabpanel" class="tab-pane fade" id="invited_suppliers">
                             <div class="row">
                                 <div class="col-sm-3">
-                                   
+
                                     <select id="ddlIndustry" class="form-control selectpicker"></select>
                                     <input type="hidden" asp-for="IndustryOfRfq" id="hdIndustry" />
                                 </div>
@@ -520,6 +532,21 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="timelineModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Timeline for RFQ</h4>
+            </div>
+            <div class="modal-body">
+                <img src="/material_theme/images/timelinesd.png" alt="Timeline for RFQ" width="100%" />
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <div class="modal fade" id="excelInfoModal" role="dialog">
     <div class="modal-dialog">
@@ -567,11 +594,19 @@
         loadIndustry();
         loadUser();
         loadRole();
+        var todaydate = moment();
         
-        $('#ValidRfqdate').bootstrapMaterialDatePicker('setMinDate', moment() );
+       
+        $('#QuotationOpeningDate').bootstrapMaterialDatePicker('setMinDate', todaydate.add(1, 'days')).on('change', function (e, date) {
+            $('#EstimatedProjectStartDate').bootstrapMaterialDatePicker('setMinDate', date.add(1, 'days'));
+        });
+        $('#ValidRfqdate').bootstrapMaterialDatePicker('setMinDate', moment()).on('change', function (e, date) {
+            $('#QuotationOpeningDate').bootstrapMaterialDatePicker('setMinDate', date.add(1, 'days'));
+        });
         $('#StartRfqdate').bootstrapMaterialDatePicker('setMinDate', moment()).on('change', function (e, date) {
             $('#ValidRfqdate').bootstrapMaterialDatePicker('setMinDate', date);
         });
+        
 
         $('#EstimatedProjectEndDate').bootstrapMaterialDatePicker('setMinDate', moment());
         $('#EstimatedProjectStartDate').bootstrapMaterialDatePicker('setMinDate', moment()).on('change', function (e, date) {
@@ -813,7 +848,7 @@
                     //hasPricingQtyValid = false;
                     if (isNaN(qty)) {
                         hasPricingQtyValid = true;
-                    } 
+                    }
                 } else {
                     hasPricingQtyBlank = true;
                 }
@@ -824,7 +859,7 @@
             if (hasPricingQtyValid) {
                 invalidMessage += "Quantity in Pricing tab is not number. \n";
             }
-            
+
             //if (hasStartRfqDate && hasValidRfqDate && hasEstimateProjectStartDate && haveInvitedSupplier && hasRequirementValid && hasSupportValid && hasCommercialValid && hasPricingValid && hasPricingQtyValid && !hasPricingQtyBlank && hasRequirementRecord && hasSupportRecord && hasCommercialRecord && hasPricingRecord && hasServicePricingRecord && hasWarrantyPricingRecord) {
             if (invalidMessage == "") {
                 $('.page-loader-wrapper').fadeIn();
