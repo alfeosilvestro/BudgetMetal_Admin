@@ -8,7 +8,7 @@ $("#btnNewRequirement").click(function () {
         "<input type='text' name='Requirement[" + detailRequirementLastId + "].ServiceName' class='form-control requirement' />" +
         "</td> " +
         "<td> " +
-        "<input type='text' name='Requirement[" + detailRequirementLastId + "].Description' class='form-control' />" +
+        "<textarea rows='3' name='Requirement[" + detailRequirementLastId + "].Description' class='form-control'></textarea>" +
         "</td> " +
         "<td> " +
         "<button type='button' class='btn btn-danger waves-effect' onclick='RemoveRequirementRow(this)'> Remove</button >" +
@@ -19,7 +19,6 @@ $("#btnNewRequirement").click(function () {
     detailRequirementLastId = parseInt(detailRequirementLastId) + 1;
     $("#detailRequirementLastId").val(detailRequirementLastId);
     FillSerialNumber("requirementsTable");
-
 });
 
 function RemoveRequirementRow(item) {
@@ -36,7 +35,7 @@ $("#btnNewSLA").click(function () {
         "<input type='text' name='Sla[" + detailSLALastId + "].Requirement' class='form-control support' />" +
         "</td> " +
         "<td> " +
-        "<input type='text' name='Sla[" + detailSLALastId + "].Description' class='form-control' />" +
+        "<textarea rows='3' name='Sla[" + detailSLALastId + "].Description' class='form-control'></textarea>" +
         "</td> " +
         "<td> " +
         "<button type='button' class='btn btn-danger waves-effect' onclick='RemoveSLARow(this)'> Remove</button >" +
@@ -66,7 +65,7 @@ $("#btnNewPenalty").click(function () {
         //"<input type='text' name='Penalty[" + PenaltyLastId + "].PenaltyAmount' class='form-control' />" +
         //"</td> " +
         "<td> " +
-        "<input type='text' name='Penalty[" + PenaltyLastId + "].Description' class='form-control' />" +
+        "<textarea rows='3' name='Penalty[" + PenaltyLastId + "].Description' class='form-control'></textarea>" +
         "</td> " +
         "<td> " +
         "<button type='button' class='btn btn-danger waves-effect' onclick='RemovePenaltyRow(this)'> Remove</button >" +
@@ -93,7 +92,7 @@ $("#btnNewPricing").click(function () {
         "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].ItemName' class='form-control pricing' />" +
         "</td> " +
         "<td> " +
-        "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].ItemDescription' class='form-control' />" +
+        "<textarea rows='3' name='RfqPriceSchedule[" + PricingLastId + "].ItemDescription' class='form-control'></textarea>" +
         "</td> " +
         //"<td> " +
         //"<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].InternalRefrenceCode' class='form-control' />" +
@@ -126,7 +125,7 @@ $("#btnServicePricing").click(function () {
         "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].ItemName' class='form-control pricing' />" +
         "</td> " +
         "<td> " +
-        "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].ItemDescription' class='form-control' />" +
+        "<textarea rows='3' name='RfqPriceSchedule[" + PricingLastId + "].ItemDescription' class='form-control'></textarea>" +
         "</td> " +
         //"<td> " +
         //"<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].InternalRefrenceCode' class='form-control' />" +
@@ -152,7 +151,7 @@ $("#btnWarrantyPricing").click(function () {
         "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].ItemName' class='form-control pricing' />" +
         "</td> " +
         "<td> " +
-        "<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].ItemDescription' class='form-control' />" +
+        "<textarea rows='3' name='RfqPriceSchedule[" + PricingLastId + "].ItemDescription' class='form-control'></textarea>" +
         "</td> " +
         //"<td> " +
         //"<input type='text' name='RfqPriceSchedule[" + PricingLastId + "].InternalRefrenceCode' class='form-control' />" +
@@ -174,11 +173,11 @@ $("#btnWarrantyPricing").click(function () {
 // Add and Remove Attachment
 $("#btnNewFile").click(function () {
     var newRow = "<tr>" +
-        "<td></td><td> " +
+        "<td> " +
         "<input type='file' name='attachmentRFQ[]' class='form-control' onchange='getFilename(this)' />" +
         "</td> " +
         "<td> " +
-        "<input type='text' name='fileDescriptionRFQ[]' class='form-control' />" +
+        "<textarea rows='3' name='fileDescriptionRFQ[]' class='form-control'></textarea>" +
         "</td> " +
         "<td> " +
         "<button type='button' class='btn btn-danger waves-effect' onclick='RemoveAttachmentRFQRow(this)'> Remove</button >" +

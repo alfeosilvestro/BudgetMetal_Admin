@@ -61,23 +61,23 @@
                             <h4><span class="label label-info">@Model.Document.DocumentStatus.Name</span></h4>
                         </div>
                         @*<div class="col-sm-6">
-                            <label for="quote_no">Internal Reference No</label>
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <input type="text" asp-for="InternalRefrenceNo" class="form-control" placeholder="Internal Reference">
-                                    <span asp-validation-for="InternalRefrenceNo" class="text-danger"></span>
+                                <label for="quote_no">Internal Reference No</label>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="text" asp-for="InternalRefrenceNo" class="form-control" placeholder="Internal Reference">
+                                        <span asp-validation-for="InternalRefrenceNo" class="text-danger"></span>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>*@
+                            </div>*@
                         @*<div class="col-sm-6">
-                            <label for="quote_no">Internal Project Name</label>
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <input type="text" asp-for="InternalProjectName" class="form-control" placeholder="Internal Project Name">
-                                    <span asp-validation-for="InternalProjectName" class="text-danger"></span>
+                                <label for="quote_no">Internal Project Name</label>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="text" asp-for="InternalProjectName" class="form-control" placeholder="Internal Project Name">
+                                        <span asp-validation-for="InternalProjectName" class="text-danger"></span>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>*@
+                            </div>*@
 
                     </div>
 
@@ -218,17 +218,12 @@
                                             int i = 0;
                                             foreach (var item in Model.Requirement)
                                             {
-                                    <tr>
-                                        <td>@countRequirement</td>
-                                        <td>
-                                            <input type="text" name="Requirement[@i].ServiceName" class="form-control  requirement" value="@item.ServiceName" />
-                                        </td>
-                                        <td>
-                                            <input type="text" name="Requirement[@i].Description" class="form-control" value="@item.Description" />
-                                        </td>
-
-                                        <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveRequirementRow(this)'>Remove</button></td>
-                                    </tr>
+                                                <tr>
+                                                    <td>@countRequirement</td>
+                                                    <td><input type="text" name="Requirement[@i].ServiceName" class="form-control  requirement" value="@item.ServiceName" /></td>
+                                                    <td><textarea rows="3" name="Requirement[@i].Description" class="form-control"> @item.Description </textarea></td>
+                                                    <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveRequirementRow(this)'>Remove</button></td>
+                                                </tr>
                                                 i++;
                                                 countRequirement++;
                                             }
@@ -264,7 +259,7 @@
                                                 <tr>
                                                     <td>@countSla</td>
                                                     <td><input type="text" name="Sla[@i].Requirement" class="form-control support" value="@item.Requirement" /></td>
-                                                    <td><input type="text" name="Sla[@i].Description" class="form-control" value="@item.Description" /></td>
+                                                    <td><textarea rows="3" name="Sla[@i].Description" class="form-control"> @item.Description </textarea></td>
                                                     <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveSLARow(this)'>Remove</button></td>
                                                 </tr>
                                                 i++;
@@ -302,13 +297,13 @@
                                             int i = 0;
                                             foreach (var item in Model.Penalty)
                                             {
-                                    <tr>
-                                        <td>@countPenalty</td>
-                                        <td><input type="text" name="Penalty[@i].BreachOfServiceDefinition" class="form-control commercial" value="@item.BreachOfServiceDefinition" /></td>
-                                        @*<td><input type="text" name="Penalty[@i].PenaltyAmount" class="form-control" value="@item.PenaltyAmount" /></td>*@
-                                        <td><input type="text" name="Penalty[@i].Description" class="form-control" value="@item.Description" /></td>
-                                        <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePenaltyRow(this)'>Remove</button></td>
-                                    </tr>
+                                                <tr>
+                                                    <td>@countPenalty</td>
+                                                    <td><input type="text" name="Penalty[@i].BreachOfServiceDefinition" class="form-control commercial" value="@item.BreachOfServiceDefinition" /></td>
+                                                    @*<td><input type="text" name="Penalty[@i].PenaltyAmount" class="form-control" value="@item.PenaltyAmount" /></td>*@
+                                                    <td><textarea rows="3" name="Penalty[@i].Description" class="form-control"> @item.Description </textarea></td>
+                                                    <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePenaltyRow(this)'>Remove</button></td>
+                                                </tr>
                                                 i++;
                                                 countPenalty++;
                                             }
@@ -350,17 +345,17 @@
                                             var productList = Model.RfqPriceSchedule.Where(x => x.CategoryId == Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Product).ToList();
                                             foreach (var item in productList)
                                             {
-                                    <tr>
-                                        <td>@countPrice</td>
-                                        <td><input type="text" name="RfqPriceSchedule[@i].ItemName" class="form-control pricing" value="@item.ItemName" /> </td>
-                                        <td><input type="text" name="RfqPriceSchedule[@i].ItemDescription" class="form-control" value="@item.ItemDescription" /></td>
-                                        @*<td><input type="text" name="RfqPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>*@
-                                        <td>
-                                            <input type="text" name="RfqPriceSchedule[@i].QuantityRequired" class="form-control pricingQty" value="@item.QuantityRequired" />
-                                            <input type="hidden" name="RfqPriceSchedule[@i].CategoryId" value="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Product)" class="form-control" />
-                                        </td>
-                                        <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePricingRow(this)'>Remove</button></td>
-                                    </tr>
+                                                <tr>
+                                                    <td>@countPrice</td>
+                                                    <td><input type="text" name="RfqPriceSchedule[@i].ItemName" class="form-control pricing" value="@item.ItemName" /> </td>
+                                                    <td><textarea rows="3" name="RfqPriceSchedule[@i].ItemDescription" class="form-control"> @item.ItemDescription </textarea></td>
+                                                    @*<td><input type="text" name="RfqPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>*@
+                                                    <td>
+                                                        <input type="text" name="RfqPriceSchedule[@i].QuantityRequired" class="form-control pricingQty" value="@item.QuantityRequired" />
+                                                        <input type="hidden" name="RfqPriceSchedule[@i].CategoryId" value="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Product)" class="form-control" />
+                                                    </td>
+                                                    <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePricingRow(this)'>Remove</button></td>
+                                                </tr>
                                                 i++;
                                                 countPrice++;
                                             }
@@ -396,17 +391,17 @@
                                             var serviceList = Model.RfqPriceSchedule.Where(x => x.CategoryId == Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Service).ToList();
                                             foreach (var item in serviceList)
                                             {
-                                    <tr>
-                                        <td>@countPriceService</td>
-                                        <td><input type="text" name="RfqPriceSchedule[@i].ItemName" class="form-control pricing" value="@item.ItemName" /> </td>
-                                        <td><input type="text" name="RfqPriceSchedule[@i].ItemDescription" class="form-control" value="@item.ItemDescription" /></td>
-                                        @*<td><input type="text" name="RfqPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>*@
-                                        <td>
-                                            <input type="text" name="RfqPriceSchedule[@i].QuantityRequired" class="form-control pricingQty" value="@item.QuantityRequired" />
-                                            <input type="hidden" name="RfqPriceSchedule[@i].CategoryId" value="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Service)" class="form-control" />
-                                        </td>
-                                        <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePricingRow(this)'>Remove</button></td>
-                                    </tr>
+                                                <tr>
+                                                    <td>@countPriceService</td>
+                                                    <td><input type="text" name="RfqPriceSchedule[@i].ItemName" class="form-control pricing" value="@item.ItemName" /> </td>
+                                                    <td><textarea rows="3" name="RfqPriceSchedule[@i].ItemDescription" class="form-control"> @item.ItemDescription </textarea></td>
+                                                    @*<td><input type="text" name="RfqPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>*@
+                                                    <td>
+                                                        <input type="text" name="RfqPriceSchedule[@i].QuantityRequired" class="form-control pricingQty" value="@item.QuantityRequired" />
+                                                        <input type="hidden" name="RfqPriceSchedule[@i].CategoryId" value="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Service)" class="form-control" />
+                                                    </td>
+                                                    <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePricingRow(this)'>Remove</button></td>
+                                                </tr>
                                                 i++;
                                                 countPriceService++;
                                             }
@@ -441,17 +436,17 @@
                                             var warrantyList = Model.RfqPriceSchedule.Where(x => x.CategoryId == Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Warranty).ToList();
                                             foreach (var item in warrantyList)
                                             {
-                                    <tr>
-                                        <td>@countPriceWarranty</td>
-                                        <td><input type="text" name="RfqPriceSchedule[@i].ItemName" class="form-control pricing" value="@item.ItemName" /> </td>
-                                        <td><input type="text" name="RfqPriceSchedule[@i].ItemDescription" class="form-control" value="@item.ItemDescription" /></td>
-                                        @*<td><input type="text" name="RfqPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>*@
-                                        <td>
-                                            <input type="text" name="RfqPriceSchedule[@i].QuantityRequired" class="form-control  pricingQty" value="@item.QuantityRequired" />
-                                            <input type="hidden" name="RfqPriceSchedule[@i].CategoryId" value="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Warranty)" class="form-control" />
-                                        </td>
-                                        <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePricingRow(this)'>Remove</button></td>
-                                    </tr>
+                                                <tr>
+                                                    <td>@countPriceWarranty</td>
+                                                    <td><input type="text" name="RfqPriceSchedule[@i].ItemName" class="form-control pricing" value="@item.ItemName" /> </td>
+                                                    <td><textarea rows="3" name="RfqPriceSchedule[@i].ItemDescription" class="form-control"> @item.ItemDescription </textarea></td>
+                                                    @*<td><input type="text" name="RfqPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>*@
+                                                    <td>
+                                                        <input type="text" name="RfqPriceSchedule[@i].QuantityRequired" class="form-control  pricingQty" value="@item.QuantityRequired" />
+                                                        <input type="hidden" name="RfqPriceSchedule[@i].CategoryId" value="@(Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Warranty)" class="form-control" />
+                                                    </td>
+                                                    <td><button type="button" class="btn btn-danger waves-effect" onclick='RemovePricingRow(this)'>Remove</button></td>
+                                                </tr>
                                                 i++;
                                                 countPriceWarranty++;
                                             }
@@ -538,7 +533,7 @@
 
                                                         <a href="#" class="btn_download" data-fileid="@item.Id">@item.FileName</a>
                                                     </td>
-                                                    <td><input type="text" name="Document.Attachment[@i].Description" class="form-control" value="@item.Description" /></td>
+                                                    <td><textarea name="Document.Attachment[@i].Description" class="form-control"> @item.Description </textarea></td>
 
                                                     <td><button type="button" class="btn btn-danger waves-effect" onclick='RemoveAttachmentRFQRow(this)'>Remove</button></td>
                                                 </tr>
@@ -592,13 +587,10 @@
                                                         @{
                                                             foreach (string tmpRole in item.Roles)
                                                             {
-
                                                                 <span class='label bg-deep-purple'>@tmpRole</span>
                                                             }
                                                         }
-
                                                     </td>
-
                                                     <td>
                                                         @{
                                                             if (i > 0)
@@ -679,11 +671,8 @@
                                             }
                                         }
                                     }
-
                                 </tbody>
-
                             </table>
-
                         </div>
                     </div>
                 </div>
@@ -1023,7 +1012,7 @@
                     //hasPricingQtyValid = false;
                     if (isNaN(qty)) {
                         hasPricingQtyValid = true;
-                    } 
+                    }
                 } else {
                     hasPricingQtyBlank = true;
                 }
