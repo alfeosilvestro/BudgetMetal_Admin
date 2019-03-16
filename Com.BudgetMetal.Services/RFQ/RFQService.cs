@@ -152,6 +152,7 @@ namespace Com.BudgetMetal.Services.RFQ
                         },
                         Company = new ViewModels.Company.VmCompanyItem()
                         {
+                            Id = dbItem.Document.Company_Id,
                             Name = dbItem.Document.Company.Name
                         }
                     };
@@ -366,6 +367,7 @@ namespace Com.BudgetMetal.Services.RFQ
                         },
                         Company = new ViewModels.Company.VmCompanyItem()
                         {
+                            Id = dbItem.Document.Company_Id,
                             Name = dbItem.Document.Company.Name
                         }
                     };

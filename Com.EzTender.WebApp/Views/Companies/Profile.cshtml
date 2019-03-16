@@ -18,9 +18,16 @@
                 <div id="originalAbout" style="width:100%" rows="15" readonly>@Html.DisplayFor(model => model.About)</div>
                 <ul class="header-dropdown m-r--5">
                     <li class="dropdown">
-                        <a class=" waves-effect waves-block" data-toggle="modal" data-target="#aboutModal">
-                            <i class="material-icons">edit</i>
-                        </a>
+                        @{
+                            bool tf = Convert.ToBoolean(ViewData["isAdmin"]);
+                        }
+                        @{ if (tf)
+                            {
+                                <a class=" waves-effect waves-block" data-toggle="modal" data-target="#aboutModal">
+                                    <i class="material-icons">edit</i>
+                                </a>
+                            }
+                        }
                     </li>
                 </ul>
             </div>
@@ -38,12 +45,16 @@
                 </h2>
                 <ul class="header-dropdown m-r--5">
                     <li class="dropdown">
-                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                            <i class="material-icons">edit</i>
-                        </a>
-                        <ul class="dropdown-menu pull-right">
-                            <li><a class="waves-effect waves-block" data-toggle="modal" data-target="#addressModal">Edit Address</a></li>
-                        </ul>
+                        @{ if (tf)
+                            {
+                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <i class="material-icons">edit</i>
+                                </a>
+                                <ul class="dropdown-menu pull-right">
+                                    <li><a class="waves-effect waves-block" data-toggle="modal" data-target="#addressModal">Edit Address</a></li>
+                                </ul>
+                            }
+                        }
                     </li>
                 </ul>
             </div>
@@ -142,8 +153,12 @@
                                         <th>Type</th>
                                         <th>Is Admin</th>
                                         <th>Role</th>
-                                        <th></th>
-                                        <th></th>
+                                        @{ if (tf)
+                                            {
+                                                <th></th>
+                                                <th></th>
+                                            }
+                                        }
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -178,10 +193,14 @@
                                                             }
                                                         }
                                                     </td>
-                                                    <td><button type='button' id='btnInvite_@item.Id' class='@className' data-myval='@buttonText' onclick='checkSupplier(@item.Id)'> @buttonText </button></td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#userRoleModal" data-userRole="@userRole" data-userId="@item.Id">Edit Role</button>
-                                                    </td>
+                                                    @{ if (tf)
+                                                        {
+                                                            <td><button type='button' id='btnInvite_@item.Id' class='@className' data-myval='@buttonText' onclick='checkSupplier(@item.Id)'> @buttonText </button></td>
+                                                            <td>
+                                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#userRoleModal" data-userRole="@userRole" data-userId="@item.Id">Edit Role</button>
+                                                            </td>
+                                                        }
+                                                    }
                                                 </tr>
                                                 counter++;
                                             }

@@ -49,7 +49,7 @@
                                         <td>@item.Document.DocumentNo</td>
                                         <td>@item.Rfq.Document.DocumentNo</td>
                                         <td>@Html.DisplayFor(modelitem => item.Rfq.ValidRfqdate)</td>
-                                        <td><a href="@Url.Action("Details","Companies", new { id = item.Document.Company_Id})" target="_blank"> @item.Document.Company.Name</a></td>
+                                        <td><a href="@Url.Action("Details","Companies", new { id = item.Document.Company.Id})" target="_blank"> @item.Document.Company.Name</a></td>
                                         <td>@item.Document.DocumentStatus.Name</td>
                                         <td class="align-right">@item.QuotedFigure</td>
                                         <td>@Html.DisplayFor(modelitem => item.Document.UpdatedDate)</td>
