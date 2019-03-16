@@ -493,8 +493,22 @@
         var isValid = true;
         isValid = $("form#frmCreateQuotation").valid();
         if (isValid) {
-            $('.page-loader-wrapper').fadeIn();
-            $("#frmCreateQuotation").submit();
+
+            var invalidMessage = "";
+
+            var quotedFigure = $('#QuotedFigure').val();
+            if (quotedFigure == "") {
+                invalidMessage += "Bid Price should not be blank. \n";
+            }
+
+            if (invalidMessage == "") {
+                $('.page-loader-wrapper').fadeIn();
+                $("#frmCreateQuotation").submit();
+            }
+            else {
+                alert(invalidMessage);
+                invalidMessage = "";
+            }
         } else {
             alert("Please fill all fields!")
         }
