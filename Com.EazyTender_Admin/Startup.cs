@@ -46,6 +46,7 @@ using Com.BudgetMetal.DataRepository.Blogs;
 using Com.BudgetMetal.Services.Blogs;
 using Com.BudgetMetal.DataRepository.CompanySupplier;
 using Com.BudgetMetal.Services.Facebook;
+using Com.BudgetMetal.DataRepository.SupplierServiceTags;
 
 namespace Com.EazyTender_Admin
 {
@@ -171,6 +172,8 @@ namespace Com.EazyTender_Admin
             services.AddScoped<IBlogService, BlogService>();
 
             services.AddScoped<IFacebookService, FacebookService>();
+
+            services.AddScoped<ISupplierServiceTagsRepository, SupplierServiceTagsRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
