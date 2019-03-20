@@ -69,6 +69,7 @@ namespace Com.BudgetMetal.ViewModels.Rfq
         public List<List<string>> ServicePriceComparison { get; set; }
         public List<List<string>> WarrantyPriceComparison { get; set; }
         public List<List<string>> TotalPriceComparison { get; set; }
+        public List<List<string>> SummaryComparison { get; set; }
         //public List<VmDocumentActivityItem> DocumentActivityList { get; set; }
     }
 }

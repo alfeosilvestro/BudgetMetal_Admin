@@ -12,17 +12,17 @@
 <style>
     .pricingColspan {
         background-color: #282828;
-        color:white;
+        color: white;
     }
 
     .totalPricing {
         font-weight: bolder;
-        text-align:right;
+        text-align: right;
     }
 
     .companyColumn {
         background-color: #bdbdbd;
-        width:50px;
+        width: 50px;
     }
 </style>
 <form asp-controller="Rfq" asp-action="View" method="post" enctype="multipart/form-data" id="frmCreateRFQ">
@@ -75,23 +75,23 @@
                             <h4><span class="label label-info">@Model.Document.DocumentStatus.Name</span></h4>
                         </div>
                         @*<div class="col-sm-6">
-                            <label for="quote_no">Internal Reference No</label>
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <input type="text" asp-for="InternalRefrenceNo" class="form-control" placeholder="Internal Reference">
-                                    <span asp-validation-for="InternalRefrenceNo" class="text-danger"></span>
+                                <label for="quote_no">Internal Reference No</label>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="text" asp-for="InternalRefrenceNo" class="form-control" placeholder="Internal Reference">
+                                        <span asp-validation-for="InternalRefrenceNo" class="text-danger"></span>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>*@
+                            </div>*@
                         @*<div class="col-sm-6">
-                            <label for="quote_no">Internal Project Name</label>
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <input type="text" asp-for="InternalProjectName" class="form-control" placeholder="Internal Project Name">
-                                    <span asp-validation-for="InternalProjectName" class="text-danger"></span>
+                                <label for="quote_no">Internal Project Name</label>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="text" asp-for="InternalProjectName" class="form-control" placeholder="Internal Project Name">
+                                        <span asp-validation-for="InternalProjectName" class="text-danger"></span>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>*@
+                            </div>*@
 
                     </div>
 
@@ -128,7 +128,6 @@
                     <!-- Tab panes -->
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane fade in active" id="basic_requirements">
-
                             <div class="row clearfix">
                                 <div class="col-sm-3">
                                     <label for="StartRfqdate">Start RFQ Date</label>
@@ -148,6 +147,19 @@
                                         </div>
                                     </div>
                                 </div>
+
+
+                                <div class="col-sm-3">
+                                    <label for="QuotationOpeningDate">Quotation Opening Date</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" asp-for="QuotationOpeningDate" class="form-control datepicker" placeholder="Quotation Opening Date">
+                                            <span asp-validation-for="QuotationOpeningDate" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row clearfix">
                                 <div class="col-sm-3">
                                     <label for="quote_no">Estimated Project Start Date</label>
                                     <div class="form-group">
@@ -166,16 +178,8 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="col-sm-3">
-                                    <label for="QuotationOpeningDate">Quotation Opening Date</label>
-                                    <div class="form-group">
-                                        <div class="form-line">
-                                            <input type="text" asp-for="QuotationOpeningDate" class="form-control datepicker" placeholder="Quotation Opening Date">
-                                            <span asp-validation-for="QuotationOpeningDate" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                </div>
+                            </div>
+                            <div class="row clearfix">
                                 <div class="col-sm-9">
                                     <label for="quote_no">Contract Value</label>
                                     <div class="form-group">
@@ -185,15 +189,8 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                @*<div class="col-sm-3">
-                                        <input type="checkbox" asp-for="SupplierProvideMaterial" class="chk-col-red" disabled />
-                                        <label for="SupplierProvideMaterial">Supplier to Provide Materials</label>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <input type="checkbox" asp-for="SupplierProvideTransport" class="chk-col-red" disabled />
-                                        <label for="SupplierProvideTransport">Supplier to Provide Transport</label>
-                                    </div>*@
+                            </div>
+                            <div class="row clearfix">
                                 <div class="col-sm-3">
                                     <input type="checkbox" asp-for="IsPublic" class="chk-col-red" disabled />
                                     <label for="IsPublic">Public</label>
@@ -205,6 +202,10 @@
 
 
                                 </div>
+                            </div>
+
+                            <div class="row clearfix">
+
                                 <div class="col-sm-6">
                                     &nbsp;
                                 </div>
@@ -263,7 +264,7 @@
                                 }
                             }
 
-                            
+
                         </div>
                         <div role="tabpanel" class="tab-pane fade in" id="service_level_agreement">
                             <table id="slaTable" class="table table-striped">
@@ -424,7 +425,7 @@
                                                     <td>@item.QuantityRequired</td>
                                                 </tr>
                                                 countPriceWarranty++;
-                                                
+
                                             }
                                         }
                                     }
@@ -434,11 +435,11 @@
                             @{
                                 if (Code_C_Buyer == currentCompanyType)
                                 {
-                                    <button class="btn btn-default waves-effect m-r-20" id="btnComparePricing" type="button" >Price Comparison</button>
+                                    <button class="btn btn-default waves-effect m-r-20" id="btnComparePricing" type="button">Price Comparison</button>
                                 }
                             }
 
-                            
+
 
                         </div>
 
@@ -645,14 +646,14 @@
                                 <div class="col-sm-4">
                                     <h2>
                                         Quotation List
-                                        <button class="btn btn-default waves-effect m-r-20" id="btnCompare" type="button">Comparison</button>
+                                        <button class="btn btn-default waves-effect m-r-20 pull-right" id="btnCompare" type="button">Comparison</button>
                                     </h2>
                                 </div>
                                 <div class="col-sm-5">
-                                    
+
                                 </div>
                             </div>
-                           
+
                         </div>
                         <div class="body">
 
@@ -862,69 +863,12 @@
             </div>
             <div class="modal-body">
                 <ul class="nav nav-tabs tab-nav-right" role="tablist">
-                    <li role="presentation" class="active"><a href="#compare_requirements" id="nav_requirementcompare" data-toggle="tab">Requirements</a></li>
+                    <li role="presentation" class="active"><a href="#compare_summary" id="nav_summarycompare" data-toggle="tab">Summary</a></li>
+                    <li role="presentation"><a href="#compare_requirements" id="nav_requirementcompare" data-toggle="tab">Requirements</a></li>
                     <li role="presentation"><a href="#compare_pricing" data-toggle="tab" id="nav_pricingcompare">Pricing</a></li>
                 </ul>
                 <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane fade in active" id="compare_requirements">
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th style="width:100px;"></th>
-                                        @{
-                                            if (Model.RequirementComparison != null)
-                                            {
-                                                int i =2;
-                                                foreach (var item in Model.RequirementComparison)
-                                                {
-                                                    string className = "";
-                                                    if(i%2== 0)
-                                                    {
-                                                        className = "companyColumn";
-                                                    }
-                                                    i++;
-                                                    <th class="@className" style="width:50px;">@(item[0])</th>
-                                                }
-                                        }
-                                        }
-                                    </tr>
-
-                                </thead>
-                                <tbody>
-                                    @{
-                                        if (Model.Requirement != null)
-                                        {
-                                            int j = 1;
-                                            foreach (var item in Model.Requirement)
-                                            {
-                                                <tr>
-                                                    <td> @(item.ServiceName)</td>
-
-                                                    @{
-                                                        int i = 2;
-                                                        foreach (var subitem in Model.RequirementComparison)
-                                                        {
-                                                            string className = "";
-                                                            if (i % 2 == 0)
-                                                            {
-                                                                className = "companyColumn";
-                                                            }
-                                                            i++;
-                                                            <td  class="@className">@(subitem[j])</td>
-                                                        }
-                                                    }
-                                                </tr>
-                                                j++;
-                                            }
-                                        }
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-
-                    </div>
-                    <div role="tabpanel" class="tab-pane fade" id="compare_pricing">
+                    <div role="tabpanel" class="tab-pane fade in active" id="compare_summary">
                         <div class="table-responsive">
                             @{
                                 int countForColspan = 1;
@@ -949,15 +893,176 @@
                                                         className = "companyColumn";
                                                     }
                                                     i++;
-                                                    <th class="@(className)"  style="width:50px;">@(item[0])</th>
+                                                    <th class="@(className)" style="width:50px;">@(item[0])</th>
                                                 }
-                                        }
+                                            }
                                         }
                                     </tr>
 
                                 </thead>
                                 <tbody>
-                                    <tr >
+
+                                    @{
+                                        if (Model.RfqPriceSchedule != null)
+                                        {
+                                            <tr style="border-top: 2px solid black;">
+                                                <td class="totalPricing"> Compliance Risk</td>
+
+                                                @{
+                                                    int i = 2;
+                                                    foreach (var subitem in Model.SummaryComparison)
+                                                    {
+                                                        string className = "";
+                                                        if (i % 2 == 0)
+                                                        {
+                                                            className = "companyColumn";
+                                                        }
+                                                        i++;
+                                                        <td class="@(className)"><p class="pull-right">@(subitem[1])</p> </td>
+                                                    }
+                                                }
+                                            </tr>
+                                        }
+                                    }
+                                    @{
+                                        if (Model.RfqPriceSchedule != null)
+                                        {
+                                            <tr style="border-top: 2px solid black;">
+                                                <td class="totalPricing"> Pricing Risk</td>
+
+                                                @{
+                                                    int i = 2;
+                                                    foreach (var subitem in Model.SummaryComparison)
+                                                    {
+                                                        string className = "";
+                                                        if (i % 2 == 0)
+                                                        {
+                                                            className = "companyColumn";
+                                                        }
+                                                        i++;
+                                                        <td class="@(className)"><p class="pull-right">@(subitem[2])</p> </td>
+                                                    }
+                                                }
+                                            </tr>
+                                        }
+                                    }
+                                    @{
+                                        if (Model.RfqPriceSchedule != null)
+                                        {
+                                            <tr style="border-top: 2px solid black;">
+                                                <td class="totalPricing"> Awarding Risk</td>
+
+                                                @{
+                                                    int i = 2;
+                                                    foreach (var subitem in Model.SummaryComparison)
+                                                    {
+                                                        string className = "";
+                                                        if (i % 2 == 0)
+                                                        {
+                                                            className = "companyColumn";
+                                                        }
+                                                        i++;
+                                                        <td class="@(className)"><p class="pull-right">@(subitem[3])</p> </td>
+                                                    }
+                                                }
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                            <p>
+                                <i>Awarding risk is lower, the better for the buyer</i>
+                            </p>
+
+                        </div>
+
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="compare_requirements">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th style="width:100px;"></th>
+                                        @{
+                                            if (Model.RequirementComparison != null)
+                                            {
+                                                int i = 2;
+                                                foreach (var item in Model.RequirementComparison)
+                                                {
+                                                    string className = "";
+                                                    if (i % 2 == 0)
+                                                    {
+                                                        className = "companyColumn";
+                                                    }
+                                                    i++;
+                                                    <th class="@className" style="width:50px;">@(item[0])</th>
+                                                }
+                                            }
+                                        }
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (Model.Requirement != null)
+                                        {
+                                            int j = 1;
+                                            foreach (var item in Model.Requirement)
+                                            {
+                                                <tr>
+                                                    <td> @(item.ServiceName)</td>
+
+                                                    @{
+                                                        int i = 2;
+                                                        foreach (var subitem in Model.RequirementComparison)
+                                                        {
+                                                            string className = "";
+                                                            if (i % 2 == 0)
+                                                            {
+                                                                className = "companyColumn";
+                                                            }
+                                                            i++;
+                                                            <td class="@className">@(subitem[j])</td>
+                                                        }
+                                                    }
+                                                </tr>
+                                                j++;
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="compare_pricing">
+                        <div class="table-responsive">
+
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th style="width:100px;"></th>
+                                        @{
+                                            if (Model.ProductPriceComparison != null)
+                                            {
+                                                int i = 2;
+                                                foreach (var item in Model.ProductPriceComparison)
+                                                {
+                                                    string className = "";
+                                                    if (i % 2 == 0)
+                                                    {
+                                                        className = "companyColumn";
+                                                    }
+                                                    i++;
+                                                    <th class="@(className)" style="width:50px;">@(item[0])</th>
+                                                }
+                                            }
+                                        }
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                    <tr>
                                         <td class="pricingColspan" colspan="@countForColspan">Product</td>
                                     </tr>
                                     @{
@@ -987,20 +1092,20 @@
                                             }
                                         }
                                     }
-                                    <tr >
+                                    <tr>
                                         <td class="pricingColspan" colspan="@countForColspan">Service</td>
                                     </tr>
                                     @{
                                         if (Model.RfqPriceSchedule != null)
                                         {
-                                            int j =1;
+                                            int j = 1;
                                             foreach (var item in Model.RfqPriceSchedule.Where(e => e.CategoryId == Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Service).ToList())
                                             {
                                                 <tr>
                                                     <td> @(item.ItemName)</td>
 
                                                     @{
-                                                        int i =2;
+                                                        int i = 2;
                                                         foreach (var subitem in Model.ServicePriceComparison)
                                                         {
                                                             string className = "";
@@ -1018,7 +1123,7 @@
                                         }
                                     }
                                     <tr>
-                                        <td  class="pricingColspan" colspan="@countForColspan">Warranty</td>
+                                        <td class="pricingColspan" colspan="@countForColspan">Warranty</td>
                                     </tr>
                                     @{
                                         if (Model.RfqPriceSchedule != null)
@@ -1072,18 +1177,16 @@
 
                                 </tbody>
                             </table>
-                            
-                            
                         </div>
 
                     </div>
                 </div>
 
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-link waves-effect" type="button" data-dismiss="modal">CLOSE</button>
-                </div>
             </div>
+            <div class="modal-footer">
+                <button class="btn btn-link waves-effect" type="button" data-dismiss="modal">CLOSE</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -1132,7 +1235,7 @@
         $('#frmCreateRFQ input').attr('readonly', 'readonly');
     });
 
-    
+
     $("#btnCompareRequirement").click(function () {
         $("#CompareModal").modal("show");
         $("#nav_requirementcompare").click();
@@ -1140,7 +1243,7 @@
 
     $("#btnCompare").click(function () {
         $("#CompareModal").modal("show");
-        $("#nav_requirementcompare").click();
+        $("#nav_summarycompare").click();
     });
 
     $("#btnComparePricing").click(function () {

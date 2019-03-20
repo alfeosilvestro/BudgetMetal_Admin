@@ -1872,13 +1872,26 @@ namespace Com.BudgetMetal.Services.RFQ
             List<List<string>> priceComparisonList_Service = new List<List<string>>();
             List<List<string>> priceComparisonList_Warranty = new List<List<string>>();
             List<List<string>> priceComparisonList_Total = new List<List<string>>();
+            List<List<string>> priceComparisonList_Summary = new List<List<string>>();
             foreach (var item in dbResultQuotationList.Result)
             {
                 List<string> requirementComparison = new List<string>();
                 requirementComparison.Add(item.Document.Company.Name);
+                int ptsForComply = 0;
                 foreach (var requirementItem in item.QuotationRequirement.Where(e => e.IsActive == true).ToList())
                 {
                     requirementComparison.Add(requirementItem.Compliance);
+                    if(requirementItem.Compliance.ToLower() == "comply")
+                    {
+                        ptsForComply = ptsForComply + 1;
+                    }else if (requirementItem.Compliance.ToLower() == "partial comply")
+                    {
+                        ptsForComply = ptsForComply + 2;
+                    }
+                    else
+                    {
+                        ptsForComply = ptsForComply + 3;
+                    }
                 }
                 requirementComparisonList.Add(requirementComparison);
 
@@ -1915,6 +1928,15 @@ namespace Com.BudgetMetal.Services.RFQ
                 }
                 priceComparison_Total.Add(totalPricing.ToString("#,##0.00"));
                 priceComparisonList_Total.Add(priceComparison_Total);
+
+                List<string> priceComparison_Summary = new List<string>();
+                priceComparison_Summary.Add(item.Document.Company.Name);
+                priceComparison_Summary.Add(ptsForComply.ToString("#,##0"));
+                priceComparison_Summary.Add(totalPricing.ToString("#,##0"));
+                decimal totalPts = totalPricing + Convert.ToDecimal(ptsForComply);
+                priceComparison_Summary.Add(totalPts.ToString("#,##0"));
+                priceComparisonList_Summary.Add(priceComparison_Summary);
+
             }
 
             resultObject.RequirementComparison = requirementComparisonList;
@@ -1922,6 +1944,7 @@ namespace Com.BudgetMetal.Services.RFQ
             resultObject.ServicePriceComparison = priceComparisonList_Service;
             resultObject.WarrantyPriceComparison = priceComparisonList_Warranty;
             resultObject.TotalPriceComparison = priceComparisonList_Total;
+            resultObject.SummaryComparison = priceComparisonList_Summary;
             return resultObject;
         }
 
