@@ -73,6 +73,12 @@
     <Content Update="Views\Home\PublicRFQ.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Public\Policy.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Public\FAQ.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Public\About.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

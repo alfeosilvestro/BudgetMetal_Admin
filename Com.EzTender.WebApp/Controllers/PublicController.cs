@@ -165,7 +165,19 @@ namespace Com.EzTender.WebApp.Controllers
             return View();
         }
 
+        public IActionResult FAQ()
+        {
+            ViewData["Message"] = "Your application description page.";
 
+            return View();
+        }
+
+        public IActionResult Policy()
+        {
+            ViewData["Message"] = "Your application description page.";
+
+            return View();
+        }
 
         [HttpGet]
         public async Task<JsonResult> GetPublicRFQ(int page, string status, string skeyword)
