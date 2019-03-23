@@ -133,8 +133,8 @@
                                         <th width="5%">Serial</th>
                                         <th width="20%">Service Name</th>
                                         <th width="30%">Description</th>
-                                        <th width="30%">Compliance</th>
-                                        <th width="40%">Supplier Comments</th>
+                                        <th width="20%">Compliance</th>
+                                        <th width="50%">Supplier Comments</th>
                                         <th>&nbsp;</th>
                                     </tr>
                                 </thead>
@@ -153,12 +153,36 @@
                                                     <td>@item.ServiceName <input type="hidden" name="QuotationRequirement[@i].ServiceName" class="form-control" value="@item.ServiceName" /></td>
                                                     <td>@item.Description <input type="hidden" name="QuotationRequirement[@i].Description" class="form-control" value="@item.Description" /></td>
                                                     <td class="demo-radio-button">
-                                                        <input id="QuotationRequirement[@i]_Compliance1" name="QuotationRequirement[@i].Compliance" type="radio" class="with-gap radio-col-red" value="Comply" ><label for="QuotationRequirement[@i]_Compliance1">Comply</label>
-                                                        <input id="QuotationRequirement[@i]_Compliance2" name="QuotationRequirement[@i].Compliance" type="radio" class="with-gap radio-col-red" value="Not Comply"><label for="QuotationRequirement[@i]_Compliance2">Not Comply</label>
-                                                        <input id="QuotationRequirement[@i]_Compliance3" name="QuotationRequirement[@i].Compliance" type="radio" class="with-gap radio-col-red" value="Partial Comply"><label for="QuotationRequirement[@i]_Compliance3">Partial Comply</label>
+                                                        @{
+                                                            string chkComply = "";
+                                                            string chkPartialComply = "";
+                                                            string chkNotComply = "";
+                                                            if (!string.IsNullOrEmpty(item.Compliance))
+                                                            {
+                                                                if (item.Compliance.ToLower() == "comply")
+                                                                {
+                                                                    chkComply = "checked";
+                                                                }
+                                                                else if (item.Compliance.ToLower() == "not comply")
+                                                                {
+                                                                    chkNotComply = "checked";
+                                                                }
+                                                                else
+                                                                {
+                                                                    chkPartialComply = "checked";
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                chkNotComply = "checked";
+                                                            }
+                                                        }
+                                                        <input id="QuotationRequirement[@i]_Compliance1" name="QuotationRequirement[@i].Compliance" type="radio" class="with-gap radio-col-red" value="Comply" @chkComply ><label for="QuotationRequirement[@i]_Compliance1">Comply</label>
+                                                        <input id="QuotationRequirement[@i]_Compliance2" name="QuotationRequirement[@i].Compliance" type="radio" class="with-gap radio-col-red" value="Not Comply" @chkNotComply ><label for="QuotationRequirement[@i]_Compliance2">Not Comply</label>
+                                                        <input id="QuotationRequirement[@i]_Compliance3" name="QuotationRequirement[@i].Compliance" type="radio" class="with-gap radio-col-red" value="Partial Comply" @chkPartialComply ><label for="QuotationRequirement[@i]_Compliance3">Partial Comply</label>
                                                     </td>
                                                     @*<td><input type="text" name="QuotationRequirement[@i].Compliance" class="form-control" value="@item.Compliance" /></td>*@
-                                                    <td><input type="text" name="QuotationRequirement[@i].SupplierDescription" class="form-control" value="@item.SupplierDescription" /></td>
+                                                    <td><textarea rows="3" name="QuotationRequirement[@i].SupplierDescription" class="form-control"> @item.SupplierDescription </textarea></td>
                                                 </tr>
                                                 i++;
                                                 countRequirement++;
