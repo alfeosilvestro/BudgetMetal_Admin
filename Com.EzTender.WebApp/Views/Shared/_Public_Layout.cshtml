@@ -52,20 +52,20 @@
                                                 <a href="@Url.Action("About","Public")"><span>About us</span></a>
                                             </li>
                                             <!-- <li>
-                                                <a href="index.html"><span>Opportunities</span></a>
-                                            </li>
-                                            <li>
-                                                <a href="index.html"><span>Supplier Directory</span></a>
-                                            </li>
-                                            <li>
-                                                <a href="index.html"><span>Announcements</span></a>
-                                            </li> -->
+        <a href="index.html"><span>Opportunities</span></a>
+    </li>
+    <li>
+        <a href="index.html"><span>Supplier Directory</span></a>
+    </li>
+    <li>
+        <a href="index.html"><span>Announcements</span></a>
+    </li> -->
                                             <li>
                                                 <a href="@Url.Action("TenderBoard","Public")"><span>Tender Board</span></a>
                                             </li>
                                             @*<li>
-                                                    <a href="@Url.Action("CompanyPortal","Public")"><span>Supplier Directory</span></a>
-                                                </li>*@
+            <a href="@Url.Action("CompanyPortal","Public")"><span>Supplier Directory</span></a>
+        </li>*@
                                             <li>
                                                 <a href="#"><span>FAQ</span></a>
                                             </li>
@@ -75,24 +75,30 @@
                                             <li>
                                                 <a href="@Url.Action("Contact","Public")"><span>Contact</span></a>
                                             </li>
-                                            <li>
-                                                @{
-                                                    var user_Id = Context.Session.GetString("User_Id");
 
-                                                    if (user_Id != null)
-                                                    {
+                                            @{
+                                                var user_Id = Context.Session.GetString("User_Id");
+
+                                                if (user_Id != null)
+                                                {
+                                                    <li>
                                                         <a href="@Url.Action("Index","Home")"><span>My Portal</span></a>
-                                                    }
-                                                    else
-                                                    {
-                                                        <a href="@Url.Action("SignIn","Public")"><span>Sign In</span></a>
-                                                    }
-                                                }
+                                                    </li>
 
-                                            </li>
-                                            <li>
-                                                <a href="@Url.Action("Registration","Public")"><span>Sign Up</span></a>
-                                            </li>
+                                                }
+                                                else
+                                                {
+                                                    <li>
+                                                        <a href="@Url.Action("SignIn","Public")"><span>Sign In</span></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="@Url.Action("Registration","Public")"><span>Sign Up</span></a>
+                                                    </li>
+                                                }
+                                            }
+
+
+
                                         </ul>
                                     </nav>
                                     <a class="responsive-menu-toggle" href="#"><i class="icon-menu-fine"></i></a>

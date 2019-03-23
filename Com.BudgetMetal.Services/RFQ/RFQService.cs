@@ -1880,8 +1880,13 @@ namespace Com.BudgetMetal.Services.RFQ
                 int ptsForComply = 0;
                 foreach (var requirementItem in item.QuotationRequirement.Where(e => e.IsActive == true).ToList())
                 {
-                    requirementComparison.Add(requirementItem.Compliance);
-                    if(requirementItem.Compliance.ToLower() == "comply")
+                    if (requirementItem.Compliance == null)
+                    {
+                        requirementItem.Compliance = "Not Comply";
+                    }
+                        requirementComparison.Add(requirementItem.Compliance);
+                    
+                    if (requirementItem.Compliance.ToLower() == "comply")
                     {
                         ptsForComply = ptsForComply + 1;
                     }else if (requirementItem.Compliance.ToLower() == "partial comply")

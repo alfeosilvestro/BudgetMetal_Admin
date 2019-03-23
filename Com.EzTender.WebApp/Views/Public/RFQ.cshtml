@@ -174,12 +174,22 @@
                 } else {
                     $(".pagination").empty();
                 }
+                //top.resizeIframe();
+                doIt();
             },
             error: function (response) {
                 alert(response)
             }
         });
     }
+
+    function doIt() {
+        var elem = window.parent.document.getElementById('myIframe'); // the id of your iframe of course
+        top.resizeIframe(elem);
+        //elem.style.height = '40em';
+    }
+    
+
 
     function loadTenderNoticBoard(page) {
         var keyword = $('#keyword').val();
