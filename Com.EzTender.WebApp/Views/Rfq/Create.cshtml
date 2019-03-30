@@ -158,7 +158,7 @@
                             <div class="row clearfix">
 
                                 <div class="col-sm-3">
-                                    <input type="checkbox" asp-for="IsPublic" class="chk-col-red" />
+                                    <input type="checkbox" asp-for="IsPublic"  class="chk-col-red" />
                                     <label for="IsPublic">Public </label>
                                     <a href="#" data-toggle="modal" data-target="#publicModal"><span class="badge bg-light-blue">i</span></a>
                                 </div>
@@ -527,7 +527,7 @@
                 <h4 class="modal-title">Public</h4>
             </div>
             <div class="modal-body">
-                By checking Public, your tender will be published in our TenderBoard public domain. Any supplier who accesses the public portal will be able to review your requirements and submit a proposal for your review.
+                By checking Public, your tender will be published in our <b><a href="https://www.facebook.com/Ezy-Tender-982142328651452/" target="_blank">FACEBOOK Page</a></b> and our TenderBoard public domain.
             </div>
         </div>
     </div>
@@ -1280,6 +1280,17 @@ function loadIndustry() {
             }
         });
     })
+
+ 
+        $('#IsPublic').click(function () {
+            if ($(this).prop("checked") == true) {
+                $('#publicModal').modal('show');
+            }
+            else if ($(this).prop("checked") == false) {
+                //alert("Checkbox is unchecked.");
+            }
+        });
+   
 </script>
 
 <!-- Create RFQ Js -->

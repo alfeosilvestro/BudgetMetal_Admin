@@ -636,14 +636,27 @@
         </div>
     </div>
     @{
-        if (Code_C_Buyer == currentCompanyType)
+        bool canShowList = false;
+        if(Model.QuotationOpeningDate == null)
+        {
+            canShowList = true;
+        }
+        else
+        {
+            if(Convert.ToDateTime(Model.QuotationOpeningDate).Date >= DateTime.Now.Date)
+            {
+                canShowList = true;
+            }
+        }
+
+        if (Code_C_Buyer == currentCompanyType && (canShowList))
         {
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
                         <div class="header">
                             <div class="row">
-                                <div class="col-sm-4">
+                                <div class="col-sm-12">
                                     <h2>
                                         Quotation List
                                         <button class="btn btn-default waves-effect m-r-20 pull-right" id="btnCompare" type="button">Comparison</button>
@@ -865,6 +878,8 @@
                 <ul class="nav nav-tabs tab-nav-right" role="tablist">
                     <li role="presentation" class="active"><a href="#compare_summary" id="nav_summarycompare" data-toggle="tab">Summary</a></li>
                     <li role="presentation"><a href="#compare_requirements" id="nav_requirementcompare" data-toggle="tab">Product</a></li>
+                    <li role="presentation"><a href="#compare_support" id="nav_requirementcompare" data-toggle="tab">Support</a></li>
+                    <li role="presentation"><a href="#compare_commercial" id="nav_requirementcompare" data-toggle="tab">Commercial</a></li>
                     <li role="presentation"><a href="#compare_pricing" data-toggle="tab" id="nav_pricingcompare">Pricing</a></li>
                 </ul>
                 <div class="tab-content">
@@ -977,6 +992,8 @@
                         </div>
 
                     </div>
+
+
                     <div role="tabpanel" class="tab-pane fade" id="compare_requirements">
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped">
@@ -1035,6 +1052,124 @@
                         </div>
 
                     </div>
+
+                    <div role="tabpanel" class="tab-pane fade" id="compare_support">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th style="width:100px;"></th>
+                                        @{
+                                            if (Model.SupportComparison != null)
+                                            {
+                                                int i = 2;
+                                                foreach (var item in Model.SupportComparison)
+                                                {
+                                                    string className = "";
+                                                    if (i % 2 == 0)
+                                                    {
+                                                        className = "companyColumn";
+                                                    }
+                                                    i++;
+                                                    <th class="@className" style="width:50px;">@(item[0])</th>
+                                                }
+                                            }
+                                        }
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (Model.Requirement != null)
+                                        {
+                                            int j = 1;
+                                            foreach (var item in Model.Requirement)
+                                            {
+                                                <tr>
+                                                    <td> @(item.ServiceName)</td>
+
+                                                    @{
+                                                        int i = 2;
+                                                        foreach (var subitem in Model.SupportComparison)
+                                                        {
+                                                            string className = "";
+                                                            if (i % 2 == 0)
+                                                            {
+                                                                className = "companyColumn";
+                                                            }
+                                                            i++;
+                                                            <td class="@className">@(subitem[j])</td>
+                                                        }
+                                                    }
+                                                </tr>
+                                                j++;
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="compare_commercial">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th style="width:100px;"></th>
+                                        @{
+                                            if (Model.CommercialComparison != null)
+                                            {
+                                                int i = 2;
+                                                foreach (var item in Model.CommercialComparison)
+                                                {
+                                                    string className = "";
+                                                    if (i % 2 == 0)
+                                                    {
+                                                        className = "companyColumn";
+                                                    }
+                                                    i++;
+                                                    <th class="@className" style="width:50px;">@(item[0])</th>
+                                                }
+                                            }
+                                        }
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (Model.Requirement != null)
+                                        {
+                                            int j = 1;
+                                            foreach (var item in Model.Requirement)
+                                            {
+                                                <tr>
+                                                    <td> @(item.ServiceName)</td>
+
+                                                    @{
+                                                        int i = 2;
+                                                        foreach (var subitem in Model.CommercialComparison)
+                                                        {
+                                                            string className = "";
+                                                            if (i % 2 == 0)
+                                                            {
+                                                                className = "companyColumn";
+                                                            }
+                                                            i++;
+                                                            <td class="@className">@(subitem[j])</td>
+                                                        }
+                                                    }
+                                                </tr>
+                                                j++;
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
                     <div role="tabpanel" class="tab-pane fade" id="compare_pricing">
                         <div class="table-responsive">
 

@@ -66,6 +66,8 @@ namespace Com.BudgetMetal.ViewModels.Rfq
         public virtual List<VmRfqInvitesItem> RfqEmailInvites { get; set; }
 
         public List<List<string>> RequirementComparison { get; set; }
+        public List<List<string>> SupportComparison { get; set; }
+        public List<List<string>> CommercialComparison { get; set; }
         public List<List<string>> ProductPriceComparison { get; set; }
         public List<List<string>> ServicePriceComparison { get; set; }
         public List<List<string>> WarrantyPriceComparison { get; set; }
