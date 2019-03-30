@@ -1353,6 +1353,16 @@ namespace Com.BudgetMetal.Services.RFQ
                 dbDocument.UpdatedBy = userName;
                 repoDocument.Update(dbDocument);
 
+                string FacebookInfo = "";
+                var dbCompany = await repoCompany.Get(dbDocument.Company_Id);
+                FacebookInfo = "Project Title - ["+ dbDocument.Title +"] \n";
+                FacebookInfo = FacebookInfo + "Company  - "+dbCompany.Name +" ("+dbCompany.RegNo +") \n";
+
+                var dbRfq = await repoRfq.GetSingleRfqByDocumentId(documentId);
+                FacebookInfo = FacebookInfo + "Visit at link - http://ezytender.com/Public/SingleRFQ/" + dbRfq.ToString();
+
+
+
                 //Add Document Activity
                 var dbDocumentActivity = new Com.BudgetMetal.DBEntities.DocumentActivity()
                 {
@@ -1440,7 +1450,7 @@ namespace Com.BudgetMetal.Services.RFQ
                 }
 
                 result.IsSuccess = true;
-                result.MessageToUser = "Your Rfq is successfully updated.";
+                result.MessageToUser = FacebookInfo;
             }
             catch
             {

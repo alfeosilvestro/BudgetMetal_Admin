@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Com.BudgetMetal.Common;
 using Com.BudgetMetal.Services.Attachment;
 using Com.BudgetMetal.Services.Company;
+using Com.BudgetMetal.Services.Facebook;
 using Com.BudgetMetal.Services.Industries;
 using Com.BudgetMetal.Services.Quotation;
 using Com.BudgetMetal.Services.RFQ;
@@ -46,8 +47,9 @@ namespace Com.GenericPlatform.WebApp.Controllers
         private readonly IAttachmentService attachmentService;
         private readonly IQuotationService quotationService;
         private IHostingEnvironment _hostingEnvironment;
+        private readonly IFacebookService fbService;
 
-        public RfqController(IIndustryService industryService, IServiceTagsService serviceTagsService, ICompanyService companyService, IRFQService rfqService, IUserService userService, IRoleService roleService, IAttachmentService attachmentService, IQuotationService quotationService, IHostingEnvironment hostingEnvironment)
+        public RfqController(IIndustryService industryService, IServiceTagsService serviceTagsService, ICompanyService companyService, IRFQService rfqService, IUserService userService, IRoleService roleService, IAttachmentService attachmentService, IQuotationService quotationService, IHostingEnvironment hostingEnvironment, IFacebookService fbService)
         {
             this.industryService = industryService;
             this.serviceTagsService = serviceTagsService;
@@ -58,6 +60,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
             this.attachmentService = attachmentService;
             this.quotationService = quotationService;
             this._hostingEnvironment = hostingEnvironment;
+            this.fbService = fbService;
         }
 
         // GET: Rfq
@@ -788,6 +791,11 @@ namespace Com.GenericPlatform.WebApp.Controllers
         {
 
             var result = await rfqService.ApproveRfq(documentId, Convert.ToInt32(HttpContext.Session.GetString("User_Id")), HttpContext.Session.GetString("UserName"));
+
+            if (result.IsSuccess)
+            {
+               var fbResult = await fbService.PostMessage(result.MessageToUser);
+            }
 
             return new JsonResult(result, new JsonSerializerSettings()
             {
