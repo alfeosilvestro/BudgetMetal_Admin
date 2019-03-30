@@ -141,7 +141,7 @@
                             <div class="row clearfix">
 
                                 <div class="col-sm-3">
-                                    <label for="quote_no">Estimated Project Start Date</label>
+                                    <label for="quote_no"> Project Start Date</label>
                                     <div class="form-group">
                                         <div class="form-line">
                                             <input type="text" asp-for="EstimatedProjectStartDate" class="form-control datepicker" placeholder="Start of Project Delivery">
@@ -150,7 +150,7 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
-                                    <label for="EstimatedProjectEndDate">Estimated Project End Date</label>
+                                    <label for="EstimatedProjectEndDate">Project End Date</label>
                                     <div class="form-group">
                                         <div class="form-line">
                                             <input type="text" asp-for="EstimatedProjectEndDate" class="form-control datepicker" placeholder="End of Project Delivery">
@@ -855,21 +855,21 @@
                 invalidMessage += "Estimate project end date should not be blank. \n";
             }
 
-            var hasQuotationOpeningDate = false;
-            var quotationOpeningDate = $('#QuotationOpeningDate').val();
-            if (quotationOpeningDate != "") {
-                hasQuotationOpeningDate = true;
-            } else {
-                invalidMessage += "Quotation opening date should not be blank. \n";
-            }
+            //var hasQuotationOpeningDate = false;
+            //var quotationOpeningDate = $('#QuotationOpeningDate').val();
+            //if (quotationOpeningDate != "") {
+            //    hasQuotationOpeningDate = true;
+            //} else {
+            //    invalidMessage += "Quotation opening date should not be blank. \n";
+            //}
 
-            var hasContractValue = false;
-            var contractValue = $('#ContractValue').val();
-            if (contractValue != "") {
-                hasContractValue = true;
-            } else {
-                invalidMessage += "Contract value should not be blank. \n";
-            }
+            //var hasContractValue = false;
+            //var contractValue = $('#ContractValue').val();
+            //if (contractValue != "") {
+            //    hasContractValue = true;
+            //} else {
+            //    invalidMessage += "Contract value should not be blank. \n";
+            //}
 
             //Check Requeirment Table
             var hasRequirementRecord = false;

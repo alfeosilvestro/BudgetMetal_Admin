@@ -80,7 +80,9 @@
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs tab-nav-right" role="tablist">
                         <li role="presentation" class="active"><a href="#basic_information" data-toggle="tab">Basic Information</a></li>
-                        <li role="presentation"><a href="#detailed_requirements" data-toggle="tab">Requirements</a></li>
+                        <li role="presentation"><a href="#detailed_requirements" data-toggle="tab">Product</a></li>
+                        <li role="presentation"><a href="#detailed_support" data-toggle="tab">Support</a></li>
+                        <li role="presentation"><a href="#detailed_commercial" data-toggle="tab">Commercial</a></li>
                         <li role="presentation"><a href="#pricing" data-toggle="tab">Pricing</a></li>
                         <li role="presentation"><a href="#attachments" data-toggle="tab">Attachments</a></li>
                         @{
@@ -92,7 +94,7 @@
 
                         }
                         @*<li role="presentation"><a href="#settings" data-toggle="tab">User Settings</a></li>
-                            <li role="presentation"><a href="#DocumentActivity" data-toggle="tab">Activity</a></li>*@
+        <li role="presentation"><a href="#DocumentActivity" data-toggle="tab">Activity</a></li>*@
                     </ul>
                     <!-- Tab panes -->
                     <div class="tab-content">
@@ -103,7 +105,7 @@
                                     <label for="quote_no">Contact Person</label>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" asp-for="Document.ContactPersonName" class="form-control" placeholder="Contact Person" >
+                                            <input type="text" asp-for="Document.ContactPersonName" class="form-control" placeholder="Contact Person">
                                         </div>
                                     </div>
                                 </div>
@@ -167,13 +169,91 @@
                                                     <td>@item.Description <input type="hidden" name="QuotationRequirement[@i].Description" class="form-control" value="@item.Description" /></td>
                                                     <td>@item.Compliance<input type="hidden" name="QuotationRequirement[@i].Compliance" class="form-control" value="@item.Compliance" /></td>
                                                     @*<td class="demo-radio-button">
-                                                        <input id="QuotationRequirement[@i]_Compliance1" name="QuotationRequirement[@i].Compliance" type="radio" class="with-gap radio-col-red" value="QuotationRequirement[@i].Compliance" readonly="readonly"><label for="QuotationRequirement[@i]_Compliance1">Comply</label>
-                                                        <input id="QuotationRequirement[@i]_Compliance2" name="QuotationRequirement[@i].Compliance" type="radio" class="with-gap radio-col-red" value="QuotationRequirement[@i].Compliance" readonly="readonly"><label for="QuotationRequirement[@i]_Compliance2">Not Comply</label>
-                                                        <input id="QuotationRequirement[@i]_Compliance3" name="QuotationRequirement[@i].Compliance" type="radio" class="with-gap radio-col-red" value="QuotationRequirement[@i].Compliance" readonly="readonly"><label for="QuotationRequirement[@i]_Compliance3">Partial Comply</label>
-                                                    </td>*@
+                                        <input id="QuotationRequirement[@i]_Compliance1" name="QuotationRequirement[@i].Compliance" type="radio" class="with-gap radio-col-red" value="QuotationRequirement[@i].Compliance" readonly="readonly"><label for="QuotationRequirement[@i]_Compliance1">Comply</label>
+                                        <input id="QuotationRequirement[@i]_Compliance2" name="QuotationRequirement[@i].Compliance" type="radio" class="with-gap radio-col-red" value="QuotationRequirement[@i].Compliance" readonly="readonly"><label for="QuotationRequirement[@i]_Compliance2">Not Comply</label>
+                                        <input id="QuotationRequirement[@i]_Compliance3" name="QuotationRequirement[@i].Compliance" type="radio" class="with-gap radio-col-red" value="QuotationRequirement[@i].Compliance" readonly="readonly"><label for="QuotationRequirement[@i]_Compliance3">Partial Comply</label>
+                                    </td>*@
                                                     <td>@item.SupplierDescription<input type="hidden" name="QuotationRequirement[@i].SupplierDescription" class="form-control" value="@item.SupplierDescription" /></td>
                                                 </tr>
                                                 countRequirement++;
+                                                i++;
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane fade in" id="detailed_support">
+                            <input type="hidden" id="detailSupportLastId" value="1" />
+                            <table id="requirementsTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="5%">Serial</th>
+                                        <th width="20%">Service Name</th>
+                                        <th width="30%">Description</th>
+                                        <th width="20%">Compliance</th>
+                                        <th width="50%">Supplier Comments</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody data-test="abc">
+                                <tbody>
+                                    @{
+                                        int countSupport = 1;
+                                        if (Model.QuotationSupport != null)
+                                        {
+                                            int i = 0;
+                                            foreach (var item in Model.QuotationSupport)
+                                            {
+                                                <tr>
+                                                    <td>@countSupport</td>
+                                                    <td>@item.ServiceName <input type="hidden" name="QuotationSupport[@i].ServiceName" class="form-control" value="@item.ServiceName" /></td>
+                                                    <td>@item.Description <input type="hidden" name="QuotationSupport[@i].Description" class="form-control" value="@item.Description" /></td>
+                                                    <td>@item.Compliance<input type="hidden" name="QuotationSupport[@i].Compliance" class="form-control" value="@item.Compliance" /></td>
+
+                                                    <td>@item.SupplierDescription<input type="hidden" name="QuotationSupport[@i].SupplierDescription" class="form-control" value="@item.SupplierDescription" /></td>
+                                                </tr>
+                                                countSupport++;
+                                                i++;
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane fade in" id="detailed_commercial">
+                            <input type="hidden" id="detailCommercialLastId" value="1" />
+                            <table id="requirementsTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="5%">Serial</th>
+                                        <th width="20%">Service Name</th>
+                                        <th width="30%">Description</th>
+                                        <th width="20%">Compliance</th>
+                                        <th width="50%">Supplier Comments</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody data-test="abc">
+                                <tbody>
+                                    @{
+                                        int countCommercial = 1;
+                                        if (Model.QuotationCommercial != null)
+                                        {
+                                            int i = 0;
+                                            foreach (var item in Model.QuotationCommercial)
+                                            {
+                                                <tr>
+                                                    <td>@countCommercial</td>
+                                                    <td>@item.ServiceName <input type="hidden" name="QuotationCommercial[@i].ServiceName" class="form-control" value="@item.ServiceName" /></td>
+                                                    <td>@item.Description <input type="hidden" name="QuotationCommercial[@i].Description" class="form-control" value="@item.Description" /></td>
+                                                    <td>@item.Compliance<input type="hidden" name="QuotationCommercial[@i].Compliance" class="form-control" value="@item.Compliance" /></td>
+
+                                                    <td>@item.SupplierDescription<input type="hidden" name="QuotationCommercial[@i].SupplierDescription" class="form-control" value="@item.SupplierDescription" /></td>
+                                                </tr>
+                                                countCommercial++;
                                                 i++;
                                             }
                                         }
@@ -213,7 +293,7 @@
                                                     @*<td>@item.InternalRefrenceCode <input type="hidden" name="QuotationPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>*@
                                                     <td> @item.UnitPrice <input type="hidden" name="QuotationPriceSchedule[@i].UnitPrice" class="form-control" value="@item.UnitPrice" /></td>
                                                     <td>@item.QuantityRequired <input type="hidden" name="QuotationPriceSchedule[@i].QuantityRequired" class="form-control" value="@item.QuantityRequired" /></td>
-                                                    <td> @item.ItemAmount <input type="hidden" name="QuotationPriceSchedule[@i].ItemAmount" class="form-control" value="@item.ItemAmount" /></td>
+                                                    <td> @item.ItemAmount <input type="hidden" name="QuotationPriceSchedule[@i].ItemAmount" class="form-control  itemAmountProduct" value="@item.ItemAmount" /></td>
                                                 </tr>
                                                 countProductPricing++;
                                                 i++;
@@ -222,7 +302,13 @@
                                     }
                                 </tbody>
                             </table>
+                            <div class="row">
+                                <div class="col-sm-2 pull-right">
+                                    <span id="lblProductTotal"></span>
+                                </div>
+                                <div class="col-sm-10 pull-right"><span class="pull-right font-weight-bold">Sub Total</span></div>
 
+                            </div>
                             <h4>Service Pricing</h4>
                             <table id="pricingTable" class="table table-striped">
                                 <thead>
@@ -252,7 +338,7 @@
                                                     @*<td>@item.InternalRefrenceCode <input type="hidden" name="QuotationPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>*@
                                                     <td> @item.UnitPrice <input type="hidden" name="QuotationPriceSchedule[@i].UnitPrice" class="form-control" value="@item.UnitPrice" /></td>
                                                     <td>@item.QuantityRequired <input type="hidden" name="QuotationPriceSchedule[@i].QuantityRequired" class="form-control" value="@item.QuantityRequired" /></td>
-                                                    <td> @item.ItemAmount <input type="hidden" name="QuotationPriceSchedule[@i].ItemAmount" class="form-control" value="@item.ItemAmount" /></td>
+                                                    <td> @item.ItemAmount <input type="hidden" name="QuotationPriceSchedule[@i].ItemAmount" class="form-control  itemAmountService" value="@item.ItemAmount" /></td>
                                                 </tr>
                                                 countServicePricing++;
                                                 i++;
@@ -261,6 +347,14 @@
                                     }
                                 </tbody>
                             </table>
+
+                            <div class="row">
+                                <div class="col-sm-2 pull-right">
+                                    <span id="lblServiceTotal"></span>
+                                </div>
+                                <div class="col-sm-10 pull-right"><span class="pull-right font-weight-bold">Sub Total</span></div>
+
+                            </div>
                             <h4>Warranty Pricing</h4>
                             <table id="pricingTable" class="table table-striped">
                                 <thead>
@@ -290,7 +384,7 @@
                                                     @*<td>@item.InternalRefrenceCode <input type="hidden" name="QuotationPriceSchedule[@i].InternalRefrenceCode" class="form-control" value="@item.InternalRefrenceCode" /></td>*@
                                                     <td> @item.UnitPrice <input type="hidden" name="QuotationPriceSchedule[@i].UnitPrice" class="form-control" value="@item.UnitPrice" /></td>
                                                     <td>@item.QuantityRequired <input type="hidden" name="QuotationPriceSchedule[@i].QuantityRequired" class="form-control" value="@item.QuantityRequired" /></td>
-                                                    <td> @item.ItemAmount <input type="hidden" name="QuotationPriceSchedule[@i].ItemAmount" class="form-control" value="@item.ItemAmount" /></td>
+                                                    <td> @item.ItemAmount <input type="hidden" name="QuotationPriceSchedule[@i].ItemAmount" class="form-control  itemAmountWarranty" value="@item.ItemAmount" /></td>
                                                 </tr>
                                                 i++;
                                                 countWarrantyPricing++;
@@ -299,6 +393,22 @@
                                     }
                                 </tbody>
                             </table>
+
+                            <div class="row">
+                                <div class="col-sm-2 pull-right">
+                                    <span id="lblWarrantyTotal"></span>
+                                </div>
+                                <div class="col-sm-10 pull-right"><span class="pull-right font-weight-bold">Sub Total</span></div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-2 pull-right">
+                                    <span id="lblAllTotal"></span>
+                                </div>
+                                <div class="col-sm-10 pull-right"><span class="pull-right font-weight-bold">Grand Total</span></div>
+
+                            </div>
                         </div>
 
                         <div role="tabpanel" class="tab-pane fade" id="attachments">
@@ -551,8 +661,37 @@
     <script>
     $(function () {
         $('#frmCreateQuotation input').attr('readonly', 'readonly');
+        calculateGrandTotal();
     });
 
+        function calculateGrandTotal() {
+            var allProductTotal = 0;
+            $(".itemAmountProduct").each(function () {
+                var amt = $(this).val();
+                allProductTotal = allProductTotal + parseFloat(amt);
+            });
+
+            var allServiceTotal = 0;
+            $(".itemAmountService").each(function () {
+                var amt = $(this).val();
+                allServiceTotal = allServiceTotal + parseFloat(amt);
+            });
+
+            var allWarrantyTotal = 0;
+            $(".itemAmountWarranty").each(function () {
+                var amt = $(this).val();
+                allWarrantyTotal = allWarrantyTotal + parseFloat(amt);
+            });
+
+            var allTotal = allProductTotal + allServiceTotal + allWarrantyTotal;
+
+            //alert(allTotal);
+            //$("#QuotedFigure").val(allTotal);
+            $("#lblAllTotal").text(allTotal);
+            $("#lblProductTotal").text(allProductTotal);
+            $("#lblServiceTotal").text(allServiceTotal);
+            $("#lblWarrantyTotal").text(allWarrantyTotal);
+        }
 
     $(".btn_download").on("click", function () {
 
@@ -697,6 +836,7 @@ $("#btnAddComment").click(function () {
     function DeleteClarification(id) {
         alert("Delete_" + id);
     }
+
 
     function AddReply(id) {
         var replyMessage = $("#txtReply_" + id).val();

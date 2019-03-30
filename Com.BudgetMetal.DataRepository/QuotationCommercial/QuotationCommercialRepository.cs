@@ -6,12 +6,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Com.BudgetMetal.DataRepository.QuotationRequirement
+namespace Com.BudgetMetal.DataRepository.QuotationCommercial
 {
-    public class QuotationRequirementRepository : GenericRepository<Com.BudgetMetal.DBEntities.QuotationRequirement>, IQuotationRequirementRepository
+    public class QuotationCommercialRepository : GenericRepository<Com.BudgetMetal.DBEntities.QuotationCommercial>, IQuotationCommercialRepository
     {
-        public QuotationRequirementRepository(DataContext context, ILoggerFactory loggerFactory) :
-        base(context, loggerFactory, "QuotationRequiremetRepository")
+        public QuotationCommercialRepository(DataContext context, ILoggerFactory loggerFactory) :
+        base(context, loggerFactory, "QuotationCommercialRepository")
         {
 
         }

@@ -30,6 +30,8 @@ namespace Com.BudgetMetal.DB
         public virtual DbSet<Penalty> Penalty { get; set; }
         public virtual DbSet<Quotation> Quotation { get; set; }
         public virtual DbSet<QuotationPriceSchedule> QuotationPriceSchedule { get; set; }
+        public virtual DbSet<QuotationSupport> QuotationSupport { get; set; }
+        public virtual DbSet<QuotationCommercial> QuotationCommercial { get; set; }
         public virtual DbSet<Rating> Rating { get; set; }
         public virtual DbSet<Requirement> Requirement { get; set; }
         public virtual DbSet<Rfq> Rfq { get; set; }

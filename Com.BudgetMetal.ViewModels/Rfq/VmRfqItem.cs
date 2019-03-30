@@ -45,9 +45,10 @@ namespace Com.BudgetMetal.ViewModels.Rfq
         public string IndustryOfRfq { get; set; }
         public string SelectedTags { get; set; }
 
-        [Required]
+        
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dddd dd MMMM yyyy}")]
         public DateTime? QuotationOpeningDate { get; set; }
+
         public string ContractValue { get; set; }
         public bool IsPublic { get; set; }
         public bool SupplierProvideInstallationService { get; set; }

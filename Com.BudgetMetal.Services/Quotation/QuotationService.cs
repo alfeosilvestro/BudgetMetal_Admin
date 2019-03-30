@@ -42,6 +42,10 @@ using Com.BudgetMetal.ViewModels.DocumentActivity;
 using Com.BudgetMetal.DataRepository.TimeLine;
 using Com.BudgetMetal.DataRepository.Clarification;
 using Com.BudgetMetal.ViewModels.Clarification;
+using Com.BudgetMetal.ViewModels.QuotationCommercial;
+using Com.BudgetMetal.ViewModels.QuotationSupport;
+using Com.BudgetMetal.DataRepository.QuotationSupport;
+using Com.BudgetMetal.DataRepository.QuotationCommercial;
 
 namespace Com.BudgetMetal.Services.Quotation
 {
@@ -55,6 +59,8 @@ namespace Com.BudgetMetal.Services.Quotation
         private readonly IDocumentUserRepository repoDocumentUser;
         private readonly IQuotationPriceScheduleRepository repoPriceSchedule;
         private readonly IQuotationRequirementRepository repoRequirement;
+        private readonly IQuotationSupportRepository repoSupport;
+        private readonly IQuotationCommercialRepository repoCommercial;
         private readonly IDocumentActivityRepository repoDocumentActivity;
         private readonly ITimeLineRepository repoTimeLine;
         private readonly ICompanyRepository repoCompany;
@@ -62,7 +68,7 @@ namespace Com.BudgetMetal.Services.Quotation
         private readonly IRoleRepository repoRole;
         private readonly IClarificationRepository repoClarification;
 
-        public QuotationService(IRfqRepository repoRfq, IDocumentRepository repoDocument, IQuotationRepository repoQuotation, IAttachmentRepository repoAttachment, IDocumentUserRepository repoDocumentUser, IQuotationPriceScheduleRepository repoPriceSchedule, IUserRepository repoUser, IRoleRepository repoRole, IQuotationRequirementRepository repoQuotationRequirement, IDocumentActivityRepository repoDocumentActivity, ICompanyRepository repoCompany, ITimeLineRepository repoTimeLine, IClarificationRepository repoClarification)
+        public QuotationService(IRfqRepository repoRfq, IDocumentRepository repoDocument, IQuotationRepository repoQuotation, IAttachmentRepository repoAttachment, IDocumentUserRepository repoDocumentUser, IQuotationPriceScheduleRepository repoPriceSchedule, IUserRepository repoUser, IRoleRepository repoRole, IQuotationRequirementRepository repoQuotationRequirement, IQuotationSupportRepository repoSupport, IQuotationCommercialRepository repoCommercial, IDocumentActivityRepository repoDocumentActivity, ICompanyRepository repoCompany, ITimeLineRepository repoTimeLine, IClarificationRepository repoClarification)
         {
             this.repoRfq = repoRfq;
             this.repoDocument = repoDocument;
@@ -74,6 +80,8 @@ namespace Com.BudgetMetal.Services.Quotation
             this.repoUser = repoUser;
             this.repoCompany = repoCompany;
             this.repoRequirement = repoQuotationRequirement;
+            this.repoSupport = repoSupport;
+            this.repoCommercial = repoCommercial;
             this.repoDocumentActivity = repoDocumentActivity;
             this.repoTimeLine = repoTimeLine;
             this.repoClarification = repoClarification;
@@ -430,6 +438,32 @@ namespace Com.BudgetMetal.Services.Quotation
                     }
                 }
 
+                resultItem.QuotationSupport = new List<VmQuotationSupportItem>();
+                if (dbItem.QuotationSupport != null)
+                {
+                    foreach (var item in dbItem.QuotationSupport)
+                    {
+                        var vmQPS = new VmQuotationSupportItem();
+
+                        Copy<Com.BudgetMetal.DBEntities.QuotationSupport, VmQuotationSupportItem>(item, vmQPS);
+
+                        resultItem.QuotationSupport.Add(vmQPS);
+                    }
+                }
+
+                resultItem.QuotationCommercial = new List<VmQuotationCommercialItem>();
+                if (dbItem.QuotationCommercial != null)
+                {
+                    foreach (var item in dbItem.QuotationCommercial)
+                    {
+                        var vmQPS = new VmQuotationCommercialItem();
+
+                        Copy<Com.BudgetMetal.DBEntities.QuotationCommercial, VmQuotationCommercialItem>(item, vmQPS);
+
+                        resultItem.QuotationCommercial.Add(vmQPS);
+                    }
+                }
+
                 resultObj.Result.Records.Add(resultItem);
             }
 
@@ -525,6 +559,11 @@ namespace Com.BudgetMetal.Services.Quotation
             }
             resultObj.QuotationPriceSchedule = listPriceSchdule;
 
+
+           
+
+
+
             var listRequirement = new List<VmQuotationRequirementItem>();
 
             if (dbResult.Requirement != null)
@@ -539,6 +578,38 @@ namespace Com.BudgetMetal.Services.Quotation
                 }
             }
             resultObj.QuotationRequirement = listRequirement;
+
+            var listSupport = new List<VmQuotationSupportItem>();
+            if (dbResult.Sla != null)
+            {
+                foreach (var dbItem in dbResult.Sla)
+                {
+                    var resultSupport = new VmQuotationSupportItem();
+
+                    Copy<Com.BudgetMetal.DBEntities.Sla, VmQuotationSupportItem>(dbItem, resultSupport, new string[] { "Rfq_Id", "Rfq_Id", "Compliance", "SupplierDescription", "Quotation_Id", "Id" });
+                    resultSupport.ServiceName = dbItem.Requirement;
+
+
+                    listSupport.Add(resultSupport);
+                }
+            }
+            resultObj.QuotationSupport = listSupport;
+
+            var listCommercial = new List<VmQuotationCommercialItem>();
+            if (dbResult.Penalty != null)
+            {
+                foreach (var dbItem in dbResult.Penalty)
+                {
+                    var resultCommercial = new VmQuotationCommercialItem();
+
+                    Copy<Com.BudgetMetal.DBEntities.Penalty, VmQuotationCommercialItem>(dbItem, resultCommercial, new string[] { "Rfq_Id", "Rfq_Id", "Compliance", "SupplierDescription", "Quotation_Id", "Id" });
+                    resultCommercial.ServiceName = dbItem.BreachOfServiceDefinition;
+
+                    listCommercial.Add(resultCommercial);
+                }
+            }
+            resultObj.QuotationCommercial = listCommercial;
+
 
             return resultObj;
 
@@ -632,6 +703,42 @@ namespace Com.BudgetMetal.Services.Quotation
                         repoPriceSchedule.Commit();
                     }
                 }
+
+                if (quotation.QuotationSupport != null)
+                {
+                    if (quotation.QuotationSupport.Count > 0)
+                    {
+                        foreach (var item in quotation.QuotationSupport)
+                        {
+                            var dbQSupport = new Com.BudgetMetal.DBEntities.QuotationSupport();
+
+                            Copy<VmQuotationSupportItem, Com.BudgetMetal.DBEntities.QuotationSupport>(item, dbQSupport);
+                            dbQSupport.Quotation_Id = dbQuotation.Id;
+                            dbQSupport.CreatedBy = dbQSupport.UpdatedBy = dbQuotation.CreatedBy;
+                            repoSupport.Add(dbQSupport);
+                        }
+                        repoSupport.Commit();
+                    }
+                }
+
+                if (quotation.QuotationCommercial != null)
+                {
+                    if (quotation.QuotationCommercial.Count > 0)
+                    {
+                        foreach (var item in quotation.QuotationCommercial)
+                        {
+                            var dbQCommercial = new Com.BudgetMetal.DBEntities.QuotationCommercial();
+
+                            Copy<VmQuotationCommercialItem, Com.BudgetMetal.DBEntities.QuotationCommercial>(item, dbQCommercial);
+                            dbQCommercial.Quotation_Id = dbQuotation.Id;
+                            dbQCommercial.CreatedBy = dbQCommercial.UpdatedBy = dbQuotation.CreatedBy;
+                            repoCommercial.Add(dbQCommercial);
+                        }
+                        repoSupport.Commit();
+                    }
+                }
+
+
 
                 if (quotation.Document.DocumentActivityList != null)
                 {
@@ -815,6 +922,46 @@ namespace Com.BudgetMetal.Services.Quotation
                             repoRequirement.Add(dbQRequirement);
                         }
                         repoPriceSchedule.Commit();
+                    }
+                }
+
+                repoSupport.InactiveByQuotationId(dbQuotation.Id, dbQuotation.UpdatedBy);
+                repoSupport.Commit();
+
+                if (quotation.QuotationSupport != null)
+                {
+                    if (quotation.QuotationSupport.Count > 0)
+                    {
+                        foreach (var item in quotation.QuotationSupport)
+                        {
+                            var dbQSupport = new Com.BudgetMetal.DBEntities.QuotationSupport();
+
+                            Copy<VmQuotationSupportItem, Com.BudgetMetal.DBEntities.QuotationSupport>(item, dbQSupport);
+                            dbQSupport.Quotation_Id = dbQuotation.Id;
+                            dbQSupport.CreatedBy = dbQSupport.UpdatedBy = dbQuotation.CreatedBy;
+                            repoSupport.Add(dbQSupport);
+                        }
+                        repoSupport.Commit();
+                    }
+                }
+
+                repoCommercial.InactiveByQuotationId(dbQuotation.Id, dbQuotation.UpdatedBy);
+                repoCommercial.Commit();
+
+                if (quotation.QuotationCommercial != null)
+                {
+                    if (quotation.QuotationCommercial.Count > 0)
+                    {
+                        foreach (var item in quotation.QuotationCommercial)
+                        {
+                            var dbQCommercial = new Com.BudgetMetal.DBEntities.QuotationCommercial();
+
+                            Copy<VmQuotationCommercialItem, Com.BudgetMetal.DBEntities.QuotationCommercial>(item, dbQCommercial);
+                            dbQCommercial.Quotation_Id = dbQuotation.Id;
+                            dbQCommercial.CreatedBy = dbQCommercial.UpdatedBy = dbQuotation.CreatedBy;
+                            repoCommercial.Add(dbQCommercial);
+                        }
+                        repoCommercial.Commit();
                     }
                 }
 
@@ -1016,6 +1163,31 @@ namespace Com.BudgetMetal.Services.Quotation
                 }
             }
             resultObject.QuotationRequirement = listQuotationRequirement;
+
+            var listQuotationCommercial = new List<VmQuotationCommercialItem>();
+            if (dbResult.QuotationRequirement != null)
+            {
+                foreach (var item in dbResult.QuotationCommercial.Where(e => e.IsActive == true).ToList())
+                {
+                    var itemQuotationCommercial = new VmQuotationCommercialItem();
+                    Copy<Com.BudgetMetal.DBEntities.QuotationCommercial, VmQuotationCommercialItem>(item, itemQuotationCommercial, new string[] { "Quotation" });
+                    listQuotationCommercial.Add(itemQuotationCommercial);
+                }
+            }
+            resultObject.QuotationCommercial = listQuotationCommercial;
+
+
+            var listQuotationSupport = new List<VmQuotationSupportItem>();
+            if (dbResult.QuotationRequirement != null)
+            {
+                foreach (var item in dbResult.QuotationSupport.Where(e => e.IsActive == true).ToList())
+                {
+                    var itemQuotationSupport = new VmQuotationSupportItem();
+                    Copy<Com.BudgetMetal.DBEntities.QuotationSupport, VmQuotationSupportItem>(item, itemQuotationSupport, new string[] { "Quotation" });
+                    listQuotationSupport.Add(itemQuotationSupport);
+                }
+            }
+            resultObject.QuotationSupport = listQuotationSupport;
 
 
             var dbResultRFQ = await repoRfq.GetSingleRfqById(resultObject.Rfq_Id);
