@@ -1,6 +1,9 @@
 ﻿@model Com.BudgetMetal.ViewModels.Quotation.VmQuotationItem
 @{
     ViewData["Title"] = "Edit";
+    int countRequirement = 1;
+    int countCommercial = 1;
+    int countSupport = 1;
 }
 <form asp-controller="Quotation" asp-action="Edit" method="post" enctype="multipart/form-data" id="frmCreateQuotation">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -135,16 +138,18 @@
                                         <th width="5%">Serial</th>
                                         <th width="20%">Service Name</th>
                                         <th width="30%">Description</th>
-                                        <th width="20%">Compliance</th>
+                                        <th width="20%">Compliance 
+                                        <button id="btnComplyAll_Product" type="button" class="btn btn-sm btn-warning">Comply All</button>
+                                        </th>
                                         <th width="50%">Supplier Comments</th>
                                         <th>&nbsp;</th>
                                     </tr>
                                 </thead>
                                 <tbody data-test="abc">
-                                <tbody>
+                                
                                     @{
 
-                                        int countRequirement = 1;
+                                        
                                         if (Model.QuotationRequirement != null)
                                         {
                                             int i = 0;
@@ -176,7 +181,7 @@
                                                             }
                                                             else
                                                             {
-                                                                chkNotComply = "checked";
+                                                                //chkNotComply = "checked";
                                                             }
                                                         }
                                                         <input id="QuotationRequirement[@i]_Compliance1" name="QuotationRequirement[@i].Compliance" type="radio" class="with-gap radio-col-red" value="Comply" @chkComply><label for="QuotationRequirement[@i]_Compliance1">Comply</label>
@@ -204,16 +209,17 @@
                                         <th width="5%">Serial</th>
                                         <th width="20%">Service Name</th>
                                         <th width="30%">Description</th>
-                                        <th width="20%">Compliance</th>
+                                        <th width="20%">Compliance 
+                                            <button id="btnComplyAll_Support" type="button" class="btn btn-sm btn-warning">Comply All</button></th>
                                         <th width="50%">Supplier Comments</th>
                                         <th>&nbsp;</th>
                                     </tr>
                                 </thead>
                                 <tbody data-test="abc">
-                                <tbody>
+                                
                                     @{
 
-                                        int countSupport = 1;
+                                        
                                         if (Model.QuotationSupport != null)
                                         {
                                             int i = 0;
@@ -245,7 +251,7 @@
                                                             }
                                                             else
                                                             {
-                                                                chkNotComply = "checked";
+                                                                //chkNotComply = "checked";
                                                             }
                                                         }
                                                         <input id="QuotationSupport[@i]_Compliance1" name="QuotationSupport[@i].Compliance" type="radio" class="with-gap radio-col-red" value="Comply" @chkComply><label for="QuotationSupport[@i]_Compliance1">Comply</label>
@@ -272,16 +278,17 @@
                                         <th width="5%">Serial</th>
                                         <th width="20%">Service Name</th>
                                         <th width="30%">Description</th>
-                                        <th width="20%">Compliance</th>
+                                        <th width="20%">Compliance 
+                                            <button id="btnComplyAll_Commercial" type="button" class="btn btn-sm btn-warning">Comply All</button></th>
                                         <th width="50%">Supplier Comments</th>
                                         <th>&nbsp;</th>
                                     </tr>
                                 </thead>
                                 <tbody data-test="abc">
-                                <tbody>
+                                
                                     @{
 
-                                        int countCommercial = 1;
+                                        
                                         if (Model.QuotationCommercial != null)
                                         {
                                             int i = 0;
@@ -313,7 +320,7 @@
                                                 }
                                                 else
                                                 {
-                                                    chkNotComply = "checked";
+                                                    //chkNotComply = "checked";
                                                 }
                                             }
                                             <input id="QuotationCommercial[@i]_Compliance1" name="QuotationCommercial[@i].Compliance" type="radio" class="with-gap radio-col-red" value="Comply" @chkComply><label for="QuotationCommercial[@i]_Compliance1">Comply</label>
@@ -673,6 +680,32 @@
         calculateGrandTotal();  
     });
 
+    $("#btnComplyAll_Product").click(function () {
+        var n_Product = parseInt('@countRequirement');
+        var i = 0;
+        for (i = 0; i < n_Product - 1; i++) {
+            var radioName = "QuotationRequirement[" + i + "].Compliance";
+            $("input[name='" + radioName + "'][value='Comply']").attr('checked', 'checked');
+        }
+    });
+
+    $("#btnComplyAll_Supprot").click(function () {
+        var n_Product = parseInt('@countSupport');
+        var i = 0;
+        for (i = 0; i < n_Product - 1; i++) {
+            var radioName = "QuotationSupport[" + i + "].Compliance";
+            $("input[name='" + radioName + "'][value='Comply']").attr('checked', 'checked');
+        }
+    });
+
+    $("#btnComplyAll_Commercial").click(function () {
+        var n_Product = parseInt('@countCommercial');
+        var i = 0;
+        for (i = 0; i < n_Product - 1; i++) {
+            var radioName = "QuotationCommercial[" + i + "].Compliance";
+            $("input[name='" + radioName + "'][value='Comply']").attr('checked', 'checked');
+        }
+    });
 
     $("#btnSubmit").click(function () {
         $("#btnType").val("submit");
