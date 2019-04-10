@@ -185,6 +185,8 @@ namespace Com.BudgetMetal.DataRepository.Quotation
                             .Include(e => e.Document.Company)
                             .Include(e => e.QuotationPriceSchedule)
                             .Include(e => e.QuotationRequirement)
+                            .Include(e => e.QuotationSupport)
+                            .Include(e => e.QuotationCommercial)
                             .Where(e =>
                               (e.IsActive == true)
                               && (e.Document.IsActive == true)
@@ -206,6 +208,8 @@ namespace Com.BudgetMetal.DataRepository.Quotation
                             .Include(e => e.Document.DocumentUser)
                             .Include(e => e.Document.Attachment)
                             .Include(e => e.QuotationRequirement)
+                            .Include(e => e.QuotationSupport)
+                            .Include(e => e.QuotationCommercial)
                             .Include(e => e.QuotationPriceSchedule)
                             .Include(e => e.Document.DocumentActivity)
                             .Include(e=>e.Document.Clarification)

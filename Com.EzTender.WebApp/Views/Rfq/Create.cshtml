@@ -81,7 +81,7 @@
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs tab-nav-right" role="tablist">
                         <li role="presentation" class="active"><a id="infoTag" href="#basic_requirements" data-toggle="tab">Info</a></li>
-                        <li role="presentation"><a href="#detailed_requirements" data-toggle="tab">Requirements</a></li>
+                        <li role="presentation"><a href="#detailed_requirements" data-toggle="tab">Product</a></li>
                         <li role="presentation"><a href="#service_level_agreement" data-toggle="tab">Supports</a></li>
                         <li role="presentation"><a href="#penalty" data-toggle="tab">Commercials</a></li>
                         <li role="presentation"><a href="#pricing" data-toggle="tab">Pricing</a></li>
@@ -125,7 +125,7 @@
                             </div>
                             <div class="row clearfix">
                                 <div class="col-sm-3">
-                                    <label for="quote_no">Estimated Project Start Date <a href="#" data-toggle="modal" data-target="#timelineModal"><span class="badge bg-light-blue">i</span></a></label>
+                                    <label for="quote_no">Project Start Date <a href="#" data-toggle="modal" data-target="#timelineModal"><span class="badge bg-light-blue">i</span></a></label>
                                     <div class="form-group">
                                         <div class="form-line">
                                             <input type="text" asp-for="EstimatedProjectStartDate" class="form-control datepicker" placeholder="Start of Project Delivery">
@@ -134,7 +134,7 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
-                                    <label for="EstimatedProjectEndDate">Estimated Project End Date <a href="#" data-toggle="modal" data-target="#timelineModal"><span class="badge bg-light-blue">i</span></a></label>
+                                    <label for="EstimatedProjectEndDate">Project End Date <a href="#" data-toggle="modal" data-target="#timelineModal"><span class="badge bg-light-blue">i</span></a></label>
                                     <div class="form-group">
                                         <div class="form-line">
                                             <input type="text" asp-for="EstimatedProjectEndDate" class="form-control datepicker" placeholder="End of Project Delivery">
@@ -158,7 +158,7 @@
                             <div class="row clearfix">
 
                                 <div class="col-sm-3">
-                                    <input type="checkbox" asp-for="IsPublic" class="chk-col-red" />
+                                    <input type="checkbox" asp-for="IsPublic"  class="chk-col-red" />
                                     <label for="IsPublic">Public </label>
                                     <a href="#" data-toggle="modal" data-target="#publicModal"><span class="badge bg-light-blue">i</span></a>
                                 </div>
@@ -527,7 +527,7 @@
                 <h4 class="modal-title">Public</h4>
             </div>
             <div class="modal-body">
-                By checking Public, your tender will be published in our TenderBoard public domain. Any supplier who accesses the public portal will be able to review your requirements and submit a proposal for your review.
+                By checking Public, your tender will be published in our <b><a href="https://www.facebook.com/Ezy-Tender-982142328651452/" target="_blank">FACEBOOK Page</a></b> and our TenderBoard public domain.
             </div>
         </div>
     </div>
@@ -1280,6 +1280,17 @@ function loadIndustry() {
             }
         });
     })
+
+ 
+        $('#IsPublic').click(function () {
+            if ($(this).prop("checked") == true) {
+                $('#publicModal').modal('show');
+            }
+            else if ($(this).prop("checked") == false) {
+                //alert("Checkbox is unchecked.");
+            }
+        });
+   
 </script>
 
 <!-- Create RFQ Js -->

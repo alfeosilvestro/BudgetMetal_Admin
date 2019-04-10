@@ -45,9 +45,10 @@ namespace Com.BudgetMetal.ViewModels.Rfq
         public string IndustryOfRfq { get; set; }
         public string SelectedTags { get; set; }
 
-        [Required]
+        
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dddd dd MMMM yyyy}")]
         public DateTime? QuotationOpeningDate { get; set; }
+
         public string ContractValue { get; set; }
         public bool IsPublic { get; set; }
         public bool SupplierProvideInstallationService { get; set; }
@@ -65,6 +66,8 @@ namespace Com.BudgetMetal.ViewModels.Rfq
         public virtual List<VmRfqInvitesItem> RfqEmailInvites { get; set; }
 
         public List<List<string>> RequirementComparison { get; set; }
+        public List<List<string>> SupportComparison { get; set; }
+        public List<List<string>> CommercialComparison { get; set; }
         public List<List<string>> ProductPriceComparison { get; set; }
         public List<List<string>> ServicePriceComparison { get; set; }
         public List<List<string>> WarrantyPriceComparison { get; set; }

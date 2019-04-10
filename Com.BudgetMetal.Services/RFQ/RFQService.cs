@@ -1353,6 +1353,16 @@ namespace Com.BudgetMetal.Services.RFQ
                 dbDocument.UpdatedBy = userName;
                 repoDocument.Update(dbDocument);
 
+                string FacebookInfo = "";
+                var dbCompany = await repoCompany.Get(dbDocument.Company_Id);
+                FacebookInfo = "Project Title - ["+ dbDocument.Title +"] \n";
+                FacebookInfo = FacebookInfo + "Company  - "+dbCompany.Name +" ("+dbCompany.RegNo +") \n";
+
+                var dbRfq = await repoRfq.GetSingleRfqByDocumentId(documentId);
+                FacebookInfo = FacebookInfo + "Visit at link - http://ezytender.com/Public/SingleRFQ/" + dbRfq.ToString();
+
+
+
                 //Add Document Activity
                 var dbDocumentActivity = new Com.BudgetMetal.DBEntities.DocumentActivity()
                 {
@@ -1440,7 +1450,7 @@ namespace Com.BudgetMetal.Services.RFQ
                 }
 
                 result.IsSuccess = true;
-                result.MessageToUser = "Your Rfq is successfully updated.";
+                result.MessageToUser = FacebookInfo;
             }
             catch
             {
@@ -1868,6 +1878,8 @@ namespace Com.BudgetMetal.Services.RFQ
             var dbResultQuotationList = repoQuotation.GetQuotationByRfqId(documentId);
 
             List<List<string>> requirementComparisonList = new List<List<string>>();
+            List<List<string>> supportComparisonList = new List<List<string>>();
+            List<List<string>> commercialComparisonList = new List<List<string>>();
             List<List<string>> priceComparisonList_Product = new List<List<string>>();
             List<List<string>> priceComparisonList_Service = new List<List<string>>();
             List<List<string>> priceComparisonList_Warranty = new List<List<string>>();
@@ -1878,22 +1890,82 @@ namespace Com.BudgetMetal.Services.RFQ
                 List<string> requirementComparison = new List<string>();
                 requirementComparison.Add(item.Document.Company.Name);
                 int ptsForComply = 0;
+                int ptsForComply_product = 0;
                 foreach (var requirementItem in item.QuotationRequirement.Where(e => e.IsActive == true).ToList())
                 {
-                    requirementComparison.Add(requirementItem.Compliance);
-                    if(requirementItem.Compliance.ToLower() == "comply")
+                    if (requirementItem.Compliance == null)
                     {
-                        ptsForComply = ptsForComply + 1;
+                        requirementItem.Compliance = "Not Comply";
+                    }
+                        requirementComparison.Add(requirementItem.Compliance);
+                    
+                    if (requirementItem.Compliance.ToLower() == "comply")
+                    {
+                        ptsForComply_product = ptsForComply_product + 1;
                     }else if (requirementItem.Compliance.ToLower() == "partial comply")
                     {
-                        ptsForComply = ptsForComply + 2;
+                        ptsForComply_product = ptsForComply_product + 2;
                     }
                     else
                     {
-                        ptsForComply = ptsForComply + 3;
+                        ptsForComply_product = ptsForComply_product + 3;
                     }
                 }
                 requirementComparisonList.Add(requirementComparison);
+
+                List<string> supportComparison = new List<string>();
+                supportComparison.Add(item.Document.Company.Name);
+                int ptsForComply_support = 0;
+                foreach (var supportItem in item.QuotationSupport.Where(e => e.IsActive == true).ToList())
+                {
+                    if (supportItem.Compliance == null)
+                    {
+                        supportItem.Compliance = "Not Comply";
+                    }
+                    supportComparison.Add(supportItem.Compliance);
+
+                    if (supportItem.Compliance.ToLower() == "comply")
+                    {
+                        ptsForComply_support = ptsForComply_support + 1;
+                    }
+                    else if (supportItem.Compliance.ToLower() == "partial comply")
+                    {
+                        ptsForComply_support = ptsForComply_support + 2;
+                    }
+                    else
+                    {
+                        ptsForComply_support = ptsForComply_support + 3;
+                    }
+                }
+                supportComparisonList.Add(supportComparison);
+                //---------------------------------------------------------
+
+                List<string> commercialComparison = new List<string>();
+                commercialComparison.Add(item.Document.Company.Name);
+                int ptsForComply_commercial = 0;
+                foreach (var commercialItem in item.QuotationCommercial.Where(e => e.IsActive == true).ToList())
+                {
+                    if (commercialItem.Compliance == null)
+                    {
+                        commercialItem.Compliance = "Not Comply";
+                    }
+                    commercialComparison.Add(commercialItem.Compliance);
+
+                    if (commercialItem.Compliance.ToLower() == "comply")
+                    {
+                        ptsForComply_commercial = ptsForComply_commercial + 1;
+                    }
+                    else if (commercialItem.Compliance.ToLower() == "partial comply")
+                    {
+                        ptsForComply_commercial = ptsForComply_commercial + 2;
+                    }
+                    else
+                    {
+                        ptsForComply_commercial = ptsForComply_commercial + 3;
+                    }
+                }
+                commercialComparisonList.Add(commercialComparison);
+                //---------------------------------------------------------
 
                 List<string> priceComparison_Product = new List<string>();
                 priceComparison_Product.Add(item.Document.Company.Name);
@@ -1931,6 +2003,8 @@ namespace Com.BudgetMetal.Services.RFQ
 
                 List<string> priceComparison_Summary = new List<string>();
                 priceComparison_Summary.Add(item.Document.Company.Name);
+                ptsForComply = ptsForComply_product + ptsForComply_support + ptsForComply_commercial;
+
                 priceComparison_Summary.Add(ptsForComply.ToString("#,##0"));
                 priceComparison_Summary.Add(totalPricing.ToString("#,##0"));
                 decimal totalPts = totalPricing + Convert.ToDecimal(ptsForComply);
@@ -1940,6 +2014,8 @@ namespace Com.BudgetMetal.Services.RFQ
             }
 
             resultObject.RequirementComparison = requirementComparisonList;
+            resultObject.SupportComparison = supportComparisonList;
+            resultObject.CommercialComparison = commercialComparisonList;
             resultObject.ProductPriceComparison = priceComparisonList_Product;
             resultObject.ServicePriceComparison = priceComparisonList_Service;
             resultObject.WarrantyPriceComparison = priceComparisonList_Warranty;

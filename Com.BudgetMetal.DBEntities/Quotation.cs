@@ -24,6 +24,8 @@ namespace Com.BudgetMetal.DBEntities
         public virtual Rfq Rfq { get; set; }
 
         public virtual ICollection<QuotationPriceSchedule> QuotationPriceSchedule { get; set; }
+        public virtual ICollection<QuotationSupport> QuotationSupport { get; set; }
+        public virtual ICollection<QuotationCommercial> QuotationCommercial { get; set; }
         public virtual ICollection<QuotationRequirement> QuotationRequirement { get; set; }
     }
 }

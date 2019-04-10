@@ -94,7 +94,7 @@
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs tab-nav-right" role="tablist">
                         <li role="presentation" class="active"><a id="infoTag" href="#basic_requirements" data-toggle="tab">Info</a></li>
-                        <li role="presentation"><a href="#detailed_requirements" data-toggle="tab">Requirements</a></li>
+                        <li role="presentation"><a href="#detailed_requirements" data-toggle="tab">Product</a></li>
                         <li role="presentation"><a href="#service_level_agreement" data-toggle="tab">Supports</a></li>
                         <li role="presentation"><a href="#penalty" data-toggle="tab">Commercials</a></li>
                         <li role="presentation"><a href="#pricing" data-toggle="tab">Pricing</a></li>
@@ -141,7 +141,7 @@
                             <div class="row clearfix">
 
                                 <div class="col-sm-3">
-                                    <label for="quote_no">Estimated Project Start Date</label>
+                                    <label for="quote_no"> Project Start Date</label>
                                     <div class="form-group">
                                         <div class="form-line">
                                             <input type="text" asp-for="EstimatedProjectStartDate" class="form-control datepicker" placeholder="Start of Project Delivery">
@@ -150,7 +150,7 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
-                                    <label for="EstimatedProjectEndDate">Estimated Project End Date</label>
+                                    <label for="EstimatedProjectEndDate">Project End Date</label>
                                     <div class="form-group">
                                         <div class="form-line">
                                             <input type="text" asp-for="EstimatedProjectEndDate" class="form-control datepicker" placeholder="End of Project Delivery">
@@ -707,7 +707,7 @@
                 <h4 class="modal-title">Public</h4>
             </div>
             <div class="modal-body">
-                By checking Public, your tender will be published in our TenderBoard public domain. Any supplier who accesses the public portal will be able to review your requirements and submit a proposal for your review.
+                By checking Public, your tender will be published in our <b><a href="https://www.facebook.com/Ezy-Tender-982142328651452/" target="_blank">FACEBOOK Page</a></b> and our TenderBoard public domain.
             </div>
         </div>
     </div>
@@ -855,21 +855,21 @@
                 invalidMessage += "Estimate project end date should not be blank. \n";
             }
 
-            var hasQuotationOpeningDate = false;
-            var quotationOpeningDate = $('#QuotationOpeningDate').val();
-            if (quotationOpeningDate != "") {
-                hasQuotationOpeningDate = true;
-            } else {
-                invalidMessage += "Quotation opening date should not be blank. \n";
-            }
+            //var hasQuotationOpeningDate = false;
+            //var quotationOpeningDate = $('#QuotationOpeningDate').val();
+            //if (quotationOpeningDate != "") {
+            //    hasQuotationOpeningDate = true;
+            //} else {
+            //    invalidMessage += "Quotation opening date should not be blank. \n";
+            //}
 
-            var hasContractValue = false;
-            var contractValue = $('#ContractValue').val();
-            if (contractValue != "") {
-                hasContractValue = true;
-            } else {
-                invalidMessage += "Contract value should not be blank. \n";
-            }
+            //var hasContractValue = false;
+            //var contractValue = $('#ContractValue').val();
+            //if (contractValue != "") {
+            //    hasContractValue = true;
+            //} else {
+            //    invalidMessage += "Contract value should not be blank. \n";
+            //}
 
             //Check Requeirment Table
             var hasRequirementRecord = false;
@@ -1333,6 +1333,15 @@ function loadIndustry() {
         $('#iframe_download_file').attr('src', url)
         //alert('download - ' + $('#iframe_download_file').attr('src'));
 
+    });
+
+    $('#IsPublic').click(function () {
+        if ($(this).prop("checked") == true) {
+            $('#publicModal').modal('show');
+        }
+        else if ($(this).prop("checked") == false) {
+            //alert("Checkbox is unchecked.");
+        }
     });
 </script>
 

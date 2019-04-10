@@ -134,7 +134,7 @@ namespace Com.EzTender.PublicPortal
             services.AddScoped<IQuotationRepository, QuotationRepository>();
 
             services.AddScoped<IQuotationPriceScheduleRepository, QuotationPriceScheduleRepository>();
-            services.AddScoped<IQuotationRequirementRepository, QuotationRequiremetRepository>();
+            services.AddScoped<IQuotationRequirementRepository, QuotationRequirementRepository>();
 
             services.AddScoped<IAttachmentRepository, AttachmentRepository>();
             services.AddScoped<IAttachmentService, AttachmentService>();
