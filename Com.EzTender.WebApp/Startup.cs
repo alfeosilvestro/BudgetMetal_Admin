@@ -47,6 +47,7 @@ using Com.BudgetMetal.Services.Facebook;
 using Com.BudgetMetal.Services.Gallery;
 using Com.BudgetMetal.Services.Industries;
 using Com.BudgetMetal.Services.Quotation;
+using Com.BudgetMetal.Services.Rating;
 using Com.BudgetMetal.Services.RFQ;
 using Com.BudgetMetal.Services.Roles;
 using Com.BudgetMetal.Services.ServiceTags;
@@ -162,6 +163,7 @@ namespace Com.EzTender.WebApp
             services.AddScoped<IDocumentActivityRepository, DocumentActivityRepository>();
             //Rating
             services.AddScoped<IRatingRepository, RatingRepository>();
+            services.AddScoped<IRatingService, RatingService>();
             //CompanySupplier
             services.AddScoped<ICompanySupplierRepository, CompanySupplierRepository>();
             services.AddScoped<IRfqInvitesRepository, RfqInvitesRepository>();

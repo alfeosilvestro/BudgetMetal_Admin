@@ -32,14 +32,14 @@ namespace Com.EzTender.WebApp.Controllers
         private readonly IServiceTagsService serviceTagsService;
         private readonly IUserService userService;
         private readonly IAttachmentService attachmentService;
-        private readonly IBlogService blogService;
+        private readonly IBlogService blogService;        
 
         public PublicController(IRFQService rfqService,
                               ICompanyService companyService,
                               IServiceTagsService serviceTagsService,
                               IIndustryService industryService,
                               IOptions<AppSettings> appSettings,
-                              IUserService userService,
+                              IUserService userService,                              
                               IAttachmentService attachmentService, IBlogService blogService)
         {
             this.rfqService = rfqService;
@@ -212,6 +212,5 @@ namespace Com.EzTender.WebApp.Controllers
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             });
         }
-
     }
 }

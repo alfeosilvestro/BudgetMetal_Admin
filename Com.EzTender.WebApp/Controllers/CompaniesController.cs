@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Com.BudgetMetal.Services.Rating;
 
 namespace Com.EzTender.WebApp.Controllers
 {
@@ -19,12 +20,14 @@ namespace Com.EzTender.WebApp.Controllers
         private readonly ICompanyService svs;
         private readonly AppSettings _appSettings;
         private readonly IRoleService roleService;
+        private readonly IRatingService ratingService;
 
-        public CompaniesController(ICompanyService svs, IOptions<AppSettings> appSettings, IRoleService roleService)
+        public CompaniesController(ICompanyService svs, IOptions<AppSettings> appSettings, IRoleService roleService, IRatingService ratingService)
         {
             this.svs = svs;
             this._appSettings = appSettings.Value;
             this.roleService = roleService;
+            this.ratingService = ratingService;
         }
         
         // GET: Companies
@@ -201,6 +204,19 @@ namespace Com.EzTender.WebApp.Controllers
             string updatedBy = HttpContext.Session.GetString("EmailAddress");
             
             var result = await svs.EditCompanyUserRole(CompanyId, UserId, userRole, updatedBy);
+
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetRatingData(int page, int count)
+        {
+            var Company_Id = HttpContext.Session.GetString("Company_Id");
+            int companyId = (Company_Id != null) ? int.Parse(Company_Id) : 0;
+            var result = await ratingService.GetRatingData(page, count, companyId, 0, "");
 
             return new JsonResult(result, new JsonSerializerSettings()
             {
