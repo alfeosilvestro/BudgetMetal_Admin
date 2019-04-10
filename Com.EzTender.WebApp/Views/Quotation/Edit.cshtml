@@ -771,10 +771,10 @@
 
         //alert(allTotal);
         $("#QuotedFigure").val(allTotal);
-        $("#lblAllTotal").text(allTotal);
-        $("#lblProductTotal").text(allProductTotal);
-        $("#lblServiceTotal").text(allServiceTotal);
-        $("#lblWarrantyTotal").text(allWarrantyTotal);
+        $("#lblAllTotal").text("$" +allTotal);
+        $("#lblProductTotal").text("$"+allProductTotal);
+        $("#lblServiceTotal").text("$" +allServiceTotal);
+        $("#lblWarrantyTotal").text("$" +allWarrantyTotal);
     }
 
     function calculateTotal(id, item) {
