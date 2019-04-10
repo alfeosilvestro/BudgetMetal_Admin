@@ -87,16 +87,18 @@
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs tab-nav-right" role="tablist">
                         <li role="presentation" class="active"><a href="#basic_requirements" data-toggle="tab">Info</a></li>
-                        <li role="presentation"><a href="#detailed_requirements" data-toggle="tab">Requirements</a></li>
-                        <li role="presentation"><a href="#service_level_agreement" data-toggle="tab">SLA</a></li>
-                        <li role="presentation"><a href="#penalty" data-toggle="tab">Penalty / LD</a></li>
-                        <li role="presentation"><a href="#pricing" data-toggle="tab">Pricing Table</a></li>
-                        <li role="presentation"><a href="#attachments" data-toggle="tab">Files</a></li>
+                        <li role="presentation"><a href="#detailed_requirements" data-toggle="tab">Products</a></li>
+                        <li role="presentation"><a href="#service_level_agreement" data-toggle="tab">Supports</a></li>
+                        <li role="presentation"><a href="#penalty" data-toggle="tab">Commercials</a></li>
+                        <li role="presentation"><a href="#pricing" data-toggle="tab">Pricing</a></li>
+                        <li role="presentation"><a href="#attachments" data-toggle="tab">Attachments</a></li>
+
+                       
+
                     </ul>
                     <!-- Tab panes -->
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane fade in active" id="basic_requirements">
-
                             <div class="row clearfix">
                                 <div class="col-sm-3">
                                     <label for="StartRfqdate">Start RFQ Date</label>
@@ -108,6 +110,7 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
+                                <div class="col-sm-3">
                                     <label for="ValidRfqdate">Valid RFQ Date</label>
                                     <div class="form-group">
                                         <div class="form-line">
@@ -116,8 +119,21 @@
                                         </div>
                                     </div>
                                 </div>
+
+
                                 <div class="col-sm-3">
-                                    <label for="quote_no">Estimated Project Start Date</label>
+                                    <label for="QuotationOpeningDate">Quotation Opening Date</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" asp-for="QuotationOpeningDate" class="form-control" placeholder="Quotation Opening Date">
+                                            <span asp-validation-for="QuotationOpeningDate" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-sm-3">
+                                    <label for="quote_no">Project Start Date</label>
                                     <div class="form-group">
                                         <div class="form-line">
                                             <input type="text" asp-for="EstimatedProjectStartDate" class="form-control" placeholder="Start of Project Delivery">
@@ -126,7 +142,7 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
-                                    <label for="EstimatedProjectEndDate">Estimated Project End Date</label>
+                                    <label for="EstimatedProjectEndDate">Project End Date</label>
                                     <div class="form-group">
                                         <div class="form-line">
                                             <input type="text" asp-for="EstimatedProjectEndDate" class="form-control" placeholder="End of Project Delivery">
@@ -134,16 +150,8 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="col-sm-3">
-                                    <label for="QuotationOpeningDate">Quotation Opening Date</label>
-                                    <div class="form-group">
-                                        <div class="form-line">
-                                            <input type="text" asp-for="QuotationOpeningDate" class="form-control datepicker" placeholder="Quotation Opening Date">
-                                            <span asp-validation-for="QuotationOpeningDate" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                </div>
+                            </div>
+                            <div class="row clearfix">
                                 <div class="col-sm-9">
                                     <label for="quote_no">Contract Value</label>
                                     <div class="form-group">
@@ -153,23 +161,23 @@
                                         </div>
                                     </div>
                                 </div>
-
+                            </div>
+                            <div class="row clearfix">
                                 <div class="col-sm-3">
-                                    <input type="checkbox" asp-for="SupplierProvideMaterial" class="chk-col-red" disabled />
-                                    <label for="SupplierProvideMaterial">Supplier to Provide Materials</label>
-                                </div>
-                                <div class="col-sm-3">
-                                    <input type="checkbox" asp-for="SupplierProvideTransport" class="chk-col-red" disabled />
-                                    <label for="SupplierProvideTransport">Supplier to Provide Transport</label>
-                                </div>
-                                <div class="col-sm-3">
-                                    <input type="checkbox" asp-for="IsPublic" class="chk-col-red" />
+                                    <input type="checkbox" asp-for="IsPublic" class="chk-col-red" disabled />
                                     <label for="IsPublic">Public</label>
+                                    @* <a href="#" data-toggle="modal" data-target="#publicModal"><span class="badge bg-light-blue">i</span></a>*@
                                 </div>
                                 <div class="col-sm-3">
-                                    <input type="checkbox" asp-for="SupplierProvideInstallationService" class="chk-col-red" />
+                                    <input type="checkbox" asp-for="SupplierProvideInstallationService" class="chk-col-red" disabled />
                                     <label for="SupplierProvideInstallationService">Supplier Provide Installation Service</label>
+
+
                                 </div>
+                            </div>
+
+                            <div class="row clearfix">
+
                                 <div class="col-sm-6">
                                     &nbsp;
                                 </div>
@@ -190,18 +198,21 @@
                             <table id="requirementsTable" class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th width="30%">Service Name</th>
+                                        <th width="5%">Serial</th>
+                                        <th width="40%">Service Name</th>
                                         <th width="50%">Description</th>
 
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @{
+                                        int countRequirement = 1;
                                         if (Model.Requirement != null)
                                         {
                                             foreach (var item in Model.Requirement)
                                             {
                                                 <tr>
+                                                    <td>@countRequirement</td>
                                                     <td>
                                                         @item.ServiceName
                                                     </td>
@@ -210,6 +221,7 @@
                                                     </td>
 
                                                 </tr>
+                                                countRequirement++;
                                             }
                                         }
                                     }
@@ -217,78 +229,32 @@
                                 </tbody>
 
                             </table>
-                            <button class="btn btn-default waves-effect m-r-20" type="button" data-target="#requirementCompareModal" data-toggle="modal">Requirement Comparison</button>
-                            <div tabindex="-1" class="modal fade in" id="requirementCompareModal" role="dialog" aria-labelledby="requirementCompareModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-lg" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h4 class="modal-title" id="largeModalLabel">Requirement Comparison</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="table-responsive">
-                                                <table class="table table-bordered table-striped">
-                                                    <thead>
-                                                        <tr>
-                                                            <td></td>
-                                                            @{
-                                                                if (Model.Requirement != null)
-                                                                {
-                                                                    foreach (var item in Model.Requirement)
-                                                                    {
-                                                                        <td>@item.ServiceName</td>
-                                                                    }
-                                                                }
-                                                            }
-                                                        </tr>
+                           
 
-                                                    </thead>
-                                                    <tbody>
-                                                        @{
-                                                            if (Model.RequirementComparison != null)
-                                                            {
-                                                                foreach (var item in Model.RequirementComparison)
-                                                                {
-                                                                    <tr>
-                                                                        @{
-                                                                            foreach (var subitem in item)
-                                                                            {
-                                                                                <td>@subitem</td>
-                                                                            }
-                                                                        }
-                                                                    </tr>
-                                                                }
-                                                            }
-                                                        }
-                                                    </tbody>
-                                                </table>
-                                            </div>
 
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button class="btn btn-link waves-effect" type="button" data-dismiss="modal">CLOSE</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                         <div role="tabpanel" class="tab-pane fade in" id="service_level_agreement">
                             <table id="slaTable" class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th width="30%">Requirement</th>
-                                        <th width="65%">Description</th>
+                                        <th width="5%">Serial</th>
+                                        <th width="40%">Service Name</th>
+                                        <th width="50%">Description</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @{
+                                        int countSla = 1;
                                         if (Model.Sla != null)
                                         {
                                             foreach (var item in Model.Sla)
                                             {
                                                 <tr>
+                                                    <td>@countSla</td>
                                                     <td>@item.Requirement
                                                     <td>@item.Description</td>
                                                 </tr>
+                                                countSla++;
                                             }
                                         }
                                     }
@@ -302,59 +268,143 @@
                             <table id="penaltyTable" class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th width="30%">Breach of Service Definition</th>
-                                        <th width="20%">Penalty</th>
-                                        <th width="45%">Description</th>
-
+                                        <th width="5%">Serial</th>
+                                        <th width="40%">Service Name</th>
+                                        @*<th width="20%">Milestone</th>*@
+                                        <th width="50%">Description</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @{
+                                        int countPenalty = 1;
                                         if (Model.Penalty != null)
                                         {
+
                                             foreach (var item in Model.Penalty)
                                             {
                                                 <tr>
+                                                    <td>@countPenalty</td>
                                                     <td>@item.BreachOfServiceDefinition</td>
-                                                    <td>@item.PenaltyAmount</td>
+                                                    @*<td>@item.PenaltyAmount</td>*@
                                                     <td>@item.Description</td>
                                                 </tr>
+                                                countPenalty++;
                                             }
                                         }
                                     }
+
                                 </tbody>
+
                             </table>
+
                         </div>
 
                         <div role="tabpanel" class="tab-pane fade in" id="pricing">
-
+                            <h4>Product Pricing</h4>
                             <table id="pricingTable" class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th width="25%">Item Name</th>
-                                        <th width="35%">Item Description</th>
-                                        <th width="20%">Internal Reference Code</th>
-                                        <th width="10%">Quantity</th>
+                                        <th width="5%">Serial</th>
+                                        <th width="30%">Item Name</th>
+                                        <th width="40%">Item Description</th>
+                                        @*<th width="20%">Internal Reference Code</th>*@
+                                        <th width="20%">Quantity</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @{
+                                        int countPrice = 1;
                                         if (Model.RfqPriceSchedule != null)
                                         {
-                                            foreach (var item in Model.RfqPriceSchedule)
+                                            var productList = Model.RfqPriceSchedule.Where(x => x.CategoryId == Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Product).ToList();
+                                            foreach (var item in productList)
                                             {
                                                 <tr>
+                                                    <td>@countPrice</td>
                                                     <td>@item.ItemName </td>
                                                     <td>@item.ItemDescription</td>
-                                                    <td>@item.InternalRefrenceCode</td>
+                                                    @*<td>@item.InternalRefrenceCode</td>*@
                                                     <td>@item.QuantityRequired</td>
                                                 </tr>
+                                                countPrice++;
                                             }
                                         }
                                     }
                                 </tbody>
                             </table>
+                            <h4>Service Pricing</h4>
+                            <table id="pricingServiceTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="5%">Serial</th>
+                                        <th width="30%">Item Name</th>
+                                        <th width="40%">Item Description</th>
+                                        @*<th width="20%">Internal Reference Code</th>*@
+                                        <th width="20%">Quantity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        int countPriceService = 1;
+                                        if (Model.RfqPriceSchedule != null)
+                                        {
+                                            var serviceList = Model.RfqPriceSchedule.Where(x => x.CategoryId == Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Service).ToList();
+
+                                            foreach (var item in serviceList)
+                                            {
+                                                <tr>
+                                                    <td>@countPriceService</td>
+                                                    <td>@item.ItemName </td>
+                                                    <td>@item.ItemDescription</td>
+                                                    @*<td>@item.InternalRefrenceCode</td>*@
+                                                    <td>@item.QuantityRequired</td>
+                                                </tr>
+                                                countPriceService++;
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                            <h4>Warranty Pricing</h4>
+                            <table id="pricingWarrantyTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="5%">Serial</th>
+                                        <th width="30%">Item Name</th>
+                                        <th width="40%">Item Description</th>
+                                        @*<th width="20%">Internal Reference Code</th>*@
+                                        <th width="20%">Quantity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        int countPriceWarranty = 1;
+                                        if (Model.RfqPriceSchedule != null)
+                                        {
+                                            var warrantyList = Model.RfqPriceSchedule.Where(x => x.CategoryId == Com.BudgetMetal.Common.Constants_CodeTable.Code_RfqPriceCategory_Warranty).ToList();
+                                            foreach (var item in warrantyList)
+                                            {
+                                                <tr>
+                                                    <td>@countPriceWarranty</td>
+                                                    <td>@item.ItemName </td>
+                                                    <td>@item.ItemDescription</td>
+                                                    @*<td>@item.InternalRefrenceCode</td>*@
+                                                    <td>@item.QuantityRequired</td>
+                                                </tr>
+                                                countPriceWarranty++;
+
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                           
+
+
+
                         </div>
+
+                        
 
                         <div role="tabpanel" class="tab-pane fade" id="attachments">
 
@@ -389,48 +439,17 @@
                             <iframe id="iframe_download_file" style="display:none" src=""></iframe>
                         </div>
 
+                        
+                        
                     </div>
+
+
+
                 </div>
             </div>
         </div>
     </div>
-    @{
-        if (ViewBag.Code != "")
-        {
-            <div class="row clearfix">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="card">
-                        <div class="header">
-                            <h2>
-                                Quotation List
-                            </h2>
-                        </div>
-                        <div class="body">
-
-                            <div class="row clearfix">
-                                <table class="table table-striped" id="tbQuotation">
-                                    <thead>
-                                        <tr>
-                                            <th>Document No</th>
-                                            <th>Company</th>
-                                            <th>Status</th>
-                                            <th>Price</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
-                                <div class="row" id="pagination">
-                                    <div class="col-sm-12" id="divPagination">
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
-    }
+    
 
     @{
         if (ViewBag.Code == "")
@@ -448,7 +467,20 @@
         }
     }
 </form>
-
+<div class="modal fade" id="publicModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Public Meaning</h4>
+            </div>
+            <div class="modal-body">
+                By checking Public, your tender will be published in our <b><a href="https://www.facebook.com/Ezy-Tender-982142328651452/" target="_blank">FACEBOOK Page</a></b> and our TenderBoard public domain.
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Editable Table Plugin Js -->
 <script src="~/material_theme/plugins/editable-table/mindmup-editabletable.js"></script>
@@ -484,14 +516,7 @@
 
         //loadUser();
         //loadRole();
-        @{
-            string temp = "";
-            if (ViewBag.Code != "")
-            {
-                temp = "loadQuotation(1);";
-            }
-        } 
-        @(temp)
+       
 
         $('#frmCreateRFQ input').attr('readonly', 'readonly');
             // $('#StartRfqdate').datepicker("setDate", new Date(2008, 9, 03));

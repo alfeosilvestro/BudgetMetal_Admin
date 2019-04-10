@@ -46,7 +46,7 @@ namespace Com.BudgetMetal.ViewModels.Rfq
         public string SelectedTags { get; set; }
 
         
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dddd dd MMMM yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd.MMM.yyyy}")]
         public DateTime? QuotationOpeningDate { get; set; }
 
         public string ContractValue { get; set; }

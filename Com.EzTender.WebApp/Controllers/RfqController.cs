@@ -792,6 +792,18 @@ namespace Com.GenericPlatform.WebApp.Controllers
         }
 
         [HttpGet]
+        public async Task<JsonResult> RejectRfq(int documentId)
+        {
+
+            var result = await rfqService.RejectRfq(documentId, Convert.ToInt32(HttpContext.Session.GetString("User_Id")), HttpContext.Session.GetString("UserName"));
+
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
+
+        [HttpGet]
         public async Task<JsonResult> ApproveRfq(int documentId)
         {
 
@@ -799,8 +811,14 @@ namespace Com.GenericPlatform.WebApp.Controllers
 
             if (result.IsSuccess)
             {
-               var fbResult = await fbService.PostMessage(result.MessageToUser);
+                var resultForFB = await rfqService.GetRfqInfoForFacebook(documentId);
+
+                if (resultForFB.IsSuccess)
+                {
+                    var fbResult = await fbService.PostMessage(resultForFB.MessageToUser);
+                }
             }
+           
 
             return new JsonResult(result, new JsonSerializerSettings()
             {

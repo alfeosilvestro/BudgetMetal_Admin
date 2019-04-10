@@ -14,6 +14,7 @@ using Com.BudgetMetal.DataRepository.Document;
 using Com.BudgetMetal.DataRepository.DocumentActivity;
 using Com.BudgetMetal.DataRepository.DocumentUser;
 using Com.BudgetMetal.DataRepository.EmailLog;
+using Com.BudgetMetal.DataRepository.EmailTemplates;
 using Com.BudgetMetal.DataRepository.Industries;
 using Com.BudgetMetal.DataRepository.InvitedSupplier;
 using Com.BudgetMetal.DataRepository.Penalty;
@@ -151,7 +152,7 @@ namespace Com.EzTender.WebApp
 
             //// Register for logic classes
             services.AddScoped<IGalleryService, GalleryService>();
-
+            services.AddScoped<IEmailTemplateRepository, EmailTemplateRepository>();
             services.AddScoped<IDocumentRepository, DocumentRepository>();
             services.AddScoped<IRequirementRepository, RequirementRepository>();
             services.AddScoped<ISlaRepository, SlaRepository>();

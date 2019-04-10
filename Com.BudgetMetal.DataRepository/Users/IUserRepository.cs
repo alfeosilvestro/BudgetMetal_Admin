@@ -27,10 +27,14 @@ namespace Com.BudgetMetal.DataRepository.Users
 
         List<string> GetSupplierAdmin(List<int> supplierList);
 
+        List<User> GetSupplierAdminUser(int supplierId);
+
         Task<Com.BudgetMetal.DBEntities.User> GetUserCompanyIdandUserId(int companyId, int userId);
 
         Task<List<User>> GetUserByCompanyNotFilterWithConfirm(int Id);
 
         List<string> GetBuyerAdmin(int company_Id);
+
+        List<User> GetBuyerAdminUser(int company_Id);
     }
 }
