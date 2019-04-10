@@ -212,11 +212,11 @@ namespace Com.EzTender.WebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<JsonResult> GetRatingData(int page, int count)
+        public async Task<JsonResult> GetRatingData(int page,int companyId)
         {
-            var Company_Id = HttpContext.Session.GetString("Company_Id");
-            int companyId = (Company_Id != null) ? int.Parse(Company_Id) : 0;
-            var result = await ratingService.GetRatingData(page, count, companyId, 0, "");
+            //var Company_Id = HttpContext.Session.GetString("Company_Id");
+            //int companyId = (Company_Id != null) ? int.Parse(Company_Id) : 0;
+            var result = await ratingService.GetRatingData(page, 10, companyId, 0, "");
 
             return new JsonResult(result, new JsonSerializerSettings()
             {
