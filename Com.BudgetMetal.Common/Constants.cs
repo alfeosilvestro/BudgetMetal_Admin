@@ -10,6 +10,7 @@ namespace Com.BudgetMetal.Common
         public static readonly string RFQDefaultRole = "RFQ Creator";
         public static readonly string RFQDefaultRoleId = "3";
 
+        public static readonly int RFQCreatorRoleId =3;
         public static readonly int RFQApproverRoleId = 7;
 
         public static readonly string QuotationDefaultRole = "Quotation Creator";

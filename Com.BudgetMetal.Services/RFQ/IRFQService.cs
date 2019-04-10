@@ -52,7 +52,11 @@ namespace Com.BudgetMetal.Services.RFQ
 
         Task<VmGenericServiceResult> WithdrawnRfq(int documentId, int userId, string userName);
 
+        Task<VmGenericServiceResult> RejectRfq(int documentId, int userId, string userName);
+
         Task<VmGenericServiceResult> ApproveRfq(int documentId, int userId, string userName);
+
+        Task<VmGenericServiceResult> GetRfqInfoForFacebook(int documentId);
 
         Task<VmGenericServiceResult> DeleteRfq(int documentId, int userId, string userName);
 

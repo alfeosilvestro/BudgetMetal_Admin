@@ -45,6 +45,7 @@ using Com.BudgetMetal.ViewModels.RfqInvites;
 using Com.BudgetMetal.DataRepository.RfqInvites;
 using Microsoft.Extensions.Options;
 using Com.BudgetMetal.DataRepository.Code_Table;
+using Com.BudgetMetal.DataRepository.EmailTemplates;
 
 namespace Com.BudgetMetal.Services.RFQ
 {
@@ -70,6 +71,7 @@ namespace Com.BudgetMetal.Services.RFQ
         private readonly IIndustryRepository industryRepository;
         private readonly IRfqInvitesRepository rfqInvitesRepository;
         private readonly ICodeTableRepository CTRepo;
+        private readonly IEmailTemplateRepository repoEmailTemplate;
 
         public RFQService(IDocumentRepository repoDocument, IRfqRepository repoRfq,
             IAttachmentRepository repoAttachment, IRequirementRepository repoRequirement,
@@ -80,7 +82,8 @@ namespace Com.BudgetMetal.Services.RFQ
             IDocumentActivityRepository repoDocumentActivity, IQuotationRepository repoQuotation,
             ITimeLineRepository repoTimeLine, ICompanySupplierRepository repoCompanySupplier,
             ICodeTableRepository CTRepo,
-            IClarificationRepository repoClarification, IRfqInvitesRepository rfqInvitesRepository, IIndustryRepository industryRepository)
+            IClarificationRepository repoClarification, IRfqInvitesRepository rfqInvitesRepository, IIndustryRepository industryRepository,
+            IEmailTemplateRepository repoEmailTemplate)
         {
             this.repoDocument = repoDocument;
             this.repoRfq = repoRfq;
@@ -102,6 +105,7 @@ namespace Com.BudgetMetal.Services.RFQ
             this.industryRepository = industryRepository;
             this.rfqInvitesRepository = rfqInvitesRepository;
             this.CTRepo = CTRepo;
+            this.repoEmailTemplate = repoEmailTemplate;
         }
 
         public async Task<VmRfqPage> GetRfqByPage(int userId, int documentOwner, int page, int totalRecords, bool isCompanyAdmin, int statusId = 0, string keyword = "")
@@ -590,7 +594,7 @@ namespace Com.BudgetMetal.Services.RFQ
                     {
                         foreach (var item in rfq.RfqPriceSchedule)
                         {
-                            if (item.ItemName != null  && item.QuantityRequired != null)
+                            if (item.ItemName != null && item.QuantityRequired != null)
                             {
                                 var dbRfqPriceSchedule = new Com.BudgetMetal.DBEntities.RfqPriceSchedule();
 
@@ -667,12 +671,7 @@ namespace Com.BudgetMetal.Services.RFQ
                                 dbRfqEmailsInvites.Status = "";
                                 rfqInvitesRepository.Add(dbRfqEmailsInvites);
 
-                                //Email Sending
-                                //var sendMail = new SendingMail();
-                                //string emailSubject = "Rfq Invitation";
-                                //string emailBody = string.Format("Hi {0}, you can view rfq with this access code {1}", item.Name, accessCode);
 
-                                //sendMail.SendMail(item.EmailAddress, "", emailSubject, emailBody);
                             }
                         }
                         rfqInvitesRepository.Commit();
@@ -696,71 +695,43 @@ namespace Com.BudgetMetal.Services.RFQ
                 //send email to admin or rfq approver
                 if (rfq.Document.DocumentStatus_Id == Constants_CodeTable.Code_RFQ_RequiredApproval)
                 {
+                    var BuyerOwner = rfq.Document.DocumentUser.Where(e => e.Role_Id == Constants.RFQCreatorRoleId).First();
+                    var BuyerUser = await repoUser.Get(BuyerOwner.User_Id);
+                    var emailTemplate = await repoEmailTemplate.GetEmailTemplateByPurpose("RFQ_Draft_Approval");
+                    string emailSubject = emailTemplate.EmailSubject.Replace("[ProjectTitle]", rfq.Document.Title).Replace("[BuyerOwnerX]", BuyerUser.ContactName);
+                    string emailBody = emailTemplate.EmailContent;
+
+                    emailBody = emailBody.Replace("[ProjectTitle]", rfq.Document.Title);
+                    emailBody = emailBody.Replace("[BuyerOwnerX]", BuyerUser.ContactName);
+                    emailBody = emailBody.Replace("[RedirectLink]", dbRFQ.Id.ToString());
 
                     if (rfq.Document.DocumentUser.Where(e => e.Role_Id == Constants.RFQApproverRoleId).ToList().Count > 0)
                     {
                         var sendMail = new SendingMail();
-                        string emailSubject = documentNo + " is pending for your action.";
-                        string emailBody = "Please approve..... Email Template need to provide. ";
+
 
                         foreach (var item in rfq.Document.DocumentUser.Where(e => e.Role_Id == Constants.RFQApproverRoleId).ToList())
                         {
                             var dbuser = await repoUser.Get(item.User_Id);
-                            sendMail.SendMail(dbuser.EmailAddress, "", emailSubject, emailBody);
+                            sendMail.SendMail(dbuser.EmailAddress, "", emailSubject, emailBody.Replace("[BuyerApproverX]", dbuser.ContactName));
                         }
                     }
                     else
                     {
                         // send email admin to approve rfq
-                        var resultBuyerAdmin = repoUser.GetBuyerAdmin(rfq.Document.Company_Id);
+                        var resultBuyerAdmin = repoUser.GetBuyerAdminUser(rfq.Document.Company_Id);
                         var sendMail = new SendingMail();
                         if (resultBuyerAdmin != null)
                         {
-                            string emailSubject = documentNo + " is pending for your action.";
-                            string emailBody = "Please approve..... Email Template need to provide. ";
                             foreach (var item in resultBuyerAdmin)
                             {
-                                sendMail.SendMail(item, "", emailSubject, emailBody);
+                                sendMail.SendMail(item.EmailAddress, "", emailSubject, emailBody.Replace("[BuyerApproverX]", item.ContactName));
                             }
                         }
                     }
                 }
 
-                //end adding timeline
-                //if (rfq.Document.DocumentStatus_Id == Constants_CodeTable.Code_RFQ_Open)
-                //{
-                //    //get invited supplier email
 
-                //    var resultSupplierAdmin = repoUser.GetSupplierAdmin(rfq.InvitedSupplier.Select(e => e.Company_Id).Distinct().ToList());
-                //    var sendMail = new SendingMail();
-                //    if (resultSupplierAdmin != null)
-                //    {
-                //        string emailSubject = "You are intvited for RFQ " + documentNo + ".";
-                //        string emailBody = "Email Template need to provide.";
-                //        foreach (var item in resultSupplierAdmin)
-                //        {
-                //            sendMail.SendMail(item, "", emailSubject, emailBody);
-                //        }
-                //    }
-                //    //start adding timeline
-                //    foreach (var item in rfq.InvitedSupplier)
-                //    {
-                //        var timelineForInvitedSupplier = new Com.BudgetMetal.DBEntities.TimeLine()
-                //        {
-                //            Company_Id = item.Company_Id,
-                //            User_Id = rfq.Document.DocumentUser.FirstOrDefault().User_Id,
-                //            Message = "RFQ is successfully created.",
-                //            MessageType = Constants_CodeTable.Code_TM_Rfq,
-                //            Document_Id = dbDocument.Id,
-                //            IsRead = false,
-                //            CreatedBy = dbRFQ.CreatedBy,
-                //            UpdatedBy = dbRFQ.CreatedBy
-                //        };
-                //        repoTimeLine.Add(timelineForInvitedSupplier);
-                //        repoTimeLine.Commit();
-                //    }
-                //    //end adding timeline
-                //}
 
                 result.IsSuccess = true;
                 result.MessageToUser = "You have succesfully created RFQ as Document No." + documentNo;
@@ -871,7 +842,7 @@ namespace Com.BudgetMetal.Services.RFQ
                     {
                         foreach (var item in rfq.Sla)
                         {
-                            if (item.Requirement != null )
+                            if (item.Requirement != null)
                             {
                                 var dbSla = new Com.BudgetMetal.DBEntities.Sla();
 
@@ -918,7 +889,7 @@ namespace Com.BudgetMetal.Services.RFQ
                     {
                         foreach (var item in rfq.RfqPriceSchedule)
                         {
-                            if (item.ItemName != null  && item.QuantityRequired != null)
+                            if (item.ItemName != null && item.QuantityRequired != null)
                             {
                                 var dbRfqPriceSchedule = new Com.BudgetMetal.DBEntities.RfqPriceSchedule();
 
@@ -963,26 +934,7 @@ namespace Com.BudgetMetal.Services.RFQ
                         repoInvitedSupplier.Commit();
                     }
                 }
-                //            Copy<VmInvitedSupplierItem, Com.BudgetMetal.DBEntities.InvitedSupplier>(item, dbInvitedSupplier);
-                //            dbInvitedSupplier.Rfq_Id = dbRFQ.Id;
-                //            dbInvitedSupplier.CreatedBy = dbInvitedSupplier.UpdatedBy = dbRFQ.UpdatedBy;
-                //            repoInvitedSupplier.Add(dbInvitedSupplier);
-                //        }
-                //                    repoInvitedSupplier.Commit();
-                //    }
-                //}
 
-                //if (dbDocument != null)
-                //{
-                //    var dbDocumentActivity = new Com.BudgetMetal.DBEntities.DocumentActivity();
-                //    dbDocumentActivity.Document_Id = dbDocument.Id;
-                //    dbDocumentActivity.User_Id = 1;
-                //    dbDocumentActivity.IsRfq = true;
-                //    dbDocumentActivity.Action = "Edit";
-                //    dbDocumentActivity.CreatedBy = dbDocumentActivity.UpdatedBy = dbRFQ.UpdatedBy;
-                //    repoDocumentActivity.Add(dbDocumentActivity);
-                //    repoDocumentActivity.Commit();
-                //}
                 if (rfq.Document.DocumentActivityList != null)
                 {
                     if (rfq.Document.DocumentActivityList.Count > 0)
@@ -1021,12 +973,7 @@ namespace Com.BudgetMetal.Services.RFQ
                                 dbRfqEmailsInvites.CreatedBy = dbRfqEmailsInvites.UpdatedBy = dbRFQ.CreatedBy;
                                 rfqInvitesRepository.Add(dbRfqEmailsInvites);
 
-                                //Email Sending
-                                //var sendMail = new SendingMail();
-                                //string emailSubject = "Rfq Invitation";
-                                //string emailBody = string.Format("Hi {0}, you can view rfq with this access code {1}", item.Name, accessCode);
 
-                                //sendMail.SendMail(item.EmailAddress, "", emailSubject, emailBody);
                             }
                         }
                         rfqInvitesRepository.Commit();
@@ -1051,69 +998,42 @@ namespace Com.BudgetMetal.Services.RFQ
                 //send email to admin or rfq approver
                 if (rfq.Document.DocumentStatus_Id == Constants_CodeTable.Code_RFQ_RequiredApproval)
                 {
+                    var BuyerOwner = rfq.Document.DocumentUser.Where(e => e.Role_Id == Constants.RFQCreatorRoleId).First();
+                    var BuyerUser = await repoUser.Get(BuyerOwner.User_Id);
+                    var emailTemplate = await repoEmailTemplate.GetEmailTemplateByPurpose("RFQ_Draft_Approval");
+                    string emailSubject = emailTemplate.EmailSubject.Replace("[ProjectTitle]", rfq.Document.Title).Replace("[BuyerOwnerX]", BuyerUser.ContactName);
+                    string emailBody = emailTemplate.EmailContent;
+
+                    emailBody = emailBody.Replace("[ProjectTitle]", rfq.Document.Title);
+                    emailBody = emailBody.Replace("[BuyerOwnerX]", BuyerUser.ContactName);
+                    emailBody = emailBody.Replace("[RedirectLink]", dbRFQ.Id.ToString());
 
                     if (rfq.Document.DocumentUser.Where(e => e.Role_Id == Constants.RFQApproverRoleId).ToList().Count > 0)
                     {
                         var sendMail = new SendingMail();
-                        string emailSubject = rfq.Document.DocumentNo + " is pending for your action.";
-                        string emailBody = "Please approve..... Email Template need to provide. ";
+
 
                         foreach (var item in rfq.Document.DocumentUser.Where(e => e.Role_Id == Constants.RFQApproverRoleId).ToList())
                         {
                             var dbuser = await repoUser.Get(item.User_Id);
-                            sendMail.SendMail(dbuser.EmailAddress, "", emailSubject, emailBody);
+                            sendMail.SendMail(dbuser.EmailAddress, "", emailSubject, emailBody.Replace("[BuyerApproverX]", dbuser.ContactName));
                         }
                     }
                     else
                     {
                         // send email admin to approve rfq
-                        var resultBuyerAdmin = repoUser.GetBuyerAdmin(rfq.Document.Company_Id);
+                        var resultBuyerAdmin = repoUser.GetBuyerAdminUser(rfq.Document.Company_Id);
                         var sendMail = new SendingMail();
                         if (resultBuyerAdmin != null)
                         {
-                            string emailSubject = rfq.Document.DocumentNo + " is pending for your action.";
-                            string emailBody = "Please approve..... Email Template need to provide. ";
                             foreach (var item in resultBuyerAdmin)
                             {
-                                sendMail.SendMail(item, "", emailSubject, emailBody);
+                                sendMail.SendMail(item.EmailAddress, "", emailSubject, emailBody.Replace("[BuyerApproverX]", item.ContactName));
                             }
                         }
                     }
                 }
-                //if (rfq.Document.DocumentStatus_Id == Constants_CodeTable.Code_RFQ_Open)
-                //{
-                //    //get invited supplier email
 
-                //    var resultSupplierAdmin = repoUser.GetSupplierAdmin(rfq.InvitedSupplier.Select(e => e.Company_Id).Distinct().ToList());
-                //    var sendMail = new SendingMail();
-                //    if (resultSupplierAdmin != null)
-                //    {
-                //        string emailSubject = "You are intvited for Document " + rfq.Document.DocumentNo + ".";
-                //        string emailBody = "Email Template need to provide.";
-                //        foreach (var item in resultSupplierAdmin)
-                //        {
-                //            sendMail.SendMail(item, "", emailSubject, emailBody);
-                //        }
-                //    }
-                //    //start adding timeline
-                //    foreach (var item in rfq.InvitedSupplier)
-                //    {
-                //        var timelineForInvitedSupplier = new Com.BudgetMetal.DBEntities.TimeLine()
-                //        {
-                //            Company_Id = item.Company_Id,
-                //            User_Id = rfq.Document.DocumentUser.FirstOrDefault().User_Id,
-                //            Message = "RFQ is successfully updated.",
-                //            MessageType = Constants_CodeTable.Code_TM_Rfq,
-                //            Document_Id = dbDocument.Id,
-                //            IsRead = false,
-                //            CreatedBy = dbRFQ.CreatedBy,
-                //            UpdatedBy = dbRFQ.CreatedBy
-                //        };
-                //        repoTimeLine.Add(timelineForInvitedSupplier);
-                //        repoTimeLine.Commit();
-                //    }
-                //    //end adding timeline
-                //}
 
                 result.IsSuccess = true;
                 result.MessageToUser = "You have succesfully updated RFQ as Document No." + rfq.Document.DocumentNo;
@@ -1150,9 +1070,9 @@ namespace Com.BudgetMetal.Services.RFQ
                 repoRfq.Add(dbRFQ);
                 repoRfq.Commit();
 
-                
 
-             
+
+
                 if (rfq.Requirement != null)
                 {
                     if (rfq.Requirement.Count > 0)
@@ -1234,7 +1154,7 @@ namespace Com.BudgetMetal.Services.RFQ
                     }
                 }
 
-           
+
 
                 result.IsSuccess = true;
                 result.MessageToUser = "You have succesfully created RFQ as Document No." + documentNo;
@@ -1268,6 +1188,9 @@ namespace Com.BudgetMetal.Services.RFQ
                 dbDocument.UpdatedBy = userName;
                 repoDocument.Update(dbDocument);
 
+                var dbRfq = await repoRfq.GetSingleRfqByDocumentId(documentId);
+                var rfq = await repoRfq.GetSingleRfqById(dbRfq);
+
                 //Add Document Activity
                 var dbDocumentActivity = new Com.BudgetMetal.DBEntities.DocumentActivity()
                 {
@@ -1299,23 +1222,31 @@ namespace Com.BudgetMetal.Services.RFQ
                 var dbInvitedSupplierList = await repoInvitedSupplier.GetByDocumentId(documentId);
                 if (dbInvitedSupplierList != null)
                 {
-                    var resultSupplierAdmin = repoUser.GetSupplierAdmin(dbInvitedSupplierList.Select(e => e.Company_Id).Distinct().ToList());
-                    var sendMail = new SendingMail();
-                    if (resultSupplierAdmin != null)
+                    foreach (var itemSupplier in dbInvitedSupplierList)
                     {
-                        string emailSubject = "Buyer withdrawn Document " + dbDocument.DocumentNo + ".";
-                        string emailBody = "Email Template need to provide.";
-                        foreach (var item in resultSupplierAdmin)
+                        var resultSupplierAdmin = repoUser.GetSupplierAdminUser(itemSupplier.Company_Id);
+                        var sendMail = new SendingMail();
+                        if (resultSupplierAdmin != null)
                         {
-                            sendMail.SendMail(item, "", emailSubject, emailBody);
-                        }
-                    }
+                            var dbCompany = await repoCompany.Get(itemSupplier.Company_Id);
+                            var emailTemplate = await repoEmailTemplate.GetEmailTemplateByPurpose("RFQ_Withdrawn");
+                            string emailSubject = emailTemplate.EmailSubject.Replace("[ProjectTitle]", rfq.Document.Title).Replace("[BuyerCompanyX]", rfq.Document.Company.Name);
+                            string emailBody = emailTemplate.EmailContent;
 
-                    foreach (var item in dbInvitedSupplierList)
-                    {
+                            emailBody = emailBody.Replace("[ProjectTitle]", rfq.Document.Title);
+                            emailBody = emailBody.Replace("[SupplierOwnerX]", dbCompany.Name);
+                            emailBody = emailBody.Replace("[BuyerCompanyX]", rfq.Document.Company.Name);
+                            emailBody = emailBody.Replace("[RedirectLink]", rfq.Id.ToString());
+                           
+                            foreach (var item in resultSupplierAdmin)
+                            {
+                                sendMail.SendMail(item.EmailAddress, "", emailSubject, emailBody);
+                            }
+                        }
+
                         var timelineForInvitedSupplier = new Com.BudgetMetal.DBEntities.TimeLine()
                         {
-                            Company_Id = item.Company_Id,
+                            Company_Id = itemSupplier.Company_Id,
                             User_Id = userId,
                             Message = "Document " + dbDocument.DocumentNo + " is withdrawn.",
                             MessageType = Constants_CodeTable.Code_TM_Rfq,
@@ -1342,6 +1273,63 @@ namespace Com.BudgetMetal.Services.RFQ
 
         }
 
+        public async Task<VmGenericServiceResult> RejectRfq(int documentId, int userId, string userName)
+        {
+            var result = new VmGenericServiceResult();
+            try
+            {
+                //Change Status
+                var dbDocument = await repoDocument.Get(documentId);
+                dbDocument.DocumentStatus_Id = Constants_CodeTable.Code_RFQ_Withdrawn;
+                dbDocument.UpdatedBy = userName;
+                repoDocument.Update(dbDocument);
+
+                var dbRfq = await repoRfq.GetSingleRfqByDocumentId(documentId);
+                var rfq = await repoRfq.GetSingleRfqById(dbRfq);
+
+                //Add Document Activity
+                var dbDocumentActivity = new Com.BudgetMetal.DBEntities.DocumentActivity()
+                {
+                    Action = "Rejected",
+                    IsRfq = true,
+                    User_Id = userId,
+                    Document_Id = documentId,
+                    CreatedBy = userName,
+                    UpdatedBy = userName
+                };
+                repoDocumentActivity.Add(dbDocumentActivity);
+                repoDocumentActivity.Commit();
+
+                //Add Timeline
+                var timeline = new Com.BudgetMetal.DBEntities.TimeLine()
+                {
+                    Company_Id = dbDocument.Company_Id,
+                    User_Id = userId,
+                    Message = "Document " + dbDocument.DocumentNo + " is successfully rejected.",
+                    MessageType = Constants_CodeTable.Code_TM_Rfq,
+                    IsRead = false,
+                    Document_Id = dbDocument.Id,
+                    CreatedBy = userName,
+                    UpdatedBy = userName
+                };
+                repoTimeLine.Add(timeline);
+                repoTimeLine.Commit();
+
+                
+
+                result.IsSuccess = true;
+                result.MessageToUser = "Your Rfq is successfully updated.";
+            }
+            catch
+            {
+                result.IsSuccess = false;
+                result.MessageToUser = "Your Rfq is failed to update.";
+            }
+
+            return result;
+
+        }
+
         public async Task<VmGenericServiceResult> ApproveRfq(int documentId, int userId, string userName)
         {
             var result = new VmGenericServiceResult();
@@ -1353,13 +1341,14 @@ namespace Com.BudgetMetal.Services.RFQ
                 dbDocument.UpdatedBy = userName;
                 repoDocument.Update(dbDocument);
 
-                string FacebookInfo = "";
-                var dbCompany = await repoCompany.Get(dbDocument.Company_Id);
-                FacebookInfo = "Project Title - ["+ dbDocument.Title +"] \n";
-                FacebookInfo = FacebookInfo + "Company  - "+dbCompany.Name +" ("+dbCompany.RegNo +") \n";
+                //string FacebookInfo = "";
+                //var dbCompany = await repoCompany.Get(dbDocument.Company_Id);
+                //FacebookInfo = "Project Title - ["+ dbDocument.Title +"] \n";
+                //FacebookInfo = FacebookInfo + "Company  - "+dbCompany.Name +" ("+dbCompany.RegNo +") \n";
 
                 var dbRfq = await repoRfq.GetSingleRfqByDocumentId(documentId);
-                FacebookInfo = FacebookInfo + "Visit at link - http://ezytender.com/Public/SingleRFQ/" + dbRfq.ToString();
+                var rfq = await repoRfq.GetSingleRfqById(dbRfq);
+                //FacebookInfo = FacebookInfo + "Visit at link - http://ezytender.com/Public/SingleRFQ/" + dbRfq.ToString();
 
 
 
@@ -1394,23 +1383,33 @@ namespace Com.BudgetMetal.Services.RFQ
                 var dbInvitedSupplierList = await repoInvitedSupplier.GetByDocumentId(documentId);
                 if (dbInvitedSupplierList != null)
                 {
-                    var resultSupplierAdmin = repoUser.GetSupplierAdmin(dbInvitedSupplierList.Select(e => e.Company_Id).Distinct().ToList());
-                    var sendMail = new SendingMail();
-                    if (resultSupplierAdmin != null)
+                    foreach (var itemSupplier in dbInvitedSupplierList)
                     {
-                        string emailSubject = "You are intvited for RFQ " + dbDocument.DocumentNo + ".";
-                        string emailBody = "Email Template need to provide.";
-                        foreach (var item in resultSupplierAdmin)
+                        var resultSupplierAdmin = repoUser.GetSupplierAdminUser(itemSupplier.Company_Id);
+                        var sendMail = new SendingMail();
+                        if (resultSupplierAdmin != null)
                         {
-                            sendMail.SendMail(item, "", emailSubject, emailBody);
-                        }
-                    }
+                            var dbCompany = await repoCompany.Get(itemSupplier.Company_Id);
+                            var emailTemplate = await repoEmailTemplate.GetEmailTemplateByPurpose("RFQ_Invitation");
+                            string emailSubject = emailTemplate.EmailSubject.Replace("[ProjectTitle]", rfq.Document.Title).Replace("[BuyerCompanyX]", rfq.Document.Company.Name);
+                            string emailBody = emailTemplate.EmailContent;
 
-                    foreach (var item in dbInvitedSupplierList)
-                    {
+                            emailBody = emailBody.Replace("[ProjectTitle]", rfq.Document.Title);
+                            emailBody = emailBody.Replace("[SupplierOwnerX]", dbCompany.Name);
+                            emailBody = emailBody.Replace("[BuyerCompanyX]", rfq.Document.Company.Name);
+                            emailBody = emailBody.Replace("[RedirectLink]", rfq.Id.ToString());
+                            emailBody = emailBody.Replace("[RFQEndDate]", Convert.ToDateTime(rfq.ValidRfqdate).ToString("dd.MMM.yyyy"));
+                            //string emailSubject = "You are intvited for RFQ " + dbDocument.DocumentNo + ".";
+                            //string emailBody = "Email Template need to provide.";
+                            foreach (var item in resultSupplierAdmin)
+                            {
+                                sendMail.SendMail(item.EmailAddress, "", emailSubject, emailBody);
+                            }
+                        }
+
                         var timelineForInvitedSupplier = new Com.BudgetMetal.DBEntities.TimeLine()
                         {
-                            Company_Id = item.Company_Id,
+                            Company_Id = itemSupplier.Company_Id,
                             User_Id = userId,
                             Message = "You are invited for RFQ " + dbDocument.DocumentNo + ".",
                             MessageType = Constants_CodeTable.Code_TM_Rfq,
@@ -1421,7 +1420,9 @@ namespace Com.BudgetMetal.Services.RFQ
                         };
                         repoTimeLine.Add(timelineForInvitedSupplier);
                         repoTimeLine.Commit();
+
                     }
+
                 }
 
                 var dbRfqInvitedWithEmail = await rfqInvitesRepository.GetByDocumentId(documentId);
@@ -1450,7 +1451,44 @@ namespace Com.BudgetMetal.Services.RFQ
                 }
 
                 result.IsSuccess = true;
-                result.MessageToUser = FacebookInfo;
+                result.MessageToUser = "RFQ is successfully approved.";
+            }
+            catch
+            {
+                result.IsSuccess = false;
+                result.MessageToUser = "Your Rfq is failed to update.";
+            }
+
+            return result;
+
+        }
+
+        public async Task<VmGenericServiceResult> GetRfqInfoForFacebook(int documentId)
+        {
+            var result = new VmGenericServiceResult();
+            try
+            {
+                //Change Status
+                var dbDocument = await repoDocument.Get(documentId);
+
+
+                string FacebookInfo = "";
+                var dbCompany = await repoCompany.Get(dbDocument.Company_Id);
+                var dbRfq = await repoRfq.GetSingleRfqByDocumentId(documentId);
+                var rfq = await repoRfq.GetSingleRfqById(dbRfq);
+                if (rfq.IsPublic)
+                {
+                    FacebookInfo = "Project Title - [" + dbDocument.Title + "] \n";
+                    FacebookInfo = FacebookInfo + "Company  - " + dbCompany.Name + " (" + dbCompany.RegNo + ") \n";
+                    FacebookInfo = FacebookInfo + "Visit at link - http://ezytender.com/Public/SingleRFQ/" + dbRfq.ToString();
+                    result.IsSuccess = true;
+                    result.MessageToUser = FacebookInfo;
+                }
+                else
+                {
+                    result.IsSuccess = false;
+                    result.MessageToUser = "This RFQ is not public";
+                }
             }
             catch
             {
@@ -1897,12 +1935,13 @@ namespace Com.BudgetMetal.Services.RFQ
                     {
                         requirementItem.Compliance = "Not Comply";
                     }
-                        requirementComparison.Add(requirementItem.Compliance);
-                    
+                    requirementComparison.Add(requirementItem.Compliance);
+
                     if (requirementItem.Compliance.ToLower() == "comply")
                     {
                         ptsForComply_product = ptsForComply_product + 1;
-                    }else if (requirementItem.Compliance.ToLower() == "partial comply")
+                    }
+                    else if (requirementItem.Compliance.ToLower() == "partial comply")
                     {
                         ptsForComply_product = ptsForComply_product + 2;
                     }
@@ -1969,7 +2008,7 @@ namespace Com.BudgetMetal.Services.RFQ
 
                 List<string> priceComparison_Product = new List<string>();
                 priceComparison_Product.Add(item.Document.Company.Name);
-                foreach (var priceItem in item.QuotationPriceSchedule.Where(e => e.IsActive == true && e.CategoryId== Constants_CodeTable.Code_RfqPriceCategory_Product).ToList())
+                foreach (var priceItem in item.QuotationPriceSchedule.Where(e => e.IsActive == true && e.CategoryId == Constants_CodeTable.Code_RfqPriceCategory_Product).ToList())
                 {
                     priceComparison_Product.Add(priceItem.ItemAmount.ToString("#,##0.00"));
                 }

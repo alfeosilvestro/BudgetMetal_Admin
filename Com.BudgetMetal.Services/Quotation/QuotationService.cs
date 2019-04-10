@@ -46,6 +46,7 @@ using Com.BudgetMetal.ViewModels.QuotationCommercial;
 using Com.BudgetMetal.ViewModels.QuotationSupport;
 using Com.BudgetMetal.DataRepository.QuotationSupport;
 using Com.BudgetMetal.DataRepository.QuotationCommercial;
+using Com.BudgetMetal.DataRepository.EmailTemplates;
 
 namespace Com.BudgetMetal.Services.Quotation
 {
@@ -67,8 +68,10 @@ namespace Com.BudgetMetal.Services.Quotation
         private readonly IUserRepository repoUser;
         private readonly IRoleRepository repoRole;
         private readonly IClarificationRepository repoClarification;
+        private readonly IEmailTemplateRepository repoEmailTemplate;
 
-        public QuotationService(IRfqRepository repoRfq, IDocumentRepository repoDocument, IQuotationRepository repoQuotation, IAttachmentRepository repoAttachment, IDocumentUserRepository repoDocumentUser, IQuotationPriceScheduleRepository repoPriceSchedule, IUserRepository repoUser, IRoleRepository repoRole, IQuotationRequirementRepository repoQuotationRequirement, IQuotationSupportRepository repoSupport, IQuotationCommercialRepository repoCommercial, IDocumentActivityRepository repoDocumentActivity, ICompanyRepository repoCompany, ITimeLineRepository repoTimeLine, IClarificationRepository repoClarification)
+        public QuotationService(IRfqRepository repoRfq, IDocumentRepository repoDocument, IQuotationRepository repoQuotation, IAttachmentRepository repoAttachment, IDocumentUserRepository repoDocumentUser, IQuotationPriceScheduleRepository repoPriceSchedule, IUserRepository repoUser, IRoleRepository repoRole, IQuotationRequirementRepository repoQuotationRequirement, IQuotationSupportRepository repoSupport, IQuotationCommercialRepository repoCommercial, IDocumentActivityRepository repoDocumentActivity, ICompanyRepository repoCompany, ITimeLineRepository repoTimeLine, IClarificationRepository repoClarification,
+            IEmailTemplateRepository repoEmailTemplate)
         {
             this.repoRfq = repoRfq;
             this.repoDocument = repoDocument;
@@ -85,6 +88,7 @@ namespace Com.BudgetMetal.Services.Quotation
             this.repoDocumentActivity = repoDocumentActivity;
             this.repoTimeLine = repoTimeLine;
             this.repoClarification = repoClarification;
+            this.repoEmailTemplate = repoEmailTemplate;
         }
 
         public async Task<VmQuotationPage> GetQuotationByPage(int userId, int companyId, int page, int totalRecords, bool isCompany, int statusId = 0, string keyword = "")
@@ -234,7 +238,7 @@ namespace Com.BudgetMetal.Services.Quotation
             catch
             {
                 result.IsSuccess = false;
-                result.MessageToUser = "Your Rfq is failed to update.";
+                result.MessageToUser = "Your quotation is failed to update.";
             }
 
             return result;
@@ -615,7 +619,7 @@ namespace Com.BudgetMetal.Services.Quotation
 
         }
 
-        public VmGenericServiceResult SaveQuotation(VmQuotationItem quotation)
+        public async Task<VmGenericServiceResult> SaveQuotation(VmQuotationItem quotation)
         {
             var result = new VmGenericServiceResult();
             try
@@ -788,26 +792,31 @@ namespace Com.BudgetMetal.Services.Quotation
                 //end adding timeline
 
                 //get rfq owner admin email
-                var resultBuyerAdmin = repoUser.GetBuyerAdmin(quotation.Rfq.Document.Company_Id);
-                var sendMail = new SendingMail();
-                if (resultBuyerAdmin != null)
+                var rfq = await repoRfq.GetSingleRfqById(quotation.Rfq.Id);
+                var BuyerOwnerList = rfq.Document.DocumentUser.Where(e => e.Role_Id == Constants.RFQCreatorRoleId).ToList();
+                foreach(var BuyerOwner in BuyerOwnerList)
                 {
-                    string emailSubject = "You are intvited for RFQ " + documentNo + ".";
-                    string emailBody = "Email Template need to provide.";
-                    foreach (var item in resultBuyerAdmin)
-                    {
-                        sendMail.SendMail(item, "", emailSubject, emailBody);
-                    }
+                    var dbUser = await repoUser.Get(BuyerOwner.User_Id);
+                    var sendMail = new SendingMail();
+                    var BuyerUser = await repoUser.Get(BuyerOwner.User_Id);
+                    var emailTemplate = await repoEmailTemplate.GetEmailTemplateByPurpose("RFQ_Interested");
+                    string emailSubject = emailTemplate.EmailSubject.Replace("[ProjectTitle]", rfq.Document.Title).Replace("[SupplierCompanyX]", quotation.Document.Company.Name);
+                    string emailBody = emailTemplate.EmailContent;
+
+                    emailBody = emailBody.Replace("[BuyerOwnerX]", dbUser.ContactName);
+                    emailBody = emailBody.Replace("[ProjectTitle]", rfq.Document.Title);
+                    emailBody = emailBody.Replace("[SupplierCompanyX]", quotation.Document.Company.Name);
+                    emailBody = emailBody.Replace("[RedirectLink]", rfq.Id.ToString());
+                    
+                    sendMail.SendMail(dbUser.EmailAddress, "", emailSubject, emailBody);
                 }
-
-
                 result.IsSuccess = true;
                 result.MessageToUser = dbQuotation.Id.ToString();
             }
             catch (Exception ex)
             {
                 result.IsSuccess = false;
-                result.MessageToUser = "Fail to create your RFQ. Please contact site admin.";
+                result.MessageToUser = "Fail to create your quotation. Please contact site admin.";
                 result.Error = ex;
             }
             return result;
@@ -819,7 +828,7 @@ namespace Com.BudgetMetal.Services.Quotation
         /// </summary>
         /// <param name="quotation"></param>
         /// <returns></returns>
-        public VmGenericServiceResult UpdateQuotation(VmQuotationItem quotation)
+        public async Task<VmGenericServiceResult> UpdateQuotation(VmQuotationItem quotation)
         {
             var result = new VmGenericServiceResult();
             try
@@ -1016,16 +1025,24 @@ namespace Com.BudgetMetal.Services.Quotation
                     //end adding timeline
 
                     //get rfq owner admin email
-                    var resultBuyerAdmin = repoUser.GetBuyerAdmin(quotation.Rfq.Document.Company_Id);
-                    var sendMail = new SendingMail();
-                    if (resultBuyerAdmin != null)
+                    var rfq = await repoRfq.GetSingleRfqById(quotation.Rfq_Id);
+                    var BuyerOwnerList = rfq.Document.DocumentUser.Where(e => e.Role_Id == Constants.RFQCreatorRoleId).ToList();
+                    foreach (var BuyerOwner in BuyerOwnerList)
                     {
-                        string emailSubject = "Quotation " + quotation.Document.DocumentNo + " has been submitted.";
-                        string emailBody = "Email Template need to provide.";
-                        foreach (var item in resultBuyerAdmin)
-                        {
-                            sendMail.SendMail(item, "", emailSubject, emailBody);
-                        }
+                        var dbUser = await repoUser.Get(BuyerOwner.User_Id);
+                        var sendMail = new SendingMail();
+                        var BuyerUser = await repoUser.Get(BuyerOwner.User_Id);
+                        var supplierCompany = await repoCompany.Get(quotation.Document.Company_Id);
+                        var emailTemplate = await repoEmailTemplate.GetEmailTemplateByPurpose("Quotation_Received");
+                        string emailSubject = emailTemplate.EmailSubject.Replace("[ProjectTitle]", rfq.Document.Title).Replace("[SupplierCompanyX]", supplierCompany.Name);
+                        string emailBody = emailTemplate.EmailContent;
+
+                        emailBody = emailBody.Replace("[BuyerOwnerX]", dbUser.ContactName);
+                        emailBody = emailBody.Replace("[ProjectTitle]", rfq.Document.Title);
+                        emailBody = emailBody.Replace("[SupplierCompanyX]", supplierCompany.Name);
+                        emailBody = emailBody.Replace("[RedirectLink]", dbQuotation.Id.ToString());
+
+                        sendMail.SendMail(dbUser.EmailAddress, "", emailSubject, emailBody);
                     }
                 }
                 

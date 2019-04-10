@@ -19,11 +19,11 @@ namespace Com.BudgetMetal.Services.Quotation
 
         Task<VmQuotationItem> InitialLoadByRfqId(int RfqId);
 
-        VmGenericServiceResult SaveQuotation(VmQuotationItem quotation);
+        Task<VmGenericServiceResult> SaveQuotation(VmQuotationItem quotation);
 
         Task<VmQuotationItem> GetSingleQuotationById(int id);
 
-        VmGenericServiceResult UpdateQuotation(VmQuotationItem quotationItem);
+        Task<VmGenericServiceResult> UpdateQuotation(VmQuotationItem quotationItem);
 
         bool CheckQuotationLimit(int companyId);
 

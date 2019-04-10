@@ -108,7 +108,7 @@
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs tab-nav-right" role="tablist">
                         <li role="presentation" class="active"><a href="#basic_requirements" data-toggle="tab">Info</a></li>
-                        <li role="presentation"><a href="#detailed_requirements" data-toggle="tab">Requirements</a></li>
+                        <li role="presentation"><a href="#detailed_requirements" data-toggle="tab">Products</a></li>
                         <li role="presentation"><a href="#service_level_agreement" data-toggle="tab">Supports</a></li>
                         <li role="presentation"><a href="#penalty" data-toggle="tab">Commercials</a></li>
                         <li role="presentation"><a href="#pricing" data-toggle="tab">Pricing</a></li>
@@ -258,7 +258,19 @@
 
                             </table>
                             @{
-                                if (Code_C_Buyer == currentCompanyType)
+                                bool canShowList = false;
+                                if (Model.QuotationOpeningDate == null)
+                                {
+                                    canShowList = true;
+                                }
+                                else
+                                {
+                                    if (Convert.ToDateTime(Model.QuotationOpeningDate).Date >= DateTime.Now.Date)
+                                    {
+                                        canShowList = true;          
+                                    }
+                                }  
+                                if (Code_C_Buyer == currentCompanyType && canShowList)
                                 {
                                     <button class="btn btn-default waves-effect m-r-20" type="button" id="btnCompareRequirement">Requirement Comparison</button>
                                 }
@@ -402,11 +414,11 @@
                             <table id="pricingWarrantyTable" class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th width="5%">Serial</th>
+                                       <th width="5%">Serial</th>
                                         <th width="30%">Item Name</th>
                                         <th width="40%">Item Description</th>
                                         @*<th width="20%">Internal Reference Code</th>*@
-                                        <th width="15%">Quantity</th>
+                                        <th width="20%">Quantity</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -431,9 +443,8 @@
                                     }
                                 </tbody>
                             </table>
-
                             @{
-                                if (Code_C_Buyer == currentCompanyType)
+                                if (Code_C_Buyer == currentCompanyType && canShowList)
                                 {
                                     <button class="btn btn-default waves-effect m-r-20" id="btnComparePricing" type="button">Price Comparison</button>
                                 }
@@ -636,18 +647,7 @@
         </div>
     </div>
     @{
-        bool canShowList = false;
-        if(Model.QuotationOpeningDate == null)
-        {
-            canShowList = true;
-        }
-        else
-        {
-            if(Convert.ToDateTime(Model.QuotationOpeningDate).Date >= DateTime.Now.Date)
-            {
-                canShowList = true;
-            }
-        }
+        
 
         if (Code_C_Buyer == currentCompanyType && (canShowList))
         {
@@ -728,7 +728,7 @@
                                 }
                                 else
                                 {
-                                    <button type="button" id="btnWithdrawn" class="btn btn-danger">Reject</button>
+                                    <button type="button" id="btnReject" class="btn btn-danger">Reject</button>
                                 }
                             }
                             else
@@ -1492,6 +1492,30 @@
 
      $("#btnWithdrawn").click(function () {
         var ajaxurl = '@Url.Action("WithdrawnRfq", "Rfq")';
+         $('.page-loader-wrapper').fadeIn();
+            $.ajax({
+                url: ajaxurl,
+                data: {documentId: @(Model.Document.Id)},
+                dataType: 'json',
+                success: function (response) {
+                    //console.log(response);
+                    var obj = response;
+                    if (obj.IsSuccess) {
+                        var redirecturl = '@Url.Action("Index", "Rfq")';
+                        window.location.href = redirecturl;
+                    } else {
+                        alert(obj.MessageToUser);
+                    }
+                    $('.page-loader-wrapper').fadeOut();
+                },
+                error: function (response) {
+                    alert(response)
+                }
+            });
+    });
+
+    $("#btnReject").click(function () {
+        var ajaxurl = '@Url.Action("RejectRfq", "Rfq")';
          $('.page-loader-wrapper').fadeIn();
             $.ajax({
                 url: ajaxurl,

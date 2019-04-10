@@ -196,7 +196,7 @@ namespace Com.EzTender.WebApp.Controllers
             });
         }
         [HttpPost]
-        public ActionResult Edit(VmQuotationItem quotationItem)
+        public async Task<ActionResult> Edit(VmQuotationItem quotationItem)
         {
             try
             {
@@ -271,7 +271,7 @@ namespace Com.EzTender.WebApp.Controllers
 
                 //return RedirectToAction("Index");
 
-                var result = quotationService.UpdateQuotation(quotationItem);
+                var result = await quotationService.UpdateQuotation(quotationItem);
                 if (result.IsSuccess)
                 {
                     return RedirectToAction("Listing");
@@ -330,7 +330,7 @@ namespace Com.EzTender.WebApp.Controllers
                 };
                 result.Document.DocumentActivityList.Add(DocumentActivity);
 
-                var resultSaving = quotationService.SaveQuotation(result);
+                var resultSaving = await quotationService.SaveQuotation(result);
 
                 if (resultSaving.IsSuccess)
                 {
