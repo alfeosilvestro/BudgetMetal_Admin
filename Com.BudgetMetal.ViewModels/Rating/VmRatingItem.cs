@@ -19,6 +19,9 @@ namespace Com.BudgetMetal.ViewModels.Rating
         public string Description { get; set; }
         public string Ratingcol { get; set; }
         public string UserName { get; set; }
+        public int Company_Id { get; set; }
+        public int Document_Id { get; set; }
+        public int User_Id { get; set; }
 
         public VmCompanyItem Company { get; set; }
         public List<VmCompanyItem> CompanyList { get; set; }

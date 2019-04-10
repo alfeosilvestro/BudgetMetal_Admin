@@ -13,6 +13,7 @@ using Com.BudgetMetal.Services.RFQ;
 using Com.BudgetMetal.Services.Roles;
 using Com.BudgetMetal.Services.ServiceTags;
 using Com.BudgetMetal.Services.Users;
+using Com.BudgetMetal.Services.Rating;
 using Com.BudgetMetal.ViewModels;
 using Com.BudgetMetal.ViewModels.Attachment;
 using Com.BudgetMetal.ViewModels.DocumentActivity;
@@ -32,6 +33,7 @@ using Newtonsoft.Json;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
+using Com.BudgetMetal.ViewModels.Rating;
 
 namespace Com.GenericPlatform.WebApp.Controllers
 {
@@ -45,9 +47,10 @@ namespace Com.GenericPlatform.WebApp.Controllers
         private readonly IRoleService roleService;
         private readonly IAttachmentService attachmentService;
         private readonly IQuotationService quotationService;
+        private readonly IRatingService ratingService;
         private IHostingEnvironment _hostingEnvironment;
 
-        public RfqController(IIndustryService industryService, IServiceTagsService serviceTagsService, ICompanyService companyService, IRFQService rfqService, IUserService userService, IRoleService roleService, IAttachmentService attachmentService, IQuotationService quotationService, IHostingEnvironment hostingEnvironment)
+        public RfqController(IIndustryService industryService, IServiceTagsService serviceTagsService, ICompanyService companyService, IRFQService rfqService, IUserService userService, IRoleService roleService, IAttachmentService attachmentService, IQuotationService quotationService, IHostingEnvironment hostingEnvironment, IRatingService ratingService)
         {
             this.industryService = industryService;
             this.serviceTagsService = serviceTagsService;
@@ -58,6 +61,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
             this.attachmentService = attachmentService;
             this.quotationService = quotationService;
             this._hostingEnvironment = hostingEnvironment;
+            this.ratingService = ratingService;
         }
 
         // GET: Rfq
@@ -1350,6 +1354,31 @@ namespace Com.GenericPlatform.WebApp.Controllers
                 rfqId = int.Parse(RfqId);
             }
             var result = await rfqService.AddInvitationUser(rfqId, name, email, HttpContext.Session.GetString("UserName"));
+
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> AddRatingByBuyerToSupplier(int DocumentId, int CompanyId, int ServiceRating, int SpeedOfQuotation, int SpeedOfDelivery, int PricingRating, string Title, string Description)
+        {
+            var User_Id = HttpContext.Session.GetString("User_Id");
+
+            VmRatingItem item = new VmRatingItem() {
+                Document_Id = DocumentId,
+                Company_Id = CompanyId,
+                ServiceQuality = ServiceRating,
+                SpeedOfQuotation = SpeedOfQuotation,
+                SpeedofDelivery = SpeedOfDelivery,
+                Price = PricingRating,
+                Title = Title,
+                Description = Description,
+                User_Id = Convert.ToInt32(User_Id),
+            };            
+
+            var result = await ratingService.Insert(item);
 
             return new JsonResult(result, new JsonSerializerSettings()
             {

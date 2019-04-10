@@ -25,6 +25,35 @@
         width: 50px;
     }
 </style>
+<style>
+    /* Rating Star Widgets Style */
+    .rating-stars ul {
+        list-style-type: none;
+        padding: 0;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+    }
+
+    .rating-stars ul > li.star {
+        display: inline-block;
+    }
+
+    /* Idle State of the stars */
+    .rating-stars ul > li.star > i.fa {
+        font-size: 2em; /* Change the size of the stars */
+        color: #ccc; /* Color on idle state */
+    }
+
+    /* Hover state of the stars */
+    .rating-stars ul > li.star.hover > i.fa {
+        color: #FFCC36;
+    }
+
+    /* Selected state of the stars */
+    .rating-stars ul > li.star.selected > i.fa {
+        color: #FF912C;
+    }
+</style>
 <form asp-controller="Rfq" asp-action="View" method="post" enctype="multipart/form-data" id="frmCreateRFQ">
     <div class="block-header">
         <h2>Prepare Request for Quotation</h2>
@@ -1190,6 +1219,90 @@
     </div>
 </div>
 
+<div class="modal fade" id="ratingModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Rating</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <form id="frm_rating">
+                        <label for="">Service</label>
+                        <div class="demo-radio-button">
+                            <input name="serviceRating" type="radio" id="radio_1" value="1" checked="">
+                            <label for="radio_1" style="min-width:100px"> 1</label>
+                            <input name="serviceRating" type="radio" id="radio_2" value="2">
+                            <label for="radio_2" style="min-width:100px"> 2</label>
+                            <input name="serviceRating" type="radio" id="radio_3" value="3">
+                            <label for="radio_3" style="min-width:100px"> 3 </label>
+                            <input name="serviceRating" type="radio" id="radio_4" value="4">
+                            <label for="radio_4" style="min-width:100px"> 4 </label>
+                            <input name="serviceRating" type="radio" id="radio_5" value="5">
+                            <label for="radio_5" style="min-width:100px"> 5 </label>
+                        </div>
+                        <label for="">Quotation</label>
+                        <div class="demo-radio-button">
+                            <input name="quotationRating" type="radio" id="quotationRating1" value="1" checked="">
+                            <label for="quotationRating1" style="min-width:100px"> 1</label>
+                            <input name="quotationRating" type="radio" id="quotationRating2" value="2">
+                            <label for="quotationRating2" style="min-width:100px"> 2</label>
+                            <input name="quotationRating" type="radio" id="quotationRating3" value="3">
+                            <label for="quotationRating3" style="min-width:100px"> 3 </label>
+                            <input name="quotationRating" type="radio" id="quotationRating4" value="4">
+                            <label for="quotationRating4" style="min-width:100px"> 4 </label>
+                            <input name="quotationRating" type="radio" id="quotationRating5" value="5">
+                            <label for="quotationRating5" style="min-width:100px"> 5 </label>
+                        </div>
+                        <label for="">Delivery</label>
+                        <div class="demo-radio-button">
+                            <input name="deliveryRating" type="radio" id="deliveryRating1" value="1" checked="">
+                            <label for="deliveryRating1" style="min-width:100px"> 1</label>
+                            <input name="deliveryRating" type="radio" id="deliveryRating2" value="2">
+                            <label for="deliveryRating2" style="min-width:100px"> 2</label>
+                            <input name="deliveryRating" type="radio" id="deliveryRating3" value="3">
+                            <label for="deliveryRating3" style="min-width:100px"> 3 </label>
+                            <input name="deliveryRating" type="radio" id="deliveryRating4" value="4">
+                            <label for="deliveryRating4" style="min-width:100px"> 4 </label>
+                            <input name="deliveryRating" type="radio" id="deliveryRating5" value="5">
+                            <label for="deliveryRating5" style="min-width:100px"> 5 </label>
+                        </div>
+                        <label for="">Price</label>
+                        <div class="demo-radio-button">
+                            <input name="priceRating" type="radio" id="priceRating1" value="1" checked="">
+                            <label for="priceRating1" style="min-width:100px"> 1</label>
+                            <input name="priceRating" type="radio" id="priceRating2" value="2">
+                            <label for="priceRating2" style="min-width:100px"> 2</label>
+                            <input name="priceRating" type="radio" id="priceRating3" value="3">
+                            <label for="priceRating3" style="min-width:100px"> 3 </label>
+                            <input name="priceRating" type="radio" id="priceRating4" value="4">
+                            <label for="priceRating4" style="min-width:100px"> 4 </label>
+                            <input name="priceRating" type="radio" id="priceRating5" value="5">
+                            <label for="priceRating5" style="min-width:100px"> 5 </label>
+                        </div>
+
+                        <div class="form-group col-md-9">
+                            <label for="">Title</label>
+                            <input id="txt_title" class="form-control" name="txt_title" style="width:100%; border:solid 1px; resize: none;" value="">
+                        </div>                        
+                        <div class="form-group col-md-9">
+                            <label for="">Description</label>
+                            <textarea name="txt_desc" id="txt_desc" class="form-control" rows="5" cols="50" style="width:100%; border:solid 1px; resize: none;"></textarea>
+                        </div>
+                        <textarea hidden name="companyId" id="companyId" rows="1" style="width:100%; resize: none;">  </textarea>
+                    </form>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnRatingSubmit">Submit</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Editable Table Plugin Js
 <script src="~/material_theme/plugins/editable-table/mindmup-editabletable.js"></script>
@@ -1219,7 +1332,225 @@
 
 
 <script>
+    $(document).ready(function () {
+
+        
+        //speed of quotation
+        /* 1. Visualizing things on Hover - See next part for action on click */
+        $('#stars li').on('mouseover', function () {
+            var onStar = parseInt($(this).data('value'), 10); // The star currently mouse on
+
+            // Now highlight all the stars that's not after the current hovered star
+            $(this).parent().children('li.star').each(function (e) {
+                if (e < onStar) {
+                    $(this).addClass('hover');
+                }
+                else {
+                    $(this).removeClass('hover');
+                }
+            });
+
+        }).on('mouseout', function () {
+            $(this).parent().children('li.star').each(function (e) {
+                $(this).removeClass('hover');
+            });
+        });
+
+        /* 2. Action to perform on click */
+        $('#stars li').on('click', function () {
+            var onStar = parseInt($(this).data('value'), 10); // The star currently selected
+            var stars = $(this).parent().children('li.star');
+
+            for (i = 0; i < stars.length; i++) {
+                $(stars[i]).removeClass('selected');
+            }
+
+            for (i = 0; i < onStar; i++) {
+                $(stars[i]).addClass('selected');
+            }
+
+            // JUST RESPONSE (Not needed)
+            var ratingValue = parseInt($('#stars li.selected').last().data('value'), 10);
+            //responseMessage(ratingValue);
+            $('input[id=txt_speed_quotation]').val(ratingValue);
+        });
+
+        //speed of delivery
+        /* 1. Visualizing things on Hover - See next part for action on click */
+        $('#stars_delivery li').on('mouseover', function () {
+            var onStar = parseInt($(this).data('value'), 10); // The star currently mouse on
+
+            // Now highlight all the stars that's not after the current hovered star
+            $(this).parent().children('li.star').each(function (e) {
+                if (e < onStar) {
+                    $(this).addClass('hover');
+                }
+                else {
+                    $(this).removeClass('hover');
+                }
+            });
+
+        }).on('mouseout', function () {
+            $(this).parent().children('li.star').each(function (e) {
+                $(this).removeClass('hover');
+            });
+        });
+
+        /* 2. Action to perform on click */
+        $('#stars_delivery li').on('click', function () {
+            var onStar = parseInt($(this).data('value'), 10); // The star currently selected
+            var stars = $(this).parent().children('li.star');
+
+            for (i = 0; i < stars.length; i++) {
+                $(stars[i]).removeClass('selected');
+            }
+
+            for (i = 0; i < onStar; i++) {
+                $(stars[i]).addClass('selected');
+            }
+
+            // JUST RESPONSE (Not needed)
+            var ratingValue = parseInt($('#stars_delivery li.selected').last().data('value'), 10);
+            //responseMessage(ratingValue);
+            $('input[id=txt_speed_delivery]').val(ratingValue);
+        });
+
+
+        //speed of delivery
+        /* 1. Visualizing things on Hover - See next part for action on click */
+        $('#stars_price li').on('mouseover', function () {
+            var onStar = parseInt($(this).data('value'), 10); // The star currently mouse on
+
+            // Now highlight all the stars that's not after the current hovered star
+            $(this).parent().children('li.star').each(function (e) {
+                if (e < onStar) {
+                    $(this).addClass('hover');
+                }
+                else {
+                    $(this).removeClass('hover');
+                }
+            });
+
+        }).on('mouseout', function () {
+            $(this).parent().children('li.star').each(function (e) {
+                $(this).removeClass('hover');
+            });
+        });
+
+        /* 2. Action to perform on click */
+        $('#stars_price li').on('click', function () {
+            var onStar = parseInt($(this).data('value'), 10); // The star currently selected
+            var stars = $(this).parent().children('li.star');
+
+            for (i = 0; i < stars.length; i++) {
+                $(stars[i]).removeClass('selected');
+            }
+
+            for (i = 0; i < onStar; i++) {
+                $(stars[i]).addClass('selected');
+            }
+
+            // JUST RESPONSE (Not needed)
+            var ratingValue = parseInt($('#stars_price li.selected').last().data('value'), 10);
+            //responseMessage(ratingValue);
+            $('input[id=txt_price]').val(ratingValue);
+        });
+
+        //service
+        /* 1. Visualizing things on Hover - See next part for action on click */
+        $('#stars_service li').on('mouseover', function () {
+            var onStar = parseInt($(this).data('value'), 10); // The star currently mouse on
+
+            // Now highlight all the stars that's not after the current hovered star
+            $(this).parent().children('li.star').each(function (e) {
+                if (e < onStar) {
+                    $(this).addClass('hover');
+                }
+                else {
+                    $(this).removeClass('hover');
+                }
+            });
+
+        }).on('mouseout', function () {
+            $(this).parent().children('li.star').each(function (e) {
+                $(this).removeClass('hover');
+            });
+        });
+
+        /* 2. Action to perform on click */
+        $('#stars_service li').on('click', function () {
+            var onStar = parseInt($(this).data('value'), 10); // The star currently selected
+            var stars = $(this).parent().children('li.star');
+
+            for (i = 0; i < stars.length; i++) {
+                $(stars[i]).removeClass('selected');
+            }
+
+            for (i = 0; i < onStar; i++) {
+                $(stars[i]).addClass('selected');
+            }
+
+            // JUST RESPONSE (Not needed)
+            var ratingValue = parseInt($('#stars_service li.selected').last().data('value'), 10);
+            //responseMessage(ratingValue);
+            $('input[id=txt_service]').val(ratingValue);
+        });
+
+        
+    });
+
     $(function () {
+
+        $('#btnRatingSubmit').on('click', function () {
+            var companyId = $('#companyId').val();
+            var serviceRating = $('input[name="serviceRating"]:checked').val();
+            var quotationRating = $('input[name="quotationRating"]:checked').val();
+            var deliveryRating = $('input[name="deliveryRating"]:checked').val();
+            var priceRating = $('input[name="priceRating"]:checked').val();
+            console.log(serviceRating);
+            console.log(quotationRating);
+            console.log(deliveryRating);
+            console.log(priceRating);
+            var title = $('input[id=txt_title]').val();
+            var description = $('#txt_desc').val(); 
+            var documentId = @(Model.Document.Id);
+            
+            var ajaxurl = '@Url.Action("AddRatingByBuyerToSupplier", "Rfq")';
+
+            $.ajax({
+                url: ajaxurl,
+                
+                data: { DocumentId: documentId, CompanyId: companyId, ServiceRating: serviceRating, SpeedOfQuotation: quotationRating, SpeedOfdelivery: deliveryRating, PricingRating: priceRating, Title: title, Description: description},
+                dataType: 'json',
+                type: 'post',
+                success: function (response) {
+                    if (response.IsSuccess) {
+                        $('#ratingModal').modal('hide');
+                        alert(response.MessageToUser);
+                    } else {
+                        alert(response.MessageToUser);
+                    }
+                },
+                error: function (response) {
+                    alert(response)
+                }
+            });
+        });
+
+
+        $('#ratingModal').on('show.bs.modal', function (event) {
+        
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            //var code = button.data('code'); // Extract info from data-* attributes
+            var companyId = button.data('companyid');
+            //alert("userid" + userId + " userrole " + userRole);
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            var modal = $(this);
+            modal.find('#companyId').val("");
+            modal.find('#companyId').val(companyId);            
+        });
+
         var buyer = @(Code_C_Buyer);
         var currentComapnyType = @(currentCompanyType);
         if (buyer != currentComapnyType) {
@@ -1293,7 +1624,7 @@
                         $("#reqEmailInvitesTable tbody").append(trString);
                         $("#invite_name").val("");
                         $("#invite_email").val("");
-                        $("#resendEmailModal").modal("hide");
+                        $("#resendEmailModal").modal("hide"); 
                         $("#error_invitation").empty();
                     } else {
                         $("#error_invitation").empty();
@@ -1647,12 +1978,16 @@ function loadIndustry() {
                 console.log(obj);
                 for (var k in obj) {
                     var item = obj[k];
+                    var rate = "";
+                    if (item.Document.DocumentStatus.Name == "Accepted") {
+                        rate = "<a type='button' class='btn btn-primary' data-toggle='modal' data-target='#ratingModal' data-companyId=" + item.Document.Company.Id +">Rate</a>";
+                    }
                     var url = '@Url.Action("View", "Quotation")';
                     $('#tbQuotation > tbody').append(
                         "<tr>" +
-                        "<td> <a type='button' class='btn btn-warning' href='" + url+"/"+item.Id+"' target='_blank'>View</a>  </td>" +
+                        "<td> <a type='button' class='btn btn-warning' href='" + url + "/" + item.Id + "' target='_blank'>View</a>" + rate +" </td>" +
                         "<td>" + item.Document.DocumentNo + "</td>" +
-                        "<td><a href='@Url.Action("Details","Companies")/" + item.Document.Company_Id+"' target='_blank'>" + item.Document.Company.Name + "</a></td>" +
+                        "<td><a href='@Url.Action("Details","Companies")/" + item.Document.Company.Id + "' target='_blank'>" + item.Document.Company.Name + "</a></td>" +
                         "<td>" + item.Document.DocumentStatus.Name + "</td>" +
                         "<td class='align-right'>" + item.QuotedFigure + "</td>" +
                         "</tr>"

@@ -229,34 +229,43 @@
                 <div id="collapseOne_2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne_2" aria-expanded="false" style="height: 0px;">
                     <div class="panel-body">
                         <div class="body table-responsive">
-                            <table class="table table-striped">
+                            <table class="table table-striped" id="tbRating">
                                 <thead>
                                     <tr>
                                         <th> # </th>
-                                        <th> Rating </th>
-                                        <th>User</th>
+                                        <th> Quotation </th>
+                                        <th> Service </th>
+                                        <th> Delivery </th>
+                                        <th> Price </th>
+                                        <th>Title</th>
                                         <th>Feedback</th>
+                                        <th>User</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @{
-                                        int i = 1;
-                                        if (Model.UserList != null)
-                                        {
-                                            foreach (var item in Model.RatingList)
+                                    @*@{
+                                            int i = 1;
+                                            if (Model.UserList != null)
                                             {
-                                                <tr>
-                                                    <td> @i </td>
-                                                    <td> @item.ServiceQuality </td>
-                                                    <td> @item.UserName </td>
-                                                    <td> @item.Description </td>
-                                                </tr>
-                                                i++;
+                                                foreach (var item in Model.RatingList)
+                                                {
+                                                    <tr>
+                                                        <td> @i </td>
+                                                        <td> @item.ServiceQuality </td>
+                                                        <td> @item.UserName </td>
+                                                        <td> @item.Description </td>
+                                                    </tr>
+                                                    i++;
+                                                }
                                             }
-                                        }
-                                    }
+                                        }*@
                                 </tbody>
                             </table>
+                            <div class="row" id="pagination">
+                                <div class="col-sm-12" id="divPagination">
+
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -374,6 +383,7 @@
 
 <script>
     $(function () {
+        loadTimeLine(1, 1);
 
         $('span.stars').stars();
 
@@ -578,6 +588,57 @@
             var $span = $('<span />').width(size);
             // Replace the numerical value with stars
             $(this).html($span);
+        });
+    }
+
+    function loadTimeLine(page) {
+        var keyword = $('#keyword').val();
+        var ajaxurl = '@Url.Action("GetRatingData", "Companies")';
+
+        $('.page-loader-wrapper').fadeIn();
+        $.ajax({
+            url: ajaxurl,
+            data: { page: page, skeyword: keyword},
+            dataType: 'json',
+            success: function (response) {
+
+                console.log(response);
+                var i = 1;
+                var obj = response.Result.Records;
+                console.log(obj);
+                for (var k in obj) {
+                    var item = obj[k];
+
+                    $('#tbRating > tbody').append(
+                        "<tr>" +
+                        "<td>" + i + "</td>" +
+                        "<td>" + item.SpeedOfQuotation + "</td>" +
+                        "<td>" + item.ServiceQuality + "</td>" +
+                        "<td>" + item.SpeedofDelivery + "</td>" +
+                        "<td>" + item.Price + "</td>" +
+                        "<td>" + item.Title + "</td>" +
+                        "<td>" + item.Description + "</td>" +
+                        "<td>" + item.UserName + "</td>" +
+                        "</tr>"
+                    );
+                    i++;
+                }
+                var totalpage = response.Result.TotalPage;
+                var currentpage = response.Result.CurrentPage;
+                console.log(totalpage);
+                console.log(currentpage);
+                if (totalpage > currentpage) {
+                    $("#divPagination").empty();
+                    $("#divPagination").append(" <a class='btn btn-md btn-default' OnClick='loadQuotation(" + response.Result.NextPage + ")'> Load More </a> ");
+                } else {
+                    $("#divPagination").empty();
+
+                }
+            },
+            error: function (response) {
+                alert(response)
+                $('.page-loader-wrapper').fadeOut();
+            }
         });
     }
 

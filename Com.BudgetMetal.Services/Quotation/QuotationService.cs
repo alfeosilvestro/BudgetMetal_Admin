@@ -469,6 +469,7 @@ namespace Com.BudgetMetal.Services.Quotation
                 {
                     resultItem.Document = new ViewModels.Document.VmDocumentItem()
                     {
+                        Id = dbItem.Document.Id,
                         DocumentNo = dbItem.Document.DocumentNo,
                         DocumentStatus = new ViewModels.CodeTable.VmCodeTableItem()
                         {
@@ -480,6 +481,7 @@ namespace Com.BudgetMetal.Services.Quotation
                         },
                         Company = new ViewModels.Company.VmCompanyItem()
                         {
+                            Id = dbItem.Document.Company.Id,
                             Name = dbItem.Document.Company.Name
                         }
                     };
