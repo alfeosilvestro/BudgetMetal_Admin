@@ -122,7 +122,7 @@
             </div>
             <div class="body">
                 <div class="list-group">
-                    <h2>0 Count.</h2>
+                    <h2><span id="feedbackCount"></span></h2>
                 </div>
             </div>
         </div>
@@ -383,9 +383,9 @@
 
 <script>
     $(function () {
-        loadTimeLine(1, 1);
+        loadTimeLine(1);
 
-        $('span.stars').stars();
+        
 
         $('#btnSubmit').on('click', function(){
             var about = $('#txt_about').val();
@@ -592,13 +592,12 @@
     }
 
     function loadTimeLine(page) {
-        var keyword = $('#keyword').val();
         var ajaxurl = '@Url.Action("GetRatingData", "Companies")';
 
         $('.page-loader-wrapper').fadeIn();
         $.ajax({
             url: ajaxurl,
-            data: { page: page, skeyword: keyword},
+            data: { page: page, companyId: @Model.Id},
             dataType: 'json',
             success: function (response) {
 
@@ -612,10 +611,10 @@
                     $('#tbRating > tbody').append(
                         "<tr>" +
                         "<td>" + i + "</td>" +
-                        "<td>" + item.SpeedOfQuotation + "</td>" +
-                        "<td>" + item.ServiceQuality + "</td>" +
-                        "<td>" + item.SpeedofDelivery + "</td>" +
-                        "<td>" + item.Price + "</td>" +
+                        "<td><span class='stars'>" + item.SpeedOfQuotation + "</span></td>" +
+                        "<td><span class='stars'>" + item.ServiceQuality + "</span></td>" +
+                        "<td><span class='stars'>" + item.SpeedofDelivery + "</span></td>" +
+                        "<td><span class='stars'>" + item.Price + "</span></td>" +
                         "<td>" + item.Title + "</td>" +
                         "<td>" + item.Description + "</td>" +
                         "<td>" + item.UserName + "</td>" +
@@ -634,6 +633,8 @@
                     $("#divPagination").empty();
 
                 }
+
+                $('span.stars').stars();
             },
             error: function (response) {
                 alert(response)

@@ -52,7 +52,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
         private IHostingEnvironment _hostingEnvironment;
         private readonly IFacebookService fbService;
 
-        public RfqController(IIndustryService industryService, IServiceTagsService serviceTagsService, ICompanyService companyService, IRFQService rfqService, IUserService userService, IRoleService roleService, IAttachmentService attachmentService, IQuotationService quotationService, IHostingEnvironment hostingEnvironment, IFacebookService fbService)
+        public RfqController(IIndustryService industryService, IServiceTagsService serviceTagsService, ICompanyService companyService, IRFQService rfqService, IUserService userService, IRoleService roleService, IAttachmentService attachmentService, IQuotationService quotationService, IHostingEnvironment hostingEnvironment, IFacebookService fbService, IRatingService ratingService)
         {
             this.industryService = industryService;
             this.serviceTagsService = serviceTagsService;
@@ -65,6 +65,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
             this._hostingEnvironment = hostingEnvironment;
             this.ratingService = ratingService;
             this.fbService = fbService;
+            this.ratingService = ratingService;
         }
 
         // GET: Rfq
