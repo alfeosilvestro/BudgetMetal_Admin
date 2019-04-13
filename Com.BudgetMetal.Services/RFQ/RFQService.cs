@@ -1280,7 +1280,7 @@ namespace Com.BudgetMetal.Services.RFQ
             {
                 //Change Status
                 var dbDocument = await repoDocument.Get(documentId);
-                dbDocument.DocumentStatus_Id = Constants_CodeTable.Code_RFQ_Withdrawn;
+                dbDocument.DocumentStatus_Id = Constants_CodeTable.Code_RFQ_Draft;
                 dbDocument.UpdatedBy = userName;
                 repoDocument.Update(dbDocument);
 
