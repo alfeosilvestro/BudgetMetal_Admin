@@ -800,14 +800,15 @@ namespace Com.BudgetMetal.Services.Quotation
                 {
                     var dbUser = await repoUser.Get(BuyerOwner.User_Id);
                     var sendMail = new SendingMail();
-                    var BuyerUser = await repoUser.Get(BuyerOwner.User_Id);
+                    
+                    var SupplierCompany = await repoCompany.Get(quotation.Document.Company_Id);
                     var emailTemplate = await repoEmailTemplate.GetEmailTemplateByPurpose("RFQ_Interested");
-                    string emailSubject = emailTemplate.EmailSubject.Replace("[ProjectTitle]", rfq.Document.Title).Replace("[SupplierCompanyX]", quotation.Document.Company.Name);
+                    string emailSubject = emailTemplate.EmailSubject.Replace("[ProjectTitle]", rfq.Document.Title).Replace("[SupplierCompanyX]", SupplierCompany.Name);
                     string emailBody = emailTemplate.EmailContent;
 
                     emailBody = emailBody.Replace("[BuyerOwnerX]", dbUser.ContactName);
                     emailBody = emailBody.Replace("[ProjectTitle]", rfq.Document.Title);
-                    emailBody = emailBody.Replace("[SupplierCompanyX]", quotation.Document.Company.Name);
+                    emailBody = emailBody.Replace("[SupplierCompanyX]", SupplierCompany.Name);
                     emailBody = emailBody.Replace("[RedirectLink]", rfq.Id.ToString());
                     
                     sendMail.SendMail(dbUser.EmailAddress, "", emailSubject, emailBody);
