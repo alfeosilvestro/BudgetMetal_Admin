@@ -233,13 +233,13 @@
                                 <thead>
                                     <tr>
                                         <th> # </th>
-                                        <th> Quotation </th>
+                                        <th> Responsiveness </th>
                                         <th> Service </th>
                                         <th> Delivery </th>
                                         <th> Price </th>
-                                        <th>Title</th>
-                                        <th>Feedback</th>
-                                        <th>User</th>
+                                        <th> Title </th>
+                                        <th> Feedback </th>
+                                        <th> User </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -622,6 +622,8 @@
                     );
                     i++;
                 }
+                var feedCount = (i-1) + " Counts";
+                $("#feedbackCount").text(feedCount);
                 var totalpage = response.Result.TotalPage;
                 var currentpage = response.Result.CurrentPage;
                 console.log(totalpage);

@@ -123,7 +123,7 @@
             </div>
             <div class="body">
                 <div class="list-group">
-                    <h2>0 Count.</h2>
+                    <h2><span id="ratingCount"></span></h2>
                 </div>
             </div>
         </div>
@@ -521,6 +521,10 @@
                     );
                     i++;
                 }
+                var countText = i + " Counts";
+
+                $("#ratingCount").text(countText);
+
                 var totalpage = response.Result.TotalPage;
                 var currentpage = response.Result.CurrentPage;
                 console.log(totalpage);

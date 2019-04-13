@@ -294,7 +294,7 @@
                                 }
                                 else
                                 {
-                                    if (Convert.ToDateTime(Model.QuotationOpeningDate).Date >= DateTime.Now.Date)
+                                    if (Convert.ToDateTime(Model.QuotationOpeningDate).Date <= DateTime.Now.Date)
                                     {
                                         canShowList = true;          
                                     }
@@ -1365,23 +1365,10 @@
             <div class="modal-body">
                 <div class="row">
                     <form id="frm_rating">
-                        <label for="">Service</label>
-                        <div class="demo-radio-button">
-                            <input name="serviceRating" type="radio" id="radio_1" value="1" checked="">
-                            <label for="radio_1" style="min-width:100px"> 1</label>
-                            <input name="serviceRating" type="radio" id="radio_2" value="2">
-                            <label for="radio_2" style="min-width:100px"> 2</label>
-                            <input name="serviceRating" type="radio" id="radio_3" value="3">
-                            <label for="radio_3" style="min-width:100px"> 3 </label>
-                            <input name="serviceRating" type="radio" id="radio_4" value="4">
-                            <label for="radio_4" style="min-width:100px"> 4 </label>
-                            <input name="serviceRating" type="radio" id="radio_5" value="5">
-                            <label for="radio_5" style="min-width:100px"> 5 </label>
-                        </div>
-                        <label for="">Quotation</label>
+                        <label for="">Responsiveness</label>
                         <div class="demo-radio-button">
                             <input name="quotationRating" type="radio" id="quotationRating1" value="1" checked="">
-                            <label for="quotationRating1" style="min-width:100px"> 1</label>
+                            <label for="quotationRating1" style="min-width:100px"> 1 (poor)</label>
                             <input name="quotationRating" type="radio" id="quotationRating2" value="2">
                             <label for="quotationRating2" style="min-width:100px"> 2</label>
                             <input name="quotationRating" type="radio" id="quotationRating3" value="3">
@@ -1389,12 +1376,26 @@
                             <input name="quotationRating" type="radio" id="quotationRating4" value="4">
                             <label for="quotationRating4" style="min-width:100px"> 4 </label>
                             <input name="quotationRating" type="radio" id="quotationRating5" value="5">
-                            <label for="quotationRating5" style="min-width:100px"> 5 </label>
+                            <label for="quotationRating5" style="min-width:100px"> 5 (Excellent)</label>
                         </div>
+                        <label for="">Service</label>
+                        <div class="demo-radio-button">
+                            <input name="serviceRating" type="radio" id="radio_1" value="1" checked="">
+                            <label for="radio_1" style="min-width:100px"> 1 (poor)</label>
+                            <input name="serviceRating" type="radio" id="radio_2" value="2">
+                            <label for="radio_2" style="min-width:100px"> 2</label>
+                            <input name="serviceRating" type="radio" id="radio_3" value="3">
+                            <label for="radio_3" style="min-width:100px"> 3 </label>
+                            <input name="serviceRating" type="radio" id="radio_4" value="4">
+                            <label for="radio_4" style="min-width:100px"> 4 </label>
+                            <input name="serviceRating" type="radio" id="radio_5" value="5">
+                            <label for="radio_5" style="min-width:100px"> 5 (Excellent)</label>
+                        </div>
+
                         <label for="">Delivery</label>
                         <div class="demo-radio-button">
                             <input name="deliveryRating" type="radio" id="deliveryRating1" value="1" checked="">
-                            <label for="deliveryRating1" style="min-width:100px"> 1</label>
+                            <label for="deliveryRating1" style="min-width:100px"> 1 (poor)</label>
                             <input name="deliveryRating" type="radio" id="deliveryRating2" value="2">
                             <label for="deliveryRating2" style="min-width:100px"> 2</label>
                             <input name="deliveryRating" type="radio" id="deliveryRating3" value="3">
@@ -1402,12 +1403,12 @@
                             <input name="deliveryRating" type="radio" id="deliveryRating4" value="4">
                             <label for="deliveryRating4" style="min-width:100px"> 4 </label>
                             <input name="deliveryRating" type="radio" id="deliveryRating5" value="5">
-                            <label for="deliveryRating5" style="min-width:100px"> 5 </label>
+                            <label for="deliveryRating5" style="min-width:100px"> 5 (Excellent)</label>
                         </div>
                         <label for="">Price</label>
                         <div class="demo-radio-button">
                             <input name="priceRating" type="radio" id="priceRating1" value="1" checked="">
-                            <label for="priceRating1" style="min-width:100px"> 1</label>
+                            <label for="priceRating1" style="min-width:100px"> 1 (poor)</label>
                             <input name="priceRating" type="radio" id="priceRating2" value="2">
                             <label for="priceRating2" style="min-width:100px"> 2</label>
                             <input name="priceRating" type="radio" id="priceRating3" value="3">
@@ -1415,15 +1416,15 @@
                             <input name="priceRating" type="radio" id="priceRating4" value="4">
                             <label for="priceRating4" style="min-width:100px"> 4 </label>
                             <input name="priceRating" type="radio" id="priceRating5" value="5">
-                            <label for="priceRating5" style="min-width:100px"> 5 </label>
+                            <label for="priceRating5" style="min-width:100px"> 5 (Excellent)</label>
                         </div>
 
                         <div class="form-group col-md-9">
                             <label for="">Title</label>
                             <input id="txt_title" class="form-control" name="txt_title" style="width:100%; border:solid 1px; resize: none;" value="">
-                        </div>                        
+                        </div>
                         <div class="form-group col-md-9">
-                            <label for="">Description</label>
+                            <label for="">Feedback</label>
                             <textarea name="txt_desc" id="txt_desc" class="form-control" rows="5" cols="50" style="width:100%; border:solid 1px; resize: none;"></textarea>
                         </div>
                         <textarea hidden name="companyId" id="companyId" rows="1" style="width:100%; resize: none;">  </textarea>
