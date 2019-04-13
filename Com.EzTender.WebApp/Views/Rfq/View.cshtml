@@ -294,7 +294,7 @@
                                 }
                                 else
                                 {
-                                    if (Convert.ToDateTime(Model.QuotationOpeningDate).Date >= DateTime.Now.Date)
+                                    if (Convert.ToDateTime(Model.QuotationOpeningDate).Date <= DateTime.Now.Date)
                                     {
                                         canShowList = true;          
                                     }
