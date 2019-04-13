@@ -210,7 +210,7 @@ namespace Com.BudgetMetal.Services.ServiceTags
 
         public async Task<List<VmServiceTagsItem>> GetActiveVmServiceTags()
         {
-            var dbResult = await repo.GetAll();
+            var dbResult = await repo.GetServiceTagsByIndustry(0);
 
             var resultList = new List<VmServiceTagsItem>();
             foreach (var item in dbResult)

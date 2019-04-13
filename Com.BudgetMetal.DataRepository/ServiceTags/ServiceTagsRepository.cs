@@ -83,7 +83,7 @@ namespace Com.BudgetMetal.DataRepository.ServiceTags
             //{
             //    return entities.Where(e => e.IsActive == true && e.Industry_Id == Id).ToList();
             //});
-            return await this.entities.Where(e => e.IsActive == true && e.Industry_Id == Id).ToListAsync();
+            return await this.entities.Where(e => e.IsActive == true && (Id == 0 || e.Industry_Id == Id)).OrderBy(e=>e.Name).ToListAsync();
         }
     }
 }

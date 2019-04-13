@@ -378,11 +378,11 @@
 
                         <div role="tabpanel" class="tab-pane fade" id="invited_suppliers">
                             <div class="row">
-                                <div class="col-sm-3">
+                                @*<div class="col-sm-3">
 
                                     <select id="ddlIndustry" class="form-control selectpicker"></select>
                                     <input type="hidden" asp-for="IndustryOfRfq" id="hdIndustry" />
-                                </div>
+                                </div>*@
                                 <div class="col-sm-8">
                                     <select asp-for="SelectedTags" class="form-control selectpicker" id="ddlServiceTags" data-live-search="true" multiple></select>
                                 </div>
@@ -591,7 +591,8 @@
 
 <script>
     $(function () {
-        loadIndustry();
+        //loadIndustry();
+        loadServiceTags(0);
         loadUser();
         loadRole();
         var todaydate = moment();
@@ -624,7 +625,7 @@
     });
 
     $("#btnDraft").click(function () {
-        $("#btnType").val("draft");
+        $("#btnType").val("save as draft");
         SaveForm();
     });
 
