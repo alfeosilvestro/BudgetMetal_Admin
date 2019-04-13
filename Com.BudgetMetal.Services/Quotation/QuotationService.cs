@@ -911,6 +911,7 @@ namespace Com.BudgetMetal.Services.Quotation
                             Copy<VmQuotationPriceScheduleItem, Com.BudgetMetal.DBEntities.QuotationPriceSchedule>(item, dbQPriceSchedule);
                             dbQPriceSchedule.Quotation_Id = dbQuotation.Id;
                             dbQPriceSchedule.CreatedBy = dbQPriceSchedule.UpdatedBy = dbQuotation.CreatedBy;
+                            dbQPriceSchedule.ItemAmount = dbQPriceSchedule.UnitPrice * Convert.ToDecimal(dbQPriceSchedule.QuantityRequired);
                             repoPriceSchedule.Add(dbQPriceSchedule);
                         }
                         repoPriceSchedule.Commit();
