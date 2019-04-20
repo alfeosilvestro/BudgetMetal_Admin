@@ -1094,12 +1094,7 @@ function loadIndustry() {
 
     function loadServiceTags(industryId) {
         $('#ddlServiceTags').empty();
-        if (industryId == "0") {
-
-            $("#ddlServiceTags").selectpicker('refresh');
-        } else {
-            $('#hdIndustry').val($("#ddlIndustry option:selected").val());
-            //alert($('#hdIndustry').val())
+        
             var ajaxurl = '@Url.Action("GetServiceTagByIndustry", "Rfq")';
 
             $.ajax({
@@ -1122,7 +1117,7 @@ function loadIndustry() {
                     alert(response)
                 }
             });
-        }
+       
     }
 
     $('#btnUploadFile').on('click', function () {
