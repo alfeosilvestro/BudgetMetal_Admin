@@ -127,6 +127,8 @@ namespace Com.GenericPlatform.WebApp.Controllers
             });
         }
 
+       
+
         [HttpGet]
         public async Task<JsonResult> CheckCurrentPassword(string CurrentPassword)
         {

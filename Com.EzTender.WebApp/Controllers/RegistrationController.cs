@@ -157,11 +157,14 @@ namespace Com.EzTender.WebApp.Controllers
         [HttpGet]
         public async Task<JsonResult> ResetPassword(string Username)
         {
-            string newPassword = CreateRandomPassword(6);
-            var result = await userService.ResetPassword(Username, newPassword);
+            
+            var result = await userService.ResetPassword(Username);
 
             if (result.IsSuccess)
             {
+                string[] arrResponseText = result.MessageToUser.Split(",#,");
+                string email = arrResponseText[0];
+                string parameter = arrResponseText[1];
                 string filePath = "wwwroot/Template/";
                 FileStream fileStream = new FileStream( filePath+ "resetpassword.htm", FileMode.Open);
                 string msgBody = "";
@@ -170,12 +173,23 @@ namespace Com.EzTender.WebApp.Controllers
                     string line = reader.ReadToEnd();
                     msgBody = msgBody + line;
                 }
-                msgBody = msgBody.Replace("[password]", newPassword);
-                //string mailBody = "";
-                //mailBody = "Your new password for EzyTender is " + newPassword;
+                msgBody = msgBody.Replace("[parameter]", parameter);
+                
                 SendingMail sm = new SendingMail();
-                sm.SendMail(result.MessageToUser, "", "Reset Password", msgBody);
+                sm.SendMail(email, "", "Reset Password", msgBody);
+                result.MessageToUser = email;
             }
+
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> ChangePassword(string Username, string NewPassword)
+        {
+            var result = await userService.ResetPass(Username, NewPassword);
 
             return new JsonResult(result, new JsonSerializerSettings()
             {
@@ -202,6 +216,17 @@ namespace Com.EzTender.WebApp.Controllers
         public ActionResult ForgotPassword()
         {
             HttpContext.Session.SetString("WebAppUrl", _appSettings.App_Identity.WebAppUrl);
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult ResetPass()
+        {
+            string username =  Request.Query["u"];
+           
+            ViewBag.u = username;
+
+
             return View();
         }
 

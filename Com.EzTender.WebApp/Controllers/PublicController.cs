@@ -89,6 +89,13 @@ namespace Com.EzTender.WebApp.Controllers
             return View();
         }
 
+        public IActionResult ResetPass()
+        {
+            string username = Request.Query["u"];
+            ViewBag.u = System.Net.WebUtility.UrlEncode(username);
+            return View();
+        }
+
         public IActionResult ConfirmUser()
         {
             string _token = Request.Query["token"];

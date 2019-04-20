@@ -25,6 +25,8 @@ namespace Com.BudgetMetal.DataRepository.Users
 
         Task<Com.BudgetMetal.DBEntities.User> GetUserByUserName(string UserName);
 
+        Task<Com.BudgetMetal.DBEntities.User> GetUserByUserNameOrEmail(string UserName);
+
         List<string> GetSupplierAdmin(List<int> supplierList);
 
         List<User> GetSupplierAdminUser(int supplierId);

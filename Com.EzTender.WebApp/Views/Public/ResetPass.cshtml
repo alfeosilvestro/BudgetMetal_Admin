@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Reset Password";
+    Layout = "~/Views/Shared/_Public_Layout.cshtml";
+}
+
+@*<div id="Subheader" style="padding:290px 0 190px">
+    <div class="container">
+        <div class="column one">
+            <h1 class="title">Reset Password</h1>
+        </div>
+    </div>
+</div>
+        </div>*@
+<div id="Content">
+    <div class="content_wrapper clearfix">
+        <div class="sections_group">
+            <div class="entry-content">
+
+                <iframe src="@(Url.Action("ResetPass", "Registration"))?u=@(ViewBag.u)" width="100%" frameborder="0" scrolling="no" onload="resizeIframe(this)"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function resizeIframe(obj) {
+        obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+    }
+</script>
+

@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "Forgot Password";
+    ViewData["Title"] = "Reset Password";
     Layout = "~/Views/Shared/_Empty_Layout.cshtml";
 }
 
@@ -15,15 +15,16 @@
             <div class="body">
                 <div class="row" id="resetPassword">
                     <div class="col-sm-3">
-                        <label for="email">Please Enter Username :</label> 
+                        <label for="email">Please Enter New Password :</label>
                     </div>
                     <div class="col-sm-4">
-                        <input type="text" name="username" id="username" value="" class="form-control" />
+                        <input type="password" name="txtPass" id="txtPass" value="" class="form-control" />
+                        <input type="hidden" name="txtUsername" id="txtUsername" value="@ViewBag.u" />
                         <br />
                         <button class="btn btn-primary" id="btnResetPassword"> Reset Password</button>
                     </div>
                     <div class="col-sm-5">
-                        
+
                     </div>
                 </div>
                 <div class="row" id="messageToUser">
@@ -35,22 +36,28 @@
 </section>
 <script>
     $("#btnResetPassword").click(function () {
-        var un = $("#username").val();
-        var ajaxurl = '@Url.Action("ResetPassword", "Registration")';
+        var un = $("#txtUsername").val();
+        var np = $("#txtPass").val();
+        if (np.trim() == "") {
+            alert("Password must be fill");
+            $("#txtPass").focus();
+        } else {
+            var ajaxurl = '@Url.Action("ChangePassword", "Registration")';
 
         $.ajax({
             url: ajaxurl,
-            data: { Username: un},
+            type: "POST",
+            data: { Username: un, NewPassword: np},
             dataType: 'json',
             success: function (response) {
                 console.log(response);
                 $("#messageToUser").empty();
                 var message = "";
                 if (response.IsSuccess == true) {
-                    message = "<div class='alert alert-success'> We have successfully sent email to reset password. Please check your email (" + response.MessageToUser +").</div>";
+                    message = "<div class='alert alert-success'> You have successfully reset password.</div>";
                     $("#resetPassword").hide();
                 } else {
-                    message = "<div class='alert alert-danger'> " + un + " is invalid.</div>";
+                    message = "<div class='alert alert-danger'> Link is invalid.</div>";
                     $("#username").select();
                 }
                 $("#messageToUser").append(message);
@@ -60,6 +67,8 @@
                 console.log(response);
             }
         });
+        }
+
         //alert(email);
     });
 </script>

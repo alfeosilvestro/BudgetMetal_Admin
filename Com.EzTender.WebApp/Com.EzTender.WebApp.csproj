@@ -73,6 +73,9 @@
     <Content Update="Views\Home\PublicRFQ.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Public\ResetPass.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Public\Policy.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
@@ -125,6 +128,9 @@
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Registration\ConfirmUser.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Registration\ResetPass.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Registration\ForgotPassword.cshtml">

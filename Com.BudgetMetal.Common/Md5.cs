@@ -31,22 +31,30 @@ namespace Com.BudgetMetal.Common
 
         public static string Decrypt(string cipher)
         {
-            using (var md5 = new MD5CryptoServiceProvider())
+            try
             {
-                using (var tdes = new TripleDESCryptoServiceProvider())
+                using (var md5 = new MD5CryptoServiceProvider())
                 {
-                    tdes.Key = md5.ComputeHash(UTF8Encoding.UTF8.GetBytes(key));
-                    tdes.Mode = CipherMode.ECB;
-                    tdes.Padding = PaddingMode.PKCS7;
-
-                    using (var transform = tdes.CreateDecryptor())
+                    using (var tdes = new TripleDESCryptoServiceProvider())
                     {
-                        byte[] cipherBytes = Convert.FromBase64String(cipher);
-                        byte[] bytes = transform.TransformFinalBlock(cipherBytes, 0, cipherBytes.Length);
-                        return UTF8Encoding.UTF8.GetString(bytes);
+                        tdes.Key = md5.ComputeHash(UTF8Encoding.UTF8.GetBytes(key));
+                        tdes.Mode = CipherMode.ECB;
+                        tdes.Padding = PaddingMode.PKCS7;
+
+                        using (var transform = tdes.CreateDecryptor())
+                        {
+                            byte[] cipherBytes = Convert.FromBase64String(cipher);
+                            byte[] bytes = transform.TransformFinalBlock(cipherBytes, 0, cipherBytes.Length);
+                            return UTF8Encoding.UTF8.GetString(bytes);
+                        }
                     }
                 }
             }
+            catch
+            {
+                return "";
+            }
+            
         }
     }
 }

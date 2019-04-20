@@ -589,11 +589,14 @@ namespace Com.BudgetMetal.Services.Users
             return result;
         }
 
-        public async Task<VmGenericServiceResult> ResetPassword(string username, string newPassword)
+        public async Task<VmGenericServiceResult> ResetPassword(string username)
         {
             var result = new VmGenericServiceResult();
+            
+            var dbresult = await repo.GetUserByUserNameOrEmail(username);
 
-            var dbresult = await repo.GetUserByUserName(username);
+            
+
 
             if (dbresult == null)
             {
@@ -602,11 +605,42 @@ namespace Com.BudgetMetal.Services.Users
             }
             else
             {   
-                dbresult.Password = Md5.Encrypt(newPassword);
+                //dbresult.Password = Md5.Encrypt(newPassword);
+                //repo.Update(dbresult);
+                //repo.Commit();
+                result.IsSuccess = true;
+                //generate reset password link
+                string link = "";
+                string encryptedUserName =System.Net.WebUtility.UrlEncode(Md5.Encrypt(dbresult.UserName));
+                string encryptedValidDate = System.Net.WebUtility.UrlEncode(Md5.Encrypt(DateTime.Now.ToString("yyyy-mm-dd")));
+                link = "u=" + encryptedUserName + "&d=" + encryptedValidDate;
+
+                result.MessageToUser = dbresult.EmailAddress + ",#," + link;
+                //result.MessageToUser = "The system sent the reset password link to email (" + dbresult.EmailAddress+").";
+            }
+
+            return result;
+        }
+
+        public async Task<VmGenericServiceResult> ResetPass(string username, string password)
+        {
+            var result = new VmGenericServiceResult();
+            string newPassword = Md5.Encrypt(password);
+            username = Md5.Decrypt(username);
+            var dbresult = await repo.GetUserByUserName(username);
+            
+            if (dbresult == null)
+            {
+                result.IsSuccess = false;
+                result.MessageToUser = "This user is not registered.";
+            }
+            else
+            {
+                dbresult.Password = newPassword;
                 repo.Update(dbresult);
                 repo.Commit();
                 result.IsSuccess = true;
-                result.MessageToUser = dbresult.EmailAddress;
+                result.MessageToUser = "Your password is successfully reset. Please sign in with new password. Thanks.";
             }
 
             return result;
