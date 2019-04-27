@@ -45,8 +45,37 @@
                             @{
                                 foreach (var item in Model.Result.Records)
                                 {
+                                    bool canShowList = false;
+                                    string messageForQuotationList = "";
+                                    if (item.Rfq.QuotationOpeningDate == null)
+                                    {
+                                        canShowList = true;
+                                    }
+                                    else
+                                    {
+                                        if (Convert.ToDateTime(item.Rfq.QuotationOpeningDate).Date <= DateTime.Now.Date)
+                                        {
+                                            int datediff = (DateTime.Now.Date - Convert.ToDateTime(item.Rfq.QuotationOpeningDate).Date).Days;
+                                            messageForQuotationList = "Can View in " + datediff.ToString() + " Days.";
+                                            canShowList = true;
+                                        }
+                                    }
+
                                     <tr>
-                                        <td> <a type="button" class="btn btn-warning" href='@Url.Action("View","Quotation",new { id= item.Id })'>View</a></td>
+                                        <td>
+                                            @{
+                                                if (canShowList)
+                                                {
+                                                    <a type="button" class="btn btn-warning" href='@Url.Action("View","Quotation",new { id= item.Id })'>View</a>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-danger">@messageForQuotationList</span>
+                                                }
+                                            }
+
+
+                                        </td>
                                         <td>@item.Document.DocumentNo</td>
                                         <td>@item.Rfq.Document.DocumentNo</td>
                                         <td>@Html.DisplayFor(modelitem => item.Rfq.ValidRfqdate)</td>

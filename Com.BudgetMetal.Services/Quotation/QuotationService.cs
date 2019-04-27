@@ -397,7 +397,8 @@ namespace Com.BudgetMetal.Services.Quotation
                     {
                         resultItem.Rfq = new VmRfqItem()
                         {
-                            ValidRfqdate = resultItem.ValidToDate,
+                            ValidRfqdate = resultItem.Rfq.ValidRfqdate,
+                            QuotationOpeningDate = resultItem.Rfq.QuotationOpeningDate,
                             Document = new VmDocumentItem()
                             {
                                 DocumentNo = documentEntity.Result.DocumentNo,

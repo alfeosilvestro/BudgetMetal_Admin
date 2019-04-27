@@ -219,5 +219,42 @@ namespace Com.EzTender.WebApp.Controllers
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             });
         }
+
+        [HttpPost]
+        public JsonResult SendEmailFromContactUs(string senderEmail, string senderName, string subject, string content)
+        {
+            var result = new Com.BudgetMetal.ViewModels.VmGenericServiceResult();
+
+            try
+            {
+                SendingMail sm = new SendingMail();
+                string email = _appSettings.App_Identity.fromMail;
+                string emailSubject = "Message From Contact Page";
+                string emailBody = "";
+
+                emailBody = "From : " + senderEmail + "<br>";
+                emailBody = emailBody + "Name : " + senderName + "<br>";
+                emailBody = emailBody + "Subject : " + subject + "<br><br>";
+                emailBody = emailBody + "Body : <br><br>" + content.Replace("\n", "<br>") + "<br>";
+                sm.SendMail(email, "", emailSubject, emailBody);
+
+                result.IsSuccess = true;
+                result.MessageToUser = "OK";
+            }
+            catch
+            {
+                result.IsSuccess = false;
+                result.MessageToUser = "Error while sending email.";
+            }
+           
+
+
+            
+            return new JsonResult(result, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
+
     }
 }
