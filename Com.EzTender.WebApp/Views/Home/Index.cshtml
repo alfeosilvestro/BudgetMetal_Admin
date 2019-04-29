@@ -127,6 +127,10 @@
                     //);
                     var rfqUrl = '@Url.Action("View", "Rfq")';
                     var companyUrl = '@Url.Action("Details", "Companies")';
+                    var projectValue = "-";
+                    if (item.ContractValue != null) {
+                        projectValue = "$" + item.ContractValue;
+                    }
                     $('#RFQList').append(
                         "<div class='clearfix' style='padding-left: 20px; padding-right: 20px;'> " +
                             "<div class='row'> " +
@@ -139,7 +143,7 @@
                             "</div> " +
                         "<div class='row'> " +
                         "<div class='col-sm-4'>Company: <a href='" + companyUrl + "/" + item.Document.Company.Id + "' target='_blank'>" + item.Document.Company.Name + "</a></div> " +
-                                "<div class='col-sm-4'>Estimated Project Value : $" + item.ContractValue+"</div> " +
+                        "<div class='col-sm-4'>Estimated Project Value : " + projectValue+"</div> " +
                                 "<div class='col-sm-4'></div> " +
                             "</div> " +
                             "<div class='row'> " +

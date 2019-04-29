@@ -8,6 +8,8 @@
     string currentCompanyType = Context.Session.GetString("C_BusinessType");
     string Code_C_Buyer = Com.BudgetMetal.Common.Constants_CodeTable.Code_C_Buyer.ToString();
     string UserName = Context.Session.GetString("UserName");
+    bool canShowList = false;
+    string messageForQuotationList = "";
 }
 <style>
     .pricingColspan {
@@ -287,8 +289,8 @@
 
                             </table>
                             @{
-                                bool canShowList = false;
-                                string messageForQuotationList = "";
+                                
+                                
                                 if (Model.QuotationOpeningDate == null)
                                 {
                                     canShowList = true;

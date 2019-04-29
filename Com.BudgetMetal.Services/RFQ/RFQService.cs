@@ -1439,7 +1439,7 @@ namespace Com.BudgetMetal.Services.RFQ
                                 string emailSubject = "Rfq Invitation";
                                 string accessCode = Md5.Encrypt(string.Format("{0}{1}", item.RfqId, item.EmailAddress));
                                 var dbWebAppUrl = await CTRepo.Get(Constants_CodeTable.Code_SiteOption_WebUrl);
-                                string url = dbWebAppUrl.Value + "Public/RfqAccess/";
+                                string url = dbWebAppUrl.Value + "/Public/RfqAccess/";
 
                                 string emailBody = string.Format("Hi {0}, you can view rfq with this access code {1} \n\n Please click the below links \n {2}", item.Name, accessCode, url);
 
