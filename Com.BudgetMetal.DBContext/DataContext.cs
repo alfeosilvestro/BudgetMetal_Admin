@@ -47,7 +47,8 @@ namespace Com.BudgetMetal.DB
         public virtual DbSet<TimeLine> TimeLine { get; set; }
         public virtual DbSet<Blog> Blog { get; set; }
         public virtual DbSet<EmailTemplate> EmailTemplate { get; set; }
-
+        public virtual DbSet<SupplierIndustryCertification> SupplierIndustryCertification { get; set; }
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

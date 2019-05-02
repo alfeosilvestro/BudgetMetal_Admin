@@ -31,7 +31,7 @@ namespace Com.BudgetMetal.DataRepository.Company
             var filterCompany = this.DbContext.SupplierServiceTags.Where(e => e.IsActive == true & filterServiceTags.Contains(e.ServiceTags_Id)).Select(e => e.Company_Id).Distinct().ToList();
 
             searchKeyword = (searchKeyword == null) ? "" : searchKeyword.ToLower().Trim();
-            var records = this.entities.Where(e => e.IsActive == true && e.C_BusinessType == Constants_CodeTable.Code_C_Supplier && filterCompany.Contains(e.Id) && (searchKeyword == "" || e.Name.ToLower().Contains(searchKeyword) || e.RegNo.ToLower().Contains(searchKeyword)));
+            var records = this.entities.Include(e=>e.SupplierIndustryCertification).Where(e => e.IsActive == true && e.C_BusinessType == Constants_CodeTable.Code_C_Supplier && filterCompany.Contains(e.Id) && (searchKeyword == "" || e.Name.ToLower().Contains(searchKeyword) || e.RegNo.ToLower().Contains(searchKeyword)));
 
             //var recordList = records
             //    .OrderBy(e=>e.Name)
@@ -85,6 +85,7 @@ namespace Com.BudgetMetal.DataRepository.Company
             }
 
             var records = await entities
+                .Include(e => e.SupplierIndustryCertification)
                .Where(e =>
                  (e.IsActive == true) &&
                  (keyword == string.Empty || e.Name.Contains(keyword))
@@ -135,6 +136,7 @@ namespace Com.BudgetMetal.DataRepository.Company
             }
 
             var records = await entities
+                .Include(e => e.SupplierIndustryCertification)
                .Where(e =>
                  (e.IsActive == true) &&
                  (e.C_BusinessType == Com.BudgetMetal.Common.Constants_CodeTable.Code_C_Supplier) &&
@@ -180,12 +182,28 @@ namespace Com.BudgetMetal.DataRepository.Company
 
         }
 
+        public async Task<Com.BudgetMetal.DBEntities.Company> GetSingleCompany(int id)
+        {
+
+
+            var result = await entities
+                .Include(e => e.SupplierIndustryCertification)
+               .Where(e =>
+                 (e.IsActive == true) && e.Id == id).SingleOrDefaultAsync();
+
+
+
+
+
+            return result;
+        }
+
         public async Task<PageResult<Com.BudgetMetal.DBEntities.Company>> GetSupplierByCompanyId(int companyId, int page, int totalRecords, string keyword)
         {
 
             var filterCompany = await this.DbContext.CompanySupplier.Where(e => e.IsActive == true && e.Company_Id == companyId).Select(e => e.Supplier_Id).Distinct().ToListAsync();
             string _keyword = (!string.IsNullOrEmpty(keyword)) ? keyword : "";
-            var records = await this.entities.Where(e => e.IsActive == true && filterCompany.Contains(e.Id) && e.Name.ToLower().Contains(_keyword.ToLower())).ToListAsync();
+            var records = await this.entities.Include(e => e.SupplierIndustryCertification).Where(e => e.IsActive == true && filterCompany.Contains(e.Id) && e.Name.ToLower().Contains(_keyword.ToLower())).ToListAsync();
 
             var recordList = records
                 .OrderBy(e => e.Name)

@@ -73,6 +73,18 @@ namespace Com.BudgetMetal.Services.Company
 
                 Copy<Com.BudgetMetal.DBEntities.Company, VmCompanyItem>(dbItem, resultItem);
                 resultItem.IsVerified = (dbItem.IsVerified == null) ? false : (bool)dbItem.IsVerified;
+
+                var certificationList = dbItem.SupplierIndustryCertification;
+                if(certificationList != null)
+                {
+                    string certification = "";
+                    foreach(var certificate in certificationList)
+                    {
+                        certification = certification + certificate;
+                    }
+                    resultItem.IndustryCertification = certification;
+                }
+
                 resultObj.Result.Records.Add(resultItem);
             }
 
@@ -104,6 +116,8 @@ namespace Com.BudgetMetal.Services.Company
 
                 Copy<Com.BudgetMetal.DBEntities.Company, VmCompanyItem>(dbItem, resultItem);
                 resultItem.IsVerified = (dbItem.IsVerified == null) ? false : (bool)dbItem.IsVerified;
+                
+
                 resultObj.Result.Records.Add(resultItem);
             }
 
@@ -124,6 +138,7 @@ namespace Com.BudgetMetal.Services.Company
             Copy<Com.BudgetMetal.DBEntities.Company, VmCompanyItem>(dbPageResult, resultObj);
 
             resultObj.IsVerified = (dbPageResult.IsVerified == null) ? false : (bool)dbPageResult.IsVerified;
+
 
             var dbUserList = await repoUser.GetUserByCompany(Id);
 

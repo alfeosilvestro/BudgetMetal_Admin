@@ -18,5 +18,7 @@ namespace Com.BudgetMetal.DataRepository.Company
         Task<Com.BudgetMetal.DBEntities.Company> GetCompanyByUEN(string RegNo);
 
         Task<PageResult<Com.BudgetMetal.DBEntities.Company>> GetSupplierByCompanyId(int companyId, int page, int totalRecords, string keyword);
+
+        Task<Com.BudgetMetal.DBEntities.Company> GetSingleCompany(int id);
     }
 }
