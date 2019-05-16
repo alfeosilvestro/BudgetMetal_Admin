@@ -14,22 +14,14 @@ namespace Com.EzTender.WebApp
     {
         public static void Main(string[] args)
         {
-            //BuildWebHost(args).Run();
-            var host = new WebHostBuilder()
-                        .UseServer("Microsoft.AspNetCore.Server.Kestrel")
-                        .UseApplicationBasePath(Directory.GetCurrentDirectory())
-                        .UseDefaultConfiguration(args)
-                        .UseIISPlatformHandlerUrl()
-                        .UseStartup<Startup>()
-                        .UseUrls("http://localhost:5050")
-                        .Build();
-
-            host.Run();
+            BuildWebHost(args).Run();
+           
         }
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
+                .UseUrls("http://localhost:5050")
                 .Build();
     }
 }
