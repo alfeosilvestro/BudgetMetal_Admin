@@ -916,15 +916,19 @@ namespace Com.GenericPlatform.WebApp.Controllers
             resultTemplate.List_SLA = new List<VmSlaItem>();
             resultTemplate.List_Panalty = new List<VmPenaltyItem>();
             resultTemplate.List_Pricing = new List<VmRfqPriceScheduleItem>();
+
+            string newPath = "";
+
             try
             {
                 IFormFile file = Request.Form.Files[0];
                 string folderName = "Upload";
                 string webRootPath = _hostingEnvironment.WebRootPath;
-                string newPath = Path.Combine(webRootPath, folderName, DateTime.Now.ToString("ddMMyyyyHHmmss"));
+                newPath = Path.Combine(webRootPath, folderName, DateTime.Now.ToString("ddMMyyyyHHmmss"));
                 StringBuilder sb = new StringBuilder();
                 if (!Directory.Exists(newPath))
                 {
+
                     Directory.CreateDirectory(newPath);
                 }
                 if (file.Length > 0)
@@ -987,7 +991,7 @@ namespace Com.GenericPlatform.WebApp.Controllers
             catch (Exception ex)
             {
                 resultTemplate.result.IsSuccess = false;
-                resultTemplate.result.MessageToUser = "Error while uploading template";
+                resultTemplate.result.MessageToUser = "Error while uploading template." + ex.Message + ". Target path - " + newPath;
             }
 
 
